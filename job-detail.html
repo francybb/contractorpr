@@ -379,7 +379,7 @@ async function loadProposals() {
       <div class="proposal-actions">
         ${isAccepted
           ? `<div class="accepted-badge">✅ Propuesta aceptada</div>`
-          : `<button class="btn-accept" onclick="acceptProposal('${p.id}','${p.contractor_id}')">✅ Aceptar propuesta</button>`
+          : isHomeowner ? `<button class="btn-accept" onclick="acceptProposal('${p.id}','${p.contractor_id}')">✅ Aceptar propuesta</button>` : ''
         }
         <button class="btn-chat" onclick="openChat('${p.id}','${c.name || 'Contratista'}')">💬 Chatear</button>
       </div>
