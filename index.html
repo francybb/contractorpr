@@ -205,6 +205,22 @@ footer ul li a:hover{color:white}
 /* ANIMATIONS */
 .reveal{opacity:0;transform:translateY(24px);transition:opacity 0.65s ease,transform 0.65s ease}
 .reveal.in{opacity:1;transform:translateY(0)}
+
+.dropdown{position:relative;display:inline-block}
+.dropdown-btn{background:none;border:1px solid var(--gray-2);padding:8px 16px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;color:var(--gray-4);display:flex;align-items:center;gap:6px;transition:all 0.2s}
+.dropdown-btn:hover{border-color:var(--blue);color:var(--blue)}
+.dropdown-btn svg{transition:transform 0.2s}
+.dropdown.open .dropdown-btn svg{transform:rotate(180deg)}
+.dropdown-menu{position:absolute;right:0;top:calc(100% + 8px);background:white;border:1px solid var(--gray-2);border-radius:var(--radius);box-shadow:0 8px 24px rgba(0,0,0,0.1);min-width:200px;overflow:hidden;display:none;z-index:200}
+.dropdown.open .dropdown-menu{display:block}
+.dropdown-item{display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:14px;font-weight:500;color:var(--gray-4);cursor:pointer;transition:background 0.15s;text-decoration:none}
+.dropdown-item:hover{background:var(--gray-1);color:var(--blue)}
+.dropdown-item-icon{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-size:15px;flex-shrink:0}
+.dropdown-item.homeowner .dropdown-item-icon{background:var(--blue-light)}
+.dropdown-item.contractor .dropdown-item-icon{background:rgba(16,185,129,0.1)}
+.dropdown-divider{height:1px;background:var(--gray-2)}
+.dropdown-register{display:block;padding:10px 16px;text-align:center;font-size:13px;color:var(--gray-3);border-top:1px solid var(--gray-2)}
+.dropdown-register a{color:var(--blue);font-weight:600}
 </style>
 </head>
 <body>
@@ -230,10 +246,31 @@ footer ul li a:hover{color:white}
       <li><a href="jobs.html" data-es="Ver Trabajos" data-en="Browse Jobs">Ver Trabajos</a></li>
     </ul>
     <div class="nav-right">
-      <a href="dashboard-homeowner.html" style="font-size:14px;font-weight:500;color:var(--gray-4);transition:color 0.2s" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--gray-4)'" data-es="Mi Panel" data-en="My Dashboard">Mi Panel</a>
       <button class="lang-btn" onclick="toggleLang()">English</button>
-      <a href="dashboard-contractor.html" style="font-size:14px;font-weight:500;color:var(--gray-4);transition:color 0.2s" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--gray-4)'" data-es="Panel Contratista" data-en="Contractor Dashboard">Panel Contratista</a>
-      <a href="signup.html"><button class="btn-nav" data-es="Registrarse" data-en="Sign Up">Registrarse</button></a>
+      <div class="dropdown" id="signin-dropdown">
+        <button class="dropdown-btn" onclick="toggleDropdown()">
+          <span data-es="Iniciar sesión" data-en="Sign in">Iniciar sesión</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="dropdown-menu">
+          <a href="dashboard-homeowner.html" class="dropdown-item homeowner">
+            <div class="dropdown-item-icon">🏠</div>
+            <div>
+              <div style="font-weight:600;color:var(--ink)" data-es="Soy Propietario" data-en="I'm a Homeowner">Soy Propietario</div>
+              <div style="font-size:12px;color:var(--gray-3)" data-es="Ver mis trabajos y propuestas" data-en="View my jobs and proposals">Ver mis trabajos y propuestas</div>
+            </div>
+          </a>
+          <div class="dropdown-divider"></div>
+          <a href="dashboard-contractor.html" class="dropdown-item contractor">
+            <div class="dropdown-item-icon">🔨</div>
+            <div>
+              <div style="font-weight:600;color:var(--ink)" data-es="Soy Contratista" data-en="I'm a Contractor">Soy Contratista</div>
+              <div style="font-size:12px;color:var(--gray-3)" data-es="Ver mis propuestas y trabajos" data-en="View my proposals and jobs">Ver mis propuestas y trabajos</div>
+            </div>
+          </a>
+          <div class="dropdown-register" data-es="¿No tienes cuenta? <a href='signup.html'>Regístrate gratis</a>" data-en="No account? <a href='signup.html'>Sign up free</a>">¿No tienes cuenta? <a href="signup.html">Regístrate gratis</a></div>
+        </div>
+      </div>
     </div>
   </nav>
 </div>
@@ -466,6 +503,15 @@ footer ul li a:hover{color:white}
 </footer>
 
 <script>
+
+function toggleDropdown() {
+  document.getElementById('signin-dropdown').classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+  const dd = document.getElementById('signin-dropdown');
+  if (dd && !dd.contains(e.target)) dd.classList.remove('open');
+});
+
 let lang='es';
 function toggleLang(){
   lang=lang==='es'?'en':'es';
