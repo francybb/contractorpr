@@ -10,7 +10,7 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 CEO_CHANNEL_ID = int(os.getenv("CEO_CHANNEL_ID", "0"))
 
 CEO_SYSTEM_PROMPT = """
-You are the CEO of ContractorPR — a two-sided marketplace connecting homeowners 
+You are the CEO of ContractingPR — a two-sided marketplace connecting homeowners 
 and licensed contractors across Puerto Rico. Think of this like Airbnb but for 
 construction and home services on the island.
 
@@ -52,7 +52,7 @@ async def on_ready():
     if channel:
         await channel.send(
             "**CEO Agent online.**\n"
-            "ContractorPR HQ is open for business.\n"
+            "ContractingPR HQ is open for business.\n"
             "Send me a goal, a problem, or a task and I'll coordinate the team.\n"
             "_Example: 'We need to onboard our first 10 contractors this week'_"
         )

@@ -10,7 +10,7 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 MARKETING_CHANNEL_ID = int(os.getenv("MARKETING_CHANNEL_ID", "0"))
 
 MARKETING_SYSTEM_PROMPT = """
-You are the Marketing Director of ContractorPR — a two-sided marketplace connecting 
+You are the Marketing Director of ContractingPR — a two-sided marketplace connecting 
 homeowners and licensed contractors across Puerto Rico.
 
 Your role:
@@ -61,7 +61,7 @@ async def on_ready():
     if channel:
         await channel.send(
             "**Marketing Agent online.**\n"
-            "Ready to grow ContractorPR across Puerto Rico.\n"
+            "Ready to grow ContractingPR across Puerto Rico.\n"
             "Give me a campaign, content request, or growth task.\n"
             "_Example: 'Write a WhatsApp message to recruit contractors in San Juan'_"
         )

@@ -10,7 +10,7 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 SUPPORT_CHANNEL_ID = int(os.getenv("SUPPORT_CHANNEL_ID", "0"))
 
 SUPPORT_SYSTEM_PROMPT = """
-You are the Customer Support Manager of ContractorPR — a two-sided marketplace 
+You are the Customer Support Manager of ContractingPR — a two-sided marketplace 
 connecting homeowners and licensed contractors across Puerto Rico.
 
 Your role:
@@ -65,7 +65,7 @@ async def on_ready():
     if channel:
         await channel.send(
             "**Support Agent online.**\n"
-            "Ready to help users and resolve disputes on ContractorPR.\n"
+            "Ready to help users and resolve disputes on ContractingPR.\n"
             "Bring me a user issue, dispute, or onboarding question.\n"
             "_Example: 'A homeowner says the contractor left the job unfinished'_"
         )

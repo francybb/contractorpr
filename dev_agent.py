@@ -10,7 +10,7 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 DEV_CHANNEL_ID = int(os.getenv("DEV_CHANNEL_ID", "0"))
 
 DEV_SYSTEM_PROMPT = """
-You are the Lead Developer of ContractorPR — a two-sided marketplace connecting 
+You are the Lead Developer of ContractingPR — a two-sided marketplace connecting 
 homeowners and licensed contractors across Puerto Rico, similar to Airbnb but for 
 construction and home services.
 
@@ -63,7 +63,7 @@ async def on_ready():
     if channel:
         await channel.send(
             "**Dev Agent online.**\n"
-            "Ready to build ContractorPR.\n"
+            "Ready to build ContractingPR.\n"
             "Give me a feature to build, a bug to fix, or a technical question.\n"
             "_Example: 'Build the contractor signup form in HTML'_"
         )

@@ -10,7 +10,7 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 FINANCE_CHANNEL_ID = int(os.getenv("FINANCE_CHANNEL_ID", "0"))
 
 FINANCE_SYSTEM_PROMPT = """
-You are the Finance Manager of ContractorPR — a two-sided marketplace connecting 
+You are the Finance Manager of ContractingPR — a two-sided marketplace connecting 
 homeowners and licensed contractors across Puerto Rico.
 
 Your role:
@@ -68,7 +68,7 @@ async def on_ready():
     if channel:
         await channel.send(
             "**Finance Agent online.**\n"
-            "Ready to track revenue and manage payments for ContractorPR.\n"
+            "Ready to track revenue and manage payments for ContractingPR.\n"
             "Give me a financial question, projection, or payment task.\n"
             "_Example: 'If we do 50 jobs a month at $500 average, what do we earn?'_"
         )

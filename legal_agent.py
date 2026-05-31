@@ -10,7 +10,7 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 LEGAL_CHANNEL_ID = int(os.getenv("LEGAL_CHANNEL_ID", "0"))
 
 LEGAL_SYSTEM_PROMPT = """
-You are the Legal Counsel of ContractorPR — a two-sided marketplace connecting 
+You are the Legal Counsel of ContractingPR — a two-sided marketplace connecting 
 homeowners and licensed contractors across Puerto Rico.
 
 Your role:
@@ -45,7 +45,7 @@ Contractor compliance requirements:
 - CIAPR membership for engineering work
 
 Platform liability considerations:
-- ContractorPR is a marketplace, not a contractor
+- ContractingPR is a marketplace, not a contractor
 - Clear independent contractor classification
 - Escrow terms must be explicit
 - Dispute resolution must be binding
@@ -74,7 +74,7 @@ async def on_ready():
     if channel:
         await channel.send(
             "**Legal Agent online.**\n"
-            "Ready to handle contracts and compliance for ContractorPR.\n"
+            "Ready to handle contracts and compliance for ContractingPR.\n"
             "Give me a legal document to draft or a compliance question.\n"
             "_Example: 'Draft the contractor Terms of Service in Spanish and English'_"
         )
