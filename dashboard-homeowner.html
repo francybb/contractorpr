@@ -414,12 +414,40 @@ function acceptProposal(proposalId, jobId, e) {
   modal.classList.add('show');
   document.getElementById('confirm-yes-btn').onclick = async () => {
     modal.classList.remove('show');
-    await dbPatch('proposals', proposalId, { status: 'accepted' });
-    await dbPatch('jobs', jobId, { status: 'accepted' });
-    await loadJobs();
-    setTimeout(() => {
-      if (currentOpenJobId) openProposals(currentOpenJobId, currentOpenJobTitle);
-    }, 400);
+    document.getElementById('confirm-yes-btn').textContent = 'Procesando...';
+    document.getElementById('confirm-yes-btn').disabled = true;
+    
+    try {
+      // Update proposal
+      const r1 = await fetch(`${SUPABASE_URL}/rest/v1/proposals?id=eq.${proposalId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ status: 'accepted' })
+      });
+      
+      // Update job
+      const r2 = await fetch(`${SUPABASE_URL}/rest/v1/jobs?id=eq.${jobId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=minimal' },
+        body: JSON.stringify({ status: 'accepted' })
+      });
+
+      // Reload everything
+      await loadJobs();
+      
+      // Re-open the proposal panel
+      setTimeout(() => {
+        if (currentOpenJobId && currentOpenJobTitle) {
+          openProposals(currentOpenJobId, currentOpenJobTitle);
+        }
+      }, 600);
+      
+    } catch(err) {
+      alert('Error al aceptar. Intenta de nuevo.');
+    }
+    
+    document.getElementById('confirm-yes-btn').textContent = 'Sí, aceptar';
+    document.getElementById('confirm-yes-btn').disabled = false;
   };
 }
 
