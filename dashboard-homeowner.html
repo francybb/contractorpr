@@ -138,6 +138,14 @@ footer a{color:var(--blue);font-weight:500}
 .btn-confirm-yes{flex:1;padding:12px;background:var(--green);color:white;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background 0.2s}
 .btn-confirm-yes:hover{background:#059669}
 .btn-confirm-no{flex:1;padding:12px;background:var(--gray-1);color:var(--gray-4);border:1px solid var(--gray-2);border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer}
+
+.section-header-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;margin-top:28px}
+.section-header-row:first-of-type{margin-top:0}
+.section-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-active{background:var(--green)}
+.dot-open{background:var(--blue)}
+.dot-done{background:var(--gray-3)}
+.section-empty{text-align:center;padding:24px;background:white;border:1px dashed var(--gray-2);border-radius:var(--radius-lg);color:var(--gray-3);font-size:14px;margin-bottom:12px}
 </style>
 </head>
 <body>
@@ -189,7 +197,7 @@ footer a{color:var(--blue);font-weight:500}
   </div>
 
   <!-- Jobs -->
-  <div class="section-title">Mis trabajos <span class="count-badge" id="jobs-count">0</span></div>
+  <div id="jobs-count" style="display:none">0</div>
   <div id="jobs-list">
     <div class="loading"><div class="spinner"></div>Cargando...</div>
   </div>

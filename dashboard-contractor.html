@@ -117,6 +117,14 @@ footer a{color:var(--blue);font-weight:500}
 .btn-confirm-price{background:var(--blue);color:white;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;white-space:nowrap}
 .btn-confirm-price:hover{background:var(--blue-dark)}
 .price-confirmed{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:8px;padding:10px 12px;font-size:13px;color:#059669;margin-top:8px;display:flex;align-items:center;gap:6px}
+
+.section-header-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;margin-top:28px}
+.section-header-row:first-of-type{margin-top:0}
+.section-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-active{background:var(--green)}
+.dot-pending{background:var(--gold)}
+.dot-done{background:var(--gray-3)}
+.section-empty{text-align:center;padding:24px;background:white;border:1px dashed var(--gray-2);border-radius:var(--radius-lg);color:var(--gray-3);font-size:14px;margin-bottom:12px}
 </style>
 </head>
 <body>
@@ -171,7 +179,7 @@ footer a{color:var(--blue);font-weight:500}
   </div>
 
   <!-- Proposals -->
-  <div class="section-title">Mis propuestas <span class="count-badge" id="props-count">0</span></div>
+  <div id="props-count" style="display:none">0</div>
   <div id="proposals-list">
     <div class="loading"><div class="spinner"></div>Cargando...</div>
   </div>
@@ -294,38 +302,59 @@ async function loadProposals() {
   const jobMap = {};
   jobs.forEach(j => jobMap[j.id] = j);
 
-  const statusLabel = { pending: 'En espera', accepted: 'Aceptada', declined: 'Rechazada' };
-  const statusClass = { pending: 'prop-pending', accepted: 'prop-accepted', declined: 'prop-declined' };
+  const activeProps = proposals.filter(p => p.status === 'accepted');
+  const pendingProps = proposals.filter(p => p.status === 'pending');
+  const otherProps = proposals.filter(p => p.status !== 'accepted' && p.status !== 'pending');
 
-  document.getElementById('proposals-list').innerHTML = proposals.map(p => {
-    const job = jobMap[p.job_id] || {};
-    return `
-    <div class="proposal-row">
-      <div class="prop-row-header">
-        <div class="prop-job-title">${job.title || 'Trabajo'}</div>
-        <div class="prop-status ${statusClass[p.status] || 'prop-pending'}">${statusLabel[p.status] || 'En espera'}</div>
+  let html = '';
+
+  // Active jobs section
+  html += `<div class="section-header-row"><span class="section-dot dot-active"></span><div class="section-title" style="margin:0">Trabajos activos <span class="count-badge">${activeProps.length}</span></div></div>`;
+  if (activeProps.length === 0) {
+    html += `<div class="section-empty">No tienes trabajos activos aún. Cuando un propietario acepte tu propuesta aparecerá aquí.</div>`;
+  } else {
+    html += activeProps.map(p => renderPropRow(p, jobMap[p.job_id] || {}, true)).join('');
+  }
+
+  // Pending proposals section
+  html += `<div class="section-header-row"><span class="section-dot dot-pending"></span><div class="section-title" style="margin:0">Propuestas enviadas <span class="count-badge">${pendingProps.length}</span></div></div>`;
+  if (pendingProps.length === 0) {
+    html += `<div class="section-empty">No tienes propuestas pendientes. <a href="jobs.html" style="color:var(--blue);font-weight:600">Ver trabajos disponibles →</a></div>`;
+  } else {
+    html += pendingProps.map(p => renderPropRow(p, jobMap[p.job_id] || {}, false)).join('');
+  }
+
+  document.getElementById('proposals-list').innerHTML = html;
+}
+
+function renderPropRow(p, job, isActive) {
+  return `
+  <div class="proposal-row" style="${isActive ? 'border-color:var(--green);background:#F0FDF4' : ''}">
+    <div class="prop-row-header">
+      <div class="prop-job-title">${job.title || 'Trabajo'}</div>
+      <div class="prop-status ${isActive ? 'prop-accepted' : 'prop-pending'}">${isActive ? '✅ Aceptada' : '⏳ En espera'}</div>
+    </div>
+    <div class="prop-meta">
+      <span>📍 ${job.city || ''}</span>
+      <span>🔧 ${job.trade_needed || ''}</span>
+      <span>🕐 ${timeAgo(p.created_at)}</span>
+      ${p.price ? `<span class="prop-price-sent">💰 Tu precio: $${parseFloat(p.price).toLocaleString()}</span>` : ''}
+    </div>
+    <div class="prop-msg-preview">"${p.message.length > 120 ? p.message.substring(0,120)+'...' : p.message}"</div>
+    <div>
+      <button class="btn-view-job" onclick="window.location.href='job-detail.html?id=${p.job_id}'">Ver trabajo →</button>
+      <button class="btn-chat-prop" onclick="toggleChat('${p.id}',event)">💬 Chat con propietario</button>
+      ${!p.price ? `<button class="btn-chat-prop" onclick="togglePriceForm('${p.id}',event)" style="background:var(--green);margin-left:4px">💰 Confirmar precio</button>` : `<span style="font-size:13px;color:var(--green);font-weight:600;margin-left:8px">✓ Precio: $${parseFloat(p.price).toLocaleString()}</span>`}
+    </div>
+    <div class="price-update-form" id="price-form-${p.id}">
+      <p>Envía el precio final al propietario para proceder al pago:</p>
+      <div class="price-input-row">
+        <span class="price-prefix">$</span>
+        <input type="number" id="price-input-${p.id}" placeholder="0.00" min="1" step="0.01">
+        <button class="btn-confirm-price" onclick="submitPrice('${p.id}',event)">Confirmar precio →</button>
       </div>
-      <div class="prop-meta">
-        <span>📍 ${job.city || ''}</span>
-        <span>🔧 ${job.trade_needed || ''}</span>
-        <span>🕐 ${timeAgo(p.created_at)}</span>
-        ${p.price ? `<span class="prop-price-sent">💰 Tu precio: $${parseFloat(p.price).toLocaleString()}</span>` : ''}
-      </div>
-      <div class="prop-msg-preview">"${p.message.length > 120 ? p.message.substring(0,120)+'...' : p.message}"</div>
-      <div>
-        <button class="btn-view-job" onclick="window.location.href='job-detail.html?id=${p.job_id}'">Ver trabajo →</button>
-        <button class="btn-chat-prop" onclick="toggleChat('${p.id}',event)">💬 Chat con propietario</button>
-        ${!p.price ? `<button class="btn-chat-prop" onclick="togglePriceForm('${p.id}',event)" style="background:var(--green);margin-left:4px">💰 Confirmar precio</button>` : `<span style="font-size:13px;color:var(--green);font-weight:600;margin-left:8px">✓ Precio: $${parseFloat(p.price).toLocaleString()}</span>`}
-      </div>
-      <div class="price-update-form" id="price-form-${p.id}">
-        <p>Envía el precio final al propietario para proceder al pago:</p>
-        <div class="price-input-row">
-          <span class="price-prefix">$</span>
-          <input type="number" id="price-input-${p.id}" placeholder="0.00" min="1" step="0.01">
-          <button class="btn-confirm-price" onclick="submitPrice('${p.id}',event)">Confirmar precio →</button>
-        </div>
-        <div id="price-confirmed-${p.id}" class="price-confirmed" style="display:none">✅ Precio confirmado. El propietario puede proceder al pago.</div>
-      </div>
+      <div id="price-confirmed-${p.id}" class="price-confirmed" style="display:none">✅ Precio confirmado. El propietario puede proceder al pago.</div>
+    </div>
       <div class="chat-wrap" id="chat-${p.id}">
         <div class="chat-head">
           <span>Chat sobre: ${job.title || 'Trabajo'}</span>
