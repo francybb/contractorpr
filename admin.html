@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin | ContractingPR</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#0066CC;--blue-dark:#004C99;--blue-light:#E6F0FA;
+  --ink:#0F172A;--gray-1:#F8FAFC;--gray-2:#E2E8F0;
+  --gray-3:#94A3B8;--gray-4:#475569;--gray-5:#1E293B;
+  --green:#10B981;--gold:#F59E0B;--red:#DC2626;
+  --radius:12px;--radius-lg:20px;
+}
+body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--gray-1);line-height:1.6}
+a{text-decoration:none;color:inherit}
+
+/* LOGIN */
+.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#0a1628 0%,#0d2040 100%)}
+.login-card{background:white;border-radius:var(--radius-lg);padding:40px;width:100%;max-width:380px;box-shadow:0 24px 64px rgba(0,0,0,0.3)}
+.login-logo{display:flex;align-items:center;gap:10px;margin-bottom:28px}
+.logo-box{width:36px;height:36px;background:var(--blue);border-radius:8px;display:grid;place-items:center;color:white;font-weight:800;font-size:16px}
+.login-logo span{font-size:18px;font-weight:800;color:var(--blue)}
+.login-card h2{font-size:22px;font-weight:800;margin-bottom:4px}
+.login-card p{font-size:13px;color:var(--gray-3);margin-bottom:24px}
+.field{margin-bottom:14px}
+label{display:block;font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--gray-4);margin-bottom:6px}
+input[type=password]{width:100%;background:var(--gray-1);border:1px solid var(--gray-2);border-radius:8px;padding:12px 14px;color:var(--ink);font-family:'Inter',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s}
+input[type=password]:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,102,204,0.1)}
+.btn-login{width:100%;padding:13px;background:var(--blue);color:white;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;margin-top:4px}
+.btn-login:hover{background:var(--blue-dark)}
+.login-error{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px;color:var(--red);font-size:13px;margin-bottom:12px;display:none}
+.login-error.show{display:block}
+
+/* DASHBOARD */
+.dashboard{display:none}
+.nav-wrap{background:var(--gray-5);border-bottom:1px solid rgba(255,255,255,0.07)}
+.nav{max-width:1300px;margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800;color:white}
+.admin-badge{background:var(--red);color:white;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.05em}
+.nav-actions{display:flex;gap:12px;align-items:center}
+.nav-time{font-size:13px;color:rgba(255,255,255,0.4)}
+.btn-refresh{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:white;padding:7px 14px;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all 0.2s}
+.btn-refresh:hover{background:rgba(255,255,255,0.15)}
+.btn-signout{background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);padding:7px 14px;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;cursor:pointer;transition:all 0.2s}
+.btn-signout:hover{border-color:var(--red);color:var(--red)}
+
+.main{max-width:1300px;margin:0 auto;padding:28px 24px 80px}
+
+/* Tabs */
+.tabs{display:flex;gap:2px;background:white;border:1px solid var(--gray-2);border-radius:var(--radius);padding:4px;margin-bottom:24px;width:fit-content}
+.tab{padding:8px 18px;border:none;background:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--gray-4);cursor:pointer;border-radius:8px;transition:all 0.2s}
+.tab.active{background:var(--blue);color:white}
+
+/* Stats grid */
+.stats-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:28px}
+.stat-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:20px}
+.stat-label{font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--gray-3);margin-bottom:8px}
+.stat-val{font-size:28px;font-weight:800;color:var(--ink);line-height:1}
+.stat-sub{font-size:12px;color:var(--gray-3);margin-top:4px}
+.stat-card.blue .stat-val{color:var(--blue)}
+.stat-card.green .stat-val{color:var(--green)}
+.stat-card.gold .stat-val{color:var(--gold)}
+.stat-card.red .stat-val{color:var(--red)}
+
+/* Tables */
+.section-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:20px}
+.section-header{padding:16px 20px;border-bottom:1px solid var(--gray-2);display:flex;justify-content:space-between;align-items:center}
+.section-header h3{font-size:15px;font-weight:700}
+.section-count{background:var(--blue-light);color:var(--blue);padding:2px 8px;border-radius:100px;font-size:12px;font-weight:700}
+table{width:100%;border-collapse:collapse}
+th{padding:10px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;color:var(--gray-3);background:var(--gray-1);border-bottom:1px solid var(--gray-2)}
+td{padding:12px 16px;font-size:13px;color:var(--gray-4);border-bottom:1px solid var(--gray-2)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--gray-1)}
+.td-name{font-weight:600;color:var(--ink)}
+.badge{padding:3px 8px;border-radius:100px;font-size:11px;font-weight:600}
+.badge-pending{background:rgba(245,158,11,0.1);color:var(--gold)}
+.badge-active{background:rgba(16,185,129,0.1);color:var(--green)}
+.badge-open{background:rgba(16,185,129,0.1);color:var(--green)}
+.badge-accepted{background:rgba(0,102,204,0.1);color:var(--blue)}
+.badge-closed{background:var(--gray-2);color:var(--gray-4)}
+.empty-row td{text-align:center;padding:32px;color:var(--gray-3);font-style:italic}
+
+/* Tab panels */
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+.loading-row td{text-align:center;padding:24px;color:var(--gray-3)}
+.spinner{width:20px;height:20px;border:2px solid var(--gray-2);border-top-color:var(--blue);border-radius:50%;animation:spin 0.8s linear infinite;display:inline-block;vertical-align:middle;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Quick stats bar */
+.quick-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.quick-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:16px 20px;display:flex;align-items:center;gap:14px}
+.quick-icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.quick-icon.blue{background:var(--blue-light)}
+.quick-icon.green{background:rgba(16,185,129,0.1)}
+.quick-icon.gold{background:rgba(245,158,11,0.1)}
+.quick-label{font-size:12px;color:var(--gray-3);font-weight:500}
+.quick-val{font-size:20px;font-weight:800;color:var(--ink)}
+
+@media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}.quick-bar{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="logo-box">C</div>
+      <span>ContractingPR</span>
+      <span class="admin-badge">ADMIN</span>
+    </div>
+    <h2>Admin Dashboard</h2>
+    <p>Restricted access — authorized personnel only</p>
+    <div id="login-error" class="login-error">Incorrect password. Try again.</div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="admin-password" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')checkPassword()">
+    </div>
+    <button class="btn-login" onclick="checkPassword()">Access Dashboard →</button>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <div class="nav-wrap">
+    <div class="nav">
+      <div class="nav-logo">
+        <div class="logo-box">C</div>
+        ContractingPR
+        <span class="admin-badge">ADMIN</span>
+      </div>
+      <div class="nav-actions">
+        <span class="nav-time" id="last-updated"></span>
+        <button class="btn-refresh" onclick="loadAll()">↻ Refresh</button>
+        <button class="btn-signout" onclick="signOut()">Sign out</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- Stats -->
+    <div class="stats-grid">
+      <div class="stat-card blue">
+        <div class="stat-label">Total Contractors</div>
+        <div class="stat-val" id="total-contractors">—</div>
+        <div class="stat-sub" id="sub-contractors">Loading...</div>
+      </div>
+      <div class="stat-card blue">
+        <div class="stat-label">Total Homeowners</div>
+        <div class="stat-val" id="total-homeowners">—</div>
+        <div class="stat-sub" id="sub-homeowners">Loading...</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-label">Total Jobs</div>
+        <div class="stat-val" id="total-jobs">—</div>
+        <div class="stat-sub" id="sub-jobs">Loading...</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-label">Total Proposals</div>
+        <div class="stat-val" id="total-proposals">—</div>
+        <div class="stat-sub" id="sub-proposals">Loading...</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-label">Messages Sent</div>
+        <div class="stat-val" id="total-messages">—</div>
+        <div class="stat-sub">On-platform only</div>
+      </div>
+    </div>
+
+    <!-- Quick bar -->
+    <div class="quick-bar">
+      <div class="quick-card">
+        <div class="quick-icon blue">👷</div>
+        <div>
+          <div class="quick-label">Pending Contractor Approval</div>
+          <div class="quick-val" id="pending-contractors">—</div>
+        </div>
+      </div>
+      <div class="quick-card">
+        <div class="quick-icon green">📋</div>
+        <div>
+          <div class="quick-label">Open Jobs (Active)</div>
+          <div class="quick-val" id="open-jobs">—</div>
+        </div>
+      </div>
+      <div class="quick-card">
+        <div class="quick-icon gold">🤝</div>
+        <div>
+          <div class="quick-label">Accepted Jobs</div>
+          <div class="quick-val" id="accepted-jobs">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('contractors')">Contractors</button>
+      <button class="tab" onclick="switchTab('homeowners')">Homeowners</button>
+      <button class="tab" onclick="switchTab('jobs')">Jobs</button>
+      <button class="tab" onclick="switchTab('proposals')">Proposals</button>
+    </div>
+
+    <!-- Contractors Tab -->
+    <div class="tab-panel active" id="tab-contractors">
+      <div class="section-card">
+        <div class="section-header">
+          <h3>All Contractors</h3>
+          <span class="section-count" id="count-contractors">0</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Trade</th>
+              <th>City</th>
+              <th>License</th>
+              <th>Status</th>
+              <th>Registered</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-contractors">
+            <tr class="loading-row"><td colspan="7"><span class="spinner"></span>Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Homeowners Tab -->
+    <div class="tab-panel" id="tab-homeowners">
+      <div class="section-card">
+        <div class="section-header">
+          <h3>All Homeowners & Businesses</h3>
+          <span class="section-count" id="count-homeowners">0</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>City</th>
+              <th>Status</th>
+              <th>Registered</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-homeowners">
+            <tr class="loading-row"><td colspan="6"><span class="spinner"></span>Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Jobs Tab -->
+    <div class="tab-panel" id="tab-jobs">
+      <div class="section-card">
+        <div class="section-header">
+          <h3>All Jobs</h3>
+          <span class="section-count" id="count-jobs">0</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Trade</th>
+              <th>City</th>
+              <th>Budget</th>
+              <th>Status</th>
+              <th>Posted</th>
+              <th>View</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-jobs">
+            <tr class="loading-row"><td colspan="7"><span class="spinner"></span>Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Proposals Tab -->
+    <div class="tab-panel" id="tab-proposals">
+      <div class="section-card">
+        <div class="section-header">
+          <h3>All Proposals</h3>
+          <span class="section-count" id="count-proposals">0</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Contractor</th>
+              <th>Job</th>
+              <th>Price</th>
+              <th>Status</th>
+              <th>Sent</th>
+            </tr>
+          </thead>
+          <tbody id="tbody-proposals">
+            <tr class="loading-row"><td colspan="5"><span class="spinner"></span>Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
+const ADMIN_PASSWORD = 'Build1974658s.';
+
+function checkPassword() {
+  const pwd = document.getElementById('admin-password').value;
+  if (pwd === ADMIN_PASSWORD) {
+    sessionStorage.setItem('admin_auth', '1');
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('dashboard').style.display = 'block';
+    loadAll();
+  } else {
+    document.getElementById('login-error').classList.add('show');
+    document.getElementById('admin-password').value = '';
+  }
+}
+
+function signOut() {
+  sessionStorage.removeItem('admin_auth');
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('admin-password').value = '';
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    const names = ['contractors','homeowners','jobs','proposals'];
+    t.classList.toggle('active', names[i] === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`tab-${name}`).classList.add('active');
+}
+
+async function db(path) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+  });
+  return res.json();
+}
+
+function fmt(d) {
+  return new Date(d + (d.includes('Z') ? '' : 'Z')).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
+}
+
+async function loadAll() {
+  document.getElementById('last-updated').textContent = 'Updated: ' + new Date().toLocaleTimeString();
+
+  const [contractors, homeowners, jobs, proposals, messages] = await Promise.all([
+    db('contractors?order=created_at.desc&select=*'),
+    db('homeowners?order=created_at.desc&select=*'),
+    db('jobs?order=created_at.desc&select=*'),
+    db('proposals?order=created_at.desc&select=*'),
+    db('messages?select=id'),
+  ]);
+
+  // Stats
+  document.getElementById('total-contractors').textContent = contractors.length;
+  document.getElementById('total-homeowners').textContent = homeowners.length;
+  document.getElementById('total-jobs').textContent = jobs.length;
+  document.getElementById('total-proposals').textContent = proposals.length;
+  document.getElementById('total-messages').textContent = messages.length;
+
+  const pending = contractors.filter(c => c.status === 'pending').length;
+  const active = contractors.filter(c => c.status === 'active').length;
+  document.getElementById('sub-contractors').textContent = `${active} active · ${pending} pending`;
+  document.getElementById('sub-homeowners').textContent = `${homeowners.length} registered`;
+  document.getElementById('sub-jobs').textContent = `${jobs.filter(j=>j.status==='open').length} open · ${jobs.filter(j=>j.status==='accepted').length} accepted`;
+  document.getElementById('sub-proposals').textContent = `${proposals.filter(p=>p.status==='accepted').length} accepted`;
+  document.getElementById('pending-contractors').textContent = pending;
+  document.getElementById('open-jobs').textContent = jobs.filter(j=>j.status==='open').length;
+  document.getElementById('accepted-jobs').textContent = jobs.filter(j=>j.status==='accepted').length;
+
+  // Contractors table
+  document.getElementById('count-contractors').textContent = contractors.length;
+  document.getElementById('tbody-contractors').innerHTML = contractors.length ? contractors.map(c => `
+    <tr>
+      <td class="td-name">${c.name}</td>
+      <td>${c.email}</td>
+      <td>${c.trade}</td>
+      <td>${c.city || '—'}</td>
+      <td>${c.license_number || '—'}</td>
+      <td><span class="badge badge-${c.status}">${c.status}</span></td>
+      <td>${fmt(c.created_at)}</td>
+    </tr>`).join('') : '<tr class="empty-row"><td colspan="7">No contractors yet</td></tr>';
+
+  // Homeowners table
+  document.getElementById('count-homeowners').textContent = homeowners.length;
+  document.getElementById('tbody-homeowners').innerHTML = homeowners.length ? homeowners.map(h => `
+    <tr>
+      <td class="td-name">${h.name}</td>
+      <td>${h.email}</td>
+      <td>${h.phone || '—'}</td>
+      <td>${h.city || '—'}</td>
+      <td><span class="badge badge-active">${h.status}</span></td>
+      <td>${fmt(h.created_at)}</td>
+    </tr>`).join('') : '<tr class="empty-row"><td colspan="6">No homeowners yet</td></tr>';
+
+  // Jobs table
+  document.getElementById('count-jobs').textContent = jobs.length;
+  document.getElementById('tbody-jobs').innerHTML = jobs.length ? jobs.map(j => `
+    <tr>
+      <td class="td-name">${j.title}</td>
+      <td>${j.trade_needed}</td>
+      <td>${j.city}</td>
+      <td>${j.budget || '—'}</td>
+      <td><span class="badge badge-${j.status}">${j.status}</span></td>
+      <td>${fmt(j.created_at)}</td>
+      <td><a href="job-detail.html?id=${j.id}" style="color:var(--blue);font-weight:600;font-size:12px" target="_blank">View →</a></td>
+    </tr>`).join('') : '<tr class="empty-row"><td colspan="7">No jobs yet</td></tr>';
+
+  // Proposals table — enrich with contractor names
+  document.getElementById('count-proposals').textContent = proposals.length;
+  const cIds = [...new Set(proposals.map(p => p.contractor_id))];
+  const jIds = [...new Set(proposals.map(p => p.job_id))];
+  const [pContractors, pJobs] = await Promise.all([
+    cIds.length ? db(`contractors?id=in.(${cIds.join(',')})&select=id,name`) : Promise.resolve([]),
+    jIds.length ? db(`jobs?id=in.(${jIds.join(',')})&select=id,title`) : Promise.resolve([]),
+  ]);
+  const cMap = {}; pContractors.forEach(c => cMap[c.id] = c.name);
+  const jMap = {}; pJobs.forEach(j => jMap[j.id] = j.title);
+
+  document.getElementById('tbody-proposals').innerHTML = proposals.length ? proposals.map(p => `
+    <tr>
+      <td class="td-name">${cMap[p.contractor_id] || '—'}</td>
+      <td>${jMap[p.job_id] || '—'}</td>
+      <td>${p.price ? '$' + parseFloat(p.price).toLocaleString() : 'TBD'}</td>
+      <td><span class="badge badge-${p.status}">${p.status}</span></td>
+      <td>${fmt(p.created_at)}</td>
+    </tr>`).join('') : '<tr class="empty-row"><td colspan="5">No proposals yet</td></tr>';
+}
+
+// Check session
+if (sessionStorage.getItem('admin_auth') === '1') {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  loadAll();
+}
+
+// Auto refresh every 60 seconds
+setInterval(() => { if (sessionStorage.getItem('admin_auth') === '1') loadAll(); }, 60000);
+</script>
+</body>
+</html>
