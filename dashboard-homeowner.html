@@ -168,14 +168,14 @@ footer a{color:var(--blue);font-weight:500}
       <h1 id="greeting">Bienvenido</h1>
       <p id="greeting-sub">Gestiona tus trabajos y propuestas</p>
     </div>
-    <button class="btn-post" onclick="window.location.href='post-job.html'">+ Publicar nuevo trabajo</button>
+    <button class="btn-post" onclick="window.location.href='post-job.html'" data-i18n="postBtn">+ Publicar nuevo trabajo</button>
   </div>
 
   <!-- Stats -->
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-val" id="stat-jobs">0</div><div class="stat-lbl">Trabajos publicados</div></div>
-    <div class="stat-card"><div class="stat-val" id="stat-proposals">0</div><div class="stat-lbl">Propuestas recibidas</div></div>
-    <div class="stat-card"><div class="stat-val" id="stat-accepted">0</div><div class="stat-lbl">Trabajos aceptados</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-jobs">0</div><div class="stat-lbl" data-i18n="statJobs">Trabajos publicados</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-proposals">0</div><div class="stat-lbl" data-i18n="statProps">Propuestas recibidas</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-accepted">0</div><div class="stat-lbl" data-i18n="statAcc">Trabajos aceptados</div></div>
   </div>
 
   <!-- Jobs -->
@@ -458,14 +458,39 @@ if (stored) {
 }
 
 let lang = 'es';
+const T = {
+  loginTitle: {es:'Mi Panel', en:'My Dashboard'},
+  loginSub: {es:'Ingresa tu correo para ver tus trabajos y propuestas', en:'Enter your email to see your jobs and proposals'},
+  loginBtn: {es:'Entrar →', en:'Enter →'},
+  logout: {es:'Cerrar sesión', en:'Log out'},
+  postBtn: {es:'+ Publicar nuevo trabajo', en:'+ Post new job'},
+  statJobs: {es:'Trabajos publicados', en:'Jobs posted'},
+  statProps: {es:'Propuestas recibidas', en:'Proposals received'},
+  statAcc: {es:'Trabajos aceptados', en:'Jobs accepted'},
+  sectionTitle: {es:'Mis trabajos', en:'My jobs'},
+  greetingSub: {es:'Gestiona tus trabajos y propuestas', en:'Manage your jobs and proposals'},
+  openStatus: {es:'Abierto', en:'Open'},
+  acceptedStatus: {es:'Aceptado', en:'Accepted'},
+  closedStatus: {es:'Cerrado', en:'Closed'},
+  viewProps: {es:'Ver propuestas →', en:'View proposals →'},
+  acceptBtn: {es:'✅ Aceptar propuesta', en:'✅ Accept proposal'},
+  chatBtn: {es:'💬 Chatear con', en:'💬 Chat with'},
+  sendBtn: {es:'Enviar', en:'Send'},
+  closePanel: {es:'Propuestas', en:'Proposals'},
+  emptyTitle: {es:'Aún no tienes trabajos publicados', en:"You haven't posted any jobs yet"},
+  emptyBtn: {es:'+ Publicar trabajo', en:'+ Post job'},
+};
+
 function toggleLang() {
   lang = lang === 'es' ? 'en' : 'es';
   document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
-  document.querySelector('.btn-logout').textContent = lang === 'es' ? 'Cerrar sesión' : 'Log out';
-  const lc = document.querySelector('.login-card h2');
-  if (lc) lc.textContent = lang === 'es' ? 'Mi Panel' : 'My Dashboard';
-  const lp = document.querySelector('.login-card p');
-  if (lp) lp.textContent = lang === 'es' ? 'Ingresa tu correo para ver tus trabajos y propuestas' : 'Enter your email to see your jobs and proposals';
+  // Update all data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (T[key]) el.textContent = T[key][lang];
+  });
+  // Reload jobs to re-render with new language
+  if (currentUser) loadJobs();
 }
 </script>
 </body>
