@@ -451,10 +451,11 @@ async function submitProposal(e) {
 }
 
 async function acceptProposal(proposalId, cId) {
-  if (!confirm('¿Aceptar esta propuesta? El contratista será notificado y podrán coordinar el trabajo.')) return;
+  const confirmed = window.confirm('¿Aceptar esta propuesta? El contratista será notificado y podrán coordinar el trabajo.');
+  if (!confirmed) return;
   await dbPatch('proposals', proposalId, { status: 'accepted' });
   await dbPatch('jobs', jobId, { status: 'accepted' });
-  loadProposals();
+  await loadProposals();
 }
 
 function openChat(proposalId, name) {
