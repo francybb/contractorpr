@@ -364,7 +364,7 @@ async function openProposals(jobId, jobTitle) {
           ? `<div class="accepted-tag">✅ Propuesta aceptada</div>`
           : `<button class="btn-accept" onclick="acceptProposal('${p.id}','${jobId}',event)">✅ Aceptar propuesta</button>`
         }
-        <button class="btn-chat" onclick="toggleChat('${p.id}','${c.name || 'Contratista'}',event)">💬 Chatear con ${c.name ? c.name.split(' ')[0] : 'contratista'}</button>
+        <button class="btn-chat" onclick="toggleChat('${p.id}','${c.name || 'Contratista'}',event)">💬 Mensaje</button>
       </div>
       <div class="chat-wrap" id="chat-${p.id}">
         <div class="chat-head">
