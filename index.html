@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ContractorPR - Conectamos propietarios con contratistas licenciados en Puerto Rico. Pagos seguros, licencias verificadas.">
+    <title>ContractorPR | Contratistas Licenciados en Puerto Rico</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --primary: #0066CC;
+            --primary-dark: #004C99;
+            --primary-light: #E6F0FA;
+            --white: #FFFFFF;
+            --gray-100: #F1F5F9;
+            --gray-200: #E2E8F0;
+            --gray-500: #64748B;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1E293B;
+            --success: #10B981;
+        }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; color: var(--gray-800); line-height: 1.6; }
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* HEADER */
+        .header { position: fixed; top: 0; left: 0; right: 0; background: var(--white); z-index: 1000; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .nav { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; max-width: 1200px; margin: 0 auto; }
+        .logo { font-size: 22px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+        .logo-box { width: 38px; height: 38px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 18px; font-weight: 800; }
+        .nav-links { display: flex; align-items: center; gap: 30px; list-style: none; }
+        .nav-links a { font-weight: 500; color: var(--gray-600); font-size: 15px; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--primary); }
+        .nav-buttons { display: flex; align-items: center; gap: 12px; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: 15px; cursor: pointer; transition: all 0.3s; border: none; text-decoration: none; }
+        .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+        .btn-outline:hover { background: var(--primary-light); }
+        .btn-primary { background: var(--primary); color: var(--white); }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); }
+        .btn-white { background: var(--white); color: var(--primary); }
+        .btn-white:hover { background: var(--primary-light); }
+        .btn-large { padding: 16px 32px; font-size: 17px; }
+        .lang-btn { background: var(--gray-100); border: none; padding: 8px 14px; border-radius: 6px; font-size: 14px; font-weight: 500; color: var(--gray-600); cursor: pointer; }
+
+        /* HERO */
+        .hero { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); padding: 140px 20px 100px; }
+        .hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .hero h1 { font-size: 48px; font-weight: 800; color: var(--white); line-height: 1.2; margin-bottom: 20px; }
+        .hero p { font-size: 20px; color: rgba(255,255,255,0.9); margin-bottom: 35px; }
+        .hero-buttons { display: flex; gap: 15px; flex-wrap: wrap; }
+        .hero-stats { display: flex; gap: 40px; margin-top: 50px; }
+        .stat-num { font-size: 32px; font-weight: 800; color: var(--white); }
+        .stat-label { font-size: 13px; color: rgba(255,255,255,0.8); }
+        .hero-card { background: var(--white); border-radius: 16px; padding: 28px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
+        .card-header { display: flex; align-items: center; gap: 15px; margin-bottom: 16px; }
+        .card-avatar { width: 56px; height: 56px; background: var(--primary-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+        .card-name { font-size: 17px; font-weight: 700; color: var(--gray-800); }
+        .card-trade { font-size: 14px; color: var(--gray-500); }
+        .stars { color: #F59E0B; font-size: 16px; margin-bottom: 12px; }
+        .verified-badge { display: inline-flex; align-items: center; gap: 6px; background: #ECFDF5; color: #059669; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+
+        /* HOW IT WORKS */
+        .how { padding: 100px 20px; background: var(--gray-100); }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-tag { display: inline-block; background: var(--primary-light); color: var(--primary); padding: 6px 16px; border-radius: 20px; font-size: 14px; font-weight: 600; margin-bottom: 16px; }
+        .section-header h2 { font-size: 38px; font-weight: 800; color: var(--gray-800); margin-bottom: 16px; }
+        .section-header p { font-size: 18px; color: var(--gray-500); max-width: 600px; margin: 0 auto; }
+        .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; margin: 0 auto; }
+        .step { background: var(--white); border-radius: 16px; padding: 36px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .step-num { width: 56px; height: 56px; background: var(--primary); color: var(--white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 800; margin: 0 auto 20px; }
+        .step h3 { font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--gray-800); }
+        .step p { color: var(--gray-500); font-size: 15px; }
+
+        /* TRADES */
+        .trades { padding: 100px 20px; background: var(--white); }
+        .trades-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .trade-card { border: 2px solid var(--gray-200); border-radius: 16px; padding: 28px 20px; text-align: center; cursor: pointer; transition: all 0.3s; }
+        .trade-card:hover { border-color: var(--primary); transform: translateY(-4px); box-shadow: 0 10px 25px rgba(0,102,204,0.15); }
+        .trade-icon { font-size: 40px; margin-bottom: 14px; }
+        .trade-card h3 { font-size: 16px; font-weight: 700; color: var(--gray-800); margin-bottom: 8px; }
+        .trade-card p { font-size: 13px; color: var(--gray-500); }
+
+        /* TRUST */
+        .trust { padding: 100px 20px; background: var(--primary); }
+        .trust-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .trust h2 { font-size: 38px; font-weight: 800; color: var(--white); margin-bottom: 16px; }
+        .trust p { font-size: 18px; color: rgba(255,255,255,0.85); margin-bottom: 36px; }
+        .trust-items { display: flex; flex-direction: column; gap: 20px; }
+        .trust-item { display: flex; align-items: flex-start; gap: 16px; }
+        .trust-icon { width: 48px; height: 48px; background: rgba(255,255,255,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+        .trust-item h4 { font-size: 16px; font-weight: 700; color: var(--white); margin-bottom: 4px; }
+        .trust-item p { font-size: 14px; color: rgba(255,255,255,0.75); margin: 0; }
+        .trust-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .trust-stat { background: rgba(255,255,255,0.1); border-radius: 16px; padding: 28px; text-align: center; }
+        .trust-stat .num { font-size: 36px; font-weight: 800; color: var(--white); }
+        .trust-stat .lbl { font-size: 14px; color: rgba(255,255,255,0.8); margin-top: 6px; }
+
+        /* CTA */
+        .cta { padding: 100px 20px; background: var(--gray-100); text-align: center; }
+        .cta h2 { font-size: 42px; font-weight: 800; color: var(--gray-800); margin-bottom: 16px; }
+        .cta p { font-size: 18px; color: var(--gray-500); margin-bottom: 40px; }
+        .cta-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+        /* FOOTER */
+        .footer { background: var(--gray-800); color: rgba(255,255,255,0.7); padding: 60px 20px 30px; }
+        .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+        .footer-logo { font-size: 20px; font-weight: 800; color: var(--white); margin-bottom: 12px; }
+        .footer-desc { font-size: 14px; line-height: 1.7; }
+        .footer h4 { color: var(--white); font-size: 15px; font-weight: 700; margin-bottom: 16px; }
+        .footer ul { list-style: none; }
+        .footer ul li { margin-bottom: 10px; }
+        .footer ul li a { font-size: 14px; color: rgba(255,255,255,0.6); transition: color 0.3s; }
+        .footer ul li a:hover { color: var(--white); }
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 24px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .nav-links, .nav-buttons { display: none; }
+            .mobile-menu-btn { display: block; }
+            .hero-inner { grid-template-columns: 1fr; }
+            .hero-card { display: none; }
+            .hero h1 { font-size: 32px; }
+            .steps { grid-template-columns: 1fr; }
+            .trades-grid { grid-template-columns: repeat(2, 1fr); }
+            .trust-inner { grid-template-columns: 1fr; }
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+            .hero-stats { gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <div class="logo-box">C</div>
+            ContractorPR
+        </div>
+        <ul class="nav-links">
+            <li><a href="#como-funciona" data-es="Cómo Funciona" data-en="How It Works">Cómo Funciona</a></li>
+            <li><a href="#servicios" data-es="Servicios" data-en="Services">Servicios</a></li>
+            <li><a href="#seguridad" data-es="Seguridad" data-en="Safety">Seguridad</a></li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="lang-btn" onclick="toggleLang()">English</button>
+            <a href="signup.html" class="btn btn-outline" data-es="Soy Contratista" data-en="I'm a Contractor">Soy Contratista</a>
+            <a href="#" class="btn btn-primary" data-es="Buscar Contratista" data-en="Find Contractor">Buscar Contratista</a>
+        </div>
+    </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="hero-text">
+            <h1 data-es="Contratistas de confianza en Puerto Rico" data-en="Trusted Contractors in Puerto Rico">Contratistas de confianza en Puerto Rico</h1>
+            <p data-es="Conectamos propietarios con contratistas licenciados y verificados. Pagos seguros, trabajo garantizado." data-en="We connect homeowners with licensed, verified contractors. Safe payments, guaranteed work.">Conectamos propietarios con contratistas licenciados y verificados. Pagos seguros, trabajo garantizado.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-white btn-large" data-es="Publicar Trabajo" data-en="Post a Job">Publicar Trabajo</a>
+                <a href="signup.html" class="btn btn-outline btn-large" style="color:white;border-color:white;" data-es="Unirse como Contratista" data-en="Join as Contractor">Unirse como Contratista</a>
+            </div>
+            <div class="hero-stats">
+                <div>
+                    <div class="stat-num">500+</div>
+                    <div class="stat-label" data-es="Contratistas Verificados" data-en="Verified Contractors">Contratistas Verificados</div>
+                </div>
+                <div>
+                    <div class="stat-num">78</div>
+                    <div class="stat-label" data-es="Municipios" data-en="Municipalities">Municipios</div>
+                </div>
+                <div>
+                    <div class="stat-num">100%</div>
+                    <div class="stat-label" data-es="Pagos Seguros" data-en="Safe Payments">Pagos Seguros</div>
+                </div>
+            </div>
+        </div>
+        <div class="hero-card">
+            <div class="card-header">
+                <div class="card-avatar">👷</div>
+                <div>
+                    <div class="card-name">Carlos Rodríguez</div>
+                    <div class="card-trade" data-es="Plomería · San Juan, PR" data-en="Plumbing · San Juan, PR">Plomería · San Juan, PR</div>
+                </div>
+            </div>
+            <div class="stars">★★★★★ <span style="color:#64748B;font-size:14px;">4.9 (127 reseñas)</span></div>
+            <div class="verified-badge">✓ <span data-es="Licencia ARPE Verificada" data-en="ARPE License Verified">Licencia ARPE Verificada</span></div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="como-funciona">
+    <div class="section-header">
+        <div class="section-tag" data-es="Simple y Seguro" data-en="Simple and Safe">Simple y Seguro</div>
+        <h2 data-es="¿Cómo funciona?" data-en="How does it work?">¿Cómo funciona?</h2>
+        <p data-es="Tres pasos para conectar con el contratista correcto" data-en="Three steps to connect with the right contractor">Tres pasos para conectar con el contratista correcto</p>
+    </div>
+    <div class="steps">
+        <div class="step">
+            <div class="step-num">1</div>
+            <h3 data-es="Publica tu trabajo" data-en="Post your job">Publica tu trabajo</h3>
+            <p data-es="Describe lo que necesitas, cuándo y dónde. Es gratis y toma menos de 2 minutos." data-en="Describe what you need, when and where. It's free and takes less than 2 minutes.">Describe lo que necesitas, cuándo y dónde. Es gratis y toma menos de 2 minutos.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">2</div>
+            <h3 data-es="Recibe propuestas" data-en="Receive proposals">Recibe propuestas</h3>
+            <p data-es="Contratistas licenciados de tu área envían propuestas. Compara precios, reseñas y licencias." data-en="Licensed contractors from your area send proposals. Compare prices, reviews and licenses.">Contratistas licenciados de tu área envían propuestas. Compara precios, reseñas y licencias.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">3</div>
+            <h3 data-es="Paga con seguridad" data-en="Pay safely">Paga con seguridad</h3>
+            <p data-es="Tu dinero queda en custodia hasta que el trabajo esté terminado y aprobado por ti." data-en="Your money stays in escrow until the work is done and approved by you.">Tu dinero queda en custodia hasta que el trabajo esté terminado y aprobado por ti.</p>
+        </div>
+    </div>
+</section>
+
+<!-- TRADES -->
+<section class="trades" id="servicios">
+    <div class="section-header">
+        <div class="section-tag" data-es="Todos los Oficios" data-en="All Trades">Todos los Oficios</div>
+        <h2 data-es="Servicios disponibles" data-en="Available services">Servicios disponibles</h2>
+        <p data-es="Desde reparaciones menores hasta construcción completa" data-en="From minor repairs to full construction">Desde reparaciones menores hasta construcción completa</p>
+    </div>
+    <div class="trades-grid">
+        <div class="trade-card">
+            <div class="trade-icon">🔧</div>
+            <h3 data-es="Plomería" data-en="Plumbing">Plomería</h3>
+            <p data-es="Tuberías, filtraciones, instalaciones" data-en="Pipes, leaks, installations">Tuberías, filtraciones, instalaciones</p>
+        </div>
+        <div class="trade-card">
+            <div class="trade-icon">⚡</div>
+            <h3 data-es="Electricidad" data-en="Electrical">Electricidad</h3>
+            <p data-es="Paneles, cableado, generadores" data-en="Panels, wiring, generators">Paneles, cableado, generadores</p>
+        </div>
+        <div class="trade-card">
+            <div class="trade-icon">❄️</div>
+            <h3 data-es="Aire Acondicionado" data-en="AC Repair">Aire Acondicionado</h3>
+            <p data-es="Instalación, mantenimiento, reparación" data-en="Installation, maintenance, repair">Instalación, mantenimiento, reparación</p>
+        </div>
+        <div class="trade-card">
+            <div class="trade-icon">🏗️</div>
+            <h3 data-es="Construcción General" data-en="General Construction">Construcción General</h3>
+            <p data-es="Remodelaciones, ampliaciones, obras" data-en="Renovations, extensions, works">Remodelaciones, ampliaciones, obras</p>
+        </div>
+        <div class="trade-card">
+            <div class="trade-icon">🎨</div>
+            <h3 data-es="Pintura" data-en="Painting">Pintura</h3>
+            <p data-es="Interior, exterior, texturizados" data-en="Interior, exterior, textures">Interior, exterior, texturizados</p>
+        </div>
+        <div class="trade-card">
+            <div class="trade-icon">🪟</div>
+            <h3 data-es="Carpintería" data-en="Carpentry">Carpintería</h3>
+            <p data-es="Puertas, ventanas, muebles" data-en="Doors, windows, furniture">Puertas, ventanas, muebles</p>
+        </div>
+        <div class="trade-card">
+            <div class="trade-icon">🏠</div>
+            <h3 data-es="Techos" data-en="Roofing">Techos</h3>
+            <p data-es="Impermeabilización, reparación, zinc" data-en="Waterproofing, repair, zinc">Impermeabilización, reparación, zinc</p>
+        </div>
+        <div class="trade-card">
+            <div class="trade-icon">🌿</div>
+            <h3 data-es="Paisajismo" data-en="Landscaping">Paisajismo</h3>
+            <p data-es="Jardines, piscinas, exteriores" data-en="Gardens, pools, outdoors">Jardines, piscinas, exteriores</p>
+        </div>
+    </div>
+</section>
+
+<!-- TRUST -->
+<section class="trust" id="seguridad">
+    <div class="trust-inner">
+        <div>
+            <h2 data-es="Tu seguridad es nuestra prioridad" data-en="Your safety is our priority">Tu seguridad es nuestra prioridad</h2>
+            <p data-es="Después del huracán María, la confianza en contratistas quedó dañada. Nosotros la reconstruimos." data-en="After Hurricane Maria, trust in contractors was damaged. We're rebuilding it.">Después del huracán María, la confianza en contratistas quedó dañada. Nosotros la reconstruimos.</p>
+            <div class="trust-items">
+                <div class="trust-item">
+                    <div class="trust-icon">🛡️</div>
+                    <div>
+                        <h4 data-es="Licencias verificadas" data-en="Verified licenses">Licencias verificadas</h4>
+                        <p data-es="Verificamos cada licencia ARPE y CIAPR antes de aprobar un contratista." data-en="We verify every ARPE and CIAPR license before approving a contractor.">Verificamos cada licencia ARPE y CIAPR antes de aprobar un contratista.</p>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">💰</div>
+                    <div>
+                        <h4 data-es="Pagos en custodia" data-en="Escrow payments">Pagos en custodia</h4>
+                        <p data-es="Tu dinero se libera solo cuando confirmas que el trabajo está completo." data-en="Your money is released only when you confirm the work is complete.">Tu dinero se libera solo cuando confirmas que el trabajo está completo.</p>
+                    </div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">⭐</div>
+                    <div>
+                        <h4 data-es="Reseñas verificadas" data-en="Verified reviews">Reseñas verificadas</h4>
+                        <p data-es="Solo clientes reales que completaron trabajos pueden dejar reseñas." data-en="Only real clients who completed jobs can leave reviews.">Solo clientes reales que completaron trabajos pueden dejar reseñas.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="trust-stats">
+            <div class="trust-stat">
+                <div class="num">$0</div>
+                <div class="lbl" data-es="Perdido en disputas" data-en="Lost in disputes">Perdido en disputas</div>
+            </div>
+            <div class="trust-stat">
+                <div class="num">98%</div>
+                <div class="lbl" data-es="Trabajos completados" data-en="Jobs completed">Trabajos completados</div>
+            </div>
+            <div class="trust-stat">
+                <div class="num">4.8★</div>
+                <div class="lbl" data-es="Calificación promedio" data-en="Average rating">Calificación promedio</div>
+            </div>
+            <div class="trust-stat">
+                <div class="num">24h</div>
+                <div class="lbl" data-es="Soporte disponible" data-en="Support available">Soporte disponible</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+    <h2 data-es="¿Listo para empezar?" data-en="Ready to get started?">¿Listo para empezar?</h2>
+    <p data-es="Únete a la plataforma que está cambiando la construcción en Puerto Rico." data-en="Join the platform that's changing construction in Puerto Rico.">Únete a la plataforma que está cambiando la construcción en Puerto Rico.</p>
+    <div class="cta-buttons">
+        <a href="#" class="btn btn-primary btn-large" data-es="Publicar mi Trabajo" data-en="Post my Job">Publicar mi Trabajo</a>
+        <a href="signup.html" class="btn btn-outline btn-large" data-es="Registrarme como Contratista" data-en="Register as Contractor">Registrarme como Contratista</a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-inner">
+        <div>
+            <div class="footer-logo">ContractorPR</div>
+            <p class="footer-desc" data-es="La plataforma de confianza para conectar propietarios y contratistas en Puerto Rico." data-en="The trusted platform connecting homeowners and contractors in Puerto Rico.">La plataforma de confianza para conectar propietarios y contratistas en Puerto Rico.</p>
+        </div>
+        <div>
+            <h4 data-es="Plataforma" data-en="Platform">Plataforma</h4>
+            <ul>
+                <li><a href="#" data-es="Cómo funciona" data-en="How it works">Cómo funciona</a></li>
+                <li><a href="#" data-es="Precios" data-en="Pricing">Precios</a></li>
+                <li><a href="signup.html" data-es="Para Contratistas" data-en="For Contractors">Para Contratistas</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 data-es="Soporte" data-en="Support">Soporte</h4>
+            <ul>
+                <li><a href="#" data-es="Centro de Ayuda" data-en="Help Center">Centro de Ayuda</a></li>
+                <li><a href="#" data-es="Disputas" data-en="Disputes">Disputas</a></li>
+                <li><a href="#" data-es="Contáctanos" data-en="Contact Us">Contáctanos</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 data-es="Legal" data-en="Legal">Legal</h4>
+            <ul>
+                <li><a href="#" data-es="Términos de Uso" data-en="Terms of Service">Términos de Uso</a></li>
+                <li><a href="#" data-es="Privacidad" data-en="Privacy">Privacidad</a></li>
+                <li><a href="#" data-es="Licencias" data-en="Licenses">Licencias</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <span>© 2026 ContractorPR. <span data-es="Todos los derechos reservados." data-en="All rights reserved.">Todos los derechos reservados.</span></span>
+        <span data-es="Hecho con orgullo en Puerto Rico 🇵🇷" data-en="Made with pride in Puerto Rico 🇵🇷">Hecho con orgullo en Puerto Rico 🇵🇷</span>
+    </div>
+</footer>
+
+<script>
+    let lang = 'es';
+    function toggleLang() {
+        lang = lang === 'es' ? 'en' : 'es';
+        document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
+        document.querySelectorAll('[data-es]').forEach(el => {
+            el.textContent = lang === 'es' ? el.dataset.es : el.dataset.en;
+        });
+    }
+    window.addEventListener('scroll', () => {
+        document.querySelector('.header').style.boxShadow = window.scrollY > 10 ? '0 4px 20px rgba(0,0,0,0.15)' : '0 1px 3px rgba(0,0,0,0.1)';
+    });
+</script>
+</body>
+</html>
