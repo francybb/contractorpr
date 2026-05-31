@@ -61,14 +61,6 @@ anthropic_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 @client.event
 async def on_ready():
     print(f"Support Agent online as {client.user}")
-    channel = client.get_channel(SUPPORT_CHANNEL_ID)
-    if channel:
-        await channel.send(
-            "**Support Agent online.**\n"
-            "Ready to help users and resolve disputes on ContractingPR.\n"
-            "Bring me a user issue, dispute, or onboarding question.\n"
-            "_Example: 'A homeowner says the contractor left the job unfinished'_"
-        )
 
 @client.event
 async def on_message(message):

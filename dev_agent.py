@@ -59,14 +59,6 @@ anthropic_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 @client.event
 async def on_ready():
     print(f"Dev Agent online as {client.user}")
-    channel = client.get_channel(DEV_CHANNEL_ID)
-    if channel:
-        await channel.send(
-            "**Dev Agent online.**\n"
-            "Ready to build ContractingPR.\n"
-            "Give me a feature to build, a bug to fix, or a technical question.\n"
-            "_Example: 'Build the contractor signup form in HTML'_"
-        )
 
 @client.event
 async def on_message(message):

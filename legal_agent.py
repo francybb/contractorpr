@@ -70,14 +70,6 @@ anthropic_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 @client.event
 async def on_ready():
     print(f"Legal Agent online as {client.user}")
-    channel = client.get_channel(LEGAL_CHANNEL_ID)
-    if channel:
-        await channel.send(
-            "**Legal Agent online.**\n"
-            "Ready to handle contracts and compliance for ContractingPR.\n"
-            "Give me a legal document to draft or a compliance question.\n"
-            "_Example: 'Draft the contractor Terms of Service in Spanish and English'_"
-        )
 
 @client.event
 async def on_message(message):

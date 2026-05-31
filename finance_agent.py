@@ -64,14 +64,6 @@ anthropic_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 @client.event
 async def on_ready():
     print(f"Finance Agent online as {client.user}")
-    channel = client.get_channel(FINANCE_CHANNEL_ID)
-    if channel:
-        await channel.send(
-            "**Finance Agent online.**\n"
-            "Ready to track revenue and manage payments for ContractingPR.\n"
-            "Give me a financial question, projection, or payment task.\n"
-            "_Example: 'If we do 50 jobs a month at $500 average, what do we earn?'_"
-        )
 
 @client.event
 async def on_message(message):

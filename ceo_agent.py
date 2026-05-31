@@ -48,14 +48,6 @@ anthropic_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 @client.event
 async def on_ready():
     print(f"CEO Agent online as {client.user}")
-    channel = client.get_channel(CEO_CHANNEL_ID)
-    if channel:
-        await channel.send(
-            "**CEO Agent online.**\n"
-            "ContractingPR HQ is open for business.\n"
-            "Send me a goal, a problem, or a task and I'll coordinate the team.\n"
-            "_Example: 'We need to onboard our first 10 contractors this week'_"
-        )
 
 @client.event
 async def on_message(message):

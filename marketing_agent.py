@@ -57,14 +57,6 @@ anthropic_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 @client.event
 async def on_ready():
     print(f"Marketing Agent online as {client.user}")
-    channel = client.get_channel(MARKETING_CHANNEL_ID)
-    if channel:
-        await channel.send(
-            "**Marketing Agent online.**\n"
-            "Ready to grow ContractingPR across Puerto Rico.\n"
-            "Give me a campaign, content request, or growth task.\n"
-            "_Example: 'Write a WhatsApp message to recruit contractors in San Juan'_"
-        )
 
 @client.event
 async def on_message(message):
