@@ -128,6 +128,16 @@ footer{border-top:1px solid var(--gray-2);background:white;padding:20px 24px;tex
 footer a{color:var(--blue);font-weight:500}
 
 @media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr}.job-row-header{flex-direction:column}}
+
+.confirm-modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;display:none;align-items:center;justify-content:center;padding:24px}
+.confirm-modal.show{display:flex}
+.confirm-box{background:white;border-radius:var(--radius-lg);padding:28px;max-width:400px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.2)}
+.confirm-box h3{font-size:18px;font-weight:800;margin-bottom:8px}
+.confirm-box p{font-size:14px;color:var(--gray-4);margin-bottom:24px;line-height:1.6}
+.confirm-actions{display:flex;gap:10px}
+.btn-confirm-yes{flex:1;padding:12px;background:var(--green);color:white;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background 0.2s}
+.btn-confirm-yes:hover{background:#059669}
+.btn-confirm-no{flex:1;padding:12px;background:var(--gray-1);color:var(--gray-4);border:1px solid var(--gray-2);border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer}
 </style>
 </head>
 <body>
@@ -385,19 +395,25 @@ async function openProposals(jobId, jobTitle) {
   }).join('');
 }
 
-async function acceptProposal(proposalId, jobId, e) {
+function acceptProposal(proposalId, jobId, e) {
   e.stopPropagation();
   e.preventDefault();
-  const confirmed = window.confirm('¿Aceptar esta propuesta? El contratista será notificado.');
-  if (!confirmed) return;
-  await dbPatch('proposals', proposalId, { status: 'accepted' });
-  await dbPatch('jobs', jobId, { status: 'accepted' });
-  await loadJobs();
-  // re-open panel after reload
-  setTimeout(() => {
-    const jobRow = document.querySelector('[onclick*="openProposals"]');
-    if (jobRow) jobRow.click();
-  }, 500);
+  const modal = document.getElementById('confirm-modal');
+  modal.classList.add('show');
+  document.getElementById('confirm-yes-btn').onclick = async () => {
+    modal.classList.remove('show');
+    await dbPatch('proposals', proposalId, { status: 'accepted' });
+    await dbPatch('jobs', jobId, { status: 'accepted' });
+    await loadJobs();
+    setTimeout(() => {
+      const jobRow = document.querySelector('[onclick*="openProposals"]');
+      if (jobRow) jobRow.click();
+    }, 400);
+  };
+}
+
+function closeConfirm() {
+  document.getElementById('confirm-modal').classList.remove('show');
 }
 
 async function toggleChat(proposalId, name, e) {
@@ -501,5 +517,17 @@ function toggleLang() {
   if (currentUser) loadJobs();
 }
 </script>
+
+<div class="confirm-modal" id="confirm-modal">
+  <div class="confirm-box">
+    <h3>✅ Aceptar propuesta</h3>
+    <p>¿Estás seguro de que quieres aceptar esta propuesta? El contratista será notificado para coordinar el trabajo.</p>
+    <div class="confirm-actions">
+      <button class="btn-confirm-no" onclick="closeConfirm()">Cancelar</button>
+      <button class="btn-confirm-yes" id="confirm-yes-btn">Sí, aceptar</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
