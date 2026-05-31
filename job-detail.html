@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trabajo | ContractingPR</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#0066CC;--blue-dark:#004C99;--blue-light:#E6F0FA;
+  --ink:#0F172A;--gray-1:#F8FAFC;--gray-2:#E2E8F0;
+  --gray-3:#94A3B8;--gray-4:#475569;--gray-5:#1E293B;
+  --green:#10B981;--gold:#F59E0B;--red:#DC2626;
+  --radius:12px;--radius-lg:20px;
+}
+body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--gray-1);line-height:1.6}
+a{text-decoration:none;color:inherit}
+.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-2)}
+.nav{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:800;color:var(--blue);display:flex;align-items:center;gap:10px}
+.logo-box{width:34px;height:34px;background:var(--blue);border-radius:8px;display:grid;place-items:center;color:white;font-weight:800;font-size:16px}
+.nav-right{display:flex;gap:10px;align-items:center}
+.btn-nav{background:var(--blue);color:white;padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;transition:all 0.2s}
+.btn-nav:hover{background:var(--blue-dark)}
+.btn-ghost{color:var(--gray-4);font-size:14px;font-weight:500;transition:color 0.2s}
+.btn-ghost:hover{color:var(--blue)}
+
+.main{max-width:1000px;margin:0 auto;padding:32px 24px 80px}
+.breadcrumb{font-size:13px;color:var(--gray-3);margin-bottom:20px}
+.breadcrumb a{color:var(--blue);font-weight:500}
+.breadcrumb span{margin:0 6px}
+
+.layout{display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:start}
+
+/* Job Card */
+.job-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:28px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.job-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:16px}
+.job-title{font-size:22px;font-weight:800;color:var(--ink);line-height:1.3}
+.status-badge{padding:5px 12px;border-radius:100px;font-size:12px;font-weight:600;white-space:nowrap}
+.status-open{background:rgba(16,185,129,0.1);color:var(--green)}
+.status-accepted{background:rgba(0,102,204,0.1);color:var(--blue)}
+.status-closed{background:var(--gray-2);color:var(--gray-4)}
+.job-meta{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.job-meta-item{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--gray-3);font-weight:500}
+.job-badge{background:var(--blue-light);color:var(--blue);padding:4px 10px;border-radius:100px;font-size:12px;font-weight:600}
+.job-budget{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);color:#059669;padding:4px 10px;border-radius:100px;font-size:12px;font-weight:600}
+.job-desc-label{font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--gray-3);margin-bottom:8px}
+.job-desc-text{font-size:15px;color:var(--gray-4);line-height:1.8;font-weight:300}
+
+/* Proposals list */
+.proposals-section{margin-top:24px}
+.section-title{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.section-count{background:var(--blue-light);color:var(--blue);padding:2px 8px;border-radius:100px;font-size:12px;font-weight:700}
+.proposal-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:20px;margin-bottom:12px;transition:box-shadow 0.2s}
+.proposal-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.08)}
+.proposal-card.selected{border-color:var(--green);background:#F0FDF4}
+.proposal-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.contractor-info{display:flex;align-items:center;gap:10px}
+.contractor-avatar{width:40px;height:40px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));border-radius:10px;display:grid;place-items:center;font-size:16px;color:white;font-weight:700}
+.contractor-name{font-size:15px;font-weight:700;color:var(--ink)}
+.contractor-trade{font-size:12px;color:var(--gray-3);margin-top:1px}
+.proposal-price{font-size:20px;font-weight:800;color:var(--blue)}
+.proposal-price small{font-size:12px;font-weight:400;color:var(--gray-3)}
+.proposal-msg{font-size:14px;color:var(--gray-4);line-height:1.7;margin-bottom:12px;font-weight:300}
+.proposal-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn-accept{background:var(--green);color:white;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all 0.2s}
+.btn-accept:hover{background:#059669;transform:translateY(-1px)}
+.btn-chat{background:var(--blue-light);color:var(--blue);padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all 0.2s}
+.btn-chat:hover{background:#BFDBFE}
+.accepted-badge{background:rgba(16,185,129,0.1);color:var(--green);padding:6px 12px;border-radius:8px;font-size:13px;font-weight:600}
+
+/* Sidebar — Submit Proposal */
+.sidebar-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.04);position:sticky;top:84px}
+.sidebar-title{font-size:16px;font-weight:700;margin-bottom:4px}
+.sidebar-sub{font-size:13px;color:var(--gray-3);margin-bottom:20px}
+.field{margin-bottom:16px}
+label{display:block;font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--gray-4);margin-bottom:7px}
+input,select,textarea{width:100%;background:var(--gray-1);border:1px solid var(--gray-2);border-radius:8px;padding:11px 14px;color:var(--ink);font-family:'Inter',sans-serif;font-size:14px;transition:border-color 0.2s,box-shadow 0.2s;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,102,204,0.1);background:white}
+textarea{resize:vertical;min-height:100px}
+input::placeholder,textarea::placeholder{color:var(--gray-3)}
+.price-input{position:relative}
+.price-prefix{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gray-3);font-weight:600;font-size:15px}
+.price-input input{padding-left:26px}
+.btn-submit{width:100%;padding:13px;background:var(--blue);color:white;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-submit:hover{background:var(--blue-dark);transform:translateY(-1px)}
+.btn-submit:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+.verify-section{margin-bottom:20px;padding:14px;background:var(--gray-1);border:1px solid var(--gray-2);border-radius:8px}
+.verify-section p{font-size:13px;color:var(--gray-4);margin-bottom:10px}
+.verify-row{display:flex;gap:8px}
+.verify-row input{flex:1}
+.btn-verify{padding:11px 14px;background:var(--blue);color:white;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background 0.2s}
+.btn-verify:hover{background:var(--blue-dark)}
+.verified-user{display:flex;align-items:center;gap:8px;padding:10px 12px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;margin-bottom:16px;font-size:13px;color:#166534;font-weight:500}
+.error-msg{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px;color:var(--red);font-size:13px;margin-bottom:12px;display:none}
+.error-msg.show{display:block}
+.success-msg{text-align:center;padding:16px 0}
+.success-msg.show{display:block}
+.success-icon{font-size:36px;margin-bottom:8px}
+.success-msg h4{font-size:16px;font-weight:700;margin-bottom:6px}
+.success-msg p{font-size:13px;color:var(--gray-3)}
+.platform-note{font-size:11px;color:var(--gray-3);text-align:center;margin-top:12px;line-height:1.5}
+.platform-note strong{color:var(--ink)}
+
+/* Chat panel */
+.chat-panel{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:0;margin-top:24px;overflow:hidden;display:none}
+.chat-header{padding:16px 20px;border-bottom:1px solid var(--gray-2);display:flex;justify-content:space-between;align-items:center}
+.chat-header h4{font-size:14px;font-weight:700}
+.chat-close{background:none;border:none;font-size:18px;cursor:pointer;color:var(--gray-3);padding:2px 6px}
+.chat-messages{padding:16px 20px;min-height:200px;max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.chat-msg{max-width:80%}
+.chat-msg.sent{align-self:flex-end}
+.chat-msg.received{align-self:flex-start}
+.chat-bubble{padding:10px 14px;border-radius:12px;font-size:14px;line-height:1.5}
+.chat-msg.sent .chat-bubble{background:var(--blue);color:white;border-radius:12px 12px 2px 12px}
+.chat-msg.received .chat-bubble{background:var(--gray-1);color:var(--ink);border-radius:12px 12px 12px 2px}
+.chat-time{font-size:11px;color:var(--gray-3);margin-top:3px;text-align:right}
+.chat-msg.received .chat-time{text-align:left}
+.chat-input-area{padding:12px 16px;border-top:1px solid var(--gray-2);display:flex;gap:8px}
+.chat-input-area input{flex:1;border-radius:20px;padding:10px 16px;font-size:14px}
+.btn-send{background:var(--blue);color:white;border:none;border-radius:20px;padding:10px 18px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:background 0.2s;white-space:nowrap}
+.btn-send:hover{background:var(--blue-dark)}
+
+.loading{text-align:center;padding:48px;color:var(--gray-3)}
+.loading-spinner{width:28px;height:28px;border:3px solid var(--gray-2);border-top-color:var(--blue);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-proposals{text-align:center;padding:32px;color:var(--gray-3);background:var(--gray-1);border-radius:var(--radius-lg);border:1px dashed var(--gray-2)}
+
+footer{border-top:1px solid var(--gray-2);background:white;padding:24px;text-align:center;font-size:13px;color:var(--gray-3);margin-top:40px}
+footer a{color:var(--blue);font-weight:500}
+
+@media(max-width:768px){.layout{grid-template-columns:1fr}.sidebar-card{position:static}}
+</style>
+</head>
+<body>
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
+    <div class="nav-right">
+      <a href="jobs.html" class="btn-ghost">← Ver todos los trabajos</a>
+      <a href="signup.html" class="btn-nav">Registrarse</a>
+    </div>
+  </nav>
+</div>
+
+<div class="main">
+  <div class="breadcrumb">
+    <a href="jobs.html">Trabajos disponibles</a>
+    <span>›</span>
+    <span id="breadcrumb-title">Cargando...</span>
+  </div>
+
+  <div id="page-loading" class="loading">
+    <div class="loading-spinner"></div>
+    Cargando trabajo...
+  </div>
+
+  <div id="page-content" style="display:none">
+    <div class="layout">
+      <!-- Left: Job + Proposals -->
+      <div>
+        <!-- Job Details -->
+        <div class="job-card" id="job-card"></div>
+
+        <!-- Proposals (homeowner view) -->
+        <div class="proposals-section" id="proposals-section" style="display:none">
+          <div class="section-title">
+            Propuestas recibidas
+            <span class="section-count" id="proposal-count">0</span>
+          </div>
+          <div id="proposals-list"></div>
+        </div>
+
+        <!-- Chat panel -->
+        <div class="chat-panel" id="chat-panel">
+          <div class="chat-header">
+            <h4 id="chat-title">Conversación</h4>
+            <button class="chat-close" onclick="closeChat()">✕</button>
+          </div>
+          <div class="chat-messages" id="chat-messages"></div>
+          <div class="chat-input-area">
+            <input type="text" id="chat-input" placeholder="Escribe un mensaje..." onkeydown="if(event.key==='Enter')sendMessage()">
+            <button class="btn-send" onclick="sendMessage()">Enviar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Submit Proposal (contractor) -->
+      <div>
+        <div class="sidebar-card" id="proposal-form-card">
+          <div class="sidebar-title">Enviar Propuesta</div>
+          <div class="sidebar-sub">Regístrate o verifica tu cuenta para responder</div>
+
+          <div id="error-msg" class="error-msg"></div>
+
+          <!-- Verify contractor -->
+          <div id="verify-section" class="verify-section">
+            <p>Ingresa tu correo registrado como <strong>contratista</strong>:</p>
+            <div class="verify-row">
+              <input type="email" id="contractor-email" placeholder="tu@correo.com">
+              <button class="btn-verify" onclick="verifyContractor()">Verificar</button>
+            </div>
+          </div>
+
+          <div id="verified-banner" class="verified-user" style="display:none">
+            ✅ <span id="verified-name">Verificado</span>
+          </div>
+
+          <!-- Proposal form -->
+          <div id="proposal-form" style="display:none">
+            <div id="proposal-success" style="display:none" class="success-msg">
+              <div class="success-icon">🎉</div>
+              <h4>¡Propuesta enviada!</h4>
+              <p>El propietario recibirá tu propuesta y podrá responderte aquí mismo.</p>
+            </div>
+            <form id="the-proposal-form" onsubmit="submitProposal(event)">
+              <div class="field">
+                <label>Tu mensaje</label>
+                <textarea name="message" placeholder="Preséntate, pregunta lo que necesites saber sobre el trabajo, explica tu experiencia con este tipo de proyecto..." required></textarea>
+              </div>
+              <div class="field">
+                <label>Precio estimado <span style="font-size:11px;color:var(--gray-3);text-transform:none;font-weight:400">(opcional — puedes enviar precio después)</span></label>
+                <div class="price-input">
+                  <span class="price-prefix">$</span>
+                  <input type="number" name="price" placeholder="0.00" min="0" step="0.01">
+                </div>
+              </div>
+              <button type="submit" class="btn-submit" id="btn-proposal">Enviar propuesta →</button>
+            </form>
+          </div>
+
+          <div class="platform-note">
+            🔒 <strong>Toda comunicación</strong> debe realizarse a través de ContractingPR.<br>
+            <a href="terms.html" style="color:var(--blue)">Ver Términos de Servicio</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 ContractingPR · <a href="jobs.html">Ver trabajos</a> · <a href="terms.html">Términos</a> · <a href="mailto:hola@contractingpr.com">hola@contractingpr.com</a></span>
+</footer>
+
+<script>
+const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
+
+let jobId = null;
+let contractorId = null;
+let contractorName = null;
+let homeownerId = null;
+let activeChatProposalId = null;
+let chatPollInterval = null;
+let isHomeowner = false;
+
+// Get job ID from URL
+const params = new URLSearchParams(window.location.search);
+jobId = params.get('id');
+
+if (!jobId) {
+  window.location.href = 'jobs.html';
+}
+
+async function db(path) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+  });
+  return res.json();
+}
+
+async function dbPost(table, data) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=representation' },
+    body: JSON.stringify(data)
+  });
+  return res.json();
+}
+
+async function dbPatch(table, id, data) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=minimal' },
+    body: JSON.stringify(data)
+  });
+  return res.ok;
+}
+
+function timeAgo(d) {
+  const diff = (Date.now() - new Date(d)) / 1000;
+  if (diff < 60) return 'ahora';
+  if (diff < 3600) return `hace ${Math.floor(diff/60)} min`;
+  if (diff < 86400) return `hace ${Math.floor(diff/3600)}h`;
+  return new Date(d).toLocaleDateString('es-PR');
+}
+
+async function loadJob() {
+  const jobs = await db(`jobs?id=eq.${jobId}&select=*`);
+  if (!jobs || jobs.length === 0) { window.location.href = 'jobs.html'; return; }
+  const job = jobs[0];
+  homeownerId = job.homeowner_id;
+
+  document.getElementById('breadcrumb-title').textContent = job.title;
+  document.title = `${job.title} | ContractingPR`;
+
+  const statusLabel = job.status === 'open' ? 'Abierto' : job.status === 'accepted' ? 'Aceptado' : 'Cerrado';
+  const statusClass = `status-${job.status}`;
+
+  document.getElementById('job-card').innerHTML = `
+    <div class="job-header">
+      <div class="job-title">${job.title}</div>
+      <div class="status-badge ${statusClass}">${statusLabel}</div>
+    </div>
+    <div class="job-meta">
+      <div class="job-meta-item">📍 ${job.city}</div>
+      <div class="job-meta-item">🕐 ${timeAgo(job.created_at)}</div>
+      <div class="job-badge">${job.trade_needed}</div>
+      ${job.budget ? `<div class="job-budget">💰 ${job.budget}</div>` : ''}
+    </div>
+    <div class="job-desc-label">Descripción del trabajo</div>
+    <div class="job-desc-text">${job.description}</div>
+  `;
+
+  document.getElementById('page-loading').style.display = 'none';
+  document.getElementById('page-content').style.display = 'block';
+
+  // Check if viewer is homeowner
+  const storedHomeowner = sessionStorage.getItem('homeowner_id');
+  if (storedHomeowner === homeownerId) {
+    isHomeowner = true;
+    document.getElementById('proposal-form-card').innerHTML = `
+      <div class="sidebar-title">👋 Tu trabajo</div>
+      <div class="sidebar-sub">Revisa las propuestas de los contratistas a la izquierda.</div>
+      <div style="margin-top:16px;padding:14px;background:var(--blue-light);border-radius:8px;font-size:13px;color:var(--blue-dark)">
+        💬 Usa el botón <strong>"Chatear"</strong> para hablar con un contratista y <strong>"Aceptar"</strong> cuando encuentres el indicado.
+      </div>`;
+    loadProposals();
+  }
+}
+
+async function loadProposals() {
+  document.getElementById('proposals-section').style.display = 'block';
+  const proposals = await db(`proposals?job_id=eq.${jobId}&order=created_at.asc&select=*`);
+  document.getElementById('proposal-count').textContent = proposals.length;
+
+  if (proposals.length === 0) {
+    document.getElementById('proposals-list').innerHTML = `<div class="empty-proposals">⏳ Aún no hay propuestas. Los contratistas verán tu trabajo pronto.</div>`;
+    return;
+  }
+
+  // Get contractor names
+  const contractorIds = [...new Set(proposals.map(p => p.contractor_id))];
+  const contractors = await db(`contractors?id=in.(${contractorIds.join(',')})&select=id,name,trade`);
+  const cMap = {};
+  contractors.forEach(c => cMap[c.id] = c);
+
+  document.getElementById('proposals-list').innerHTML = proposals.map(p => {
+    const c = cMap[p.contractor_id] || {};
+    const initial = (c.name || 'C')[0].toUpperCase();
+    const isAccepted = p.status === 'accepted';
+    return `
+    <div class="proposal-card ${isAccepted ? 'selected' : ''}" id="proposal-${p.id}">
+      <div class="proposal-header">
+        <div class="contractor-info">
+          <div class="contractor-avatar">${initial}</div>
+          <div>
+            <div class="contractor-name">${c.name || 'Contratista'}</div>
+            <div class="contractor-trade">${c.trade || ''}</div>
+          </div>
+        </div>
+        ${p.price ? `<div class="proposal-price">$${parseFloat(p.price).toLocaleString()}<small> estimado</small></div>` : '<div style="font-size:13px;color:var(--gray-3)">Precio por discutir</div>'}
+      </div>
+      <div class="proposal-msg">${p.message}</div>
+      <div class="proposal-actions">
+        ${isAccepted
+          ? `<div class="accepted-badge">✅ Propuesta aceptada</div>`
+          : `<button class="btn-accept" onclick="acceptProposal('${p.id}','${p.contractor_id}')">✅ Aceptar propuesta</button>`
+        }
+        <button class="btn-chat" onclick="openChat('${p.id}','${c.name || 'Contratista'}')">💬 Chatear</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function verifyContractor() {
+  const email = document.getElementById('contractor-email').value.trim();
+  const errorEl = document.getElementById('error-msg');
+  errorEl.classList.remove('show');
+  if (!email) return;
+
+  const data = await db(`contractors?email=eq.${encodeURIComponent(email)}&select=id,name,trade`);
+  if (!data || data.length === 0) {
+    errorEl.textContent = 'No encontramos esa cuenta de contratista. ¿Ya te registraste?';
+    errorEl.classList.add('show');
+    return;
+  }
+
+  contractorId = data[0].id;
+  contractorName = data[0].name;
+  sessionStorage.setItem('contractor_id', contractorId);
+  sessionStorage.setItem('contractor_name', contractorName);
+
+  document.getElementById('verify-section').style.display = 'none';
+  document.getElementById('verified-banner').style.display = 'flex';
+  document.getElementById('verified-name').textContent = `Verificado como ${contractorName}`;
+  document.getElementById('proposal-form').style.display = 'block';
+}
+
+async function submitProposal(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-proposal');
+  const errorEl = document.getElementById('error-msg');
+  errorEl.classList.remove('show');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+
+  // Check if already submitted
+  const existing = await db(`proposals?job_id=eq.${jobId}&contractor_id=eq.${contractorId}&select=id`);
+  if (existing && existing.length > 0) {
+    errorEl.textContent = 'Ya enviaste una propuesta para este trabajo.';
+    errorEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Enviar propuesta →';
+    return;
+  }
+
+  const form = e.target;
+  const price = form.price.value ? parseFloat(form.price.value) : null;
+
+  const result = await dbPost('proposals', {
+    job_id: jobId,
+    contractor_id: contractorId,
+    message: form.message.value,
+    price: price
+  });
+
+  if (result && result[0]) {
+    form.style.display = 'none';
+    document.getElementById('proposal-success').style.display = 'block';
+  } else {
+    errorEl.textContent = 'Error al enviar. Intenta de nuevo.';
+    errorEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Enviar propuesta →';
+  }
+}
+
+async function acceptProposal(proposalId, cId) {
+  if (!confirm('¿Aceptar esta propuesta? El contratista será notificado y podrán coordinar el trabajo.')) return;
+  await dbPatch('proposals', proposalId, { status: 'accepted' });
+  await dbPatch('jobs', jobId, { status: 'accepted' });
+  loadProposals();
+}
+
+function openChat(proposalId, name) {
+  activeChatProposalId = proposalId;
+  document.getElementById('chat-title').textContent = `Chat con ${name}`;
+  document.getElementById('chat-panel').style.display = 'block';
+  document.getElementById('chat-panel').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  loadMessages();
+  if (chatPollInterval) clearInterval(chatPollInterval);
+  chatPollInterval = setInterval(loadMessages, 4000);
+}
+
+function closeChat() {
+  document.getElementById('chat-panel').style.display = 'none';
+  if (chatPollInterval) clearInterval(chatPollInterval);
+}
+
+async function loadMessages() {
+  const msgs = await db(`messages?proposal_id=eq.${activeChatProposalId}&order=created_at.asc&select=*`);
+  const container = document.getElementById('chat-messages');
+  const myId = isHomeowner ? homeownerId : contractorId;
+
+  if (!msgs || msgs.length === 0) {
+    container.innerHTML = `<div style="text-align:center;color:var(--gray-3);font-size:13px;padding:16px">No hay mensajes aún. ¡Empieza la conversación!</div>`;
+    return;
+  }
+
+  container.innerHTML = msgs.map(m => {
+    const isMine = m.sender_id === myId;
+    return `<div class="chat-msg ${isMine ? 'sent' : 'received'}">
+      <div class="chat-bubble">${m.content}</div>
+      <div class="chat-time">${timeAgo(m.created_at)}</div>
+    </div>`;
+  }).join('');
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendMessage() {
+  const input = document.getElementById('chat-input');
+  const content = input.value.trim();
+  if (!content || !activeChatProposalId) return;
+
+  const senderId = isHomeowner ? homeownerId : contractorId;
+  const senderType = isHomeowner ? 'homeowner' : 'contractor';
+
+  input.value = '';
+  await dbPost('messages', {
+    proposal_id: activeChatProposalId,
+    sender_type: senderType,
+    sender_id: senderId,
+    content: content
+  });
+  loadMessages();
+}
+
+// Check session storage for returning users
+const storedContractor = sessionStorage.getItem('contractor_id');
+if (storedContractor) {
+  contractorId = storedContractor;
+  contractorName = sessionStorage.getItem('contractor_name');
+  document.getElementById('verify-section').style.display = 'none';
+  document.getElementById('verified-banner').style.display = 'flex';
+  document.getElementById('verified-name').textContent = `Verificado como ${contractorName}`;
+  document.getElementById('proposal-form').style.display = 'block';
+}
+
+// Also check homeowner session
+const storedHomeownerCheck = sessionStorage.getItem('homeowner_id');
+if (storedHomeownerCheck) {
+  sessionStorage.setItem('homeowner_id', storedHomeownerCheck);
+}
+
+loadJob();
+</script>
+</body>
+</html>

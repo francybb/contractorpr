@@ -73,22 +73,21 @@ footer{border-top:1px solid var(--gray-2);background:white;padding:24px;text-ali
 footer a{color:var(--blue);font-weight:500}
 #job-form{display:none}
 @media(max-width:480px){.form-row{grid-template-columns:1fr}.card{padding:24px 20px}.success-btns{flex-direction:column}}
-.lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:Inter,sans-serif;color:var(--gray-4);transition:all 0.2s}.lang-btn:hover{border-color:var(--blue);color:var(--blue)}
 </style>
 </head>
 <body>
 <div class="nav-wrap">
   <nav class="nav">
     <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
-    <div style="display:flex;align-items:center;gap:10px"><button class="lang-btn" onclick="toggleLang()">English</button><a href="index.html" class="nav-back" data-es="← Volver al inicio" data-en="← Back to home">← Volver al inicio</a></div>
+    <a href="index.html" class="nav-back">← Volver al inicio</a>
   </nav>
 </div>
 
 <div class="hero-strip">
   <div class="hero-strip-inner">
-    <div class="hero-tag"><span class="tag-dot"></span> <span data-es="100% gratis" data-en="100% free">100% gratis</span></div>
-    <h1 data-es="Publica tu <em>Trabajo</em>" data-en="Post your <em>Job</em>">Publica tu <em>Trabajo</em></h1>
-    <p data-es="Recibe propuestas de contratistas verificados en Puerto Rico" data-en="Receive proposals from verified contractors in Puerto Rico">Recibe propuestas de contratistas verificados en Puerto Rico</p>
+    <div class="hero-tag"><span class="tag-dot"></span> 100% gratis</div>
+    <h1>Publica tu <em>Trabajo</em></h1>
+    <p>Recibe propuestas de contratistas verificados en Puerto Rico</p>
   </div>
 </div>
 
@@ -252,6 +251,7 @@ async function submitJob(e) {
   });
 
   if (res.ok) {
+    sessionStorage.setItem('homeowner_id', homeownerId);
     form.style.display = 'none';
     document.getElementById('success-msg').classList.add('show');
   } else {
@@ -261,18 +261,6 @@ async function submitJob(e) {
     btn.disabled = false;
     btn.textContent = 'Publicar trabajo →';
   }
-}
-
-let lang='es';
-function toggleLang(){
-  lang=lang==='es'?'en':'es';
-  document.querySelector('.lang-btn').textContent=lang==='es'?'English':'Español';
-  document.querySelectorAll('[data-es]').forEach(el=>{
-    const val=lang==='es'?el.dataset.es:el.dataset.en;
-    if(!val)return;
-    if(el.tagName==='H1'||el.dataset.es.includes('<em>')){el.innerHTML=val}
-    else{el.textContent=val}
-  });
 }
 </script>
 </body>

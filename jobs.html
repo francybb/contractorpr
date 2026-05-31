@@ -67,7 +67,6 @@ select.filter:focus{border-color:var(--blue)}
 footer{border-top:1px solid var(--gray-2);background:white;padding:24px;text-align:center;font-size:13px;color:var(--gray-3)}
 footer a{color:var(--blue);font-weight:500}
 @media(max-width:600px){.job-top{flex-direction:column}.cta-bar{flex-direction:column;text-align:center}}
-.lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:Inter,sans-serif;color:var(--gray-4);transition:all 0.2s}.lang-btn:hover{border-color:var(--blue);color:var(--blue)}
 </style>
 </head>
 <body>
@@ -75,17 +74,16 @@ footer a{color:var(--blue);font-weight:500}
   <nav class="nav">
     <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
     <div class="nav-right">
-      <button class="lang-btn" onclick="toggleLang()">English</button>
-      <a href="index.html" class="btn-nav-ghost" data-es="Inicio" data-en="Home">Inicio</a>
-      <a href="post-job.html" class="btn-nav" data-es="+ Publicar trabajo" data-en="+ Post a Job">+ Publicar trabajo</a>
+      <a href="index.html" class="btn-nav-ghost">Inicio</a>
+      <a href="post-job.html" class="btn-nav">+ Publicar trabajo</a>
     </div>
   </nav>
 </div>
 
 <div class="hero-strip">
   <div class="hero-strip-inner">
-    <h1 data-es="Trabajos <em>Disponibles</em>" data-en="Available <em>Jobs</em>">Trabajos <em>Disponibles</em></h1>
-    <p data-es="Encuentra proyectos de propietarios verificados en Puerto Rico" data-en="Find projects from verified homeowners in Puerto Rico">Encuentra proyectos de propietarios verificados en Puerto Rico</p>
+    <h1>Trabajos <em>Disponibles</em></h1>
+    <p>Encuentra proyectos de propietarios verificados en Puerto Rico</p>
   </div>
 </div>
 
@@ -93,15 +91,15 @@ footer a{color:var(--blue);font-weight:500}
   <!-- CTA for homeowners -->
   <div class="cta-bar">
     <div class="cta-bar-text">
-      <h3 data-es="¿Eres propietario? Publica tu trabajo gratis" data-en="Are you a homeowner? Post your job free">¿Eres propietario? Publica tu trabajo gratis</h3>
-      <p data-es="Recibe propuestas de contratistas verificados en horas" data-en="Receive proposals from verified contractors within hours">Recibe propuestas de contratistas verificados en horas</p>
+      <h3>¿Eres propietario? Publica tu trabajo gratis</h3>
+      <p>Recibe propuestas de contratistas verificados en horas</p>
     </div>
     <a href="post-job.html" class="cta-bar-btn">Publicar ahora →</a>
   </div>
 
   <!-- Filters -->
   <div class="filters">
-    <span class="filter-label" data-es="Filtrar:" data-en="Filter:">Filtrar:</span>
+    <span class="filter-label">Filtrar:</span>
     <select class="filter" id="filter-trade" onchange="filterJobs()">
       <option value="">Todos los oficios</option>
       <option>Carpintería</option>
@@ -173,7 +171,7 @@ function renderJobs(jobs) {
 
   countEl.textContent = `${jobs.length} trabajo${jobs.length !== 1 ? 's' : ''} disponible${jobs.length !== 1 ? 's' : ''}`;
   container.innerHTML = `<div class="jobs-grid">${jobs.map(job => `
-    <div class="job-card">
+    <div class="job-card" onclick="window.location.href='job-detail.html?id='+job.id" style="cursor:pointer">
       <div class="job-top">
         <div class="job-title">${job.title}</div>
         <div class="job-badge">${job.trade_needed}</div>
@@ -209,18 +207,6 @@ async function loadJobs() {
 }
 
 loadJobs();
-
-let lang='es';
-function toggleLang(){
-  lang=lang==='es'?'en':'es';
-  document.querySelector('.lang-btn').textContent=lang==='es'?'English':'Español';
-  document.querySelectorAll('[data-es]').forEach(el=>{
-    const val=lang==='es'?el.dataset.es:el.dataset.en;
-    if(!val)return;
-    if(el.tagName==='H1'||el.dataset.es.includes('<em>')){el.innerHTML=val}
-    else{el.textContent=val}
-  });
-}
 </script>
 </body>
 </html>
