@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pago Seguro | ContractingPR</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://js.stripe.com/v3/"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#0066CC;--blue-dark:#004C99;--blue-light:#E6F0FA;
+  --ink:#0F172A;--gray-1:#F8FAFC;--gray-2:#E2E8F0;
+  --gray-3:#94A3B8;--gray-4:#475569;--gray-5:#1E293B;
+  --green:#10B981;--red:#DC2626;--radius:12px;--radius-lg:20px;
+}
+body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--gray-1);line-height:1.6}
+a{text-decoration:none;color:inherit}
+.nav-wrap{background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-2)}
+.nav{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:800;color:var(--blue);display:flex;align-items:center;gap:10px}
+.logo-box{width:34px;height:34px;background:var(--blue);border-radius:8px;display:grid;place-items:center;color:white;font-weight:800;font-size:16px}
+.lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;color:var(--gray-4);transition:all 0.2s}
+.lang-btn:hover{border-color:var(--blue);color:var(--blue)}
+
+.main{max-width:800px;margin:0 auto;padding:36px 24px 80px}
+
+.layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start}
+
+/* Left — payment form */
+.pay-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:28px;box-shadow:0 2px 8px rgba(0,0,0,0.04)}
+.pay-title{font-size:20px;font-weight:800;margin-bottom:4px}
+.pay-sub{font-size:14px;color:var(--gray-3);margin-bottom:24px}
+
+.escrow-notice{background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:var(--radius);padding:14px 16px;margin-bottom:24px;display:flex;gap:12px;align-items:flex-start}
+.escrow-notice-icon{font-size:20px;flex-shrink:0}
+.escrow-notice p{font-size:13px;color:var(--gray-4);line-height:1.6}
+.escrow-notice strong{color:var(--ink)}
+
+.field{margin-bottom:16px}
+label{display:block;font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--gray-4);margin-bottom:7px}
+input{width:100%;background:var(--gray-1);border:1px solid var(--gray-2);border-radius:8px;padding:12px 14px;color:var(--ink);font-family:'Inter',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s}
+input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,102,204,0.1);background:white}
+input::placeholder{color:var(--gray-3)}
+
+#card-element{background:var(--gray-1);border:1px solid var(--gray-2);border-radius:8px;padding:13px 14px;transition:border-color 0.2s}
+#card-element.focused{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,102,204,0.1)}
+
+.error-msg{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 14px;color:var(--red);font-size:13px;margin-bottom:14px;display:none}
+.error-msg.show{display:block}
+
+.btn-pay{width:100%;padding:15px;background:var(--blue);color:white;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all 0.2s;margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-pay:hover{background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,102,204,0.3)}
+.btn-pay:disabled{opacity:0.6;cursor:not-allowed;transform:none;box-shadow:none}
+
+.secure-note{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px;font-size:12px;color:var(--gray-3)}
+
+/* Right — order summary */
+.summary-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.04);position:sticky;top:24px}
+.summary-title{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--gray-3);margin-bottom:16px}
+.summary-job{font-size:16px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.summary-trade{font-size:13px;color:var(--gray-3);margin-bottom:16px}
+.summary-contractor{display:flex;align-items:center;gap:10px;padding:12px;background:var(--gray-1);border-radius:var(--radius);margin-bottom:16px}
+.contractor-avatar{width:36px;height:36px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));border-radius:8px;display:grid;place-items:center;color:white;font-weight:700;font-size:14px}
+.contractor-name{font-size:14px;font-weight:600;color:var(--ink)}
+.contractor-trade{font-size:12px;color:var(--gray-3)}
+.summary-divider{height:1px;background:var(--gray-2);margin:16px 0}
+.summary-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:14px}
+.summary-row span:first-child{color:var(--gray-4)}
+.summary-row span:last-child{font-weight:600;color:var(--ink)}
+.summary-total{display:flex;justify-content:space-between;align-items:center;font-size:16px;font-weight:800;color:var(--ink);margin-top:4px}
+.summary-total-label{color:var(--gray-4);font-weight:500}
+.escrow-tag{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:var(--radius);padding:10px 12px;margin-top:14px;font-size:12px;color:#059669;display:flex;align-items:center;gap:6px}
+
+/* Success */
+.success-screen{display:none;text-align:center;padding:48px 24px}
+.success-screen.show{display:block}
+.success-circle{width:72px;height:72px;background:rgba(16,185,129,0.1);border:3px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:28px}
+.success-screen h2{font-size:26px;font-weight:800;margin-bottom:8px}
+.success-screen p{font-size:15px;color:var(--gray-3);margin-bottom:24px;line-height:1.7}
+.btn-dashboard{display:inline-block;background:var(--blue);color:white;padding:13px 28px;border-radius:10px;font-size:15px;font-weight:600;transition:background 0.2s}
+.btn-dashboard:hover{background:var(--blue-dark)}
+
+/* Loading */
+.loading-screen{text-align:center;padding:48px 24px}
+.spinner{width:32px;height:32px;border:3px solid var(--gray-2);border-top-color:var(--blue);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+footer{border-top:1px solid var(--gray-2);background:white;padding:20px 24px;text-align:center;font-size:13px;color:var(--gray-3)}
+footer a{color:var(--blue);font-weight:500}
+
+@media(max-width:680px){.layout{grid-template-columns:1fr}.summary-card{position:static}}
+</style>
+</head>
+<body>
+
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
+    <button class="lang-btn" onclick="toggleLang()">English</button>
+  </nav>
+</div>
+
+<div class="main">
+
+  <!-- Loading -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="spinner"></div>
+    <p style="color:var(--gray-3)">Cargando información del pago...</p>
+  </div>
+
+  <!-- Success -->
+  <div id="success-screen" class="success-screen">
+    <div class="success-circle">✓</div>
+    <h2 data-es="¡Pago en custodia!" data-en="Payment in escrow!">¡Pago en custodia!</h2>
+    <p data-es="Tu pago está protegido en custodia. El contratista ha sido notificado y coordinará contigo para comenzar el trabajo. El pago se liberará cuando confirmes que el trabajo está completo." data-en="Your payment is safely held in escrow. The contractor has been notified and will coordinate with you to start the work. Payment will be released when you confirm the job is complete.">Tu pago está protegido en custodia. El contratista ha sido notificado y coordinará contigo para comenzar el trabajo. El pago se liberará cuando confirmes que el trabajo está completo.</p>
+    <a href="dashboard-homeowner.html" class="btn-dashboard" data-es="Ir a mi panel →" data-en="Go to my dashboard →">Ir a mi panel →</a>
+  </div>
+
+  <!-- Payment layout -->
+  <div id="payment-layout" class="layout" style="display:none">
+
+    <!-- Left: Form -->
+    <div>
+      <div class="pay-card">
+        <div class="pay-title" data-es="Pago seguro en custodia" data-en="Secure escrow payment">Pago seguro en custodia</div>
+        <div class="pay-sub" data-es="Tu dinero está protegido hasta que confirmes el trabajo" data-en="Your money is protected until you confirm the job">Tu dinero está protegido hasta que confirmes el trabajo</div>
+
+        <div class="escrow-notice">
+          <div class="escrow-notice-icon">🔒</div>
+          <p><strong data-es="Cómo funciona el escrow:" data-en="How escrow works:">Cómo funciona el escrow:</strong> <span data-es="Tu pago va a ContractingPR, no al contratista. Solo se libera cuando tú confirmas que el trabajo está completo y a tu satisfacción." data-en="Your payment goes to ContractingPR, not the contractor. It's only released when you confirm the work is complete and satisfactory.">Tu pago va a ContractingPR, no al contratista. Solo se libera cuando tú confirmas que el trabajo está completo y a tu satisfacción.</span></p>
+        </div>
+
+        <div id="error-msg" class="error-msg"></div>
+
+        <div class="field">
+          <label data-es="Nombre en la tarjeta" data-en="Name on card">Nombre en la tarjeta</label>
+          <input type="text" id="cardholder-name" placeholder="María González" required>
+        </div>
+
+        <div class="field">
+          <label data-es="Información de tarjeta" data-en="Card information">Información de tarjeta</label>
+          <div id="card-element"></div>
+        </div>
+
+        <button class="btn-pay" id="pay-btn" onclick="handlePayment()">
+          🔒 <span id="pay-btn-text">Pagar en custodia</span>
+        </button>
+
+        <div class="secure-note">
+          🔐 <span data-es="Pago procesado por Stripe · 256-bit SSL" data-en="Payment processed by Stripe · 256-bit SSL">Pago procesado por Stripe · 256-bit SSL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Summary -->
+    <div>
+      <div class="summary-card">
+        <div class="summary-title" data-es="Resumen del pago" data-en="Payment summary">Resumen del pago</div>
+        <div class="summary-job" id="summary-job">—</div>
+        <div class="summary-trade" id="summary-trade">—</div>
+
+        <div class="summary-contractor" id="summary-contractor">
+          <div class="contractor-avatar" id="contractor-initial">?</div>
+          <div>
+            <div class="contractor-name" id="contractor-name">Cargando...</div>
+            <div class="contractor-trade" id="contractor-trade-label">—</div>
+          </div>
+        </div>
+
+        <div class="summary-divider"></div>
+
+        <div class="summary-row">
+          <span data-es="Precio del trabajo" data-en="Job price">Precio del trabajo</span>
+          <span id="price-job">—</span>
+        </div>
+        <div class="summary-row">
+          <span data-es="Tarifa de plataforma (10%)" data-en="Platform fee (10%)">Tarifa de plataforma (10%)</span>
+          <span id="price-fee">—</span>
+        </div>
+        <div class="summary-divider"></div>
+        <div class="summary-total">
+          <span class="summary-total-label" data-es="Total a pagar" data-en="Total to pay">Total a pagar</span>
+          <span id="price-total">—</span>
+        </div>
+
+        <div class="escrow-tag">
+          ✅ <span data-es="Fondos protegidos en custodia hasta aprobación" data-en="Funds protected in escrow until approval">Fondos protegidos en custodia hasta aprobación</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 ContractingPR · <a href="terms.html">Términos</a> · <a href="mailto:hola@contractingpr.com">hola@contractingpr.com</a></span>
+</footer>
+
+<script>
+const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
+const STRIPE_PK = 'pk_test_51TdICjPcAMi1LQkwVPRB0vtfEMirTikwU02MRdAOqwhxO4XR7CUwjgj39nRanvaTs5le8dZDYavY7hBbNjVWL4HL002DURHaq7';
+
+const stripe = Stripe(STRIPE_PK);
+const elements = stripe.elements();
+const cardElement = elements.create('card', {
+  style: {
+    base: {
+      fontFamily: 'Inter, sans-serif',
+      fontSize: '15px',
+      color: '#0F172A',
+      '::placeholder': { color: '#94A3B8' }
+    }
+  }
+});
+cardElement.mount('#card-element');
+cardElement.on('focus', () => document.getElementById('card-element').classList.add('focused'));
+cardElement.on('blur', () => document.getElementById('card-element').classList.remove('focused'));
+
+const params = new URLSearchParams(window.location.search);
+const proposalId = params.get('proposal');
+const jobId = params.get('job');
+
+let proposalData = null;
+let jobData = null;
+let contractorData = null;
+let totalAmount = 0;
+
+async function db(path) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+  });
+  return res.json();
+}
+
+async function dbPatch(table, id, data) {
+  await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=minimal' },
+    body: JSON.stringify(data)
+  });
+}
+
+async function loadPaymentInfo() {
+  if (!proposalId || !jobId) {
+    window.location.href = 'dashboard-homeowner.html';
+    return;
+  }
+
+  const [proposals, jobs] = await Promise.all([
+    db(`proposals?id=eq.${proposalId}&select=*`),
+    db(`jobs?id=eq.${jobId}&select=*`)
+  ]);
+
+  if (!proposals.length || !jobs.length) {
+    window.location.href = 'dashboard-homeowner.html';
+    return;
+  }
+
+  proposalData = proposals[0];
+  jobData = jobs[0];
+
+  const contractors = await db(`contractors?id=eq.${proposalData.contractor_id}&select=*`);
+  contractorData = contractors[0] || {};
+
+  // Calculate amounts
+  const jobPrice = proposalData.price || 0;
+  const fee = Math.round(jobPrice * 0.10 * 100) / 100;
+  totalAmount = Math.round((jobPrice + fee) * 100) / 100;
+
+  // Update summary
+  document.getElementById('summary-job').textContent = jobData.title;
+  document.getElementById('summary-trade').textContent = jobData.trade_needed + ' · ' + jobData.city;
+  document.getElementById('contractor-name').textContent = contractorData.name || 'Contratista';
+  document.getElementById('contractor-trade-label').textContent = contractorData.trade || '';
+  document.getElementById('contractor-initial').textContent = (contractorData.name || 'C')[0].toUpperCase();
+
+  if (jobPrice > 0) {
+    document.getElementById('price-job').textContent = '$' + jobPrice.toLocaleString();
+    document.getElementById('price-fee').textContent = '$' + fee.toLocaleString();
+    document.getElementById('price-total').textContent = '$' + totalAmount.toLocaleString();
+    document.getElementById('pay-btn-text').textContent = `Pagar $${totalAmount.toLocaleString()} en custodia`;
+  } else {
+    document.getElementById('price-job').textContent = 'Por acordar';
+    document.getElementById('price-fee').textContent = '—';
+    document.getElementById('price-total').textContent = 'Por acordar';
+    document.getElementById('pay-btn-text').textContent = 'El precio está pendiente de confirmar';
+    document.getElementById('pay-btn').disabled = true;
+  }
+
+  document.getElementById('loading-screen').style.display = 'none';
+  document.getElementById('payment-layout').style.display = 'grid';
+}
+
+async function handlePayment() {
+  const btn = document.getElementById('pay-btn');
+  const errorEl = document.getElementById('error-msg');
+  const name = document.getElementById('cardholder-name').value.trim();
+  errorEl.classList.remove('show');
+
+  if (!name) {
+    errorEl.textContent = lang === 'es' ? 'Ingresa el nombre en la tarjeta.' : 'Enter the name on the card.';
+    errorEl.classList.add('show');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner" style="width:18px;height:18px;border-width:2px;display:inline-block;margin-right:8px"></span>' + (lang === 'es' ? 'Procesando...' : 'Processing...');
+
+  // Create payment method
+  const { paymentMethod, error } = await stripe.createPaymentMethod({
+    type: 'card',
+    card: cardElement,
+    billing_details: { name }
+  });
+
+  if (error) {
+    errorEl.textContent = error.message;
+    errorEl.classList.add('show');
+    btn.disabled = false;
+    btn.innerHTML = '🔒 <span id="pay-btn-text">Pagar $' + totalAmount.toLocaleString() + ' en custodia</span>';
+    return;
+  }
+
+  // In test mode — simulate successful escrow payment
+  // In production, this would call your backend to create a PaymentIntent
+  // For now, record the payment in Supabase and update job status
+  try {
+    await dbPatch('proposals', proposalId, { status: 'accepted' });
+    await dbPatch('jobs', jobId, { status: 'in_progress' });
+
+    // Show success
+    document.getElementById('payment-layout').style.display = 'none';
+    document.getElementById('success-screen').classList.add('show');
+  } catch(err) {
+    errorEl.textContent = lang === 'es' ? 'Error al procesar. Intenta de nuevo.' : 'Processing error. Please try again.';
+    errorEl.classList.add('show');
+    btn.disabled = false;
+    btn.innerHTML = '🔒 <span>Pagar $' + totalAmount.toLocaleString() + ' en custodia</span>';
+  }
+}
+
+loadPaymentInfo();
+
+let lang = 'es';
+function toggleLang() {
+  lang = lang === 'es' ? 'en' : 'es';
+  document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
+  document.querySelectorAll('[data-es]').forEach(el => {
+    const val = lang === 'es' ? el.dataset.es : el.dataset.en;
+    if (!val) return;
+    if (el.tagName === 'H2') el.innerHTML = val;
+    else el.textContent = val;
+  });
+}
+</script>
+</body>
+</html>

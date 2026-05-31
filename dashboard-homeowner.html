@@ -361,7 +361,8 @@ async function openProposals(jobId, jobTitle) {
       <div class="prop-msg">${p.message}</div>
       <div class="prop-actions">
         ${isAccepted
-          ? `<div class="accepted-tag">✅ Propuesta aceptada</div>`
+          ? `<div class="accepted-tag">✅ Propuesta aceptada</div>
+             <button class="btn-chat" onclick="window.location.href='payment.html?proposal=${p.id}&job=${jobId}'" style="background:var(--green);color:white">💳 Pagar en custodia</button>`
           : `<button class="btn-accept" onclick="acceptProposal('${p.id}','${jobId}',event)">✅ Aceptar propuesta</button>`
         }
         <button class="btn-chat" onclick="toggleChat('${p.id}','${c.name || 'Contratista'}',event)">💬 Mensaje</button>
