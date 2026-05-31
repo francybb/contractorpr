@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel Contratista | ContractingPR</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#0066CC;--blue-dark:#004C99;--blue-light:#E6F0FA;
+  --ink:#0F172A;--gray-1:#F8FAFC;--gray-2:#E2E8F0;
+  --gray-3:#94A3B8;--gray-4:#475569;--gray-5:#1E293B;
+  --green:#10B981;--gold:#F59E0B;--red:#DC2626;
+  --radius:12px;--radius-lg:20px;
+}
+body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--gray-1);line-height:1.6}
+a{text-decoration:none;color:inherit}
+.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-2)}
+.nav{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:800;color:var(--blue);display:flex;align-items:center;gap:10px}
+.logo-box{width:34px;height:34px;background:var(--blue);border-radius:8px;display:grid;place-items:center;color:white;font-weight:800;font-size:16px}
+.nav-right{display:flex;gap:10px;align-items:center}
+.lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;color:var(--gray-4);transition:all 0.2s}
+.lang-btn:hover{border-color:var(--blue);color:var(--blue)}
+.btn-logout{background:none;border:1px solid var(--gray-2);padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;color:var(--gray-4);transition:all 0.2s}
+.btn-logout:hover{border-color:var(--red);color:var(--red)}
+.login-wrap{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:24px}
+.login-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:40px;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,0.06)}
+.login-icon{width:56px;height:56px;background:var(--blue-light);border-radius:14px;display:grid;place-items:center;font-size:24px;margin-bottom:20px}
+.login-card h2{font-size:24px;font-weight:800;margin-bottom:6px}
+.login-card p{font-size:14px;color:var(--gray-3);margin-bottom:28px}
+.field{margin-bottom:16px}
+label{display:block;font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--gray-4);margin-bottom:7px}
+input{width:100%;background:var(--gray-1);border:1px solid var(--gray-2);border-radius:8px;padding:12px 14px;color:var(--ink);font-family:'Inter',sans-serif;font-size:15px;transition:border-color 0.2s,box-shadow 0.2s;outline:none}
+input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,102,204,0.1);background:white}
+input::placeholder{color:var(--gray-3)}
+.btn-primary{width:100%;padding:13px;background:var(--blue);color:white;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+.error-msg{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px;color:var(--red);font-size:13px;margin-bottom:14px;display:none}
+.error-msg.show{display:block}
+.login-footer{text-align:center;margin-top:20px;font-size:13px;color:var(--gray-3)}
+.login-footer a{color:var(--blue);font-weight:600}
+.dashboard{max-width:1000px;margin:0 auto;padding:32px 24px 80px;display:none}
+.dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.dash-greeting h1{font-size:24px;font-weight:800;margin-bottom:4px}
+.dash-greeting p{font-size:14px;color:var(--gray-3)}
+.btn-browse{background:var(--blue);color:white;padding:11px 20px;border-radius:8px;font-size:14px;font-weight:600;transition:all 0.2s;border:none;cursor:pointer;font-family:'Inter',sans-serif}
+.btn-browse:hover{background:var(--blue-dark)}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+.stat-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:20px;text-align:center}
+.stat-val{font-size:32px;font-weight:800;color:var(--blue);line-height:1}
+.stat-lbl{font-size:13px;color:var(--gray-3);margin-top:4px}
+.profile-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:24px;margin-bottom:24px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.profile-avatar{width:56px;height:56px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));border-radius:14px;display:grid;place-items:center;font-size:22px;color:white;font-weight:800;flex-shrink:0}
+.profile-info h3{font-size:18px;font-weight:800;margin-bottom:2px}
+.profile-info p{font-size:14px;color:var(--gray-3)}
+.profile-badges{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.badge{padding:4px 10px;border-radius:100px;font-size:12px;font-weight:600}
+.badge-trade{background:var(--blue-light);color:var(--blue)}
+.badge-city{background:var(--gray-1);color:var(--gray-4);border:1px solid var(--gray-2)}
+.badge-pending{background:rgba(245,158,11,0.1);color:var(--gold)}
+.badge-active{background:rgba(16,185,129,0.1);color:var(--green)}
+.section-title{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.count-badge{background:var(--blue-light);color:var(--blue);padding:2px 8px;border-radius:100px;font-size:12px;font-weight:700}
+.proposal-row{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:20px;margin-bottom:12px;transition:box-shadow 0.2s}
+.proposal-row:hover{box-shadow:0 4px 16px rgba(0,0,0,0.08)}
+.prop-row-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px}
+.prop-job-title{font-size:15px;font-weight:700;color:var(--ink)}
+.prop-status{padding:4px 10px;border-radius:100px;font-size:12px;font-weight:600}
+.prop-pending{background:rgba(245,158,11,0.1);color:var(--gold)}
+.prop-accepted{background:rgba(16,185,129,0.1);color:var(--green)}
+.prop-declined{background:var(--gray-2);color:var(--gray-4)}
+.prop-meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.prop-meta span{font-size:13px;color:var(--gray-3)}
+.prop-price-sent{font-size:13px;font-weight:600;color:var(--blue)}
+.prop-msg-preview{font-size:13px;color:var(--gray-4);line-height:1.6;font-style:italic;margin-bottom:10px}
+.btn-view-job{background:var(--blue-light);color:var(--blue);padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all 0.2s}
+.btn-view-job:hover{background:#BFDBFE}
+.btn-chat-prop{background:var(--blue);color:white;padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all 0.2s;margin-left:8px}
+.btn-chat-prop:hover{background:var(--blue-dark)}
+.chat-wrap{border:1px solid var(--gray-2);border-radius:var(--radius);overflow:hidden;margin-top:12px;display:none}
+.chat-head{padding:12px 16px;background:var(--gray-1);border-bottom:1px solid var(--gray-2);display:flex;justify-content:space-between;align-items:center}
+.chat-head span{font-size:13px;font-weight:700}
+.chat-msgs{padding:12px 16px;min-height:150px;max-height:250px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:75%}
+.msg.sent{align-self:flex-end}
+.msg.received{align-self:flex-start}
+.bubble{padding:9px 13px;border-radius:12px;font-size:14px;line-height:1.5}
+.msg.sent .bubble{background:var(--blue);color:white;border-radius:12px 12px 2px 12px}
+.msg.received .bubble{background:var(--gray-1);color:var(--ink);border-radius:12px 12px 12px 2px}
+.msg-time{font-size:11px;color:var(--gray-3);margin-top:2px}
+.msg.sent .msg-time{text-align:right}
+.chat-input{padding:10px 12px;border-top:1px solid var(--gray-2);display:flex;gap:8px}
+.chat-input input{flex:1;border-radius:20px;padding:9px 14px;font-size:14px;border:1px solid var(--gray-2);outline:none;font-family:'Inter',sans-serif}
+.chat-input input:focus{border-color:var(--blue)}
+.btn-send{background:var(--blue);color:white;border:none;border-radius:20px;padding:9px 16px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+.empty-state{text-align:center;padding:48px 24px;background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg)}
+.empty-icon{font-size:40px;margin-bottom:12px}
+.empty-state h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.empty-state p{font-size:14px;color:var(--gray-3);margin-bottom:20px}
+.loading{text-align:center;padding:40px;color:var(--gray-3)}
+.spinner{width:24px;height:24px;border:3px solid var(--gray-2);border-top-color:var(--blue);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+footer{border-top:1px solid var(--gray-2);background:white;padding:20px 24px;text-align:center;font-size:13px;color:var(--gray-3)}
+footer a{color:var(--blue);font-weight:500}
+@media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr}.profile-card{flex-direction:column}}
+</style>
+</head>
+<body>
+
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
+    <div class="nav-right">
+      <button class="lang-btn" onclick="toggleLang()">English</button>
+      <button class="btn-logout" id="logout-btn" onclick="logout()" style="display:none">Cerrar sesión</button>
+    </div>
+  </nav>
+</div>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-screen">
+  <div class="login-card">
+    <div class="login-icon">🔨</div>
+    <h2>Panel Contratista</h2>
+    <p>Ingresa tu correo para ver tus propuestas y trabajos activos</p>
+    <div id="login-error" class="error-msg"></div>
+    <div class="field">
+      <label>Correo electrónico</label>
+      <input type="email" id="login-email" placeholder="tu@correo.com" onkeydown="if(event.key==='Enter')login()">
+    </div>
+    <button class="btn-primary" onclick="login()" id="login-btn">Entrar →</button>
+    <div class="login-footer">
+      ¿No tienes cuenta? <a href="signup.html">Regístrate como contratista</a><br>
+      ¿Eres propietario? <a href="dashboard-homeowner.html">Panel de propietario →</a>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <div class="dash-header">
+    <div class="dash-greeting">
+      <h1 id="greeting">Bienvenido</h1>
+      <p id="greeting-sub">Gestiona tus propuestas y trabajos</p>
+    </div>
+    <button class="btn-browse" onclick="window.location.href='jobs.html'">🔍 Ver trabajos disponibles</button>
+  </div>
+
+  <!-- Profile -->
+  <div class="profile-card" id="profile-card"></div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-val" id="stat-sent">0</div><div class="stat-lbl">Propuestas enviadas</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-accepted">0</div><div class="stat-lbl">Trabajos aceptados</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-pending">0</div><div class="stat-lbl">En espera de respuesta</div></div>
+  </div>
+
+  <!-- Proposals -->
+  <div class="section-title">Mis propuestas <span class="count-badge" id="props-count">0</span></div>
+  <div id="proposals-list">
+    <div class="loading"><div class="spinner"></div>Cargando...</div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 ContractingPR · <a href="jobs.html">Ver trabajos</a> · <a href="terms.html">Términos</a> · <a href="mailto:hola@contractingpr.com">hola@contractingpr.com</a></span>
+</footer>
+
+<script>
+const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
+let currentUser = null;
+let chatInterval = null;
+
+async function db(path) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+  });
+  return res.json();
+}
+
+async function dbPost(table, data) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=representation' },
+    body: JSON.stringify(data)
+  });
+  return res.json();
+}
+
+function timeAgo(d) {
+  const diff = (Date.now() - new Date(d + (d.includes('Z') ? '' : 'Z'))) / 1000;
+  if (diff < 60) return 'ahora';
+  if (diff < 3600) return `hace ${Math.floor(diff/60)} min`;
+  if (diff < 86400) return `hace ${Math.floor(diff/3600)}h`;
+  return new Date(d).toLocaleDateString('es-PR');
+}
+
+async function login() {
+  const email = document.getElementById('login-email').value.trim();
+  const btn = document.getElementById('login-btn');
+  const errorEl = document.getElementById('login-error');
+  errorEl.classList.remove('show');
+  if (!email) return;
+  btn.disabled = true; btn.textContent = 'Verificando...';
+
+  const data = await db(`contractors?email=eq.${encodeURIComponent(email)}&select=*`);
+  if (!data || data.length === 0) {
+    errorEl.textContent = 'No encontramos esa cuenta de contratista. ¿Ya te registraste?';
+    errorEl.classList.add('show');
+    btn.disabled = false; btn.textContent = 'Entrar →';
+    return;
+  }
+  currentUser = data[0];
+  sessionStorage.setItem('contractor_id', currentUser.id);
+  sessionStorage.setItem('contractor_name', currentUser.name);
+  sessionStorage.setItem('contractor_data', JSON.stringify(currentUser));
+  showDashboard();
+}
+
+function logout() {
+  sessionStorage.removeItem('contractor_id');
+  sessionStorage.removeItem('contractor_name');
+  sessionStorage.removeItem('contractor_data');
+  currentUser = null;
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('logout-btn').style.display = 'none';
+}
+
+async function showDashboard() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('logout-btn').style.display = 'block';
+  document.getElementById('greeting').textContent = `Hola, ${currentUser.name.split(' ')[0]} 👋`;
+  document.getElementById('greeting-sub').textContent = `${currentUser.trade} · ${currentUser.email}`;
+
+  const statusText = currentUser.status === 'active' ? 'Activo' : 'Pendiente de aprobación';
+  const statusBadge = currentUser.status === 'active' ? 'badge-active' : 'badge-pending';
+  document.getElementById('profile-card').innerHTML = `
+    <div class="profile-avatar">${currentUser.name[0].toUpperCase()}</div>
+    <div class="profile-info">
+      <h3>${currentUser.name}</h3>
+      <p>${currentUser.email} · ${currentUser.phone || 'Sin teléfono'}</p>
+      <div class="profile-badges">
+        <span class="badge badge-trade">${currentUser.trade}</span>
+        ${currentUser.city ? `<span class="badge badge-city">📍 ${currentUser.city}</span>` : ''}
+        <span class="badge ${statusBadge}">${statusText}</span>
+        ${currentUser.license_number ? `<span class="badge badge-city">🪪 CIAPR ${currentUser.license_number}</span>` : ''}
+      </div>
+    </div>`;
+
+  await loadProposals();
+}
+
+async function loadProposals() {
+  const proposals = await db(`proposals?contractor_id=eq.${currentUser.id}&order=created_at.desc&select=*`);
+
+  const accepted = proposals.filter(p => p.status === 'accepted').length;
+  const pending = proposals.filter(p => p.status === 'pending').length;
+  document.getElementById('stat-sent').textContent = proposals.length;
+  document.getElementById('stat-accepted').textContent = accepted;
+  document.getElementById('stat-pending').textContent = pending;
+  document.getElementById('props-count').textContent = proposals.length;
+
+  if (proposals.length === 0) {
+    document.getElementById('proposals-list').innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <h3>Aún no has enviado propuestas</h3>
+        <p>Explora los trabajos disponibles y envía tu primera propuesta.</p>
+        <button class="btn-browse" onclick="window.location.href='jobs.html'">Ver trabajos →</button>
+      </div>`;
+    return;
+  }
+
+  const jobIds = [...new Set(proposals.map(p => p.job_id))];
+  const jobs = await db(`jobs?id=in.(${jobIds.join(',')})&select=id,title,city,trade_needed,status`);
+  const jobMap = {};
+  jobs.forEach(j => jobMap[j.id] = j);
+
+  const statusLabel = { pending: 'En espera', accepted: 'Aceptada', declined: 'Rechazada' };
+  const statusClass = { pending: 'prop-pending', accepted: 'prop-accepted', declined: 'prop-declined' };
+
+  document.getElementById('proposals-list').innerHTML = proposals.map(p => {
+    const job = jobMap[p.job_id] || {};
+    return `
+    <div class="proposal-row">
+      <div class="prop-row-header">
+        <div class="prop-job-title">${job.title || 'Trabajo'}</div>
+        <div class="prop-status ${statusClass[p.status] || 'prop-pending'}">${statusLabel[p.status] || 'En espera'}</div>
+      </div>
+      <div class="prop-meta">
+        <span>📍 ${job.city || ''}</span>
+        <span>🔧 ${job.trade_needed || ''}</span>
+        <span>🕐 ${timeAgo(p.created_at)}</span>
+        ${p.price ? `<span class="prop-price-sent">💰 Tu precio: $${parseFloat(p.price).toLocaleString()}</span>` : ''}
+      </div>
+      <div class="prop-msg-preview">"${p.message.length > 120 ? p.message.substring(0,120)+'...' : p.message}"</div>
+      <div>
+        <button class="btn-view-job" onclick="window.location.href='job-detail.html?id=${p.job_id}'">Ver trabajo →</button>
+        <button class="btn-chat-prop" onclick="toggleChat('${p.id}',event)">💬 Chat con propietario</button>
+      </div>
+      <div class="chat-wrap" id="chat-${p.id}">
+        <div class="chat-head">
+          <span>Chat sobre: ${job.title || 'Trabajo'}</span>
+          <button style="background:none;border:none;cursor:pointer;color:var(--gray-3);font-size:18px" onclick="closeChat('${p.id}',event)">✕</button>
+        </div>
+        <div class="chat-msgs" id="msgs-${p.id}"></div>
+        <div class="chat-input">
+          <input type="text" id="input-${p.id}" placeholder="Escribe un mensaje..." onkeydown="if(event.key==='Enter')sendMsg('${p.id}')">
+          <button class="btn-send" onclick="sendMsg('${p.id}')">Enviar</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function toggleChat(proposalId, e) {
+  e.stopPropagation();
+  const chatEl = document.getElementById(`chat-${proposalId}`);
+  const isOpen = chatEl.style.display === 'block';
+  document.querySelectorAll('.chat-wrap').forEach(c => c.style.display = 'none');
+  if (chatInterval) clearInterval(chatInterval);
+  if (!isOpen) {
+    chatEl.style.display = 'block';
+    await loadMsgs(proposalId);
+    chatInterval = setInterval(() => loadMsgs(proposalId), 4000);
+  }
+}
+
+function closeChat(proposalId, e) {
+  e.stopPropagation();
+  document.getElementById(`chat-${proposalId}`).style.display = 'none';
+  if (chatInterval) clearInterval(chatInterval);
+}
+
+async function loadMsgs(proposalId) {
+  const msgs = await db(`messages?proposal_id=eq.${proposalId}&order=created_at.asc&select=*`);
+  const container = document.getElementById(`msgs-${proposalId}`);
+  if (!container) return;
+  if (!msgs.length) {
+    container.innerHTML = '<div style="text-align:center;color:var(--gray-3);font-size:13px;padding:12px">Empieza la conversación</div>';
+    return;
+  }
+  container.innerHTML = msgs.map(m => {
+    const isMine = m.sender_id === currentUser.id;
+    return `<div class="msg ${isMine ? 'sent' : 'received'}">
+      <div class="bubble">${m.content}</div>
+      <div class="msg-time">${timeAgo(m.created_at)}</div>
+    </div>`;
+  }).join('');
+  container.scrollTop = container.scrollHeight;
+}
+
+async function sendMsg(proposalId) {
+  const input = document.getElementById(`input-${proposalId}`);
+  const content = input.value.trim();
+  if (!content) return;
+  input.value = '';
+  await dbPost('messages', {
+    proposal_id: proposalId,
+    sender_type: 'contractor',
+    sender_id: currentUser.id,
+    content
+  });
+  loadMsgs(proposalId);
+}
+
+const stored = sessionStorage.getItem('contractor_data');
+if (stored) { currentUser = JSON.parse(stored); showDashboard(); }
+
+let lang = 'es';
+function toggleLang() {
+  lang = lang === 'es' ? 'en' : 'es';
+  document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
+  document.querySelector('.btn-logout').textContent = lang === 'es' ? 'Cerrar sesión' : 'Log out';
+}
+</script>
+</body>
+</html>
