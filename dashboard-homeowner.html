@@ -220,6 +220,8 @@ footer a{color:var(--blue);font-weight:500}
 const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
 let currentUser = null;
+let currentOpenJobId = null;
+let currentOpenJobTitle = null;
 let activeChatProposalId = null;
 let chatInterval = null;
 
@@ -348,6 +350,8 @@ async function loadJobs() {
 }
 
 async function openProposals(jobId, jobTitle) {
+  currentOpenJobId = jobId;
+  currentOpenJobTitle = jobTitle;
   document.getElementById('panel-job-title').textContent = jobTitle;
   document.getElementById('proposal-panel').style.display = 'block';
   document.getElementById('proposals-list').innerHTML = '<div class="loading"><div class="spinner"></div></div>';
@@ -414,8 +418,7 @@ function acceptProposal(proposalId, jobId, e) {
     await dbPatch('jobs', jobId, { status: 'accepted' });
     await loadJobs();
     setTimeout(() => {
-      const jobRow = document.querySelector('[onclick*="openProposals"]');
-      if (jobRow) jobRow.click();
+      if (currentOpenJobId) openProposals(currentOpenJobId, currentOpenJobTitle);
     }, 400);
   };
 }
