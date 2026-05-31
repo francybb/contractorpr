@@ -146,7 +146,7 @@ const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
 let allJobs = [];
 
 function timeAgo(dateStr) {
-  const diff = (Date.now() - new Date(dateStr)) / 1000;
+  const diff = (Date.now() - new Date(dateStr + (dateStr.includes('Z') ? '' : 'Z'))) / 1000;
   if (diff < 3600) return `hace ${Math.floor(diff/60)} min`;
   if (diff < 86400) return `hace ${Math.floor(diff/3600)} horas`;
   if (diff < 604800) return `hace ${Math.floor(diff/86400)} días`;
@@ -171,7 +171,7 @@ function renderJobs(jobs) {
 
   countEl.textContent = `${jobs.length} trabajo${jobs.length !== 1 ? 's' : ''} disponible${jobs.length !== 1 ? 's' : ''}`;
   container.innerHTML = `<div class="jobs-grid">${jobs.map(job => `
-    <div class="job-card" onclick="window.location.href='job-detail.html?id='+job.id" style="cursor:pointer">
+    <div class="job-card" onclick="window.location.href='job-detail.html?id=${job.id}'" style="cursor:pointer">
       <div class="job-top">
         <div class="job-title">${job.title}</div>
         <div class="job-badge">${job.trade_needed}</div>
