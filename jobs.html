@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trabajos Disponibles | ContractingPR</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#0066CC;--blue-dark:#004C99;--blue-light:#E6F0FA;
+  --ink:#0F172A;--paper:#FFFFFF;--gray-1:#F8FAFC;--gray-2:#E2E8F0;
+  --gray-3:#94A3B8;--gray-4:#475569;--gray-5:#1E293B;
+  --gold:#F59E0B;--green:#10B981;--radius:12px;--radius-lg:20px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;color:var(--ink);line-height:1.6;overflow-x:hidden;background:var(--gray-1)}
+a{text-decoration:none;color:inherit}
+.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-2)}
+.nav{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:800;color:var(--blue);display:flex;align-items:center;gap:10px}
+.logo-box{width:34px;height:34px;background:var(--blue);border-radius:8px;display:grid;place-items:center;color:white;font-weight:800;font-size:16px}
+.nav-right{display:flex;gap:10px;align-items:center}
+.btn-nav{background:var(--blue);color:white;padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;transition:all 0.2s}
+.btn-nav:hover{background:var(--blue-dark)}
+.btn-nav-ghost{color:var(--gray-4);font-size:14px;font-weight:500;transition:color 0.2s}
+.btn-nav-ghost:hover{color:var(--blue)}
+.hero-strip{background:linear-gradient(135deg,#0a1628 0%,#0d2040 60%,#0a1628 100%);color:white;padding:48px 24px 40px;position:relative;overflow:hidden;text-align:center}
+.hero-strip::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:64px 64px}
+.hero-strip::after{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:500px;height:300px;background:radial-gradient(circle,rgba(0,102,204,0.3) 0%,transparent 65%)}
+.hero-strip-inner{position:relative;z-index:2}
+.hero-strip h1{font-size:clamp(24px,4vw,36px);font-weight:800;margin-bottom:8px;letter-spacing:-0.02em}
+.hero-strip h1 em{font-style:italic;color:#60A5FA}
+.hero-strip p{font-size:15px;color:rgba(255,255,255,0.55);font-weight:300}
+.main{max-width:900px;margin:0 auto;padding:32px 24px 80px}
+.filters{background:white;border:1px solid var(--gray-2);border-radius:var(--radius);padding:16px 20px;margin-bottom:24px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;box-shadow:0 1px 3px rgba(0,0,0,0.05)}
+.filter-label{font-size:13px;font-weight:600;color:var(--gray-4);white-space:nowrap}
+select.filter{background:var(--gray-1);border:1px solid var(--gray-2);border-radius:8px;padding:8px 32px 8px 12px;color:var(--ink);font-family:'Inter',sans-serif;font-size:14px;outline:none;cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' fill='%2394A3B8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;transition:border-color 0.2s}
+select.filter:focus{border-color:var(--blue)}
+.jobs-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.jobs-count{font-size:14px;color:var(--gray-3);font-weight:500}
+.jobs-grid{display:flex;flex-direction:column;gap:14px}
+.job-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.04);transition:box-shadow 0.2s,transform 0.2s;cursor:pointer}
+.job-card:hover{box-shadow:0 8px 24px rgba(0,0,0,0.1);transform:translateY(-2px)}
+.job-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.job-title{font-size:17px;font-weight:700;color:var(--ink);line-height:1.3}
+.job-badge{background:var(--blue-light);color:var(--blue);padding:4px 10px;border-radius:100px;font-size:12px;font-weight:600;white-space:nowrap}
+.job-desc{font-size:14px;color:var(--gray-4);line-height:1.6;margin-bottom:14px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.job-meta{display:flex;gap:16px;flex-wrap:wrap}
+.job-meta-item{display:flex;align-items:center;gap:5px;font-size:13px;color:var(--gray-3);font-weight:500}
+.job-meta-item span:first-child{font-size:14px}
+.job-budget{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);color:#059669;padding:3px 10px;border-radius:100px;font-size:12px;font-weight:600}
+.loading{text-align:center;padding:60px 24px;color:var(--gray-3)}
+.loading-spinner{width:32px;height:32px;border:3px solid var(--gray-2);border-top-color:var(--blue);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty-state{text-align:center;padding:60px 24px;background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg)}
+.empty-icon{font-size:48px;margin-bottom:16px}
+.empty-state h3{font-size:20px;font-weight:700;margin-bottom:8px}
+.empty-state p{color:var(--gray-3);font-size:15px;margin-bottom:20px}
+.btn-post{display:inline-block;background:var(--blue);color:white;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;transition:background 0.2s}
+.btn-post:hover{background:var(--blue-dark)}
+.cta-bar{background:var(--blue);border-radius:var(--radius-lg);padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:24px;flex-wrap:wrap}
+.cta-bar-text h3{font-size:17px;font-weight:700;color:white;margin-bottom:4px}
+.cta-bar-text p{font-size:14px;color:rgba(255,255,255,0.7)}
+.cta-bar-btn{background:white;color:var(--blue);padding:10px 20px;border-radius:8px;font-size:14px;font-weight:700;white-space:nowrap;transition:all 0.2s}
+.cta-bar-btn:hover{background:var(--blue-light)}
+footer{border-top:1px solid var(--gray-2);background:white;padding:24px;text-align:center;font-size:13px;color:var(--gray-3)}
+footer a{color:var(--blue);font-weight:500}
+@media(max-width:600px){.job-top{flex-direction:column}.cta-bar{flex-direction:column;text-align:center}}
+</style>
+</head>
+<body>
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
+    <div class="nav-right">
+      <a href="index.html" class="btn-nav-ghost">Inicio</a>
+      <a href="post-job.html" class="btn-nav">+ Publicar trabajo</a>
+    </div>
+  </nav>
+</div>
+
+<div class="hero-strip">
+  <div class="hero-strip-inner">
+    <h1>Trabajos <em>Disponibles</em></h1>
+    <p>Encuentra proyectos de propietarios verificados en Puerto Rico</p>
+  </div>
+</div>
+
+<div class="main">
+  <!-- CTA for homeowners -->
+  <div class="cta-bar">
+    <div class="cta-bar-text">
+      <h3>¿Eres propietario? Publica tu trabajo gratis</h3>
+      <p>Recibe propuestas de contratistas verificados en horas</p>
+    </div>
+    <a href="post-job.html" class="cta-bar-btn">Publicar ahora →</a>
+  </div>
+
+  <!-- Filters -->
+  <div class="filters">
+    <span class="filter-label">Filtrar:</span>
+    <select class="filter" id="filter-trade" onchange="filterJobs()">
+      <option value="">Todos los oficios</option>
+      <option>Carpintería</option>
+      <option>Plomería</option>
+      <option>Electricidad</option>
+      <option>Pintura</option>
+      <option>Techado / Roofing</option>
+      <option>A/C & Refrigeración</option>
+      <option>Albañilería</option>
+      <option>Pisos / Flooring</option>
+      <option>Remodelación General</option>
+      <option>Otro</option>
+    </select>
+    <select class="filter" id="filter-budget" onchange="filterJobs()">
+      <option value="">Cualquier presupuesto</option>
+      <option>Menos de $500</option>
+      <option>$500 - $1,000</option>
+      <option>$1,000 - $3,000</option>
+      <option>$3,000 - $10,000</option>
+      <option>Más de $10,000</option>
+    </select>
+  </div>
+
+  <div class="jobs-header">
+    <div class="jobs-count" id="jobs-count">Cargando trabajos...</div>
+  </div>
+
+  <div id="jobs-container">
+    <div class="loading">
+      <div class="loading-spinner"></div>
+      Cargando trabajos disponibles...
+    </div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 ContractingPR · <a href="index.html">Inicio</a> · <a href="signup.html">Regístrate</a> · <a href="mailto:hola@contractingpr.com">hola@contractingpr.com</a></span><br>
+  <span style="margin-top:4px;display:block">Hecho con orgullo en Puerto Rico 🇵🇷</span>
+</footer>
+
+<script>
+const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
+let allJobs = [];
+
+function timeAgo(dateStr) {
+  const diff = (Date.now() - new Date(dateStr)) / 1000;
+  if (diff < 3600) return `hace ${Math.floor(diff/60)} min`;
+  if (diff < 86400) return `hace ${Math.floor(diff/3600)} horas`;
+  if (diff < 604800) return `hace ${Math.floor(diff/86400)} días`;
+  return new Date(dateStr).toLocaleDateString('es-PR');
+}
+
+function renderJobs(jobs) {
+  const container = document.getElementById('jobs-container');
+  const countEl = document.getElementById('jobs-count');
+
+  if (jobs.length === 0) {
+    countEl.textContent = '0 trabajos encontrados';
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🔍</div>
+        <h3>No hay trabajos disponibles</h3>
+        <p>Sé el primero en publicar un trabajo en ContractingPR.</p>
+        <a href="post-job.html" class="btn-post">Publicar trabajo →</a>
+      </div>`;
+    return;
+  }
+
+  countEl.textContent = `${jobs.length} trabajo${jobs.length !== 1 ? 's' : ''} disponible${jobs.length !== 1 ? 's' : ''}`;
+  container.innerHTML = `<div class="jobs-grid">${jobs.map(job => `
+    <div class="job-card">
+      <div class="job-top">
+        <div class="job-title">${job.title}</div>
+        <div class="job-badge">${job.trade_needed}</div>
+      </div>
+      <div class="job-desc">${job.description}</div>
+      <div class="job-meta">
+        <div class="job-meta-item"><span>📍</span>${job.city}</div>
+        <div class="job-meta-item"><span>🕐</span>${timeAgo(job.created_at)}</div>
+        ${job.budget ? `<div class="job-budget">💰 ${job.budget}</div>` : ''}
+      </div>
+    </div>`).join('')}</div>`;
+}
+
+function filterJobs() {
+  const trade = document.getElementById('filter-trade').value;
+  const budget = document.getElementById('filter-budget').value;
+  let filtered = allJobs;
+  if (trade) filtered = filtered.filter(j => j.trade_needed === trade);
+  if (budget) filtered = filtered.filter(j => j.budget === budget);
+  renderJobs(filtered);
+}
+
+async function loadJobs() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs?status=eq.open&order=created_at.desc&select=*`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    allJobs = await res.json();
+    renderJobs(allJobs);
+  } catch(err) {
+    document.getElementById('jobs-container').innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Error al cargar</h3><p>Intenta recargar la página.</p></div>`;
+  }
+}
+
+loadJobs();
+</script>
+</body>
+</html>

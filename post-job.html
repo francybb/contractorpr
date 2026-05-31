@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Publicar Trabajo | ContractingPR</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#0066CC;--blue-dark:#004C99;--blue-light:#E6F0FA;
+  --ink:#0F172A;--paper:#FFFFFF;--gray-1:#F8FAFC;--gray-2:#E2E8F0;
+  --gray-3:#94A3B8;--gray-4:#475569;--gray-5:#1E293B;
+  --gold:#F59E0B;--green:#10B981;--radius:12px;--radius-lg:20px;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;color:var(--ink);line-height:1.6;overflow-x:hidden;background:var(--gray-1)}
+a{text-decoration:none;color:inherit}
+.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-2)}
+.nav{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:800;color:var(--blue);display:flex;align-items:center;gap:10px}
+.logo-box{width:34px;height:34px;background:var(--blue);border-radius:8px;display:grid;place-items:center;color:white;font-weight:800;font-size:16px}
+.nav-back{font-size:14px;color:var(--gray-4);font-weight:500;transition:color 0.2s}
+.nav-back:hover{color:var(--blue)}
+.hero-strip{background:linear-gradient(135deg,#0a1628 0%,#0d2040 60%,#0a1628 100%);color:white;padding:56px 24px 48px;position:relative;overflow:hidden;text-align:center}
+.hero-strip::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:64px 64px}
+.hero-strip::after{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:500px;height:300px;background:radial-gradient(circle,rgba(0,102,204,0.3) 0%,transparent 65%)}
+.hero-strip-inner{position:relative;z-index:2;max-width:560px;margin:0 auto}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);padding:6px 14px;border-radius:100px;font-size:12px;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:20px;color:rgba(255,255,255,0.75)}
+.tag-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
+.hero-strip h1{font-size:clamp(28px,5vw,42px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:12px}
+.hero-strip h1 em{font-style:italic;color:#60A5FA;font-weight:700}
+.hero-strip p{font-size:16px;color:rgba(255,255,255,0.55);font-weight:300}
+.main{max-width:600px;margin:0 auto;padding:40px 24px 80px}
+.card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:32px;box-shadow:0 4px 24px rgba(0,0,0,0.06)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{margin-bottom:18px}
+label{display:block;font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--gray-4);margin-bottom:7px}
+input,select,textarea{width:100%;background:var(--gray-1);border:1px solid var(--gray-2);border-radius:8px;padding:11px 14px;color:var(--ink);font-family:'Inter',sans-serif;font-size:15px;transition:border-color 0.2s,box-shadow 0.2s;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,102,204,0.1);background:white}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394A3B8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;background-color:var(--gray-1);padding-right:36px;cursor:pointer}
+textarea{resize:vertical;min-height:100px}
+input::placeholder,textarea::placeholder{color:var(--gray-3)}
+.btn-submit{width:100%;padding:14px;background:var(--blue);color:white;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;margin-top:4px}
+.btn-submit:hover{background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,102,204,0.35)}
+.btn-submit:disabled{opacity:0.6;cursor:not-allowed;transform:none;box-shadow:none}
+.error-msg{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:12px 14px;color:#DC2626;font-size:14px;margin-bottom:16px;display:none}
+.error-msg.show{display:block}
+.info-msg{background:var(--blue-light);border:1px solid #BFDBFE;border-radius:8px;padding:12px 14px;color:var(--blue-dark);font-size:14px;margin-bottom:20px}
+.success-msg{display:none;text-align:center;padding:16px 0 8px}
+.success-msg.show{display:block}
+.success-icon{width:56px;height:56px;background:rgba(16,185,129,0.1);border:2px solid var(--green);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:22px;color:var(--green)}
+.success-msg h3{font-size:22px;font-weight:800;margin-bottom:8px;color:var(--ink)}
+.success-msg p{color:var(--gray-3);font-size:15px;line-height:1.6}
+.success-btns{display:flex;gap:10px;justify-content:center;margin-top:20px;flex-wrap:wrap}
+.btn-primary{background:var(--blue);color:white;padding:11px 24px;border-radius:8px;font-size:14px;font-weight:600;transition:background 0.2s}
+.btn-primary:hover{background:var(--blue-dark)}
+.btn-secondary{background:white;color:var(--blue);border:1px solid var(--blue);padding:11px 24px;border-radius:8px;font-size:14px;font-weight:600;transition:all 0.2s}
+.btn-secondary:hover{background:var(--blue-light)}
+.step-indicator{display:flex;align-items:center;gap:8px;margin-bottom:24px}
+.step{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600}
+.step-num{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:12px;font-weight:700}
+.step.active .step-num{background:var(--blue);color:white}
+.step.done .step-num{background:var(--green);color:white}
+.step.inactive .step-num{background:var(--gray-2);color:var(--gray-3)}
+.step.active{color:var(--ink)}
+.step.inactive{color:var(--gray-3)}
+.step-line{flex:1;height:1px;background:var(--gray-2)}
+.trust-row{display:flex;align-items:center;justify-content:center;gap:20px;margin-top:20px;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--gray-3)}
+footer{border-top:1px solid var(--gray-2);background:white;padding:24px;text-align:center;font-size:13px;color:var(--gray-3)}
+footer a{color:var(--blue);font-weight:500}
+#job-form{display:none}
+@media(max-width:480px){.form-row{grid-template-columns:1fr}.card{padding:24px 20px}.success-btns{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
+    <a href="index.html" class="nav-back">← Volver al inicio</a>
+  </nav>
+</div>
+
+<div class="hero-strip">
+  <div class="hero-strip-inner">
+    <div class="hero-tag"><span class="tag-dot"></span> 100% gratis</div>
+    <h1>Publica tu <em>Trabajo</em></h1>
+    <p>Recibe propuestas de contratistas verificados en Puerto Rico</p>
+  </div>
+</div>
+
+<div class="main">
+  <div class="card">
+    <div id="error-msg" class="error-msg"></div>
+
+    <!-- Step indicators -->
+    <div class="step-indicator">
+      <div class="step active" id="step1-indicator">
+        <div class="step-num">1</div> Verificar cuenta
+      </div>
+      <div class="step-line"></div>
+      <div class="step inactive" id="step2-indicator">
+        <div class="step-num">2</div> Detalles del trabajo
+      </div>
+    </div>
+
+    <!-- Step 1: Email verification -->
+    <div id="verify-form">
+      <div class="info-msg">📧 Ingresa tu correo registrado para continuar. ¿No tienes cuenta? <a href="signup.html" style="font-weight:600;color:var(--blue-dark)">Regístrate gratis aquí.</a></div>
+      <div class="field">
+        <label>Correo electrónico registrado</label>
+        <input type="email" id="verify-email" placeholder="maria@correo.com" required>
+      </div>
+      <button class="btn-submit" onclick="verifyHomeowner()">Continuar →</button>
+    </div>
+
+    <!-- Step 2: Job form -->
+    <div id="job-form">
+      <div id="success-msg" class="success-msg">
+        <div class="success-icon">✓</div>
+        <h3>¡Trabajo publicado!</h3>
+        <p>Los contratistas ya pueden ver tu trabajo. Te contactarán directamente con sus propuestas.</p>
+        <div class="success-btns">
+          <a href="jobs.html" class="btn-primary">Ver trabajos publicados →</a>
+          <a href="index.html" class="btn-secondary">Volver al inicio</a>
+        </div>
+      </div>
+      <form id="the-job-form" onsubmit="submitJob(event)">
+        <div class="field">
+          <label>Título del trabajo</label>
+          <input type="text" name="title" placeholder="ej. Reparación de techo después de lluvia" required>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label>Tipo de trabajo</label>
+            <select name="trade_needed" required>
+              <option value="" disabled selected>Seleccionar</option>
+              <option>Carpintería</option>
+              <option>Plomería</option>
+              <option>Electricidad</option>
+              <option>Pintura</option>
+              <option>Techado / Roofing</option>
+              <option>A/C & Refrigeración</option>
+              <option>Albañilería</option>
+              <option>Pisos / Flooring</option>
+              <option>Remodelación General</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Ciudad / Municipio</label>
+            <input type="text" name="city" placeholder="Bayamón" required>
+          </div>
+        </div>
+        <div class="field">
+          <label>Descripción del trabajo</label>
+          <textarea name="description" placeholder="Describe el trabajo en detalle: qué necesitas, cuándo, condiciones especiales..." required></textarea>
+        </div>
+        <div class="field">
+          <label>Presupuesto aproximado</label>
+          <select name="budget">
+            <option value="" disabled selected>Seleccionar rango</option>
+            <option>Menos de $500</option>
+            <option>$500 - $1,000</option>
+            <option>$1,000 - $3,000</option>
+            <option>$3,000 - $10,000</option>
+            <option>Más de $10,000</option>
+            <option>Por discutir</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-submit" id="btn-job">Publicar trabajo →</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="trust-row">
+    <div class="trust-item">✅ Gratis para propietarios</div>
+    <div class="trust-item">🔒 Tu info está segura</div>
+    <div class="trust-item">⚡ Respuestas en horas</div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 ContractingPR · <a href="index.html">Inicio</a> · <a href="jobs.html">Ver trabajos</a> · <a href="mailto:hola@contractingpr.com">hola@contractingpr.com</a></span><br>
+  <span style="margin-top:4px;display:block">Hecho con orgullo en Puerto Rico 🇵🇷</span>
+</footer>
+
+<script>
+const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
+let homeownerId = null;
+
+async function verifyHomeowner() {
+  const email = document.getElementById('verify-email').value.trim();
+  const errorEl = document.getElementById('error-msg');
+  errorEl.classList.remove('show');
+  if (!email) return;
+
+  const btn = event.target;
+  btn.disabled = true;
+  btn.textContent = 'Verificando...';
+
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/homeowners?email=eq.${encodeURIComponent(email)}&select=id,name`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+  });
+  const data = await res.json();
+
+  if (!data || data.length === 0) {
+    errorEl.textContent = 'No encontramos esa cuenta. ¿Ya te registraste? Si no, regístrate gratis primero.';
+    errorEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Continuar →';
+    return;
+  }
+
+  homeownerId = data[0].id;
+  document.getElementById('verify-form').style.display = 'none';
+  document.getElementById('job-form').style.display = 'block';
+  document.getElementById('step1-indicator').className = 'step done';
+  document.getElementById('step1-indicator').querySelector('.step-num').textContent = '✓';
+  document.getElementById('step2-indicator').className = 'step active';
+}
+
+async function submitJob(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-job');
+  const errorEl = document.getElementById('error-msg');
+  errorEl.classList.remove('show');
+  btn.disabled = true;
+  btn.textContent = 'Publicando...';
+
+  const form = e.target;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_KEY,
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify({
+      homeowner_id: homeownerId,
+      title: form.title.value,
+      description: form.description.value,
+      trade_needed: form.trade_needed.value,
+      city: form.city.value,
+      budget: form.budget.value,
+    })
+  });
+
+  if (res.ok) {
+    form.style.display = 'none';
+    document.getElementById('success-msg').classList.add('show');
+  } else {
+    const err = await res.json().catch(()=>({}));
+    errorEl.textContent = err.message || 'Algo salió mal. Intenta de nuevo.';
+    errorEl.classList.add('show');
+    btn.disabled = false;
+    btn.textContent = 'Publicar trabajo →';
+  }
+}
+</script>
+</body>
+</html>
