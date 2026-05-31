@@ -121,7 +121,11 @@ footer a{color:var(--blue);font-weight:500}
   .form-row{grid-template-columns:1fr}
   .card{padding:24px 20px}
 }
-.lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:Inter,sans-serif;color:var(--gray-4);transition:all 0.2s}.lang-btn:hover{border-color:var(--blue);color:var(--blue)}
+
+.tos-check{display:flex;align-items:flex-start;gap:10px;margin-bottom:18px;padding:14px;background:var(--gray-1);border:1px solid var(--gray-2);border-radius:8px}
+.tos-check input[type=checkbox]{width:18px;height:18px;margin-top:2px;flex-shrink:0;accent-color:var(--blue);cursor:pointer}
+.tos-check label{font-size:13px;color:var(--gray-4);font-weight:400;text-transform:none;letter-spacing:0;cursor:pointer}
+.tos-check label a{color:var(--blue);font-weight:600}
 </style>
 </head>
 <body>
@@ -133,16 +137,16 @@ footer a{color:var(--blue);font-weight:500}
       <div class="logo-box">C</div>
       ContractingPR
     </a>
-    <div style="display:flex;align-items:center;gap:10px"><button class="lang-btn" onclick="toggleLang()">English</button><a href="index.html" class="nav-back">← Volver al inicio</a></div>
+    <a href="index.html" class="nav-back">← Volver al inicio</a>
   </nav>
 </div>
 
 <!-- HERO STRIP -->
 <div class="hero-strip">
   <div class="hero-strip-inner">
-    <div class="hero-tag"><span class="tag-dot"></span> <span data-es="Registro abierto" data-en="Open registration">Registro abierto</span></div>
-    <h1 data-es="Únete a <em>ContractingPR</em>" data-en="Join <em>ContractingPR</em>">Únete a <em>ContractingPR</em></h1>
-    <p data-es="Conectamos propietarios con contratistas licenciados en toda Puerto Rico" data-en="Connecting homeowners with licensed contractors across Puerto Rico">Conectamos propietarios con contratistas licenciados en toda Puerto Rico</p>
+    <div class="hero-tag"><span class="tag-dot"></span> Registro abierto</div>
+    <h1>Únete a <em>ContractingPR</em></h1>
+    <p>Conectamos propietarios con contratistas licenciados en toda Puerto Rico</p>
   </div>
 </div>
 
@@ -151,8 +155,8 @@ footer a{color:var(--blue);font-weight:500}
 
   <!-- Tabs -->
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('contractor')" data-es="🔨 Soy Contratista" data-en="🔨 I'm a Contractor">🔨 Soy Contratista</button>
-    <button class="tab" onclick="switchTab('homeowner')" data-es="🏠 Necesito Trabajo" data-en="🏠 I Need Work Done">🏠 Necesito Trabajo</button>
+    <button class="tab active" onclick="switchTab('contractor')">🔨 Soy Contratista</button>
+    <button class="tab" onclick="switchTab('homeowner')">🏠 Necesito Trabajo</button>
   </div>
 
   <!-- Card -->
@@ -212,6 +216,10 @@ footer a{color:var(--blue);font-weight:500}
           <label>Sobre ti <span class="optional">(opcional)</span></label>
           <textarea name="description" placeholder="Cuéntanos tu experiencia, años en el negocio, proyectos completados..."></textarea>
         </div>
+        <div class="tos-check">
+          <input type="checkbox" id="tos-contractor" required>
+          <label for="tos-contractor">He leído y acepto los <a href="terms.html" target="_blank">Términos de Servicio</a> de ContractingPR, incluyendo la regla de comunicación y pagos exclusivamente a través de la plataforma. Entiendo que el incumplimiento puede resultar en la terminación de mi cuenta.</label>
+        </div>
         <button type="submit" class="btn-submit" id="btn-contractor">Registrarme como contratista →</button>
       </form>
     </div>
@@ -243,6 +251,10 @@ footer a{color:var(--blue);font-weight:500}
           <label>Ciudad / Municipio</label>
           <input type="text" name="city" placeholder="Bayamón">
         </div>
+        <div class="tos-check">
+          <input type="checkbox" id="tos-homeowner" required>
+          <label for="tos-homeowner">He leído y acepto los <a href="terms.html" target="_blank">Términos de Servicio</a> de ContractingPR, incluyendo la regla de comunicación y pagos exclusivamente a través de la plataforma. Entiendo que el incumplimiento puede resultar en la terminación de mi cuenta.</label>
+        </div>
         <button type="submit" class="btn-submit" id="btn-homeowner">Crear mi cuenta — Es gratis →</button>
       </form>
     </div>
@@ -259,7 +271,7 @@ footer a{color:var(--blue);font-weight:500}
 
 <!-- FOOTER -->
 <footer>
-  <span>© 2026 ContractingPR · <a href="index.html">Inicio</a> · <a href="mailto:hola@contractingpr.com">hola@contractingpr.com</a></span><br>
+  <span>© 2026 ContractingPR · <a href="index.html">Inicio</a> · <a href="terms.html">Términos</a> · <a href="mailto:hola@contractingpr.com">hola@contractingpr.com</a></span><br>
   <span style="margin-top:4px;display:block">Hecho con orgullo en Puerto Rico 🇵🇷</span>
 </footer>
 
@@ -342,18 +354,6 @@ async function submitHomeowner(e) {
     btn.disabled = false;
     btn.textContent = 'Crear mi cuenta — Es gratis →';
   }
-}
-
-let lang='es';
-function toggleLang(){
-  lang=lang==='es'?'en':'es';
-  document.querySelector('.lang-btn').textContent=lang==='es'?'English':'Español';
-  document.querySelectorAll('[data-es]').forEach(el=>{
-    const val=lang==='es'?el.dataset.es:el.dataset.en;
-    if(!val)return;
-    if(el.tagName==='H1'||el.tagName==='BUTTON'||el.dataset.es.includes('<em>')){el.innerHTML=val}
-    else{el.textContent=val}
-  });
 }
 </script>
 </body>

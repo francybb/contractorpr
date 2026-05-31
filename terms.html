@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Términos de Servicio | ContractingPR</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#0066CC;--blue-dark:#004C99;--blue-light:#E6F0FA;
+  --ink:#0F172A;--gray-1:#F8FAFC;--gray-2:#E2E8F0;
+  --gray-3:#94A3B8;--gray-4:#475569;--gray-5:#1E293B;
+  --green:#10B981;--red:#DC2626;--radius:12px;--radius-lg:20px;
+}
+body{font-family:'Inter',sans-serif;color:var(--ink);line-height:1.6;background:var(--gray-1)}
+a{text-decoration:none;color:var(--blue)}
+a:hover{text-decoration:underline}
+.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-2)}
+.nav{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:800;color:var(--blue);display:flex;align-items:center;gap:10px}
+.logo-box{width:34px;height:34px;background:var(--blue);border-radius:8px;display:grid;place-items:center;color:white;font-weight:800;font-size:16px}
+.nav-right{display:flex;align-items:center;gap:10px}
+.lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;color:var(--gray-4);transition:all 0.2s}
+.lang-btn:hover{border-color:var(--blue);color:var(--blue)}
+.nav-back{font-size:14px;color:var(--gray-4);font-weight:500;transition:color 0.2s}
+.nav-back:hover{color:var(--blue)}
+
+.hero-strip{background:linear-gradient(135deg,#0a1628 0%,#0d2040 60%,#0a1628 100%);color:white;padding:48px 24px 40px;text-align:center;position:relative;overflow:hidden}
+.hero-strip::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:64px 64px}
+.hero-strip-inner{position:relative;z-index:2}
+.hero-strip h1{font-size:clamp(24px,4vw,36px);font-weight:800;margin-bottom:8px;letter-spacing:-0.02em}
+.hero-strip h1 em{font-style:italic;color:#60A5FA}
+.hero-strip p{font-size:14px;color:rgba(255,255,255,0.45)}
+
+.layout{max-width:1100px;margin:0 auto;padding:40px 24px 80px;display:grid;grid-template-columns:240px 1fr;gap:40px;align-items:start}
+
+/* Sidebar TOC */
+.toc{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:24px;position:sticky;top:84px}
+.toc h4{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--gray-3);margin-bottom:14px}
+.toc ul{list-style:none}
+.toc ul li{margin-bottom:6px}
+.toc ul li a{font-size:13px;color:var(--gray-4);font-weight:500;transition:color 0.2s;display:block;padding:3px 0}
+.toc ul li a:hover{color:var(--blue);text-decoration:none}
+.toc-updated{margin-top:16px;padding-top:16px;border-top:1px solid var(--gray-2);font-size:12px;color:var(--gray-3)}
+
+/* Content */
+.content{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:40px}
+.content h2{font-size:22px;font-weight:800;color:var(--ink);margin:36px 0 12px;padding-top:8px}
+.content h2:first-child{margin-top:0}
+.content h3{font-size:16px;font-weight:700;color:var(--ink);margin:24px 0 8px}
+.content p{font-size:15px;color:var(--gray-4);line-height:1.8;margin-bottom:14px;font-weight:300}
+.content ul,.content ol{margin:0 0 14px 20px}
+.content ul li,.content ol li{font-size:15px;color:var(--gray-4);line-height:1.8;margin-bottom:6px;font-weight:300}
+.content strong{color:var(--ink);font-weight:600}
+
+.alert-box{border-radius:var(--radius);padding:16px 20px;margin:20px 0;display:flex;gap:12px;align-items:flex-start}
+.alert-box.red{background:#FEF2F2;border:1px solid #FECACA}
+.alert-box.blue{background:var(--blue-light);border:1px solid #BFDBFE}
+.alert-box.green{background:#F0FDF4;border:1px solid #BBF7D0}
+.alert-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.alert-box.red p{color:#991B1B;margin:0;font-weight:400}
+.alert-box.blue p{color:var(--blue-dark);margin:0;font-weight:400}
+.alert-box.green p{color:#166534;margin:0;font-weight:400}
+
+.section-divider{border:none;border-top:1px solid var(--gray-2);margin:32px 0}
+.version-badge{display:inline-block;background:var(--blue-light);color:var(--blue);padding:3px 10px;border-radius:100px;font-size:12px;font-weight:600;margin-bottom:20px}
+
+footer{border-top:1px solid var(--gray-2);background:white;padding:24px;text-align:center;font-size:13px;color:var(--gray-3)}
+footer a{color:var(--blue);font-weight:500}
+
+@media(max-width:768px){
+  .layout{grid-template-columns:1fr}
+  .toc{display:none}
+  .content{padding:24px 20px}
+}
+</style>
+</head>
+<body>
+
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
+    <div class="nav-right">
+      <button class="lang-btn" onclick="toggleLang()">English</button>
+      <a href="index.html" class="nav-back">← Volver al inicio</a>
+    </div>
+  </nav>
+</div>
+
+<div class="hero-strip">
+  <div class="hero-strip-inner">
+    <h1>Términos de <em>Servicio</em></h1>
+    <p>Última actualización: 31 de mayo de 2026</p>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="toc">
+    <h4>Contenido</h4>
+    <ul>
+      <li><a href="#aceptacion">1. Aceptación</a></li>
+      <li><a href="#plataforma">2. La Plataforma</a></li>
+      <li><a href="#comunicacion">3. Comunicación On-Platform</a></li>
+      <li><a href="#pagos">4. Pagos y Custodia</a></li>
+      <li><a href="#contratistas">5. Contratistas</a></li>
+      <li><a href="#propietarios">6. Propietarios y Negocios</a></li>
+      <li><a href="#conducta">7. Conducta Prohibida</a></li>
+      <li><a href="#terminacion">8. Terminación</a></li>
+      <li><a href="#disputas">9. Disputas</a></li>
+      <li><a href="#responsabilidad">10. Responsabilidad</a></li>
+      <li><a href="#privacidad">11. Privacidad</a></li>
+      <li><a href="#cambios">12. Cambios</a></li>
+      <li><a href="#contacto">13. Contacto</a></li>
+    </ul>
+    <div class="toc-updated">v1.0 · Mayo 2026</div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="content" id="terms-content">
+
+    <div class="version-badge">Versión 1.0</div>
+
+    <div class="alert-box blue">
+      <div class="alert-icon">ℹ️</div>
+      <p><strong>Al registrarte en ContractingPR, aceptas estos términos en su totalidad.</strong> Lee este documento con atención antes de usar la plataforma. Si no estás de acuerdo, no debes usar nuestros servicios.</p>
+    </div>
+
+    <!-- 1 -->
+    <h2 id="aceptacion">1. Aceptación de los Términos</h2>
+    <p>Estos Términos de Servicio ("Términos") constituyen un acuerdo legal vinculante entre usted ("Usuario") y ContractingPR ("la Plataforma", "nosotros"). Al crear una cuenta, publicar un trabajo, enviar una propuesta o usar cualquier función de ContractingPR, usted acepta cumplir con estos Términos.</p>
+    <p>ContractingPR opera en Puerto Rico y cumple con las leyes aplicables del Estado Libre Asociado de Puerto Rico y las leyes federales de los Estados Unidos.</p>
+
+    <hr class="section-divider">
+
+    <!-- 2 -->
+    <h2 id="plataforma">2. La Plataforma</h2>
+    <p>ContractingPR es un <strong>mercado en línea</strong> que conecta propietarios de viviendas, negocios y otras propiedades ("Clientes") con contratistas licenciados ("Contratistas") en Puerto Rico. ContractingPR <strong>no es un contratista</strong> y no ejecuta trabajos de construcción, remodelación ni ningún servicio relacionado.</p>
+    <p>ContractingPR actúa como intermediario neutral y facilita la comunicación, las cotizaciones y los pagos entre las partes. El contrato de servicios se establece directamente entre el Cliente y el Contratista.</p>
+
+    <hr class="section-divider">
+
+    <!-- 3 -->
+    <h2 id="comunicacion">3. Comunicación On-Platform — Regla Fundamental</h2>
+
+    <div class="alert-box red">
+      <div class="alert-icon">🚫</div>
+      <p><strong>Toda comunicación, negociación, cotización y acuerdo entre Clientes y Contratistas DEBE realizarse exclusivamente a través de la plataforma ContractingPR.</strong> Esto no es opcional.</p>
+    </div>
+
+    <h3>3.1 Qué está permitido</h3>
+    <ul>
+      <li>Mensajes a través del sistema de chat de ContractingPR</li>
+      <li>Cotizaciones enviadas a través del sistema de propuestas de ContractingPR</li>
+      <li>Compartir fotos y documentos a través de la plataforma</li>
+      <li>Coordinación de fechas y horarios a través de la plataforma</li>
+    </ul>
+
+    <h3>3.2 Qué está prohibido antes de la aceptación de un trabajo</h3>
+    <ul>
+      <li>Compartir números de teléfono personal o WhatsApp</li>
+      <li>Compartir direcciones de correo electrónico personal</li>
+      <li>Compartir perfiles de redes sociales con intención de continuar la negociación fuera de la plataforma</li>
+      <li>Acordar precios o condiciones fuera del sistema de propuestas</li>
+    </ul>
+
+    <h3>3.3 Por qué esta regla existe</h3>
+    <p>La comunicación on-platform protege a <strong>ambas partes</strong>: crea un registro completo de todos los acuerdos, protege al Cliente de fraudes y al Contratista de disputas sin evidencia. En caso de conflicto, ContractingPR solo puede mediar en disputas donde la comunicación ocurrió en la plataforma.</p>
+
+    <div class="alert-box green">
+      <div class="alert-icon">✅</div>
+      <p><strong>Una vez que un trabajo es aceptado y el pago entra en custodia</strong>, las partes pueden intercambiar información de contacto necesaria para coordinar la ejecución del trabajo.</p>
+    </div>
+
+    <hr class="section-divider">
+
+    <!-- 4 -->
+    <h2 id="pagos">4. Pagos, Tarifas y Sistema de Custodia</h2>
+
+    <h3>4.1 Sistema de Custodia (Escrow)</h3>
+    <p>Todos los pagos de trabajos aceptados se procesan a través del sistema de custodia de ContractingPR. El dinero del Cliente es retenido de forma segura por ContractingPR y <strong>solo se libera al Contratista cuando el Cliente confirma que el trabajo está completo y satisfactorio</strong>.</p>
+
+    <h3>4.2 Tarifa de la plataforma</h3>
+    <p>ContractingPR cobra una <strong>tarifa del 10% sobre el valor de cada trabajo completado</strong>. Esta tarifa se deduce automáticamente del pago antes de liberar los fondos al Contratista.</p>
+
+    <h3>4.3 Pagos fuera de la plataforma — Prohibido</h3>
+    <div class="alert-box red">
+      <div class="alert-icon">🚫</div>
+      <p><strong>Está estrictamente prohibido acordar o realizar pagos fuera de la plataforma</strong> — incluyendo efectivo, ATH Móvil directo, Zelle, Venmo, transferencias bancarias privadas u otros métodos. El incumplimiento resulta en la terminación inmediata de la cuenta.</p>
+    </div>
+
+    <h3>4.4 Métodos de pago aceptados</h3>
+    <ul>
+      <li>Tarjetas de crédito y débito (Visa, Mastercard, AmEx) vía Stripe</li>
+      <li>ATH Móvil (a través de la integración de ContractingPR)</li>
+      <li>Transferencia bancaria para trabajos mayores de $5,000</li>
+    </ul>
+
+    <hr class="section-divider">
+
+    <!-- 5 -->
+    <h2 id="contratistas">5. Requisitos para Contratistas</h2>
+
+    <h3>5.1 Licencias y seguros</h3>
+    <p>Para ser aprobado en ContractingPR, todo Contratista debe:</p>
+    <ul>
+      <li>Poseer una licencia ARPE vigente o licencia municipal aplicable</li>
+      <li>Mantener seguro de responsabilidad general mínimo de $300,000</li>
+      <li>Tener compensación laboral si emplea a otras personas</li>
+      <li>Ser miembro del CIAPR si realiza trabajo de ingeniería</li>
+    </ul>
+
+    <h3>5.2 Obligaciones del Contratista</h3>
+    <ul>
+      <li>Completar los trabajos aceptados según las especificaciones acordadas</li>
+      <li>Comunicarse únicamente a través de la plataforma hasta la aceptación del trabajo</li>
+      <li>No solicitar pagos fuera de la plataforma bajo ninguna circunstancia</li>
+      <li>Responder a propuestas y mensajes en un plazo de 48 horas</li>
+      <li>Mantener información de licencia y seguro actualizada</li>
+    </ul>
+
+    <hr class="section-divider">
+
+    <!-- 6 -->
+    <h2 id="propietarios">6. Requisitos para Clientes (Propietarios y Negocios)</h2>
+
+    <h3>6.1 Obligaciones del Cliente</h3>
+    <ul>
+      <li>Proporcionar descripciones honestas y precisas de los trabajos</li>
+      <li>Comunicarse únicamente a través de la plataforma hasta la aceptación del trabajo</li>
+      <li>Depositar el pago en custodia antes del inicio de cualquier trabajo</li>
+      <li>Liberar el pago una vez verificado que el trabajo está completo</li>
+      <li>No retener el pago injustificadamente una vez el trabajo esté terminado</li>
+    </ul>
+
+    <h3>6.2 Publicación de trabajos</h3>
+    <p>Los trabajos publicados deben ser reales, legales y dentro del alcance de los servicios ofrecidos en la plataforma. ContractingPR se reserva el derecho de remover trabajos que violen estos términos.</p>
+
+    <hr class="section-divider">
+
+    <!-- 7 -->
+    <h2 id="conducta">7. Conducta Prohibida</h2>
+
+    <p>Las siguientes acciones constituyen violaciones graves de estos Términos y pueden resultar en la <strong>terminación inmediata y permanente</strong> de la cuenta:</p>
+
+    <ul>
+      <li>🚫 Acordar o realizar pagos fuera de la plataforma</li>
+      <li>🚫 Compartir información de contacto para evadir el sistema de la plataforma</li>
+      <li>🚫 Publicar reseñas falsas o manipular el sistema de calificaciones</li>
+      <li>🚫 Crear múltiples cuentas para evadir una suspensión</li>
+      <li>🚫 Aceptar trabajos sin intención de completarlos</li>
+      <li>🚫 Retener pagos de custodia de manera fraudulenta</li>
+      <li>🚫 Suplantar a otro usuario o contratista</li>
+      <li>🚫 Publicar información falsa sobre licencias o seguros</li>
+      <li>🚫 Acosar, amenazar o intimidar a otros usuarios</li>
+      <li>🚫 Usar la plataforma para actividades ilegales</li>
+    </ul>
+
+    <hr class="section-divider">
+
+    <!-- 8 -->
+    <h2 id="terminacion">8. Terminación de Cuenta</h2>
+
+    <p>ContractingPR se reserva el derecho de <strong>suspender o terminar cualquier cuenta</strong> en cualquier momento, con o sin previo aviso, si se determina que el Usuario ha violado estos Términos.</p>
+
+    <h3>8.1 Causas de terminación inmediata</h3>
+    <ul>
+      <li>Intento de realizar pagos fuera de la plataforma</li>
+      <li>Evidencia de fraude o actividad ilegal</li>
+      <li>Violación de la regla de comunicación on-platform</li>
+      <li>Múltiples disputas no resueltas</li>
+    </ul>
+
+    <h3>8.2 Fondos en custodia al momento de terminación</h3>
+    <p>Si una cuenta es terminada mientras hay fondos en custodia, ContractingPR determinará la distribución justa de dichos fondos basándose en el estado del trabajo y la evidencia disponible.</p>
+
+    <hr class="section-divider">
+
+    <!-- 9 -->
+    <h2 id="disputas">9. Resolución de Disputas</h2>
+
+    <p>ContractingPR ofrece un proceso de mediación para disputas entre Clientes y Contratistas. <strong>Solo se pueden mediar disputas donde la comunicación ocurrió completamente a través de la plataforma.</strong></p>
+
+    <h3>9.1 Proceso de disputa</h3>
+    <ol>
+      <li>El Usuario abre una disputa a través del portal de soporte</li>
+      <li>Ambas partes tienen 72 horas para presentar evidencia</li>
+      <li>ContractingPR revisa toda la comunicación y evidencia on-platform</li>
+      <li>Se emite una resolución en un plazo de 5 días hábiles</li>
+      <li>La decisión de ContractingPR es final en disputas de hasta $5,000</li>
+    </ol>
+
+    <hr class="section-divider">
+
+    <!-- 10 -->
+    <h2 id="responsabilidad">10. Limitación de Responsabilidad</h2>
+    <p>ContractingPR es una plataforma de intermediación. <strong>No somos responsables</strong> por la calidad del trabajo ejecutado, lesiones ocurridas durante un trabajo, daños a la propiedad causados por contratistas, ni por el incumplimiento de contratos entre usuarios.</p>
+    <p>La responsabilidad total de ContractingPR hacia cualquier usuario no excederá el valor de las tarifas pagadas a ContractingPR en los 12 meses anteriores al reclamo.</p>
+
+    <hr class="section-divider">
+
+    <!-- 11 -->
+    <h2 id="privacidad">11. Privacidad y Datos</h2>
+    <p>ContractingPR recopila y procesa datos personales de acuerdo con nuestra Política de Privacidad. Al aceptar estos Términos, también acepta nuestra Política de Privacidad. Sus datos nunca son vendidos a terceros.</p>
+
+    <hr class="section-divider">
+
+    <!-- 12 -->
+    <h2 id="cambios">12. Cambios a estos Términos</h2>
+    <p>ContractingPR puede modificar estos Términos en cualquier momento. Los cambios materiales serán notificados con al menos 14 días de anticipación. El uso continuado de la plataforma después de los cambios constituye aceptación de los nuevos términos.</p>
+
+    <hr class="section-divider">
+
+    <!-- 13 -->
+    <h2 id="contacto">13. Contacto</h2>
+    <p>Para preguntas sobre estos Términos:</p>
+    <ul>
+      <li>📧 <a href="mailto:legal@contractingpr.com">legal@contractingpr.com</a></li>
+      <li>🌐 <a href="https://contractingpr.com">contractingpr.com</a></li>
+      <li>🇵🇷 Puerto Rico, Estados Unidos</li>
+    </ul>
+
+    <div class="alert-box green" style="margin-top:32px">
+      <div class="alert-icon">✅</div>
+      <p><strong>Al crear una cuenta en ContractingPR, confirmas que has leído, entendido y aceptado estos Términos de Servicio en su totalidad.</strong></p>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 ContractingPR · <a href="index.html">Inicio</a> · <a href="mailto:legal@contractingpr.com">legal@contractingpr.com</a></span><br>
+  <span style="margin-top:4px;display:block">Hecho con orgullo en Puerto Rico 🇵🇷</span>
+</footer>
+
+<script>
+let lang = 'es';
+const translations = {
+  title: { es: 'Términos de Servicio | ContractingPR', en: 'Terms of Service | ContractingPR' },
+  h1: { es: 'Términos de <em>Servicio</em>', en: 'Terms of <em>Service</em>' },
+  updated: { es: 'Última actualización: 31 de mayo de 2026', en: 'Last updated: May 31, 2026' },
+  back: { es: '← Volver al inicio', en: '← Back to home' }
+};
+
+function toggleLang() {
+  lang = lang === 'es' ? 'en' : 'es';
+  document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
+  document.title = translations.title[lang];
+  document.querySelector('.hero-strip h1').innerHTML = translations.h1[lang];
+  document.querySelector('.hero-strip p').textContent = translations.updated[lang];
+  document.querySelector('.nav-back').textContent = translations.back[lang];
+
+  // Swap full content block
+  document.getElementById('terms-content').innerHTML = lang === 'en' ? englishContent : spanishContent;
+}
+
+// Store Spanish content on load
+let spanishContent = '';
+let englishContent = `
+  <div class="version-badge">Version 1.0</div>
+  <div class="alert-box blue"><div class="alert-icon">ℹ️</div><p><strong>By registering with ContractingPR, you agree to these terms in their entirety.</strong> Please read this document carefully before using the platform. If you do not agree, you should not use our services.</p></div>
+  <h2 id="acceptance">1. Acceptance of Terms</h2>
+  <p>These Terms of Service ("Terms") constitute a legally binding agreement between you ("User") and ContractingPR ("the Platform", "we"). By creating an account, posting a job, submitting a proposal, or using any feature of ContractingPR, you agree to comply with these Terms.</p>
+  <hr class="section-divider">
+  <h2 id="platform">2. The Platform</h2>
+  <p>ContractingPR is an <strong>online marketplace</strong> that connects homeowners, businesses, and property owners ("Clients") with licensed contractors ("Contractors") in Puerto Rico. ContractingPR <strong>is not a contractor</strong> and does not perform construction, renovation, or any related services.</p>
+  <hr class="section-divider">
+  <h2 id="communication">3. On-Platform Communication — Core Rule</h2>
+  <div class="alert-box red"><div class="alert-icon">🚫</div><p><strong>All communication, negotiation, quotes, and agreements between Clients and Contractors MUST occur exclusively through the ContractingPR platform.</strong> This is not optional.</p></div>
+  <h3>3.1 What is allowed</h3>
+  <ul><li>Messages through ContractingPR's chat system</li><li>Quotes sent through ContractingPR's proposal system</li><li>Sharing photos and documents through the platform</li><li>Coordinating dates and schedules through the platform</li></ul>
+  <h3>3.2 What is prohibited before job acceptance</h3>
+  <ul><li>Sharing personal phone numbers or WhatsApp</li><li>Sharing personal email addresses</li><li>Sharing social media profiles with intent to continue negotiations off-platform</li><li>Agreeing on prices or terms outside the proposal system</li></ul>
+  <div class="alert-box green"><div class="alert-icon">✅</div><p><strong>Once a job is accepted and payment enters escrow</strong>, parties may exchange contact information necessary to coordinate the work.</p></div>
+  <hr class="section-divider">
+  <h2 id="payments">4. Payments, Fees, and Escrow System</h2>
+  <h3>4.1 Escrow System</h3>
+  <p>All payments for accepted jobs are processed through ContractingPR's escrow system. The Client's money is held securely and <strong>only released to the Contractor when the Client confirms the work is complete and satisfactory</strong>.</p>
+  <h3>4.2 Platform fee</h3>
+  <p>ContractingPR charges a <strong>10% fee on the value of each completed job</strong>, automatically deducted before releasing funds to the Contractor.</p>
+  <h3>4.3 Off-platform payments — Prohibited</h3>
+  <div class="alert-box red"><div class="alert-icon">🚫</div><p><strong>Agreeing to or making payments outside the platform is strictly prohibited</strong> — including cash, direct ATH Móvil, Zelle, Venmo, private bank transfers, or other methods. Violation results in immediate account termination.</p></div>
+  <hr class="section-divider">
+  <h2 id="contractors">5. Contractor Requirements</h2>
+  <ul><li>Valid ARPE license or applicable municipal license</li><li>General liability insurance minimum $300,000</li><li>Workers' compensation if employing others</li><li>CIAPR membership for engineering work</li></ul>
+  <hr class="section-divider">
+  <h2 id="conduct">6. Prohibited Conduct</h2>
+  <ul><li>🚫 Agreeing to or making off-platform payments</li><li>🚫 Sharing contact info to bypass the platform</li><li>🚫 Posting fake reviews or manipulating ratings</li><li>🚫 Creating multiple accounts to evade suspension</li><li>🚫 Accepting jobs without intent to complete them</li><li>🚫 Fraudulently withholding escrow payments</li><li>🚫 Impersonating another user or contractor</li><li>🚫 Posting false license or insurance information</li><li>🚫 Harassing, threatening, or intimidating other users</li><li>🚫 Using the platform for illegal activities</li></ul>
+  <hr class="section-divider">
+  <h2 id="termination">7. Account Termination</h2>
+  <p>ContractingPR reserves the right to <strong>suspend or terminate any account</strong> at any time, with or without notice, if a User is found to have violated these Terms. Discovery of foul play — including off-platform payment agreements, fraud, or harassment — results in immediate permanent termination.</p>
+  <hr class="section-divider">
+  <h2 id="disputes">8. Dispute Resolution</h2>
+  <p>ContractingPR offers mediation for disputes between Clients and Contractors. <strong>Only disputes where communication occurred entirely through the platform can be mediated.</strong> This is why on-platform communication is mandatory.</p>
+  <hr class="section-divider">
+  <h2 id="contact">9. Contact</h2>
+  <ul><li>📧 <a href="mailto:legal@contractingpr.com">legal@contractingpr.com</a></li><li>🌐 <a href="https://contractingpr.com">contractingpr.com</a></li><li>🇵🇷 Puerto Rico, United States</li></ul>
+  <div class="alert-box green" style="margin-top:32px"><div class="alert-icon">✅</div><p><strong>By creating an account on ContractingPR, you confirm that you have read, understood, and agreed to these Terms of Service in their entirety.</strong></p></div>
+`;
+
+window.addEventListener('DOMContentLoaded', () => {
+  spanishContent = document.getElementById('terms-content').innerHTML;
+});
+</script>
+</body>
+</html>
