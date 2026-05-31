@@ -131,6 +131,7 @@ footer{border-top:1px solid var(--gray-2);background:white;padding:24px;text-ali
 footer a{color:var(--blue);font-weight:500}
 
 @media(max-width:768px){.layout{grid-template-columns:1fr}.sidebar-card{position:static}}
+.lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:Inter,sans-serif;color:var(--gray-4);transition:all 0.2s}.lang-btn:hover{border-color:var(--blue);color:var(--blue)}
 </style>
 </head>
 <body>
@@ -138,7 +139,8 @@ footer a{color:var(--blue);font-weight:500}
   <nav class="nav">
     <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
     <div class="nav-right">
-      <a href="jobs.html" class="btn-ghost">← Ver todos los trabajos</a>
+      <button class="lang-btn" onclick="toggleLang()">English</button>
+      <a href="jobs.html" class="btn-ghost" id="nav-back">← Ver todos los trabajos</a>
       <a href="signup.html" class="btn-nav">Registrarse</a>
     </div>
   </nav>
@@ -526,6 +528,54 @@ if (storedHomeownerCheck) {
 }
 
 loadJob();
+
+let lang = 'es';
+const t = {
+  navBack: { es: '← Ver todos los trabajos', en: '← All jobs' },
+  register: { es: 'Registrarse', en: 'Register' },
+  sendProposal: { es: 'Enviar Propuesta', en: 'Send Proposal' },
+  verifySub: { es: 'Regístrate o verifica tu cuenta para responder', en: 'Register or verify your account to respond' },
+  verifyLabel: { es: 'Ingresa tu correo registrado como <strong>contratista</strong>:', en: 'Enter your registered email as a <strong>contractor</strong>:' },
+  verifyBtn: { es: 'Verificar', en: 'Verify' },
+  msgLabel: { es: 'Tu mensaje', en: 'Your message' },
+  msgPlaceholder: { es: 'Preséntate, pregunta lo que necesites saber...', en: 'Introduce yourself, ask what you need to know...' },
+  priceLabel: { es: 'Precio estimado', en: 'Estimated price' },
+  submitBtn: { es: 'Enviar propuesta →', en: 'Send proposal →' },
+  platformNote: { es: '<strong>Toda comunicación</strong> debe realizarse a través de ContractingPR.', en: '<strong>All communication</strong> must go through ContractingPR.' },
+  termsLink: { es: 'Ver Términos de Servicio', en: 'View Terms of Service' },
+  open: { es: 'Abierto', en: 'Open' },
+  accepted: { es: 'Aceptado', en: 'Accepted' },
+  closed: { es: 'Cerrado', en: 'Closed' },
+  descLabel: { es: 'DESCRIPCIÓN DEL TRABAJO', en: 'JOB DESCRIPTION' },
+  proposalsSent: { es: '¡Propuesta enviada!', en: 'Proposal sent!' },
+  proposalsMsg: { es: 'El propietario recibirá tu propuesta y podrá responderte aquí mismo.', en: 'The homeowner will receive your proposal and can reply right here.' },
+  chatBtn: { es: '💬 Chatear', en: '💬 Chat' },
+  acceptBtn: { es: '✅ Aceptar propuesta', en: '✅ Accept proposal' },
+  sendMsg: { es: 'Enviar', en: 'Send' },
+  chatPlaceholder: { es: 'Escribe un mensaje...', en: 'Write a message...' },
+};
+
+function toggleLang() {
+  lang = lang === 'es' ? 'en' : 'es';
+  document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
+  const nb = document.getElementById('nav-back');
+  if (nb) nb.textContent = t.navBack[lang];
+  const st = document.querySelector('.sidebar-title');
+  if (st) st.textContent = lang === 'es' ? 'Enviar Propuesta' : 'Send Proposal';
+  const ss = document.querySelector('.sidebar-sub');
+  if (ss) ss.textContent = t.verifySub[lang];
+  const vp = document.querySelector('.verify-section p');
+  if (vp) vp.innerHTML = t.verifyLabel[lang];
+  const vb = document.querySelector('.btn-verify');
+  if (vb) vb.textContent = t.verifyBtn[lang];
+  const ci = document.getElementById('chat-input');
+  if (ci) ci.placeholder = t.chatPlaceholder[lang];
+  const bs = document.querySelector('.btn-send');
+  if (bs) bs.textContent = t.sendMsg[lang];
+  const pn = document.querySelector('.platform-note');
+  if (pn) pn.innerHTML = t.platformNote[lang] + '<br><a href="terms.html" style="color:var(--blue)">' + t.termsLink[lang] + '</a>';
+}
+
 </script>
 </body>
 </html>
