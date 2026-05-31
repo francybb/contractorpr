@@ -3,231 +3,225 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="ContractingPR - Conectamos propietarios con contratistas licenciados en Puerto Rico. Pagos seguros, licencias verificadas.">
+<meta name="description" content="ContractingPR - Conectamos propietarios con contratistas licenciados en Puerto Rico.">
 <title>ContractingPR | Contratistas de Confianza en Puerto Rico</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --ink:#0a0a0a;
-  --paper:#fafaf8;
-  --pr-blue:#0052CC;
-  --pr-blue-light:#e8f0ff;
-  --pr-gold:#D4A017;
-  --pr-green:#1a6b3c;
-  --white:#ffffff;
-  --gray-1:#f5f5f3;
-  --gray-2:#e8e8e4;
-  --gray-3:#9a9a94;
-  --gray-4:#5a5a54;
+  --blue:#0066CC;
+  --blue-dark:#004C99;
+  --blue-light:#E6F0FA;
+  --ink:#0F172A;
+  --paper:#FFFFFF;
+  --gray-1:#F8FAFC;
+  --gray-2:#E2E8F0;
+  --gray-3:#94A3B8;
+  --gray-4:#475569;
+  --gray-5:#1E293B;
+  --gold:#F59E0B;
+  --green:#10B981;
   --radius:12px;
   --radius-lg:20px;
 }
 html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);line-height:1.6;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;color:var(--ink);line-height:1.6;overflow-x:hidden}
 a{text-decoration:none;color:inherit}
-img{max-width:100%}
 
 /* ANNOUNCEMENT BAR */
-.bar{background:var(--pr-blue);color:white;text-align:center;padding:10px 20px;font-size:13px;font-weight:500;letter-spacing:0.02em}
-.bar span{opacity:0.7;margin:0 16px}
+.bar{background:var(--blue);color:white;text-align:center;padding:10px 20px;font-size:13px;font-weight:500}
+.bar-sep{opacity:0.5;margin:0 12px}
 
 /* NAV */
-.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(250,250,248,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-2)}
-.nav{max-width:1200px;margin:0 auto;padding:0 24px;height:68px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:10px}
-.logo-mark{width:34px;height:34px;background:var(--pr-blue);border-radius:8px;display:grid;place-items:center;color:white;font-size:16px;font-weight:800}
-.nav-links{display:flex;align-items:center;gap:32px;list-style:none}
+.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-2)}
+.nav{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:800;color:var(--blue);display:flex;align-items:center;gap:10px}
+.logo-box{width:34px;height:34px;background:var(--blue);border-radius:8px;display:grid;place-items:center;color:white;font-weight:800;font-size:16px}
+.nav-links{display:flex;align-items:center;gap:28px;list-style:none}
 .nav-links a{font-size:14px;font-weight:500;color:var(--gray-4);transition:color 0.2s}
-.nav-links a:hover{color:var(--ink)}
-.nav-right{display:flex;align-items:center;gap:12px}
-.lang{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;color:var(--gray-4);transition:all 0.2s}
-.lang:hover{border-color:var(--pr-blue);color:var(--pr-blue)}
-.btn-nav{background:var(--pr-blue);color:white;padding:9px 20px;border-radius:8px;font-size:14px;font-weight:500;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
-.btn-nav:hover{background:#003fa3;transform:translateY(-1px)}
+.nav-links a:hover{color:var(--blue)}
+.nav-right{display:flex;align-items:center;gap:10px}
+.lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;color:var(--gray-4);transition:all 0.2s}
+.lang-btn:hover{border-color:var(--blue);color:var(--blue)}
+.btn-nav{background:var(--blue);color:white;padding:9px 18px;border-radius:8px;font-size:14px;font-weight:500;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s}
+.btn-nav:hover{background:var(--blue-dark)}
 
 /* HERO */
-.hero{background:var(--ink);color:white;padding:100px 24px 80px;position:relative;overflow:hidden;min-height:92vh;display:flex;align-items:center}
-.hero-bg{position:absolute;inset:0;background:linear-gradient(135deg,#0a0a0a 0%,#0d1f3c 50%,#0a1628 100%);z-index:0}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:60px 60px;z-index:1}
-.hero-glow{position:absolute;top:-200px;right:-100px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,82,204,0.3) 0%,transparent 70%);z-index:1}
-.hero-glow2{position:absolute;bottom:-100px;left:-100px;width:400px;height:400px;background:radial-gradient(circle,rgba(212,160,23,0.15) 0%,transparent 70%);z-index:1}
-.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:2;display:grid;grid-template-columns:1fr 380px;gap:60px;align-items:center;width:100%}
-.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);padding:6px 14px;border-radius:100px;font-size:12px;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:28px;color:rgba(255,255,255,0.8)}
-.hero-tag-dot{width:6px;height:6px;background:#22c55e;border-radius:50%;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.6;transform:scale(1.3)}}
-.hero h1{font-family:'Syne',sans-serif;font-size:clamp(36px,4vw,56px);font-weight:800;line-height:1.05;margin-bottom:24px;letter-spacing:-0.02em}
-.hero h1 em{font-style:italic;color:var(--pr-gold);font-weight:700}
-.hero-sub{font-size:18px;color:rgba(255,255,255,0.65);margin-bottom:40px;line-height:1.7;max-width:520px;font-weight:300}
-.hero-actions{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:56px}
-.btn-primary{background:var(--pr-blue);color:white;padding:15px 28px;border-radius:10px;font-size:16px;font-weight:500;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px}
-.btn-primary:hover{background:#003fa3;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,82,204,0.4)}
-.btn-ghost{background:rgba(255,255,255,0.06);color:white;padding:15px 28px;border-radius:10px;font-size:16px;font-weight:500;border:1px solid rgba(255,255,255,0.15);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s}
-.btn-ghost:hover{background:rgba(255,255,255,0.1);border-color:rgba(255,255,255,0.3)}
-.hero-proof{display:flex;align-items:center;gap:24px}
-.proof-avatars{display:flex}
-.proof-avatars span{width:36px;height:36px;border-radius:50%;border:2px solid var(--ink);background:var(--gray-2);display:grid;place-items:center;font-size:14px;margin-left:-10px}
-.proof-avatars span:first-child{margin-left:0}
-.proof-text{font-size:13px;color:rgba(255,255,255,0.5)}
-.proof-text strong{color:white;display:block;font-size:14px}
+.hero{background:linear-gradient(135deg,#0a1628 0%,#0d2040 60%,#0a1628 100%);color:white;padding:110px 24px 90px;position:relative;overflow:hidden}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:64px 64px}
+.hero-glow{position:absolute;top:-150px;right:-50px;width:500px;height:500px;background:radial-gradient(circle,rgba(0,102,204,0.25) 0%,transparent 65%)}
+.hero-inner{max-width:1200px;margin:0 auto;position:relative;z-index:2;display:grid;grid-template-columns:1fr 400px;gap:72px;align-items:center}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);padding:6px 14px;border-radius:100px;font-size:12px;font-weight:500;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:24px;color:rgba(255,255,255,0.75)}
+.tag-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.4}}
+.hero h1{font-size:52px;font-weight:800;line-height:1.1;margin-bottom:20px;letter-spacing:-0.02em;color:white}
+.hero h1 em{font-style:italic;color:#60A5FA;font-weight:700}
+.hero-sub{font-size:18px;color:rgba(255,255,255,0.6);margin-bottom:36px;line-height:1.7;font-weight:300;max-width:500px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:48px}
+.btn-hero{background:var(--blue);color:white;padding:14px 26px;border-radius:10px;font-size:15px;font-weight:600;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s}
+.btn-hero:hover{background:var(--blue-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,102,204,0.4)}
+.btn-hero-ghost{background:rgba(255,255,255,0.07);color:white;padding:14px 26px;border-radius:10px;font-size:15px;font-weight:500;border:1px solid rgba(255,255,255,0.15);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s}
+.btn-hero-ghost:hover{background:rgba(255,255,255,0.12)}
+.hero-proof{display:flex;align-items:center;gap:16px}
+.proof-faces{display:flex}
+.proof-faces span{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.2);display:grid;place-items:center;font-size:14px;margin-left:-8px}
+.proof-faces span:first-child{margin-left:0}
+.proof-text strong{color:white;font-size:14px;display:block}
+.proof-text span{color:rgba(255,255,255,0.45);font-size:13px}
 
 /* HERO CARD */
-.hero-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-lg);padding:28px;backdrop-filter:blur(10px)}
-.card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px}
-.card-badge{background:rgba(34,197,94,0.15);color:#22c55e;padding:4px 10px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:0.05em;text-transform:uppercase}
-.card-contractor{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.08)}
-.contractor-avatar{width:48px;height:48px;background:linear-gradient(135deg,var(--pr-blue),#003fa3);border-radius:12px;display:grid;place-items:center;font-size:22px}
-.contractor-name{font-family:'Syne',sans-serif;font-weight:700;font-size:16px}
-.contractor-trade{font-size:13px;color:rgba(255,255,255,0.5);margin-top:2px}
-.stars{color:var(--pr-gold);font-size:14px;letter-spacing:2px;margin-bottom:12px}
-.card-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
-.stat-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:10px;padding:14px}
-.stat-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:white}
-.stat-lbl{font-size:11px;color:rgba(255,255,255,0.4);margin-top:3px;text-transform:uppercase;letter-spacing:0.05em}
-.card-escrow{background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:10px;padding:14px;display:flex;align-items:center;gap:10px}
-.escrow-icon{font-size:20px}
-.escrow-text{font-size:13px;color:rgba(255,255,255,0.7)}
-.escrow-text strong{color:#22c55e;display:block;font-size:14px}
+.hero-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:var(--radius-lg);padding:26px;backdrop-filter:blur(8px)}
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.card-label{font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.06em;font-weight:600}
+.badge-active{background:rgba(16,185,129,0.15);color:var(--green);padding:4px 10px;border-radius:100px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em}
+.contractor-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.c-avatar{width:46px;height:46px;background:linear-gradient(135deg,var(--blue),var(--blue-dark));border-radius:10px;display:grid;place-items:center;font-size:20px}
+.c-name{font-size:16px;font-weight:700;color:white}
+.c-trade{font-size:13px;color:rgba(255,255,255,0.45);margin-top:2px}
+.card-stars{color:var(--gold);font-size:13px;letter-spacing:1px;margin-bottom:6px}
+.card-rating{font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:16px}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.card-stat{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px;text-align:center}
+.card-stat-val{font-size:20px;font-weight:800;color:white}
+.card-stat-lbl{font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.06em;margin-top:2px}
+.card-escrow{background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.18);border-radius:8px;padding:12px;display:flex;align-items:center;gap:10px}
+.card-escrow-icon{font-size:18px}
+.card-escrow strong{color:var(--green);font-size:13px;display:block}
+.card-escrow span{font-size:12px;color:rgba(255,255,255,0.45)}
 
-/* LOGOS / TRUST BAR */
-.trust-bar{background:var(--gray-1);border-top:1px solid var(--gray-2);border-bottom:1px solid var(--gray-2);padding:20px 24px}
-.trust-bar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
-.trust-item{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:500;color:var(--gray-4)}
-.trust-item span{font-size:18px}
+/* TRUST BAR */
+.trust-bar{background:var(--gray-1);border-bottom:1px solid var(--gray-2);padding:16px 24px}
+.trust-bar-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.tb-item{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:var(--gray-4)}
+.tb-item span:first-child{font-size:16px}
 
-/* STATS SECTION */
-.stats{padding:80px 24px;background:white}
-.stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:2px;background:var(--gray-2);border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--gray-2)}
-.stat-card{background:white;padding:40px 32px;text-align:center}
-.stat-num{font-family:'Syne',sans-serif;font-size:48px;font-weight:800;color:var(--pr-blue);line-height:1}
-.stat-suffix{font-size:28px;font-weight:800;color:var(--pr-blue)}
-.stat-desc{font-size:14px;color:var(--gray-3);margin-top:8px;font-weight:400}
+/* STATS */
+.stats-section{background:white;padding:0}
+.stats-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--gray-2)}
+.stat-cell{padding:40px 32px;text-align:center;border-right:1px solid var(--gray-2)}
+.stat-cell:last-child{border-right:none}
+.stat-big{font-size:44px;font-weight:800;color:var(--blue);line-height:1}
+.stat-desc{font-size:14px;color:var(--gray-3);margin-top:6px}
 
 /* HOW IT WORKS */
-.how{padding:100px 24px;background:var(--paper)}
-.section-label{font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--pr-blue);margin-bottom:16px}
-.section-title{font-family:'Syne',sans-serif;font-size:clamp(28px,3vw,40px);font-weight:800;line-height:1.1;letter-spacing:-0.02em;margin-bottom:16px}
-.section-sub{font-size:17px;color:var(--gray-3);max-width:520px;font-weight:300;line-height:1.7}
+.how{padding:96px 24px;background:white}
+.section-tag{font-size:12px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+.section-h2{font-size:38px;font-weight:800;line-height:1.15;letter-spacing:-0.02em;margin-bottom:14px;color:var(--ink)}
+.section-p{font-size:17px;color:var(--gray-3);font-weight:300;line-height:1.7;max-width:500px}
 .how-inner{max-width:1200px;margin:0 auto}
-.how-header{margin-bottom:64px}
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--gray-2);border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--gray-2)}
-.step{background:var(--paper);padding:48px 36px;position:relative}
-.step-num{font-family:'Syne',sans-serif;font-size:72px;font-weight:800;color:var(--gray-2);line-height:1;margin-bottom:20px;letter-spacing:-0.04em}
-.step h3{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;margin-bottom:12px;letter-spacing:-0.01em}
-.step p{font-size:15px;color:var(--gray-4);line-height:1.7;font-weight:300}
-.step-arrow{position:absolute;right:24px;top:24px;color:var(--gray-2);font-size:24px}
+.how-head{margin-bottom:56px}
+.steps-row{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--gray-2);border:1px solid var(--gray-2);border-radius:var(--radius-lg);overflow:hidden}
+.step-box{background:white;padding:44px 36px}
+.step-n{font-size:56px;font-weight:800;color:var(--gray-2);line-height:1;margin-bottom:20px}
+.step-box h3{font-size:19px;font-weight:700;margin-bottom:10px;color:var(--ink)}
+.step-box p{font-size:15px;color:var(--gray-4);line-height:1.7;font-weight:300}
 
-/* TRADES */
-.trades{padding:100px 24px;background:var(--ink);color:white}
-.trades-inner{max-width:1200px;margin:0 auto}
-.trades-header{margin-bottom:64px}
-.trades-header .section-label{color:var(--pr-gold)}
-.trades-header .section-title{color:white}
-.trades-header .section-sub{color:rgba(255,255,255,0.45)}
-.trades-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-.trade{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:var(--radius-lg);padding:28px 24px;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden}
-.trade::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,82,204,0.1),transparent);opacity:0;transition:opacity 0.3s}
-.trade:hover{border-color:rgba(0,82,204,0.5);transform:translateY(-4px);background:rgba(255,255,255,0.07)}
-.trade:hover::before{opacity:1}
-.trade-icon{font-size:32px;margin-bottom:14px;display:block}
-.trade h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px}
-.trade p{font-size:13px;color:rgba(255,255,255,0.4);line-height:1.5}
-.trade-count{font-size:11px;color:var(--pr-blue);font-weight:600;margin-top:12px;text-transform:uppercase;letter-spacing:0.05em}
+/* SERVICES */
+.services{padding:96px 24px;background:var(--ink);color:white}
+.services-inner{max-width:1200px;margin:0 auto}
+.services-head{margin-bottom:56px}
+.services-head .section-tag{color:#93C5FD}
+.services-head .section-h2{color:white}
+.services-head .section-p{color:rgba(255,255,255,0.4)}
+.services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.service-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:var(--radius-lg);padding:26px 22px;transition:all 0.25s;cursor:pointer}
+.service-card:hover{background:rgba(255,255,255,0.07);border-color:rgba(0,102,204,0.45);transform:translateY(-3px)}
+.svc-icon{font-size:30px;margin-bottom:12px;display:block}
+.service-card h3{font-size:15px;font-weight:700;margin-bottom:5px;color:white}
+.service-card p{font-size:13px;color:rgba(255,255,255,0.35);line-height:1.5}
+.svc-count{font-size:11px;color:#60A5FA;font-weight:600;margin-top:10px;text-transform:uppercase;letter-spacing:0.05em}
 
 /* TRUST SECTION */
-.trust-section{padding:100px 24px;background:white}
+.trust{padding:96px 24px;background:white}
 .trust-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
-.trust-content .section-title{max-width:480px}
-.trust-content .section-sub{margin-bottom:40px}
-.trust-points{display:flex;flex-direction:column;gap:24px}
-.trust-point{display:flex;gap:16px;align-items:flex-start}
-.trust-point-icon{width:44px;height:44px;border-radius:10px;background:var(--pr-blue-light);display:grid;place-items:center;font-size:20px;flex-shrink:0}
-.trust-point h4{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:4px}
-.trust-point p{font-size:14px;color:var(--gray-4);line-height:1.6;font-weight:300}
-.trust-visual{background:var(--gray-1);border-radius:var(--radius-lg);padding:36px;border:1px solid var(--gray-2)}
-.trust-score{text-align:center;margin-bottom:32px;padding-bottom:32px;border-bottom:1px solid var(--gray-2)}
-.score-num{font-family:'Syne',sans-serif;font-size:72px;font-weight:800;color:var(--pr-blue);line-height:1}
-.score-label{font-size:14px;color:var(--gray-3);margin-top:4px}
-.trust-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-.metric{text-align:center}
-.metric-val{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--ink)}
-.metric-label{font-size:12px;color:var(--gray-3);margin-top:4px;text-transform:uppercase;letter-spacing:0.05em}
+.trust-points{display:flex;flex-direction:column;gap:22px;margin-top:36px}
+.tp{display:flex;gap:14px;align-items:flex-start}
+.tp-icon{width:42px;height:42px;background:var(--blue-light);border-radius:10px;display:grid;place-items:center;font-size:18px;flex-shrink:0}
+.tp h4{font-size:16px;font-weight:700;margin-bottom:4px;color:var(--ink)}
+.tp p{font-size:14px;color:var(--gray-4);line-height:1.65;font-weight:300}
+.trust-card{background:var(--gray-1);border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:36px}
+.tc-score{text-align:center;padding-bottom:28px;margin-bottom:28px;border-bottom:1px solid var(--gray-2)}
+.tc-num{font-size:64px;font-weight:800;color:var(--blue);line-height:1}
+.tc-stars{color:var(--gold);font-size:18px;margin:8px 0}
+.tc-label{font-size:13px;color:var(--gray-3)}
+.tc-metrics{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tc-metric{text-align:center}
+.tc-m-val{font-size:26px;font-weight:800;color:var(--ink)}
+.tc-m-lbl{font-size:11px;color:var(--gray-3);text-transform:uppercase;letter-spacing:0.05em;margin-top:3px}
 
 /* TESTIMONIALS */
-.testimonials{padding:100px 24px;background:var(--gray-1)}
+.testimonials{padding:96px 24px;background:var(--gray-1)}
 .test-inner{max-width:1200px;margin:0 auto}
-.test-header{margin-bottom:64px}
-.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.testimonial{background:white;border-radius:var(--radius-lg);padding:32px;border:1px solid var(--gray-2)}
-.test-stars{color:var(--pr-gold);font-size:14px;margin-bottom:16px}
-.test-quote{font-size:15px;color:var(--gray-4);line-height:1.7;margin-bottom:24px;font-style:italic;font-weight:300}
-.test-author{display:flex;align-items:center;gap:12px}
-.author-avatar{width:44px;height:44px;border-radius:10px;background:var(--pr-blue-light);display:grid;place-items:center;font-size:20px}
-.author-name{font-family:'Syne',sans-serif;font-size:15px;font-weight:700}
-.author-loc{font-size:13px;color:var(--gray-3)}
+.test-head{margin-bottom:56px}
+.test-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.test-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:30px}
+.test-stars{color:var(--gold);font-size:13px;margin-bottom:14px}
+.test-quote{font-size:15px;color:var(--gray-4);line-height:1.75;margin-bottom:22px;font-style:italic;font-weight:300}
+.test-author{display:flex;align-items:center;gap:10px}
+.ta-avatar{width:40px;height:40px;background:var(--blue-light);border-radius:8px;display:grid;place-items:center;font-size:18px}
+.ta-name{font-size:15px;font-weight:700;color:var(--ink)}
+.ta-loc{font-size:12px;color:var(--gray-3)}
 
 /* CTA */
-.cta-section{padding:120px 24px;background:var(--pr-blue);color:white;text-align:center;position:relative;overflow:hidden}
-.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(255,255,255,0.08) 0%,transparent 70%)}
-.cta-inner{max-width:800px;margin:0 auto;position:relative;z-index:1}
-.cta-inner .section-label{color:rgba(255,255,255,0.6)}
-.cta-inner .section-title{color:white;margin-bottom:20px}
-.cta-inner p{font-size:18px;color:rgba(255,255,255,0.7);margin-bottom:48px;font-weight:300}
-.cta-buttons{display:flex;gap:16px;justify-content:center;flex-wrap:wrap}
-.btn-white{background:white;color:var(--pr-blue);padding:16px 32px;border-radius:10px;font-size:16px;font-weight:600;border:none;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
-.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.2)}
-.btn-outline-white{background:transparent;color:white;padding:16px 32px;border-radius:10px;font-size:16px;font-weight:500;border:1.5px solid rgba(255,255,255,0.3);cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif}
-.btn-outline-white:hover{border-color:white;background:rgba(255,255,255,0.08)}
+.cta{padding:110px 24px;background:var(--blue);text-align:center;color:white}
+.cta-inner{max-width:680px;margin:0 auto}
+.cta .section-tag{color:rgba(255,255,255,0.55)}
+.cta .section-h2{color:white;margin-bottom:18px}
+.cta p{font-size:17px;color:rgba(255,255,255,0.65);margin-bottom:44px;font-weight:300}
+.cta-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.btn-white{background:white;color:var(--blue);padding:15px 30px;border-radius:10px;font-size:16px;font-weight:600;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s}
+.btn-white:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.15)}
+.btn-outline-w{background:transparent;color:white;padding:15px 30px;border-radius:10px;font-size:16px;font-weight:500;border:1.5px solid rgba(255,255,255,0.3);cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s}
+.btn-outline-w:hover{border-color:white;background:rgba(255,255,255,0.08)}
 
 /* FOOTER */
-footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:64px 24px 32px}
-.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px}
-.footer-brand .logo{color:white;margin-bottom:14px;display:flex}
-.footer-desc{font-size:14px;line-height:1.7;font-weight:300}
-.footer-flag{margin-top:16px;font-size:22px}
-footer h5{font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:white;margin-bottom:16px;letter-spacing:0.05em;text-transform:uppercase}
+footer{background:var(--gray-5);color:rgba(255,255,255,0.45);padding:60px 24px 28px}
+.footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:40px}
+.f-logo{font-size:18px;font-weight:800;color:white;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.f-desc{font-size:14px;line-height:1.7;font-weight:300}
+.f-flag{margin-top:14px;font-size:20px}
+footer h5{font-size:12px;font-weight:700;color:white;margin-bottom:14px;text-transform:uppercase;letter-spacing:0.06em}
 footer ul{list-style:none}
-footer ul li{margin-bottom:10px}
-footer ul li a{font-size:14px;color:rgba(255,255,255,0.4);transition:color 0.2s;font-weight:300}
+footer ul li{margin-bottom:9px}
+footer ul li a{font-size:14px;color:rgba(255,255,255,0.38);transition:color 0.2s;font-weight:300}
 footer ul li a:hover{color:white}
-.footer-bottom{border-top:1px solid rgba(255,255,255,0.08);padding-top:24px;display:flex;justify-content:space-between;font-size:13px}
+.f-bottom{border-top:1px solid rgba(255,255,255,0.07);padding-top:22px;display:flex;justify-content:space-between;font-size:13px}
 
 /* RESPONSIVE */
 @media(max-width:900px){
-  .hero-inner{grid-template-columns:1fr}
+  .hero-inner,.trust-inner{grid-template-columns:1fr}
   .hero-card{display:none}
-  .stats-inner{grid-template-columns:repeat(2,1fr)}
-  .steps{grid-template-columns:1fr}
-  .trades-grid{grid-template-columns:repeat(2,1fr)}
-  .trust-inner{grid-template-columns:1fr}
+  .hero h1{font-size:36px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .stat-cell{border-right:none;border-bottom:1px solid var(--gray-2)}
+  .steps-row{grid-template-columns:1fr}
+  .services-grid{grid-template-columns:repeat(2,1fr)}
   .test-grid{grid-template-columns:1fr}
   .footer-inner{grid-template-columns:1fr 1fr}
   .nav-links{display:none}
+  .section-h2{font-size:28px}
 }
 
 /* ANIMATIONS */
-.fade-up{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease}
-.fade-up.visible{opacity:1;transform:translateY(0)}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.65s ease,transform 0.65s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
 </style>
 </head>
 <body>
 
-<!-- ANNOUNCEMENT BAR -->
+<!-- BAR -->
 <div class="bar">
   🇵🇷 Ahora sirviendo los 78 municipios de Puerto Rico
-  <span>·</span>
+  <span class="bar-sep">·</span>
   Contratistas verificados con licencia ARPE
-  <span>·</span>
+  <span class="bar-sep">·</span>
   Pagos protegidos en custodia
 </div>
 
 <!-- NAV -->
 <div class="nav-wrap">
   <nav class="nav">
-    <div class="logo">
-      <div class="logo-mark">C</div>
-      ContractingPR
-    </div>
+    <div class="logo"><div class="logo-box">C</div>ContractingPR</div>
     <ul class="nav-links">
       <li><a href="#como-funciona" data-es="Cómo funciona" data-en="How it works">Cómo funciona</a></li>
       <li><a href="#servicios" data-es="Servicios" data-en="Services">Servicios</a></li>
@@ -235,73 +229,54 @@ footer ul li a:hover{color:white}
       <li><a href="#opiniones" data-es="Opiniones" data-en="Reviews">Opiniones</a></li>
     </ul>
     <div class="nav-right">
-      <button class="lang" onclick="toggleLang()">English</button>
-      <a href="signup.html"><button class="btn-nav" data-es="Registrarme como Contratista" data-en="Join as Contractor">Registrarme como Contratista</button></a>
+      <button class="lang-btn" onclick="toggleLang()">English</button>
+      <a href="signup.html"><button class="btn-nav" data-es="Soy Contratista" data-en="I'm a Contractor">Soy Contratista</button></a>
     </div>
   </nav>
 </div>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg"></div>
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
-  <div class="hero-glow2"></div>
   <div class="hero-inner">
-    <div class="hero-text">
-      <div class="hero-tag">
-        <span class="hero-tag-dot"></span>
-        <span data-es="Plataforma activa en Puerto Rico" data-en="Live platform in Puerto Rico">Plataforma activa en Puerto Rico</span>
-      </div>
-      <h1 data-es="Contratistas de <em>confianza</em> para tu hogar" data-en="Trusted contractors for <em>your home</em>">Contratistas de <em>confianza</em> para tu hogar</h1>
-      <p class="hero-sub" data-es="Conectamos propietarios con contratistas licenciados y verificados en Puerto Rico. Pagos seguros en custodia, trabajo garantizado o devolvemos tu dinero." data-en="We connect homeowners with licensed, verified contractors in Puerto Rico. Safe escrow payments, guaranteed work or your money back.">Conectamos propietarios con contratistas licenciados y verificados en Puerto Rico. Pagos seguros en custodia, trabajo garantizado o devolvemos tu dinero.</p>
+    <div>
+      <div class="hero-tag"><span class="tag-dot"></span><span data-es="Plataforma activa en Puerto Rico" data-en="Live platform in Puerto Rico">Plataforma activa en Puerto Rico</span></div>
+      <h1 data-es="Contratistas de <em>confianza</em> para tu hogar" data-en="<em>Trusted</em> contractors for your home">Contratistas de <em>confianza</em> para tu hogar</h1>
+      <p class="hero-sub" data-es="Conectamos propietarios con contratistas licenciados en Puerto Rico. Pagos seguros en custodia, trabajo garantizado." data-en="We connect homeowners with licensed contractors in Puerto Rico. Safe escrow payments, guaranteed work.">Conectamos propietarios con contratistas licenciados en Puerto Rico. Pagos seguros en custodia, trabajo garantizado.</p>
       <div class="hero-actions">
-        <button class="btn-primary" data-es="📋 Publicar mi trabajo gratis" data-en="📋 Post my job for free">📋 Publicar mi trabajo gratis</button>
-        <a href="signup.html"><button class="btn-ghost" data-es="Soy contratista →" data-en="I'm a contractor →">Soy contratista →</button></a>
+        <button class="btn-hero" data-es="📋 Publicar mi trabajo — Gratis" data-en="📋 Post my job — Free">📋 Publicar mi trabajo — Gratis</button>
+        <a href="signup.html"><button class="btn-hero-ghost" data-es="Soy contratista →" data-en="I'm a contractor →">Soy contratista →</button></a>
       </div>
       <div class="hero-proof">
-        <div class="proof-avatars">
-          <span>👷</span><span>🔧</span><span>⚡</span><span>🏗️</span>
-        </div>
+        <div class="proof-faces"><span>👷</span><span>🔧</span><span>⚡</span><span>🏗️</span></div>
         <div class="proof-text">
           <strong data-es="500+ contratistas verificados" data-en="500+ verified contractors">500+ contratistas verificados</strong>
           <span data-es="listos en los 78 municipios" data-en="ready across 78 municipalities">listos en los 78 municipios</span>
         </div>
       </div>
     </div>
-
     <div class="hero-card">
-      <div class="card-header">
-        <div>
-          <div style="font-size:11px;color:rgba(255,255,255,0.4);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px" data-es="Contratista verificado" data-en="Verified contractor">Contratista verificado</div>
-        </div>
-        <div class="card-badge" data-es="Activo" data-en="Active">Activo</div>
+      <div class="card-top">
+        <span class="card-label" data-es="Contratista verificado" data-en="Verified contractor">Contratista verificado</span>
+        <span class="badge-active" data-es="Activo" data-en="Active">Activo</span>
       </div>
-      <div class="card-contractor">
-        <div class="contractor-avatar">👷</div>
+      <div class="contractor-row">
+        <div class="c-avatar">👷</div>
         <div>
-          <div class="contractor-name">Carlos Rodríguez</div>
-          <div class="contractor-trade" data-es="Plomería · San Juan, PR" data-en="Plumbing · San Juan, PR">Plomería · San Juan, PR</div>
+          <div class="c-name">Carlos Rodríguez</div>
+          <div class="c-trade" data-es="Plomería · San Juan, PR" data-en="Plumbing · San Juan, PR">Plomería · San Juan, PR</div>
         </div>
       </div>
-      <div class="stars">★★★★★</div>
-      <div style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:16px" data-es="4.9 de 5 · 127 trabajos completados" data-en="4.9 of 5 · 127 jobs completed">4.9 de 5 · 127 trabajos completados</div>
-      <div class="card-stats">
-        <div class="stat-box">
-          <div class="stat-val">$0</div>
-          <div class="stat-lbl" data-es="Disputas" data-en="Disputes">Disputas</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-val">100%</div>
-          <div class="stat-lbl" data-es="Completado" data-en="Completed">Completado</div>
-        </div>
+      <div class="card-stars">★★★★★</div>
+      <div class="card-rating" data-es="4.9 de 5 · 127 trabajos completados" data-en="4.9 of 5 · 127 jobs completed">4.9 de 5 · 127 trabajos completados</div>
+      <div class="card-grid">
+        <div class="card-stat"><div class="card-stat-val">$0</div><div class="card-stat-lbl" data-es="Disputas" data-en="Disputes">Disputas</div></div>
+        <div class="card-stat"><div class="card-stat-val">100%</div><div class="card-stat-lbl" data-es="Completado" data-en="Completed">Completado</div></div>
       </div>
       <div class="card-escrow">
-        <div class="escrow-icon">🔒</div>
-        <div class="escrow-text">
-          <strong data-es="Pago en custodia activo" data-en="Escrow payment active">Pago en custodia activo</strong>
-          <span data-es="Se libera cuando apruebes el trabajo" data-en="Released when you approve the work">Se libera cuando apruebes el trabajo</span>
-        </div>
+        <div class="card-escrow-icon">🔒</div>
+        <div><strong data-es="Pago en custodia activo" data-en="Escrow payment active">Pago en custodia activo</strong><span data-es="Se libera cuando apruebes el trabajo" data-en="Released when you approve the work">Se libera cuando apruebes el trabajo</span></div>
       </div>
     </div>
   </div>
@@ -310,141 +285,97 @@ footer ul li a:hover{color:white}
 <!-- TRUST BAR -->
 <div class="trust-bar">
   <div class="trust-bar-inner">
-    <div class="trust-item"><span>🛡️</span> <span data-es="Licencias ARPE verificadas" data-en="ARPE licenses verified">Licencias ARPE verificadas</span></div>
-    <div class="trust-item"><span>💰</span> <span data-es="Pagos en custodia seguros" data-en="Safe escrow payments">Pagos en custodia seguros</span></div>
-    <div class="trust-item"><span>⭐</span> <span data-es="Reseñas de clientes reales" data-en="Real customer reviews">Reseñas de clientes reales</span></div>
-    <div class="trust-item"><span>📱</span> <span data-es="ATH Móvil aceptado" data-en="ATH Móvil accepted">ATH Móvil aceptado</span></div>
-    <div class="trust-item"><span>🇵🇷</span> <span data-es="Hecho para Puerto Rico" data-en="Made for Puerto Rico">Hecho para Puerto Rico</span></div>
+    <div class="tb-item"><span>🛡️</span><span data-es="Licencias ARPE verificadas" data-en="ARPE licenses verified">Licencias ARPE verificadas</span></div>
+    <div class="tb-item"><span>💰</span><span data-es="Pagos en custodia seguros" data-en="Safe escrow payments">Pagos en custodia seguros</span></div>
+    <div class="tb-item"><span>⭐</span><span data-es="Reseñas verificadas" data-en="Verified reviews">Reseñas verificadas</span></div>
+    <div class="tb-item"><span>📱</span><span data-es="ATH Móvil aceptado" data-en="ATH Móvil accepted">ATH Móvil aceptado</span></div>
+    <div class="tb-item"><span>🇵🇷</span><span data-es="Hecho para Puerto Rico" data-en="Made for Puerto Rico">Hecho para Puerto Rico</span></div>
   </div>
 </div>
 
 <!-- STATS -->
-<section class="stats">
-  <div class="stats-inner fade-up">
-    <div class="stat-card">
-      <div class="stat-num">500<span class="stat-suffix">+</span></div>
-      <div class="stat-desc" data-es="Contratistas verificados" data-en="Verified contractors">Contratistas verificados</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">78</div>
-      <div class="stat-desc" data-es="Municipios cubiertos" data-en="Municipalities covered">Municipios cubiertos</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">98<span class="stat-suffix">%</span></div>
-      <div class="stat-desc" data-es="Trabajos completados" data-en="Jobs completed">Trabajos completados</div>
-    </div>
-    <div class="stat-card">
-      <div class="stat-num">$0</div>
-      <div class="stat-desc" data-es="Perdido en disputas" data-en="Lost in disputes">Perdido en disputas</div>
-    </div>
+<section class="stats-section">
+  <div class="stats-grid reveal">
+    <div class="stat-cell"><div class="stat-big">500+</div><div class="stat-desc" data-es="Contratistas verificados" data-en="Verified contractors">Contratistas verificados</div></div>
+    <div class="stat-cell"><div class="stat-big">78</div><div class="stat-desc" data-es="Municipios cubiertos" data-en="Municipalities covered">Municipios cubiertos</div></div>
+    <div class="stat-cell"><div class="stat-big">98%</div><div class="stat-desc" data-es="Trabajos completados" data-en="Jobs completed">Trabajos completados</div></div>
+    <div class="stat-cell"><div class="stat-big">$0</div><div class="stat-desc" data-es="Perdido en disputas" data-en="Lost in disputes">Perdido en disputas</div></div>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
 <section class="how" id="como-funciona">
   <div class="how-inner">
-    <div class="how-header fade-up">
-      <div class="section-label" data-es="Proceso simple" data-en="Simple process">Proceso simple</div>
-      <h2 class="section-title" data-es="Tres pasos para el contratista correcto" data-en="Three steps to the right contractor">Tres pasos para el contratista correcto</h2>
-      <p class="section-sub" data-es="Sin llamadas en frío, sin incertidumbre. Solo conectamos con quien puede hacer el trabajo." data-en="No cold calls, no uncertainty. We just connect you with who can do the job.">Sin llamadas en frío, sin incertidumbre. Solo conectamos con quien puede hacer el trabajo.</p>
+    <div class="how-head reveal">
+      <div class="section-tag" data-es="Proceso simple" data-en="Simple process">Proceso simple</div>
+      <h2 class="section-h2" data-es="Tres pasos para el contratista correcto" data-en="Three steps to the right contractor">Tres pasos para el contratista correcto</h2>
+      <p class="section-p" data-es="Sin llamadas en frío, sin incertidumbre. Solo el contratista correcto para tu trabajo." data-en="No cold calls, no uncertainty. Just the right contractor for your job.">Sin llamadas en frío, sin incertidumbre. Solo el contratista correcto para tu trabajo.</p>
     </div>
-    <div class="steps fade-up">
-      <div class="step">
-        <div class="step-num">01</div>
-        <div class="step-arrow">→</div>
+    <div class="steps-row reveal">
+      <div class="step-box">
+        <div class="step-n">01</div>
         <h3 data-es="Publica tu trabajo" data-en="Post your job">Publica tu trabajo</h3>
         <p data-es="Describe lo que necesitas en menos de 2 minutos. Es completamente gratis y sin compromiso." data-en="Describe what you need in under 2 minutes. Completely free, no commitment.">Describe lo que necesitas en menos de 2 minutos. Es completamente gratis y sin compromiso.</p>
       </div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <div class="step-arrow">→</div>
+      <div class="step-box">
+        <div class="step-n">02</div>
         <h3 data-es="Recibe propuestas" data-en="Receive proposals">Recibe propuestas</h3>
         <p data-es="Contratistas licenciados de tu área te envían propuestas con precios, reseñas y licencias verificadas." data-en="Licensed contractors from your area send proposals with prices, reviews, and verified licenses.">Contratistas licenciados de tu área te envían propuestas con precios, reseñas y licencias verificadas.</p>
       </div>
-      <div class="step">
-        <div class="step-num">03</div>
+      <div class="step-box">
+        <div class="step-n">03</div>
         <h3 data-es="Paga con seguridad" data-en="Pay safely">Paga con seguridad</h3>
-        <p data-es="Tu dinero queda en custodia hasta que confirmes que el trabajo está completo y a tu satisfacción." data-en="Your money stays in escrow until you confirm the work is complete and satisfactory.">Tu dinero queda en custodia hasta que confirmes que el trabajo está completo y a tu satisfacción.</p>
+        <p data-es="Tu dinero queda en custodia hasta que confirmes que el trabajo está completo y a tu satisfacción." data-en="Your money stays in escrow until you confirm the work is complete and to your satisfaction.">Tu dinero queda en custodia hasta que confirmes que el trabajo está completo y a tu satisfacción.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TRADES -->
-<section class="trades" id="servicios">
-  <div class="trades-inner">
-    <div class="trades-header fade-up">
-      <div class="section-label" data-es="Todos los oficios" data-en="All trades">Todos los oficios</div>
-      <h2 class="section-title" data-es="Cualquier trabajo, cualquier municipio" data-en="Any job, any municipality">Cualquier trabajo, cualquier municipio</h2>
-      <p class="section-sub" data-es="De reparaciones de emergencia a remodelaciones completas — tenemos el contratista para ti." data-en="From emergency repairs to full renovations — we have the contractor for you.">De reparaciones de emergencia a remodelaciones completas — tenemos el contratista para ti.</p>
+<!-- SERVICES -->
+<section class="services" id="servicios">
+  <div class="services-inner">
+    <div class="services-head reveal">
+      <div class="section-tag" data-es="Todos los oficios" data-en="All trades">Todos los oficios</div>
+      <h2 class="section-h2" data-es="Cualquier trabajo, cualquier municipio" data-en="Any job, any municipality">Cualquier trabajo, cualquier municipio</h2>
+      <p class="section-p" data-es="De reparaciones de emergencia a remodelaciones completas — tenemos el contratista para ti." data-en="From emergency repairs to full renovations — we have the contractor for you.">De reparaciones de emergencia a remodelaciones completas — tenemos el contratista para ti.</p>
     </div>
-    <div class="trades-grid fade-up">
-      <div class="trade"><span class="trade-icon">🔧</span><h3 data-es="Plomería" data-en="Plumbing">Plomería</h3><p data-es="Tuberías, filtraciones, instalaciones" data-en="Pipes, leaks, installations">Tuberías, filtraciones, instalaciones</p><div class="trade-count" data-es="89 contratistas →" data-en="89 contractors →">89 contratistas →</div></div>
-      <div class="trade"><span class="trade-icon">⚡</span><h3 data-es="Electricidad" data-en="Electrical">Electricidad</h3><p data-es="Paneles, cableado, generadores" data-en="Panels, wiring, generators">Paneles, cableado, generadores</p><div class="trade-count" data-es="74 contratistas →" data-en="74 contractors →">74 contratistas →</div></div>
-      <div class="trade"><span class="trade-icon">❄️</span><h3 data-es="Aire Acondicionado" data-en="AC Repair">Aire Acondicionado</h3><p data-es="Instalación, mantenimiento, reparación" data-en="Installation, maintenance, repair">Instalación, mantenimiento, reparación</p><div class="trade-count" data-es="112 contratistas →" data-en="112 contractors →">112 contratistas →</div></div>
-      <div class="trade"><span class="trade-icon">🏗️</span><h3 data-es="Construcción" data-en="Construction">Construcción</h3><p data-es="Remodelaciones, ampliaciones, obras" data-en="Renovations, extensions, works">Remodelaciones, ampliaciones, obras</p><div class="trade-count" data-es="67 contratistas →" data-en="67 contractors →">67 contratistas →</div></div>
-      <div class="trade"><span class="trade-icon">🎨</span><h3 data-es="Pintura" data-en="Painting">Pintura</h3><p data-es="Interior, exterior, texturizados" data-en="Interior, exterior, textures">Interior, exterior, texturizados</p><div class="trade-count" data-es="55 contratistas →" data-en="55 contractors →">55 contratistas →</div></div>
-      <div class="trade"><span class="trade-icon">🔨</span><h3 data-es="Carpintería" data-en="Carpentry">Carpintería</h3><p data-es="Puertas, ventanas, muebles a medida" data-en="Doors, windows, custom furniture">Puertas, ventanas, muebles a medida</p><div class="trade-count" data-es="43 contratistas →" data-en="43 contractors →">43 contratistas →</div></div>
-      <div class="trade"><span class="trade-icon">🏠</span><h3 data-es="Techos" data-en="Roofing">Techos</h3><p data-es="Impermeabilización, reparación, zinc" data-en="Waterproofing, repair, zinc">Impermeabilización, reparación, zinc</p><div class="trade-count" data-es="38 contratistas →" data-en="38 contractors →">38 contratistas →</div></div>
-      <div class="trade"><span class="trade-icon">🌿</span><h3 data-es="Paisajismo" data-en="Landscaping">Paisajismo</h3><p data-es="Jardines, piscinas, exteriores" data-en="Gardens, pools, outdoors">Jardines, piscinas, exteriores</p><div class="trade-count" data-es="29 contratistas →" data-en="29 contractors →">29 contratistas →</div></div>
+    <div class="services-grid reveal">
+      <div class="service-card"><span class="svc-icon">🔧</span><h3 data-es="Plomería" data-en="Plumbing">Plomería</h3><p data-es="Tuberías, filtraciones, instalaciones" data-en="Pipes, leaks, installations">Tuberías, filtraciones, instalaciones</p><div class="svc-count" data-es="89 contratistas →" data-en="89 contractors →">89 contratistas →</div></div>
+      <div class="service-card"><span class="svc-icon">⚡</span><h3 data-es="Electricidad" data-en="Electrical">Electricidad</h3><p data-es="Paneles, cableado, generadores" data-en="Panels, wiring, generators">Paneles, cableado, generadores</p><div class="svc-count" data-es="74 contratistas →" data-en="74 contractors →">74 contratistas →</div></div>
+      <div class="service-card"><span class="svc-icon">❄️</span><h3 data-es="Aire Acondicionado" data-en="AC Repair">Aire Acondicionado</h3><p data-es="Instalación, mantenimiento, reparación" data-en="Installation, maintenance, repair">Instalación, mantenimiento, reparación</p><div class="svc-count" data-es="112 contratistas →" data-en="112 contractors →">112 contratistas →</div></div>
+      <div class="service-card"><span class="svc-icon">🏗️</span><h3 data-es="Construcción" data-en="Construction">Construcción</h3><p data-es="Remodelaciones, ampliaciones, obras" data-en="Renovations, extensions, works">Remodelaciones, ampliaciones, obras</p><div class="svc-count" data-es="67 contratistas →" data-en="67 contractors →">67 contratistas →</div></div>
+      <div class="service-card"><span class="svc-icon">🎨</span><h3 data-es="Pintura" data-en="Painting">Pintura</h3><p data-es="Interior, exterior, texturizados" data-en="Interior, exterior, textures">Interior, exterior, texturizados</p><div class="svc-count" data-es="55 contratistas →" data-en="55 contractors →">55 contratistas →</div></div>
+      <div class="service-card"><span class="svc-icon">🔨</span><h3 data-es="Carpintería" data-en="Carpentry">Carpintería</h3><p data-es="Puertas, ventanas, muebles a medida" data-en="Doors, windows, custom furniture">Puertas, ventanas, muebles a medida</p><div class="svc-count" data-es="43 contratistas →" data-en="43 contractors →">43 contratistas →</div></div>
+      <div class="service-card"><span class="svc-icon">🏠</span><h3 data-es="Techos" data-en="Roofing">Techos</h3><p data-es="Impermeabilización, reparación, zinc" data-en="Waterproofing, repair, zinc">Impermeabilización, reparación, zinc</p><div class="svc-count" data-es="38 contratistas →" data-en="38 contractors →">38 contratistas →</div></div>
+      <div class="service-card"><span class="svc-icon">🌿</span><h3 data-es="Paisajismo" data-en="Landscaping">Paisajismo</h3><p data-es="Jardines, piscinas, exteriores" data-en="Gardens, pools, outdoors">Jardines, piscinas, exteriores</p><div class="svc-count" data-es="29 contratistas →" data-en="29 contractors →">29 contratistas →</div></div>
     </div>
   </div>
 </section>
 
 <!-- TRUST -->
-<section class="trust-section" id="seguridad">
+<section class="trust" id="seguridad">
   <div class="trust-inner">
-    <div class="trust-content fade-up">
-      <div class="section-label" data-es="Construido sobre confianza" data-en="Built on trust">Construido sobre confianza</div>
-      <h2 class="section-title" data-es="Tu seguridad es nuestra prioridad absoluta" data-en="Your safety is our absolute priority">Tu seguridad es nuestra prioridad absoluta</h2>
-      <p class="section-sub" data-es="Después del huracán María, la confianza en contratistas quedó dañada. ContractingPR la reconstruye." data-en="After Hurricane Maria, trust in contractors was damaged. ContractingPR rebuilds it.">Después del huracán María, la confianza en contratistas quedó dañada. ContractingPR la reconstruye.</p>
+    <div class="reveal">
+      <div class="section-tag" data-es="Construido sobre confianza" data-en="Built on trust">Construido sobre confianza</div>
+      <h2 class="section-h2" data-es="Tu seguridad es nuestra prioridad" data-en="Your safety is our priority">Tu seguridad es nuestra prioridad</h2>
+      <p class="section-p" data-es="Después del huracán María, la confianza en contratistas quedó dañada. ContractingPR la reconstruye." data-en="After Hurricane Maria, trust in contractors was damaged. ContractingPR rebuilds it.">Después del huracán María, la confianza en contratistas quedó dañada. ContractingPR la reconstruye.</p>
       <div class="trust-points">
-        <div class="trust-point">
-          <div class="trust-point-icon">🛡️</div>
-          <div>
-            <h4 data-es="Licencias ARPE y CIAPR verificadas" data-en="ARPE and CIAPR licenses verified">Licencias ARPE y CIAPR verificadas</h4>
-            <p data-es="Verificamos manualmente cada licencia antes de aprobar a un contratista en la plataforma." data-en="We manually verify every license before approving a contractor on the platform.">Verificamos manualmente cada licencia antes de aprobar a un contratista en la plataforma.</p>
-          </div>
-        </div>
-        <div class="trust-point">
-          <div class="trust-point-icon">💰</div>
-          <div>
-            <h4 data-es="Sistema de pagos en custodia" data-en="Escrow payment system">Sistema de pagos en custodia</h4>
-            <p data-es="Tu pago se libera al contratista solo cuando confirmas que el trabajo está completo." data-en="Your payment is released to the contractor only when you confirm the job is done.">Tu pago se libera al contratista solo cuando confirmas que el trabajo está completo.</p>
-          </div>
-        </div>
-        <div class="trust-point">
-          <div class="trust-point-icon">⭐</div>
-          <div>
-            <h4 data-es="Reseñas 100% verificadas" data-en="100% verified reviews">Reseñas 100% verificadas</h4>
-            <p data-es="Solo clientes que completaron un trabajo real pueden dejar una reseña. Sin reviews falsos." data-en="Only clients who completed a real job can leave a review. No fake reviews.">Solo clientes que completaron un trabajo real pueden dejar una reseña. Sin reviews falsos.</p>
-          </div>
-        </div>
+        <div class="tp"><div class="tp-icon">🛡️</div><div><h4 data-es="Licencias ARPE y CIAPR verificadas" data-en="ARPE and CIAPR licenses verified">Licencias ARPE y CIAPR verificadas</h4><p data-es="Verificamos cada licencia manualmente antes de aprobar a un contratista en la plataforma." data-en="We manually verify every license before approving a contractor on the platform.">Verificamos cada licencia manualmente antes de aprobar a un contratista en la plataforma.</p></div></div>
+        <div class="tp"><div class="tp-icon">💰</div><div><h4 data-es="Sistema de pagos en custodia" data-en="Escrow payment system">Sistema de pagos en custodia</h4><p data-es="Tu pago se libera al contratista solo cuando confirmas que el trabajo está completo." data-en="Your payment is released only when you confirm the job is done.">Tu pago se libera al contratista solo cuando confirmas que el trabajo está completo.</p></div></div>
+        <div class="tp"><div class="tp-icon">⭐</div><div><h4 data-es="Reseñas 100% verificadas" data-en="100% verified reviews">Reseñas 100% verificadas</h4><p data-es="Solo clientes que completaron un trabajo real pueden dejar una reseña. Sin reviews falsos." data-en="Only clients who completed a real job can leave a review. No fake reviews.">Solo clientes que completaron un trabajo real pueden dejar una reseña. Sin reviews falsos.</p></div></div>
       </div>
     </div>
-    <div class="trust-visual fade-up">
-      <div class="trust-score">
-        <div class="score-num">4.9</div>
-        <div class="stars" style="color:var(--pr-gold);font-size:20px;margin:8px 0">★★★★★</div>
-        <div class="score-label" data-es="Calificación promedio de la plataforma" data-en="Platform average rating">Calificación promedio de la plataforma</div>
+    <div class="trust-card reveal">
+      <div class="tc-score">
+        <div class="tc-num">4.9</div>
+        <div class="tc-stars">★★★★★</div>
+        <div class="tc-label" data-es="Calificación promedio de la plataforma" data-en="Platform average rating">Calificación promedio de la plataforma</div>
       </div>
-      <div class="trust-metrics">
-        <div class="metric">
-          <div class="metric-val">$0</div>
-          <div class="metric-label" data-es="Perdido en disputas" data-en="Lost in disputes">Perdido en disputas</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val">98%</div>
-          <div class="metric-label" data-es="Completado" data-en="Completed">Completado</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val">24h</div>
-          <div class="metric-label" data-es="Soporte" data-en="Support">Soporte</div>
-        </div>
-        <div class="metric">
-          <div class="metric-val">78</div>
-          <div class="metric-label" data-es="Municipios" data-en="Municipalities">Municipios</div>
-        </div>
+      <div class="tc-metrics">
+        <div class="tc-metric"><div class="tc-m-val">$0</div><div class="tc-m-lbl" data-es="Perdido" data-en="Lost">Perdido</div></div>
+        <div class="tc-metric"><div class="tc-m-val">98%</div><div class="tc-m-lbl" data-es="Completado" data-en="Completed">Completado</div></div>
+        <div class="tc-metric"><div class="tc-m-val">24h</div><div class="tc-m-lbl" data-es="Soporte" data-en="Support">Soporte</div></div>
+        <div class="tc-metric"><div class="tc-m-val">78</div><div class="tc-m-lbl" data-es="Municipios" data-en="Municipalities">Municipios</div></div>
       </div>
     </div>
   </div>
@@ -453,58 +384,39 @@ footer ul li a:hover{color:white}
 <!-- TESTIMONIALS -->
 <section class="testimonials" id="opiniones">
   <div class="test-inner">
-    <div class="test-header fade-up">
-      <div class="section-label" data-es="Lo que dicen nuestros usuarios" data-en="What our users say">Lo que dicen nuestros usuarios</div>
-      <h2 class="section-title" data-es="Historias reales de Puerto Rico" data-en="Real stories from Puerto Rico">Historias reales de Puerto Rico</h2>
+    <div class="test-head reveal">
+      <div class="section-tag" data-es="Lo que dicen nuestros usuarios" data-en="What our users say">Lo que dicen nuestros usuarios</div>
+      <h2 class="section-h2" data-es="Historias reales de Puerto Rico" data-en="Real stories from Puerto Rico">Historias reales de Puerto Rico</h2>
     </div>
-    <div class="test-grid fade-up">
-      <div class="testimonial">
+    <div class="test-grid reveal">
+      <div class="test-card">
         <div class="test-stars">★★★★★</div>
-        <p class="test-quote" data-es='"Después de María traté con tres contratistas que desaparecieron con el dinero. Con ContractingPR, el pago quedó en custodia y el trabajo se completó perfectamente."' data-en='"After Maria I dealt with three contractors who disappeared with the money. With ContractingPR, payment stayed in escrow and the work was completed perfectly."'>"Después de María traté con tres contratistas que desaparecieron con el dinero. Con ContractingPR, el pago quedó en custodia y el trabajo se completó perfectamente."</p>
-        <div class="test-author">
-          <div class="author-avatar">👩</div>
-          <div>
-            <div class="author-name">María González</div>
-            <div class="author-loc">Bayamón, PR · Remodelación de cocina</div>
-          </div>
-        </div>
+        <p class="test-quote" data-es='"Después de María traté con tres contratistas que desaparecieron con el dinero. Con ContractingPR el pago quedó en custodia y el trabajo se completó perfectamente."' data-en='"After Maria I dealt with three contractors who disappeared with the money. With ContractingPR payment stayed in escrow and the work was completed perfectly."'>"Después de María traté con tres contratistas que desaparecieron con el dinero. Con ContractingPR el pago quedó en custodia y el trabajo se completó perfectamente."</p>
+        <div class="test-author"><div class="ta-avatar">👩</div><div><div class="ta-name">María González</div><div class="ta-loc">Bayamón, PR · Remodelación de cocina</div></div></div>
       </div>
-      <div class="testimonial">
+      <div class="test-card">
         <div class="test-stars">★★★★★</div>
-        <p class="test-quote" data-es='"Como contratista, la plataforma me da trabajos calificados sin tener que hacer mercadeo. Mis clientes llegan con las expectativas correctas y el proceso de pago es limpio."' data-en='"As a contractor, the platform gives me qualified jobs without having to do marketing. My clients arrive with the right expectations and the payment process is clean."'>"Como contratista, la plataforma me da trabajos calificados sin tener que hacer mercadeo. Mis clientes llegan con las expectativas correctas y el proceso de pago es limpio."</p>
-        <div class="test-author">
-          <div class="author-avatar">👨</div>
-          <div>
-            <div class="author-name">Roberto Pérez</div>
-            <div class="author-loc">San Juan, PR · Electricista certificado</div>
-          </div>
-        </div>
+        <p class="test-quote" data-es='"Como contratista, la plataforma me da trabajos calificados sin hacer mercadeo. Mis clientes llegan con las expectativas correctas y el proceso de pago es limpio."' data-en='"As a contractor, the platform gives me qualified jobs without marketing. My clients arrive with the right expectations and the payment process is clean."'>"Como contratista, la plataforma me da trabajos calificados sin hacer mercadeo. Mis clientes llegan con las expectativas correctas y el proceso de pago es limpio."</p>
+        <div class="test-author"><div class="ta-avatar">👨</div><div><div class="ta-name">Roberto Pérez</div><div class="ta-loc">San Juan, PR · Electricista certificado</div></div></div>
       </div>
-      <div class="testimonial">
+      <div class="test-card">
         <div class="test-stars">★★★★★</div>
-        <p class="test-quote" data-es='"El AC se dañó en pleno julio. En 2 horas tenía tres propuestas de técnicos verificados. Al día siguiente estaba instalado. Increíble servicio."' data-en='"The AC broke in the middle of July. In 2 hours I had three proposals from verified technicians. The next day it was installed. Incredible service."'>"El AC se dañó en pleno julio. En 2 horas tenía tres propuestas de técnicos verificados. Al día siguiente estaba instalado. Increíble servicio."</p>
-        <div class="test-author">
-          <div class="author-avatar">👨</div>
-          <div>
-            <div class="author-name">Carlos Morales</div>
-            <div class="author-loc">Ponce, PR · Instalación de AC</div>
-          </div>
-        </div>
+        <p class="test-quote" data-es='"El AC se dañó en pleno julio. En 2 horas tenía tres propuestas de técnicos verificados. Al día siguiente estaba instalado. Increíble."' data-en='"The AC broke in the middle of July. In 2 hours I had three proposals from verified technicians. The next day it was installed. Incredible."'>"El AC se dañó en pleno julio. En 2 horas tenía tres propuestas de técnicos verificados. Al día siguiente estaba instalado. Increíble."</p>
+        <div class="test-author"><div class="ta-avatar">👨</div><div><div class="ta-name">Carlos Morales</div><div class="ta-loc">Ponce, PR · Instalación de AC</div></div></div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section class="cta-section">
-  <div class="cta-glow"></div>
-  <div class="cta-inner fade-up">
-    <div class="section-label" data-es="Empieza hoy" data-en="Start today">Empieza hoy</div>
-    <h2 class="section-title" data-es="Puerto Rico merece contratistas de confianza" data-en="Puerto Rico deserves trustworthy contractors">Puerto Rico merece contratistas de confianza</h2>
-    <p data-es="Únete a la plataforma que está cambiando la industria de la construcción en la isla. Gratis para propietarios. Siempre." data-en="Join the platform that's changing the construction industry on the island. Free for homeowners. Always.">Únete a la plataforma que está cambiando la industria de la construcción en la isla. Gratis para propietarios. Siempre.</p>
-    <div class="cta-buttons">
+<section class="cta">
+  <div class="cta-inner reveal">
+    <div class="section-tag" data-es="Empieza hoy" data-en="Start today">Empieza hoy</div>
+    <h2 class="section-h2" data-es="Puerto Rico merece contratistas de confianza" data-en="Puerto Rico deserves trustworthy contractors">Puerto Rico merece contratistas de confianza</h2>
+    <p data-es="Únete a la plataforma que está cambiando la industria de la construcción en la isla. Gratis para propietarios, siempre." data-en="Join the platform that's changing the construction industry on the island. Free for homeowners, always.">Únete a la plataforma que está cambiando la industria de la construcción en la isla. Gratis para propietarios, siempre.</p>
+    <div class="cta-btns">
       <button class="btn-white" data-es="📋 Publicar mi trabajo — Es gratis" data-en="📋 Post my job — It's free">📋 Publicar mi trabajo — Es gratis</button>
-      <a href="signup.html"><button class="btn-outline-white" data-es="Registrarme como contratista →" data-en="Register as contractor →">Registrarme como contratista →</button></a>
+      <a href="signup.html"><button class="btn-outline-w" data-es="Registrarme como contratista →" data-en="Register as contractor →">Registrarme como contratista →</button></a>
     </div>
   </div>
 </section>
@@ -512,13 +424,10 @@ footer ul li a:hover{color:white}
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
-    <div class="footer-brand">
-      <div class="logo">
-        <div class="logo-mark">C</div>
-        ContractingPR
-      </div>
-      <p class="footer-desc" data-es="La plataforma de confianza para conectar propietarios y contratistas licenciados en Puerto Rico." data-en="The trusted platform connecting homeowners and licensed contractors in Puerto Rico.">La plataforma de confianza para conectar propietarios y contratistas licenciados en Puerto Rico.</p>
-      <div class="footer-flag">🇵🇷</div>
+    <div>
+      <div class="f-logo"><div class="logo-box">C</div>ContractingPR</div>
+      <p class="f-desc" data-es="La plataforma de confianza para conectar propietarios y contratistas licenciados en Puerto Rico." data-en="The trusted platform connecting homeowners and licensed contractors in Puerto Rico.">La plataforma de confianza para conectar propietarios y contratistas licenciados en Puerto Rico.</p>
+      <div class="f-flag">🇵🇷</div>
     </div>
     <div>
       <h5 data-es="Plataforma" data-en="Platform">Plataforma</h5>
@@ -547,7 +456,7 @@ footer ul li a:hover{color:white}
       </ul>
     </div>
   </div>
-  <div class="footer-bottom">
+  <div class="f-bottom">
     <span>© 2026 ContractingPR. <span data-es="Todos los derechos reservados." data-en="All rights reserved.">Todos los derechos reservados.</span></span>
     <span data-es="Hecho con orgullo en Puerto Rico 🇵🇷" data-en="Made with pride in Puerto Rico 🇵🇷">Hecho con orgullo en Puerto Rico 🇵🇷</span>
   </div>
@@ -557,31 +466,18 @@ footer ul li a:hover{color:white}
 let lang='es';
 function toggleLang(){
   lang=lang==='es'?'en':'es';
-  document.querySelector('.lang').textContent=lang==='es'?'English':'Español';
+  document.querySelector('.lang-btn').textContent=lang==='es'?'English':'Español';
   document.querySelectorAll('[data-es]').forEach(el=>{
     const val=lang==='es'?el.dataset.es:el.dataset.en;
-    if(val){
-      if(el.tagName==='H1'||el.innerHTML.includes('<em>')){
-        el.innerHTML=val;
-      } else {
-        el.textContent=val;
-      }
-    }
+    if(!val)return;
+    if(el.tagName==='H1'||el.dataset.es.includes('<em>')){el.innerHTML=val}
+    else{el.textContent=val}
   });
 }
-
-// Scroll animations
-const observer=new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){e.target.classList.add('visible')}
-  });
-},{threshold:0.1,rootMargin:'0px 0px -50px 0px'});
-document.querySelectorAll('.fade-up').forEach(el=>observer.observe(el));
-
-// Header shadow on scroll
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('in')})},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
 window.addEventListener('scroll',()=>{
-  const nav=document.querySelector('.nav-wrap');
-  nav.style.boxShadow=window.scrollY>20?'0 4px 24px rgba(0,0,0,0.08)':'none';
+  document.querySelector('.nav-wrap').style.boxShadow=window.scrollY>10?'0 2px 20px rgba(0,0,0,0.07)':'none';
 });
 </script>
 </body>
