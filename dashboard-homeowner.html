@@ -362,7 +362,10 @@ async function openProposals(jobId, jobTitle) {
       <div class="prop-actions">
         ${isAccepted
           ? `<div class="accepted-tag">✅ Propuesta aceptada</div>
-             <button class="btn-chat" onclick="window.location.href='payment.html?proposal=${p.id}&job=${jobId}'" style="background:var(--green);color:white">💳 Pagar en custodia</button>`
+             ${p.price 
+               ? `<button class="btn-chat" onclick="window.location.href='payment.html?proposal=${p.id}&job=${jobId}'" style="background:var(--green);color:white;margin-left:8px">💳 Pagar en custodia</button>`
+               : `<div style="margin-top:10px;padding:12px;background:var(--blue-light);border-radius:8px;font-size:13px;color:var(--blue-dark)">⏳ Esperando que el contratista confirme el precio antes de proceder al pago.</div>`
+             }`
           : `<button class="btn-accept" onclick="acceptProposal('${p.id}','${jobId}',event)">✅ Aceptar propuesta</button>`
         }
         <button class="btn-chat" onclick="toggleChat('${p.id}','${c.name || 'Contratista'}',event)">💬 Mensaje</button>
@@ -384,13 +387,17 @@ async function openProposals(jobId, jobTitle) {
 
 async function acceptProposal(proposalId, jobId, e) {
   e.stopPropagation();
-  if (!confirm('¿Aceptar esta propuesta? El contratista será notificado.')) return;
+  e.preventDefault();
+  const confirmed = window.confirm('¿Aceptar esta propuesta? El contratista será notificado.');
+  if (!confirmed) return;
   await dbPatch('proposals', proposalId, { status: 'accepted' });
   await dbPatch('jobs', jobId, { status: 'accepted' });
   await loadJobs();
-  // re-open panel
-  const jobRow = document.querySelector(`[onclick*="${jobId}"]`);
-  if (jobRow) jobRow.click();
+  // re-open panel after reload
+  setTimeout(() => {
+    const jobRow = document.querySelector('[onclick*="openProposals"]');
+    if (jobRow) jobRow.click();
+  }, 500);
 }
 
 async function toggleChat(proposalId, name, e) {

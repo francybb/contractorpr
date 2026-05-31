@@ -106,6 +106,17 @@ input::placeholder{color:var(--gray-3)}
 footer{border-top:1px solid var(--gray-2);background:white;padding:20px 24px;text-align:center;font-size:13px;color:var(--gray-3)}
 footer a{color:var(--blue);font-weight:500}
 @media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr}.profile-card{flex-direction:column}}
+
+.price-update-form{margin-top:10px;padding:12px;background:var(--blue-light);border-radius:8px;display:none}
+.price-update-form.show{display:block}
+.price-update-form p{font-size:13px;color:var(--blue-dark);margin-bottom:8px;font-weight:500}
+.price-input-row{display:flex;gap:8px;align-items:center}
+.price-prefix{color:var(--gray-4);font-weight:600;font-size:15px}
+.price-input-row input{flex:1;padding:9px 12px;border:1px solid var(--gray-2);border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;background:white;outline:none}
+.price-input-row input:focus{border-color:var(--blue)}
+.btn-confirm-price{background:var(--blue);color:white;padding:9px 16px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;white-space:nowrap}
+.btn-confirm-price:hover{background:var(--blue-dark)}
+.price-confirmed{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:8px;padding:10px 12px;font-size:13px;color:#059669;margin-top:8px;display:flex;align-items:center;gap:6px}
 </style>
 </head>
 <body>
@@ -304,6 +315,16 @@ async function loadProposals() {
       <div>
         <button class="btn-view-job" onclick="window.location.href='job-detail.html?id=${p.job_id}'">Ver trabajo →</button>
         <button class="btn-chat-prop" onclick="toggleChat('${p.id}',event)">💬 Chat con propietario</button>
+        ${!p.price ? `<button class="btn-chat-prop" onclick="togglePriceForm('${p.id}',event)" style="background:var(--green);margin-left:4px">💰 Confirmar precio</button>` : `<span style="font-size:13px;color:var(--green);font-weight:600;margin-left:8px">✓ Precio: $${parseFloat(p.price).toLocaleString()}</span>`}
+      </div>
+      <div class="price-update-form" id="price-form-${p.id}">
+        <p>Envía el precio final al propietario para proceder al pago:</p>
+        <div class="price-input-row">
+          <span class="price-prefix">$</span>
+          <input type="number" id="price-input-${p.id}" placeholder="0.00" min="1" step="0.01">
+          <button class="btn-confirm-price" onclick="submitPrice('${p.id}',event)">Confirmar precio →</button>
+        </div>
+        <div id="price-confirmed-${p.id}" class="price-confirmed" style="display:none">✅ Precio confirmado. El propietario puede proceder al pago.</div>
       </div>
       <div class="chat-wrap" id="chat-${p.id}">
         <div class="chat-head">
@@ -394,6 +415,30 @@ function toggleLang() {
   });
   if (currentUser) loadProposals();
 }
+
+function togglePriceForm(proposalId, e) {
+  e.stopPropagation();
+  const form = document.getElementById(`price-form-${proposalId}`);
+  form.classList.toggle('show');
+}
+
+async function submitPrice(proposalId, e) {
+  e.stopPropagation();
+  const input = document.getElementById(`price-input-${proposalId}`);
+  const price = parseFloat(input.value);
+  if (!price || price <= 0) { alert('Ingresa un precio válido.'); return; }
+  
+  await fetch(`${SUPABASE_URL}/rest/v1/proposals?id=eq.${proposalId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=minimal' },
+    body: JSON.stringify({ price: price })
+  });
+  
+  document.getElementById(`price-confirmed-${proposalId}`).style.display = 'flex';
+  input.disabled = true;
+  document.querySelector(`[onclick*="submitPrice('${proposalId}']`).disabled = true;
+}
+
 </script>
 </body>
 </html>
