@@ -121,6 +121,7 @@ footer a{color:var(--blue);font-weight:500}
   .form-row{grid-template-columns:1fr}
   .card{padding:24px 20px}
 }
+.lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:Inter,sans-serif;color:var(--gray-4);transition:all 0.2s}.lang-btn:hover{border-color:var(--blue);color:var(--blue)}
 </style>
 </head>
 <body>
@@ -132,16 +133,16 @@ footer a{color:var(--blue);font-weight:500}
       <div class="logo-box">C</div>
       ContractingPR
     </a>
-    <a href="index.html" class="nav-back">← Volver al inicio</a>
+    <div style="display:flex;align-items:center;gap:10px"><button class="lang-btn" onclick="toggleLang()">English</button><a href="index.html" class="nav-back">← Volver al inicio</a></div>
   </nav>
 </div>
 
 <!-- HERO STRIP -->
 <div class="hero-strip">
   <div class="hero-strip-inner">
-    <div class="hero-tag"><span class="tag-dot"></span> Registro abierto</div>
-    <h1>Únete a <em>ContractingPR</em></h1>
-    <p>Conectamos propietarios con contratistas licenciados en toda Puerto Rico</p>
+    <div class="hero-tag"><span class="tag-dot"></span> <span data-es="Registro abierto" data-en="Open registration">Registro abierto</span></div>
+    <h1 data-es="Únete a <em>ContractingPR</em>" data-en="Join <em>ContractingPR</em>">Únete a <em>ContractingPR</em></h1>
+    <p data-es="Conectamos propietarios con contratistas licenciados en toda Puerto Rico" data-en="Connecting homeowners with licensed contractors across Puerto Rico">Conectamos propietarios con contratistas licenciados en toda Puerto Rico</p>
   </div>
 </div>
 
@@ -150,8 +151,8 @@ footer a{color:var(--blue);font-weight:500}
 
   <!-- Tabs -->
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('contractor')">🔨 Soy Contratista</button>
-    <button class="tab" onclick="switchTab('homeowner')">🏠 Necesito Trabajo</button>
+    <button class="tab active" onclick="switchTab('contractor')" data-es="🔨 Soy Contratista" data-en="🔨 I'm a Contractor">🔨 Soy Contratista</button>
+    <button class="tab" onclick="switchTab('homeowner')" data-es="🏠 Necesito Trabajo" data-en="🏠 I Need Work Done">🏠 Necesito Trabajo</button>
   </div>
 
   <!-- Card -->
@@ -341,6 +342,18 @@ async function submitHomeowner(e) {
     btn.disabled = false;
     btn.textContent = 'Crear mi cuenta — Es gratis →';
   }
+}
+
+let lang='es';
+function toggleLang(){
+  lang=lang==='es'?'en':'es';
+  document.querySelector('.lang-btn').textContent=lang==='es'?'English':'Español';
+  document.querySelectorAll('[data-es]').forEach(el=>{
+    const val=lang==='es'?el.dataset.es:el.dataset.en;
+    if(!val)return;
+    if(el.tagName==='H1'||el.tagName==='BUTTON'||el.dataset.es.includes('<em>')){el.innerHTML=val}
+    else{el.textContent=val}
+  });
 }
 </script>
 </body>
