@@ -378,10 +378,18 @@ function renderJobRow(job, jobProps) {
   const classMap = {open:'status-open',accepted:'status-accepted',in_progress:'status-accepted',completed:'status-closed'};
   const newProps = jobProps.filter(p => p.status === 'pending').length;
   const acceptedProp = jobProps.find(p => p.status === 'accepted');
-  const propWord = jobProps.length !== 1 ? T.proposalsPlural[lang] : T.proposals[lang];
-  const newWord = newProps !== 1 ? T.newPropPlural[lang] : T.newProp[lang];
-  return `<div class="job-row" onclick="openProposals('${job.id}','${job.title.replace(/[^a-zA-Z0-9áéíóúñÁÉÍÓÚÑ ]/g,'')}')">
-    <div class="job-row-header"><div class="job-row-title">${job.title}</div><div class="status-badge ${classMap[job.status]||'status-open'}">${statusMap[job.status]||T.openStatus[lang]}</div></div>
+  const otherLang = lang === 'es' ? 'en' : 'es';
+  const translateLabel = lang === 'es' ? '🌐 Ver en inglés' : '🌐 Ver en español';
+  const safeTitle = job.title.replace(/[^a-zA-Z0-9áéíóúñÁÉÍÓÚÑ ]/g,'');
+  return `<div class="job-row" onclick="openProposals('${job.id}','${safeTitle}')">
+    <div class="job-row-header">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+        <div class="job-row-title">${job.title}</div>
+        <button onclick="event.stopPropagation();translateJob('${job.id}','${safeTitle}','${otherLang}')" style="background:none;border:1px solid var(--blue-light);font-size:11px;color:var(--blue);cursor:pointer;font-weight:600;padding:2px 6px;border-radius:4px">${translateLabel}</button>
+      </div>
+      <div class="status-badge ${classMap[job.status]||'status-open'}">${statusMap[job.status]||T.openStatus[lang]}</div>
+    </div>
+    <div id="translate-job-${job.id}" style="display:none;font-size:13px;color:var(--gray-4);background:var(--blue-light);border-radius:8px;padding:8px 12px;margin:6px 0;font-style:italic"></div>
     <div class="job-row-meta"><span>📍 ${job.city}</span><span>🔧 ${job.trade_needed}</span><span>🕐 ${timeAgo(job.created_at)}</span>${job.budget?`<span>💰 ${job.budget}</span>`:''}</div>
     <div class="proposal-preview">
       <div class="proposal-count">${jobProps.length} ${propWord}</div>
@@ -391,6 +399,27 @@ function renderJobRow(job, jobProps) {
     </div>
   </div>`;
 }
+async function translateJob(jobId, title, targetLang) {
+  const el = document.getElementById(`translate-job-${jobId}`);
+  el.style.display = 'block';
+  el.textContent = targetLang === 'en' ? 'Translating...' : 'Traduciendo...';
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 200,
+        messages: [{ role: 'user', content: `Translate this job title to ${targetLang === 'en' ? 'English' : 'Spanish'}. Reply with only the translated title, nothing else:\n${title}` }]
+      })
+    });
+    const data = await response.json();
+    el.textContent = '🌐 ' + (data.content?.[0]?.text || title);
+  } catch(e) {
+    el.textContent = targetLang === 'en' ? 'Translation failed.' : 'Error al traducir.';
+  }
+}
+
 async function openProposals(jobId, jobTitle) {
   currentOpenJobId = jobId;
   currentOpenJobTitle = jobTitle;
