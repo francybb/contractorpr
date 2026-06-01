@@ -253,7 +253,7 @@ footer a{color:var(--blue);font-weight:500}
   const lang = localStorage.getItem('cpr_lang') || 'es';
   function applyPageLang(l) {
     const btn = document.querySelector('.lang-btn');
-    if (btn) btn.textContent = l === 'es' ? 'English' : 'Español';
+    if (btn) btn.textContent = l === 'es' ? 'Español' : 'English';
     document.querySelectorAll('[data-es][data-en]').forEach(el => {
       const val = l === 'es' ? el.dataset.es : el.dataset.en;
       if (!val) return;
@@ -579,7 +579,7 @@ const t = {
 };
 
 function applyLang() {
-  document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
+  document.querySelector('.lang-btn').textContent = lang === 'es' ? 'Español' : 'English';
   const nb = document.getElementById('nav-back');
   if (nb) nb.textContent = t.navBack[lang];
   const st = document.querySelector('.sidebar-title');
@@ -603,7 +603,7 @@ function applyLang() {
 function toggleLang() {
   lang = lang === 'es' ? 'en' : 'es';
   localStorage.setItem('cpr_lang', lang);
-  document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
+  document.querySelector('.lang-btn').textContent = lang === 'es' ? 'Español' : 'English';
   const nb = document.getElementById('nav-back');
   if (nb) nb.textContent = t.navBack[lang];
   const st = document.querySelector('.sidebar-title');

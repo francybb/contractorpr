@@ -318,7 +318,7 @@ tr:hover td{background:var(--gray-1)}
   const lang = localStorage.getItem('cpr_lang') || 'es';
   function applyPageLang(l) {
     const btn = document.querySelector('.lang-btn');
-    if (btn) btn.textContent = l === 'es' ? 'English' : 'Español';
+    if (btn) btn.textContent = l === 'es' ? 'Español' : 'English';
     document.querySelectorAll('[data-es][data-en]').forEach(el => {
       const val = l === 'es' ? el.dataset.es : el.dataset.en;
       if (!val) return;
