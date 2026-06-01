@@ -165,14 +165,14 @@ footer a{color:var(--blue);font-weight:500}
 <div class="login-wrap" id="login-screen">
   <div class="login-card">
     <div class="login-icon">🏠</div>
-    <h2>Mi Panel</h2>
-    <p>Ingresa tu correo para ver tus trabajos y propuestas</p>
+    <h2 data-i18n="loginTitle">Mi Panel</h2>
+    <p data-i18n="loginSub">Ingresa tu correo para ver tus trabajos y propuestas</p>
     <div id="login-error" class="error-msg"></div>
     <div class="field">
-      <label>Correo electrónico</label>
+      <label data-i18n="emailLabel">Correo electrónico</label>
       <input type="email" id="login-email" placeholder="tu@correo.com" onkeydown="if(event.key==='Enter')login()">
     </div>
-    <button class="btn-primary" onclick="login()" id="login-btn">Entrar →</button>
+    <button class="btn-primary" onclick="login()" id="login-btn" data-i18n="loginBtn">Entrar →</button>
     <div class="login-footer">
       ¿No tienes cuenta? <a href="signup.html">Regístrate gratis</a><br>
       ¿Eres contratista? <a href="dashboard-contractor.html">Panel de contratista →</a>
@@ -269,6 +269,7 @@ const T = {
   startConvo: {es:'Empieza la conversación', en:'Start the conversation'},
   writeMsg: {es:'Escribe un mensaje...', en:'Write a message...'},
   loading: {es:'Cargando...', en:'Loading...'},
+  emailLabel: {es:'Correo electrónico', en:'Email address'},
 };
 
 async function db(path) {
@@ -528,14 +529,6 @@ function closePanel() {
   if (chatInterval) clearInterval(chatInterval);
 }
 
-// Check existing session
-const stored = sessionStorage.getItem('homeowner_data');
-if (stored) {
-  currentUser = JSON.parse(stored);
-  showDashboard();
-}
-
-
 function applyLang() {
   document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -549,6 +542,15 @@ function toggleLang() {
   localStorage.setItem('cpr_lang', lang);
   applyLang();
   if (currentUser) loadJobs();
+}
+
+// Check existing session
+const stored = sessionStorage.getItem('homeowner_data');
+if (stored) {
+  currentUser = JSON.parse(stored);
+  showDashboard();
+} else {
+  applyLang();
 }
 
 async function markComplete(jobId, proposalId, e) {
