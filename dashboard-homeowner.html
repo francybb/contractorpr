@@ -226,6 +226,51 @@ let currentOpenJobTitle = null;
 let activeChatProposalId = null;
 let chatInterval = null;
 
+let lang = localStorage.getItem('cpr_lang') || 'es';
+const T = {
+  loginTitle: {es:'Mi Panel', en:'My Dashboard'},
+  loginSub: {es:'Ingresa tu correo para ver tus trabajos y propuestas', en:'Enter your email to see your jobs and proposals'},
+  loginBtn: {es:'Entrar →', en:'Enter →'},
+  logout: {es:'Cerrar sesión', en:'Log out'},
+  postBtn: {es:'+ Publicar nuevo trabajo', en:'+ Post new job'},
+  statJobs: {es:'Trabajos publicados', en:'Jobs posted'},
+  statProps: {es:'Propuestas recibidas', en:'Proposals received'},
+  statAcc: {es:'Trabajos aceptados', en:'Jobs accepted'},
+  sectionTitle: {es:'Mis trabajos', en:'My jobs'},
+  greetingSub: {es:'Gestiona tus trabajos y propuestas', en:'Manage your jobs and proposals'},
+  openStatus: {es:'Abierto', en:'Open'},
+  acceptedStatus: {es:'En progreso', en:'In progress'},
+  closedStatus: {es:'Completado', en:'Completed'},
+  viewProps: {es:'Ver propuestas →', en:'View proposals →'},
+  acceptBtn: {es:'✅ Aceptar propuesta', en:'✅ Accept proposal'},
+  chatBtn: {es:'💬 Mensaje', en:'💬 Message'},
+  sendBtn: {es:'Enviar', en:'Send'},
+  closePanel: {es:'Propuestas', en:'Proposals'},
+  emptyTitle: {es:'Aún no tienes trabajos publicados', en:"You haven't posted any jobs yet"},
+  emptyBtn: {es:'+ Publicar trabajo', en:'+ Post job'},
+  secActive: {es:'Trabajos activos', en:'Active jobs'},
+  secOpen: {es:'Trabajos abiertos', en:'Open jobs'},
+  secCompleted: {es:'Completados', en:'Completed'},
+  secEmptyActive: {es:'No tienes trabajos activos aún.', en:'No active jobs yet.'},
+  secEmptyOpen: {es:'No tienes trabajos abiertos.', en:'No open jobs.'},
+  publishLink: {es:'Publicar →', en:'Post →'},
+  noProps: {es:'Aún no hay propuestas para este trabajo.', en:'No proposals yet for this job.'},
+  proposals: {es:'propuesta', en:'proposal'},
+  proposalsPlural: {es:'propuestas', en:'proposals'},
+  newProp: {es:'nueva', en:'new'},
+  newPropPlural: {es:'nuevas', en:'new'},
+  accepted: {es:'Aceptada', en:'Accepted'},
+  viewArrow: {es:'Ver →', en:'View →'},
+  payEscrow: {es:'💳 Pagar en custodia', en:'💳 Pay escrow'},
+  markDone: {es:'✔ Marcar como completado', en:'✔ Mark as complete'},
+  waitingPrice: {es:'⏳ Esperando que el contratista confirme el precio antes de proceder al pago.', en:'⏳ Waiting for the contractor to confirm the price before payment.'},
+  propAccepted: {es:'✅ Propuesta aceptada', en:'✅ Proposal accepted'},
+  chatWith: {es:'Chat con', en:'Chat with'},
+  startConvo: {es:'Empieza la conversación', en:'Start the conversation'},
+  writeMsg: {es:'Escribe un mensaje...', en:'Write a message...'},
+  loading: {es:'Cargando...', en:'Loading...'},
+};
+
 async function db(path) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
@@ -490,50 +535,6 @@ if (stored) {
   showDashboard();
 }
 
-let lang = localStorage.getItem('cpr_lang') || 'es';
-const T = {
-  loginTitle: {es:'Mi Panel', en:'My Dashboard'},
-  loginSub: {es:'Ingresa tu correo para ver tus trabajos y propuestas', en:'Enter your email to see your jobs and proposals'},
-  loginBtn: {es:'Entrar →', en:'Enter →'},
-  logout: {es:'Cerrar sesión', en:'Log out'},
-  postBtn: {es:'+ Publicar nuevo trabajo', en:'+ Post new job'},
-  statJobs: {es:'Trabajos publicados', en:'Jobs posted'},
-  statProps: {es:'Propuestas recibidas', en:'Proposals received'},
-  statAcc: {es:'Trabajos aceptados', en:'Jobs accepted'},
-  sectionTitle: {es:'Mis trabajos', en:'My jobs'},
-  greetingSub: {es:'Gestiona tus trabajos y propuestas', en:'Manage your jobs and proposals'},
-  openStatus: {es:'Abierto', en:'Open'},
-  acceptedStatus: {es:'En progreso', en:'In progress'},
-  closedStatus: {es:'Completado', en:'Completed'},
-  viewProps: {es:'Ver propuestas →', en:'View proposals →'},
-  acceptBtn: {es:'✅ Aceptar propuesta', en:'✅ Accept proposal'},
-  chatBtn: {es:'💬 Mensaje', en:'💬 Message'},
-  sendBtn: {es:'Enviar', en:'Send'},
-  closePanel: {es:'Propuestas', en:'Proposals'},
-  emptyTitle: {es:'Aún no tienes trabajos publicados', en:"You haven't posted any jobs yet"},
-  emptyBtn: {es:'+ Publicar trabajo', en:'+ Post job'},
-  secActive: {es:'Trabajos activos', en:'Active jobs'},
-  secOpen: {es:'Trabajos abiertos', en:'Open jobs'},
-  secCompleted: {es:'Completados', en:'Completed'},
-  secEmptyActive: {es:'No tienes trabajos activos aún.', en:'No active jobs yet.'},
-  secEmptyOpen: {es:'No tienes trabajos abiertos.', en:'No open jobs.'},
-  publishLink: {es:'Publicar →', en:'Post →'},
-  noProps: {es:'Aún no hay propuestas para este trabajo.', en:'No proposals yet for this job.'},
-  proposals: {es:'propuesta', en:'proposal'},
-  proposalsPlural: {es:'propuestas', en:'proposals'},
-  newProp: {es:'nueva', en:'new'},
-  newPropPlural: {es:'nuevas', en:'new'},
-  accepted: {es:'Aceptada', en:'Accepted'},
-  viewArrow: {es:'Ver →', en:'View →'},
-  payEscrow: {es:'💳 Pagar en custodia', en:'💳 Pay escrow'},
-  markDone: {es:'✔ Marcar como completado', en:'✔ Mark as complete'},
-  waitingPrice: {es:'⏳ Esperando que el contratista confirme el precio antes de proceder al pago.', en:'⏳ Waiting for the contractor to confirm the price before payment.'},
-  propAccepted: {es:'✅ Propuesta aceptada', en:'✅ Proposal accepted'},
-  chatWith: {es:'Chat con', en:'Chat with'},
-  startConvo: {es:'Empieza la conversación', en:'Start the conversation'},
-  writeMsg: {es:'Escribe un mensaje...', en:'Write a message...'},
-  loading: {es:'Cargando...', en:'Loading...'},
-};
 
 function applyLang() {
   document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';

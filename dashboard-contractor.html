@@ -195,6 +195,40 @@ const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
 let currentUser = null;
 let chatInterval = null;
 
+let lang = localStorage.getItem('cpr_lang') || 'es';
+const T = {
+  logout: {es:'Cerrar sesión', en:'Log out'},
+  browseBtn: {es:'🔍 Ver trabajos disponibles', en:'🔍 Browse available jobs'},
+  statSent: {es:'Propuestas enviadas', en:'Proposals sent'},
+  statAcc: {es:'Trabajos aceptados', en:'Jobs accepted'},
+  statPend: {es:'En espera de respuesta', en:'Awaiting response'},
+  sectionTitle: {es:'Mis propuestas', en:'My proposals'},
+  sendBtn: {es:'Enviar', en:'Send'},
+  viewJob: {es:'Ver trabajo →', en:'View job →'},
+  secActive: {es:'Trabajos activos', en:'Active jobs'},
+  secPending: {es:'Propuestas enviadas', en:'Sent proposals'},
+  secCompleted: {es:'Completados', en:'Completed'},
+  secEmptyActive: {es:'No tienes trabajos activos aún. Cuando un propietario acepte tu propuesta aparecerá aquí.', en:'No active jobs yet. When a homeowner accepts your proposal it will appear here.'},
+  secEmptyPending: {es:'No tienes propuestas pendientes.', en:'No pending proposals.'},
+  secEmptyCompleted: {es:'No tienes trabajos completados aún.', en:'No completed jobs yet.'},
+  browseLink: {es:'Ver trabajos disponibles →', en:'Browse available jobs →'},
+  statusAccepted: {es:'✅ Aceptada', en:'✅ Accepted'},
+  statusPending: {es:'⏳ En espera', en:'⏳ Pending'},
+  statusCompleted: {es:'✅ Completado', en:'✅ Completed'},
+  chatOwner: {es:'💬 Chat con propietario', en:'💬 Chat with homeowner'},
+  confirmPrice: {es:'💰 Confirmar precio', en:'💰 Confirm price'},
+  priceLabel: {es:'Tu precio:', en:'Your price:'},
+  writeMsg: {es:'Escribe un mensaje...', en:'Write a message...'},
+  startConvo: {es:'Empieza la conversación', en:'Start the conversation'},
+  noPhone: {es:'Sin teléfono', en:'No phone'},
+  active: {es:'Activo', en:'Active'},
+  pendingApproval: {es:'Pendiente de aprobación', en:'Pending approval'},
+  priceSendLabel: {es:'Envía el precio final al propietario para proceder al pago:', en:'Send the final price to the homeowner to proceed with payment:'},
+  priceConfirmedMsg: {es:'✅ Precio confirmado. El propietario puede proceder al pago.', en:'✅ Price confirmed. The homeowner can proceed with payment.'},
+  confirmPriceBtn: {es:'Confirmar precio →', en:'Confirm price →'},
+  payoutNote: {es:'Recibirás', en:"You'll receive"},
+};
+
 async function db(path) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
@@ -437,39 +471,6 @@ async function sendMsg(proposalId) {
 const stored = sessionStorage.getItem('contractor_data');
 if (stored) { currentUser = JSON.parse(stored); showDashboard(); }
 
-let lang = localStorage.getItem('cpr_lang') || 'es';
-const T = {
-  logout: {es:'Cerrar sesión', en:'Log out'},
-  browseBtn: {es:'🔍 Ver trabajos disponibles', en:'🔍 Browse available jobs'},
-  statSent: {es:'Propuestas enviadas', en:'Proposals sent'},
-  statAcc: {es:'Trabajos aceptados', en:'Jobs accepted'},
-  statPend: {es:'En espera de respuesta', en:'Awaiting response'},
-  sectionTitle: {es:'Mis propuestas', en:'My proposals'},
-  sendBtn: {es:'Enviar', en:'Send'},
-  viewJob: {es:'Ver trabajo →', en:'View job →'},
-  secActive: {es:'Trabajos activos', en:'Active jobs'},
-  secPending: {es:'Propuestas enviadas', en:'Sent proposals'},
-  secCompleted: {es:'Completados', en:'Completed'},
-  secEmptyActive: {es:'No tienes trabajos activos aún. Cuando un propietario acepte tu propuesta aparecerá aquí.', en:'No active jobs yet. When a homeowner accepts your proposal it will appear here.'},
-  secEmptyPending: {es:'No tienes propuestas pendientes.', en:'No pending proposals.'},
-  secEmptyCompleted: {es:'No tienes trabajos completados aún.', en:'No completed jobs yet.'},
-  browseLink: {es:'Ver trabajos disponibles →', en:'Browse available jobs →'},
-  statusAccepted: {es:'✅ Aceptada', en:'✅ Accepted'},
-  statusPending: {es:'⏳ En espera', en:'⏳ Pending'},
-  statusCompleted: {es:'✅ Completado', en:'✅ Completed'},
-  chatOwner: {es:'💬 Chat con propietario', en:'💬 Chat with homeowner'},
-  confirmPrice: {es:'💰 Confirmar precio', en:'💰 Confirm price'},
-  priceLabel: {es:'Tu precio:', en:'Your price:'},
-  writeMsg: {es:'Escribe un mensaje...', en:'Write a message...'},
-  startConvo: {es:'Empieza la conversación', en:'Start the conversation'},
-  noPhone: {es:'Sin teléfono', en:'No phone'},
-  active: {es:'Activo', en:'Active'},
-  pendingApproval: {es:'Pendiente de aprobación', en:'Pending approval'},
-  priceSendLabel: {es:'Envía el precio final al propietario para proceder al pago:', en:'Send the final price to the homeowner to proceed with payment:'},
-  priceConfirmedMsg: {es:'✅ Precio confirmado. El propietario puede proceder al pago.', en:'✅ Price confirmed. The homeowner can proceed with payment.'},
-  confirmPriceBtn: {es:'Confirmar precio →', en:'Confirm price →'},
-  payoutNote: {es:'Recibirás', en:"You'll receive"},
-};
 
 function applyLang() {
   document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
