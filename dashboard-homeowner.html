@@ -517,6 +517,16 @@ async function openProposals(jobId, jobTitle) {
   }).join('');
 }
 
+async function sendEmail(type, data) {
+  try {
+    await fetch('/.netlify/functions/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, data })
+    });
+  } catch(err) { console.error('Email error:', err); }
+}
+
 function acceptProposal(proposalId, jobId, e) {
   e.stopPropagation();
   e.preventDefault();
@@ -526,6 +536,18 @@ function acceptProposal(proposalId, jobId, e) {
     modal.classList.remove('show');
     await dbPatch('proposals', proposalId, { status: 'accepted' });
     await dbPatch('jobs', jobId, { status: 'accepted' });
+    // Send email to contractor
+    const proposals = await db(`proposals?id=eq.${proposalId}&select=*,contractors(name,email)`);
+    const jobs = await db(`jobs?id=eq.${jobId}&select=title,amount`);
+    if (proposals?.[0] && jobs?.[0]) {
+      const p = proposals[0]; const j = jobs[0];
+      sendEmail('proposal_accepted', {
+        contractor_email: p.contractors?.email,
+        job_title: j.title,
+        amount: p.price || j.amount,
+        contractor_name: p.contractors?.name
+      });
+    }
     await loadJobs();
     setTimeout(() => { if (currentOpenJobId) openProposals(currentOpenJobId, currentOpenJobTitle); }, 600);
   };
@@ -640,6 +662,19 @@ async function markComplete(jobId, proposalId, e) {
       body: JSON.stringify({ status: 'completed' })
     });
     await loadJobs();
+    // Send job_completed emails to both parties
+    const proposals2 = await db(`proposals?id=eq.${proposalId}&select=*,contractors(name,email)`);
+    const jobs2 = await db(`jobs?id=eq.${jobId}&select=title,amount,homeowners(email)`);
+    if (proposals2?.[0] && jobs2?.[0]) {
+      const p2 = proposals2[0]; const j2 = jobs2[0];
+      sendEmail('job_completed', {
+        homeowner_email: j2.homeowners?.email,
+        contractor_email: p2.contractors?.email,
+        job_title: j2.title,
+        contractor_name: p2.contractors?.name,
+        amount: p2.price || j2.amount
+      });
+    }
     // Show success message
     alert('✅ Trabajo marcado como completado. El pago ha sido liberado al contratista.');
   };
