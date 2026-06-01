@@ -182,7 +182,7 @@ footer a{color:var(--blue);font-weight:500}
   <!-- Proposals -->
   <div id="props-count" style="display:none">0</div>
   <div id="proposals-list">
-    <div class="loading"><div class="spinner"></div><span data-i18n="loading">Cargando...</span></div>
+    <div class="loading"><div class="spinner"></div>Cargando...</div>
   </div>
 </div>
 
@@ -213,7 +213,7 @@ footer a{color:var(--blue);font-weight:500}
 })();
 
 const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoZHN2eWxodHp1dWxlYWljZWhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDc3MTQsImV4cCI6MjA5NTgyMzcxNH0.ZVuC49Fz8f5dDzYRutq07YpnpSxmrewQQ8UHn49cWC0';
 let currentUser = null;
 let chatInterval = null;
 
@@ -252,7 +252,6 @@ const T = {
   loginTitle: {es:'Panel Contratista', en:'Contractor Dashboard'},
   loginSub: {es:'Ingresa tu correo para ver tus propuestas y trabajos activos', en:'Enter your email to see your proposals and active jobs'},
   loginBtn: {es:'Entrar →', en:'Enter →'},
-  loading: {es:'Cargando...', en:'Loading...'},
   emailLabel: {es:'Correo electrónico', en:'Email address'},
   footerNoAccount: {es:'¿No tienes cuenta?', en:'No account?'},
   footerSignup: {es:'Regístrate como contratista', en:'Register as contractor'},
@@ -264,7 +263,6 @@ async function db(path) {
   const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
   });
-  if (!res.ok) throw new Error(`DB error: ${res.status}`);
   return res.json();
 }
 
@@ -346,7 +344,6 @@ async function showDashboard() {
 }
 
 async function loadProposals() {
-  try {
   const proposals = await db(`proposals?contractor_id=eq.${currentUser.id}&order=created_at.desc&select=*`);
 
   const accepted = proposals.filter(p => p.status === 'accepted').length;
@@ -402,10 +399,6 @@ async function loadProposals() {
 
   document.getElementById('proposals-list').innerHTML = html;
   autoTranslateJobs([...activeProps, ...pendingProps, ...completedProps], jobMap);
-  } catch(err) {
-    console.error('loadProposals error:', err);
-    document.getElementById('proposals-list').innerHTML = `<div style="text-align:center;padding:40px;color:red">Error cargando propuestas. Recarga la página.</div>`;
-  }
 }
 
 function renderPropRow(p, job, status) {
@@ -421,7 +414,7 @@ function renderPropRow(p, job, status) {
     <div class="prop-row-header">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <div class="prop-job-title" id="title-${p.id}">${job.title || (lang === 'en' ? 'Job' : 'Trabajo')}</div>
-        ${job.title ? `<button onclick="translateContent('${p.id}','${(job.title||'').replace(/'/g,"\\'")}','${(p.message||'').replace(/'/g,"\\'").replace(/\n/g,' ')}','${lang === 'es' ? 'en' : 'es'}')" style="background:none;border:none;font-size:11px;color:var(--blue);cursor:pointer;font-weight:600;padding:2px 6px;border:1px solid var(--blue-light);border-radius:4px">${lang === 'es' ? 'Ver en inglés' : 'Ver en español'}</button>` : ''}
+        ${job.title ? `<button onclick="translateContent('${p.id}','${(job.title||'').replace(/'/g,"\\'")}','${(p.message||'').replace(/'/g,"\\'").replace(/\n/g,' ')}','${otherLang}')" style="background:none;border:none;font-size:11px;color:var(--blue);cursor:pointer;font-weight:600;padding:2px 6px;border:1px solid var(--blue-light);border-radius:4px">${translateLabel}</button>` : ''}
       </div>
       <div class="prop-status ${statusClass}">${statusLabel}</div>
     </div>
