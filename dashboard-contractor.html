@@ -135,7 +135,7 @@ footer a{color:var(--blue);font-weight:500}
     <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
     <div class="nav-right">
       <button class="lang-btn" onclick="toggleLang()">English</button>
-      <button class="btn-logout" id="logout-btn" onclick="logout()" style="display:none">Cerrar sesión</button>
+      <button class="btn-logout" id="logout-btn" onclick="logout()" style="display:none" data-i18n="logout">Cerrar sesión</button>
     </div>
   </nav>
 </div>
@@ -166,7 +166,7 @@ footer a{color:var(--blue);font-weight:500}
       <h1 id="greeting">Bienvenido</h1>
       <p id="greeting-sub">Gestiona tus propuestas y trabajos</p>
     </div>
-    <button class="btn-browse" onclick="window.location.href='jobs.html'">🔍 Ver trabajos disponibles</button>
+    <button class="btn-browse" onclick="window.location.href='jobs.html'" data-i18n="browseBtn">🔍 Ver trabajos disponibles</button>
   </div>
 
   <!-- Profile -->
@@ -315,6 +315,7 @@ async function showDashboard() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('logout-btn').style.display = 'block';
+  document.getElementById('logout-btn').textContent = T.logout[lang];
   document.getElementById('greeting').textContent = `${lang === 'en' ? 'Hi' : 'Hola'}, ${currentUser.name.split(' ')[0]} 👋`;
   document.getElementById('greeting-sub').textContent = `${currentUser.trade} · ${currentUser.email}`;
 
@@ -334,6 +335,7 @@ async function showDashboard() {
     </div>`;
 
   applyLang();
+  document.getElementById('logout-btn').textContent = T.logout[lang];
   await loadProposals();
 }
 

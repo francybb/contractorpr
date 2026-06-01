@@ -156,7 +156,7 @@ footer a{color:var(--blue);font-weight:500}
     <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
     <div class="nav-right">
       <button class="lang-btn" onclick="toggleLang()">English</button>
-      <button class="btn-logout" id="logout-btn" onclick="logout()" style="display:none">Cerrar sesión</button>
+      <button class="btn-logout" id="logout-btn" onclick="logout()" style="display:none" data-i18n="logout">Cerrar sesión</button>
     </div>
   </nav>
 </div>
@@ -360,6 +360,7 @@ async function showDashboard() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('logout-btn').style.display = 'block';
+  document.getElementById('logout-btn').textContent = T.logout[lang];
   document.getElementById('greeting').textContent = `${lang === 'en' ? 'Hi' : 'Hola'}, ${currentUser.name.split(' ')[0]} 👋`;
   document.getElementById('greeting-sub').textContent = `${currentUser.city} · ${currentUser.email}`;
   applyLang();
