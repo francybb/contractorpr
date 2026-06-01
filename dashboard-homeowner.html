@@ -400,7 +400,7 @@ function renderJobRow(job, jobProps) {
   const newProps = jobProps.filter(p => p.status === 'pending').length;
   const acceptedProp = jobProps.find(p => p.status === 'accepted');
   const otherLang = lang === 'es' ? 'en' : 'es';
-  const translateLabel = lang === 'es' ? '🌐 Ver en inglés' : '🌐 Ver en español';
+  const translateLabel = lang === 'es' ? '🌐 Ver en inglés' : '🌐 View in Spanish';
   const safeTitle = job.title.replace(/[^a-zA-Z0-9áéíóúñÁÉÍÓÚÑ ]/g,'');
   return `<div class="job-row" onclick="openProposals('${job.id}','${safeTitle}')">
     <div class="job-row-header">

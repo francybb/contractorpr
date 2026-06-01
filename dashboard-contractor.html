@@ -403,7 +403,7 @@ function renderPropRow(p, job, status) {
   const rowStyle = isCompleted ? 'border-color:var(--gray-3)' : '';
   const payout = p.price ? (parseFloat(p.price) * 0.90).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : null;
   const otherLang = lang === 'es' ? 'en' : 'es';
-  const translateLabel = lang === 'es' ? '🌐 Ver en inglés' : '🌐 Ver en español';
+  const translateLabel = lang === 'es' ? '🌐 Ver en inglés' : '🌐 View in Spanish';
   return `
   <div class="${rowClass}" style="${rowStyle}">
     <div class="prop-row-header">
