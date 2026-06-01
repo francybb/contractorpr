@@ -393,6 +393,7 @@ async function loadJobs() {
     html += completedJobs.map(job => renderJobRow(job, propMap[job.id]||[])).join('');
   }
   document.getElementById('jobs-list').innerHTML = html;
+  autoTranslateJobs(jobs);
 }
 
 function renderJobRow(job, jobProps) {
@@ -400,18 +401,16 @@ function renderJobRow(job, jobProps) {
   const classMap = {open:'status-open',accepted:'status-accepted',in_progress:'status-accepted',completed:'status-closed'};
   const newProps = jobProps.filter(p => p.status === 'pending').length;
   const acceptedProp = jobProps.find(p => p.status === 'accepted');
-  const otherLang = lang === 'es' ? 'en' : 'es';
-  const translateLabel = lang === 'es' ? '🌐 Ver en inglés' : '🌐 View in Spanish';
   const safeTitle = job.title.replace(/[^a-zA-Z0-9áéíóúñÁÉÍÓÚÑ ]/g,'');
   return `<div class="job-row" onclick="openProposals('${job.id}','${safeTitle}')">
     <div class="job-row-header">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <div class="job-row-title">${job.title}</div>
-        <button onclick="event.stopPropagation();translateJob('${job.id}','${safeTitle}','${otherLang}')" style="background:none;border:1px solid var(--blue-light);font-size:11px;color:var(--blue);cursor:pointer;font-weight:600;padding:2px 6px;border-radius:4px">${translateLabel}</button>
+
       </div>
       <div class="status-badge ${classMap[job.status]||'status-open'}">${statusMap[job.status]||T.openStatus[lang]}</div>
     </div>
-    <div id="translate-job-${job.id}" style="display:none;font-size:13px;color:var(--gray-4);background:var(--blue-light);border-radius:8px;padding:8px 12px;margin:6px 0;font-style:italic"></div>
+    <div id="translate-job-${job.id}" style="display:none;font-size:12px;color:var(--gray-3);font-style:italic;margin:2px 0 6px"></div>
     <div class="job-row-meta"><span>📍 ${job.city}</span><span>🔧 ${job.trade_needed}</span><span>🕐 ${timeAgo(job.created_at)}</span>${job.budget?`<span>💰 ${job.budget}</span>`:''}</div>
     <div class="proposal-preview">
       <div class="proposal-count">${jobProps.length} ${propWord}</div>
@@ -421,21 +420,37 @@ function renderJobRow(job, jobProps) {
     </div>
   </div>`;
 }
-async function translateJob(jobId, title, targetLang) {
-  const el = document.getElementById(`translate-job-${jobId}`);
-  el.style.display = 'block';
-  el.textContent = targetLang === 'en' ? 'Translating...' : 'Traduciendo...';
+async function autoTranslateJobs(jobs) {
+  if (lang === 'es') return;
+  const items = jobs.filter(j => j.title).map(j => ({ id: j.id, title: j.title, message: j.description || '' }));
+  if (!items.length) return;
   try {
-    const response = await fetch('/.netlify/functions/translate', {
+    const res = await fetch('/.netlify/functions/translate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, targetLang })
+      body: JSON.stringify({ items, targetLang: 'en' })
     });
-    const data = await response.json();
-    el.textContent = '🌐 ' + (data.text || title);
-  } catch(e) {
-    el.textContent = targetLang === 'en' ? 'Translation failed.' : 'Error al traducir.';
-  }
+    const data = await res.json();
+    if (!data.results) return;
+    items.forEach(item => {
+      const r = data.results[item.id];
+      if (!r) return;
+      const titleEl = document.querySelector(`#translate-job-${item.id}`);
+      const rowTitleEl = document.querySelector(`.job-row [id="translate-job-${item.id}"]`);
+      // Update the job row title
+      const jobRows = document.querySelectorAll('.job-row');
+      jobRows.forEach(row => {
+        if (row.onclick && row.onclick.toString().includes(item.id)) {
+          const titleDiv = row.querySelector('.job-row-title');
+          if (titleDiv) titleDiv.textContent = r.title;
+        }
+      });
+      if (titleEl) {
+        titleEl.style.display = 'block';
+        titleEl.textContent = r.message ? r.message.substring(0, 100) + (r.message.length > 100 ? '...' : '') : '';
+      }
+    });
+  } catch(e) { console.log('Translation error:', e); }
 }
 
 async function openProposals(jobId, jobTitle) {

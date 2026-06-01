@@ -272,6 +272,24 @@ async function submitJob(e) {
   btn.textContent = 'Publicando...';
 
   const form = e.target;
+  // AI rewrite for clarity before saving
+  let jobTitle = form.title.value;
+  let jobDescription = form.description.value;
+  btn.textContent = lang === 'en' ? 'Improving your description...' : 'Mejorando tu descripción...';
+  try {
+    const rewriteRes = await fetch('/.netlify/functions/rewrite-job', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title: jobTitle, description: jobDescription, language: lang })
+    });
+    if (rewriteRes.ok) {
+      const rewritten = await rewriteRes.json();
+      if (rewritten.title) jobTitle = rewritten.title;
+      if (rewritten.description) jobDescription = rewritten.description;
+    }
+  } catch(e) { /* use original if rewrite fails */ }
+  btn.textContent = lang === 'en' ? 'Publishing...' : 'Publicando...';
+
   const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs`, {
     method: 'POST',
     headers: {
@@ -282,8 +300,8 @@ async function submitJob(e) {
     },
     body: JSON.stringify({
       homeowner_id: homeownerId,
-      title: form.title.value,
-      description: form.description.value,
+      title: jobTitle,
+      description: jobDescription,
       trade_needed: form.trade_needed.value,
       city: form.city.value,
       budget: form.budget.value,

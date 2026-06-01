@@ -394,6 +394,7 @@ async function loadProposals() {
   }
 
   document.getElementById('proposals-list').innerHTML = html;
+  autoTranslateJobs([...activeProps, ...pendingProps, ...completedProps], jobMap);
 }
 
 function renderPropRow(p, job, status) {
@@ -404,8 +405,6 @@ function renderPropRow(p, job, status) {
   const rowClass = isActive ? 'proposal-row active-job' : isCompleted ? 'proposal-row' : 'proposal-row';
   const rowStyle = isCompleted ? 'border-color:var(--gray-3)' : '';
   const payout = p.price ? (parseFloat(p.price) * 0.90).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : null;
-  const otherLang = lang === 'es' ? 'en' : 'es';
-  const translateLabel = lang === 'es' ? '🌐 Ver en inglés' : '🌐 View in Spanish';
   return `
   <div class="${rowClass}" style="${rowStyle}">
     <div class="prop-row-header">
@@ -422,7 +421,7 @@ function renderPropRow(p, job, status) {
       ${p.price ? `<span class="prop-price-sent">💰 ${T.priceLabel[lang]} $${parseFloat(p.price).toLocaleString()} → ${T.payoutNote[lang]} $${payout}</span>` : ''}
     </div>
     <div class="prop-msg-preview" id="msg-${p.id}">"${p.message.length > 120 ? p.message.substring(0,120)+'...' : p.message}"</div>
-    <div id="translate-result-${p.id}" style="display:none;font-size:13px;color:var(--gray-4);background:var(--blue-light);border-radius:8px;padding:10px 12px;margin-bottom:8px;font-style:italic"></div>
+    <div id="translate-${p.id}" style="display:none;font-size:13px;color:var(--gray-4);font-style:italic;margin-bottom:6px"></div>
     <div>
       <button class="btn-view-job" onclick="window.location.href='job-detail.html?id=${p.job_id}'">${T.viewJob[lang]}</button>
       ${!isCompleted ? `<button class="btn-chat-prop" onclick="toggleChat('${p.id}',event)">💬 ${lang === 'en' ? 'Message' : 'Mensaje'}</button>` : ''}
@@ -452,27 +451,32 @@ function renderPropRow(p, job, status) {
   </div>`;
 }
 
-async function translateContent(propId, title, message, targetLang) {
-  const resultEl = document.getElementById(`translate-result-${propId}`);
-  resultEl.style.display = 'block';
-  resultEl.textContent = targetLang === 'en' ? 'Translating...' : 'Traduciendo...';
-
+async function autoTranslateJobs(proposals, jobMap) {
+  if (lang === 'es') return; // only translate when UI is English
+  const items = proposals
+    .filter(p => jobMap[p.job_id] && jobMap[p.job_id].title)
+    .map(p => ({ id: p.id, title: jobMap[p.job_id].title, message: p.message || '' }));
+  if (!items.length) return;
   try {
-    const response = await fetch('/.netlify/functions/translate', {
+    const res = await fetch('/.netlify/functions/translate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title, message, targetLang })
+      body: JSON.stringify({ items, targetLang: 'en' })
     });
-    const data = await response.json();
-    const text = data.text || '';
-    const titleMatch = text.match(/TITLE:\s*(.+?)\s*\|/);
-    const msgMatch = text.match(/MESSAGE:\s*(.+)/s);
-    const translatedTitle = titleMatch ? titleMatch[1].trim() : title;
-    const translatedMsg = msgMatch ? msgMatch[1].trim() : message;
-    resultEl.innerHTML = `<strong>${translatedTitle}</strong><br>${translatedMsg.substring(0, 200)}${translatedMsg.length > 200 ? '...' : ''}`;
-  } catch(e) {
-    resultEl.textContent = targetLang === 'en' ? 'Translation failed. Try again.' : 'Error al traducir. Intenta de nuevo.';
-  }
+    const data = await res.json();
+    if (!data.results) return;
+    items.forEach(item => {
+      const r = data.results[item.id];
+      if (!r) return;
+      const titleEl = document.getElementById(`title-${item.id}`);
+      const transEl = document.getElementById(`translate-${item.id}`);
+      if (titleEl) titleEl.textContent = r.title;
+      if (transEl && r.message) {
+        transEl.style.display = 'block';
+        transEl.textContent = '"' + r.message.substring(0, 150) + (r.message.length > 150 ? '...' : '') + '"';
+      }
+    });
+  } catch(e) { console.log('Translation error:', e); }
 }
 
 async function toggleChat(proposalId, e) {
