@@ -421,7 +421,7 @@ function renderPropRow(p, job, status) {
     <div class="prop-row-header">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
         <div class="prop-job-title" id="title-${p.id}">${job.title || (lang === 'en' ? 'Job' : 'Trabajo')}</div>
-        ${job.title ? `<button onclick="translateContent('${p.id}','${(job.title||'').replace(/'/g,"\\'")}','${(p.message||'').replace(/'/g,"\\'").replace(/\n/g,' ')}','${lang === 'es' ? 'en' : 'es'}')" style="background:none;border:none;font-size:11px;color:var(--blue);cursor:pointer;font-weight:600;padding:2px 6px;border:1px solid var(--blue-light);border-radius:4px">${translateLabel}</button>` : ''}
+        ${job.title ? `<button onclick="translateContent('${p.id}','${(job.title||'').replace(/'/g,"\\'")}','${(p.message||'').replace(/'/g,"\\'").replace(/\n/g,' ')}','${lang === 'es' ? 'en' : 'es'}')" style="background:none;border:none;font-size:11px;color:var(--blue);cursor:pointer;font-weight:600;padding:2px 6px;border:1px solid var(--blue-light);border-radius:4px">${lang === 'es' ? 'Ver en inglés' : 'Ver en español'}</button>` : ''}
       </div>
       <div class="prop-status ${statusClass}">${statusLabel}</div>
     </div>
