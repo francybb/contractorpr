@@ -148,13 +148,13 @@ footer a{color:var(--blue);font-weight:500}
     <p data-i18n="loginSub">Ingresa tu correo para ver tus propuestas y trabajos activos</p>
     <div id="login-error" class="error-msg"></div>
     <div class="field">
-      <label>Correo electrónico</label>
+      <label data-i18n="emailLabel">Correo electrónico</label>
       <input type="email" id="login-email" placeholder="tu@correo.com" onkeydown="if(event.key==='Enter')login()">
     </div>
-    <button class="btn-primary" onclick="login()" id="login-btn">Entrar →</button>
+    <button class="btn-primary" onclick="login()" id="login-btn" data-i18n="loginBtn">Entrar →</button>
     <div class="login-footer">
-      ¿No tienes cuenta? <a href="signup.html">Regístrate como contratista</a><br>
-      ¿Eres propietario? <a href="dashboard-homeowner.html">Panel de propietario →</a>
+      <span data-i18n="footerNoAccount">¿No tienes cuenta?</span> <a href="signup.html" data-i18n="footerSignup">Regístrate como contratista</a><br>
+      <span data-i18n="footerHomeowner">¿Eres propietario?</span> <a href="dashboard-homeowner.html" data-i18n="footerHomeownerLink">Panel de propietario →</a>
     </div>
   </div>
 </div>
@@ -253,6 +253,10 @@ const T = {
   loginSub: {es:'Ingresa tu correo para ver tus propuestas y trabajos activos', en:'Enter your email to see your proposals and active jobs'},
   loginBtn: {es:'Entrar →', en:'Enter →'},
   emailLabel: {es:'Correo electrónico', en:'Email address'},
+  footerNoAccount: {es:'¿No tienes cuenta?', en:'No account?'},
+  footerSignup: {es:'Regístrate como contratista', en:'Register as contractor'},
+  footerHomeowner: {es:'¿Eres propietario?', en:'Are you a homeowner?'},
+  footerHomeownerLink: {es:'Panel de propietario →', en:'Homeowner dashboard →'},
 };
 
 async function db(path) {
