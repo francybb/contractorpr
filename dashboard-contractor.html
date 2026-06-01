@@ -191,6 +191,27 @@ footer a{color:var(--blue);font-weight:500}
 </footer>
 
 <script>
+
+// ── Language persistence ──────────────────────────────
+(function() {
+  const lang = localStorage.getItem('cpr_lang') || 'es';
+  function applyPageLang(l) {
+    const btn = document.querySelector('.lang-btn');
+    if (btn) btn.textContent = l === 'es' ? 'English' : 'Español';
+    document.querySelectorAll('[data-es][data-en]').forEach(el => {
+      const val = l === 'es' ? el.dataset.es : el.dataset.en;
+      if (!val) return;
+      if (el.tagName === 'H1' || el.tagName === 'H2' || val.includes('<')) el.innerHTML = val;
+      else el.textContent = val;
+    });
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      if (window.T && window.T[el.dataset.i18n]) el.textContent = window.T[el.dataset.i18n][l];
+    });
+  }
+  window._applyPageLang = applyPageLang;
+  document.addEventListener('DOMContentLoaded', () => applyPageLang(lang));
+})();
+
 const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
 let currentUser = null;
@@ -264,13 +285,13 @@ async function login() {
   const errorEl = document.getElementById('login-error');
   errorEl.classList.remove('show');
   if (!email) return;
-  btn.disabled = true; btn.textContent = 'Verificando...';
+  btn.disabled = true; btn.textContent = lang === 'en' ? 'Verifying...' : 'Verificando...';
 
   const data = await db(`contractors?email=eq.${encodeURIComponent(email)}&select=*`);
   if (!data || data.length === 0) {
     errorEl.textContent = 'No encontramos esa cuenta de contratista. ¿Ya te registraste?';
     errorEl.classList.add('show');
-    btn.disabled = false; btn.textContent = 'Entrar →';
+    btn.disabled = false; btn.textContent = T.loginBtn[lang];
     return;
   }
   currentUser = data[0];
