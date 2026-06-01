@@ -549,10 +549,10 @@ if (storedHomeownerCheck) {
   sessionStorage.setItem('homeowner_id', storedHomeownerCheck);
 }
 
+let lang = localStorage.getItem('cpr_lang') || 'es';
 applyLang();
 loadJob();
 
-let lang = localStorage.getItem('cpr_lang') || 'es';
 const t = {
   navBack: { es: '← Ver todos los trabajos', en: '← All jobs' },
   register: { es: 'Registrarse', en: 'Register' },
