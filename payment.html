@@ -128,7 +128,7 @@ footer a{color:var(--blue);font-weight:500}
 
         <div class="escrow-notice">
           <div class="escrow-notice-icon">🔒</div>
-          <p><strong data-es="Cómo funciona el escrow:" data-en="How escrow works:">Cómo funciona el escrow:</strong> <span data-es="Tu pago va a ContractingPR, no al contratista. Solo se libera cuando tú confirmas que el trabajo está completo y a tu satisfacción." data-en="Your payment goes to ContractingPR, not the contractor. It's only released when you confirm the work is complete and satisfactory.">Tu pago va a ContractingPR, no al contratista. Solo se libera cuando tú confirmas que el trabajo está completo y a tu satisfacción.</span></p>
+          <p><strong data-es="Tu pago, sin cargos extra:" data-en="Your payment, no extra fees:">Tu pago, sin cargos extra:</strong> <span data-es="Pagas exactamente el precio acordado. ContractingPR retiene una tarifa del 10% del pago al contratista — no de ti — como garantía del servicio y protección para ambas partes." data-en="You pay exactly the agreed price. ContractingPR retains a 10% fee from the contractor's payout — not from you — as service guarantee and protection for both parties.">Pagas exactamente el precio acordado. ContractingPR retiene una tarifa del 10% del pago al contratista — no de ti — como garantía del servicio y protección para ambas partes.</span></p>
         </div>
 
         <div id="error-msg" class="error-msg"></div>
@@ -175,7 +175,7 @@ footer a{color:var(--blue);font-weight:500}
           <span id="price-job">—</span>
         </div>
         <div class="summary-row">
-          <span data-es="Tarifa de plataforma (10%)" data-en="Platform fee (10%)">Tarifa de plataforma (10%)</span>
+          <span data-es="Tarifa plataforma (del contratista)" data-en="Platform fee (from contractor)">Tarifa plataforma (del contratista)</span>
           <span id="price-fee">—</span>
         </div>
         <div class="summary-divider"></div>
@@ -185,7 +185,7 @@ footer a{color:var(--blue);font-weight:500}
         </div>
 
         <div class="escrow-tag">
-          ✅ <span data-es="Fondos protegidos en custodia hasta aprobación" data-en="Funds protected in escrow until approval">Fondos protegidos en custodia hasta aprobación</span>
+          ✅ <span data-es="Sin cargos extra para el propietario. La tarifa la paga el contratista." data-en="No extra charges for homeowner. Fee paid by contractor.">Sin cargos extra para el propietario. La tarifa la paga el contratista.</span>
         </div>
       </div>
     </div>
@@ -276,10 +276,16 @@ async function loadPaymentInfo() {
   document.getElementById('contractor-initial').textContent = (contractorData.name || 'C')[0].toUpperCase();
 
   if (jobPrice > 0) {
+    const contractorReceives = Math.round(jobPrice * 0.90 * 100) / 100;
+    const platformFee = Math.round(jobPrice * 0.10 * 100) / 100;
+    totalAmount = jobPrice; // Homeowner pays only the quoted price
     document.getElementById('price-job').textContent = '$' + jobPrice.toLocaleString();
-    document.getElementById('price-fee').textContent = '$' + fee.toLocaleString();
-    document.getElementById('price-total').textContent = '$' + totalAmount.toLocaleString();
-    document.getElementById('pay-btn-text').textContent = `Pagar $${totalAmount.toLocaleString()} en custodia`;
+    document.getElementById('price-fee').textContent = '— (del contratista)';
+    document.getElementById('price-total').textContent = '$' + jobPrice.toLocaleString();
+    document.getElementById('pay-btn-text').textContent = `Pagar $${jobPrice.toLocaleString()} en custodia`;
+    // Show contractor breakdown
+    const feeRow = document.querySelector('.summary-row:nth-child(2) span:first-child');
+    if (feeRow) feeRow.textContent = 'Tarifa plataforma (del contratista)';
   } else {
     document.getElementById('price-job').textContent = 'Por acordar';
     document.getElementById('price-fee').textContent = '—';
