@@ -293,10 +293,10 @@ async function dbPatch(table, id, data) {
 
 function timeAgo(d) {
   const diff = (Date.now() - new Date(d)) / 1000;
-  if (diff < 60) return 'ahora';
-  if (diff < 3600) return `hace ${Math.floor(diff/60)} min`;
-  if (diff < 86400) return `hace ${Math.floor(diff/3600)}h`;
-  return new Date(d).toLocaleDateString('es-PR');
+  if (diff < 60) return lang==='en'?'just now':'ahora';
+  if (diff < 3600) return lang==='en'?`${Math.floor(diff/60)} min ago`:`hace ${Math.floor(diff/60)} min`;
+  if (diff < 86400) return lang==='en'?`${Math.floor(diff/3600)}h ago`:`hace ${Math.floor(diff/3600)}h`;
+  return new Date(d).toLocaleDateString(lang==='en'?'en-US':'es-PR');
 }
 
 async function loadJob() {
@@ -308,7 +308,7 @@ async function loadJob() {
   document.getElementById('breadcrumb-title').textContent = job.title;
   document.title = `${job.title} | ContractingPR`;
 
-  const statusLabel = job.status === 'open' ? 'Abierto' : job.status === 'accepted' ? 'Aceptado' : 'Cerrado';
+  const statusLabel = job.status === 'open' ? t.open[lang] : job.status === 'accepted' ? t.accepted[lang] : t.closed[lang];
   const statusClass = `status-${job.status}`;
 
   document.getElementById('job-card').innerHTML = `
@@ -322,7 +322,7 @@ async function loadJob() {
       <div class="job-badge">${job.trade_needed}</div>
       ${job.budget ? `<div class="job-budget">💰 ${job.budget}</div>` : ''}
     </div>
-    <div class="job-desc-label">Descripción del trabajo</div>
+    <div class="job-desc-label" id="desc-label">Descripción del trabajo</div>
     <div class="job-desc-text">${job.description}</div>
   `;
 
@@ -528,9 +528,10 @@ if (storedHomeownerCheck) {
   sessionStorage.setItem('homeowner_id', storedHomeownerCheck);
 }
 
+applyLang();
 loadJob();
 
-let lang = 'es';
+let lang = localStorage.getItem('cpr_lang') || 'es';
 const t = {
   navBack: { es: '← Ver todos los trabajos', en: '← All jobs' },
   register: { es: 'Registrarse', en: 'Register' },
@@ -556,8 +557,31 @@ const t = {
   chatPlaceholder: { es: 'Escribe un mensaje...', en: 'Write a message...' },
 };
 
+function applyLang() {
+  document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
+  const nb = document.getElementById('nav-back');
+  if (nb) nb.textContent = t.navBack[lang];
+  const st = document.querySelector('.sidebar-title');
+  if (st && !st.textContent.includes('👋')) st.textContent = lang === 'es' ? 'Enviar Propuesta' : 'Send Proposal';
+  const ss = document.querySelector('.sidebar-sub');
+  if (ss) ss.textContent = t.verifySub[lang];
+  const vp = document.querySelector('.verify-section p');
+  if (vp) vp.innerHTML = t.verifyLabel[lang];
+  const vb = document.querySelector('.btn-verify');
+  if (vb) vb.textContent = t.verifyBtn[lang];
+  const ci = document.getElementById('chat-input');
+  if (ci) ci.placeholder = t.chatPlaceholder[lang];
+  const bs = document.querySelector('.btn-send');
+  if (bs) bs.textContent = t.sendMsg[lang];
+  const pn = document.querySelector('.platform-note');
+  if (pn) pn.innerHTML = t.platformNote[lang] + '<br><a href="terms.html" style="color:var(--blue)">' + t.termsLink[lang] + '</a>';
+  const dl = document.getElementById('desc-label');
+  if (dl) dl.textContent = t.descLabel[lang];
+}
+
 function toggleLang() {
   lang = lang === 'es' ? 'en' : 'es';
+  localStorage.setItem('cpr_lang', lang);
   document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
   const nb = document.getElementById('nav-back');
   if (nb) nb.textContent = t.navBack[lang];

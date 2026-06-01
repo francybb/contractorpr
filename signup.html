@@ -126,6 +126,8 @@ footer a{color:var(--blue);font-weight:500}
 .tos-check input[type=checkbox]{width:18px;height:18px;margin-top:2px;flex-shrink:0;accent-color:var(--blue);cursor:pointer}
 .tos-check label{font-size:13px;color:var(--gray-4);font-weight:400;text-transform:none;letter-spacing:0;cursor:pointer}
 .tos-check label a{color:var(--blue);font-weight:600}
+.lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:Inter,sans-serif;color:var(--gray-4)}
+.lang-btn:hover{border-color:var(--blue);color:var(--blue)}
 </style>
 </head>
 <body>
@@ -137,7 +139,7 @@ footer a{color:var(--blue);font-weight:500}
       <div class="logo-box">C</div>
       ContractingPR
     </a>
-    <a href="index.html" class="nav-back">← Volver al inicio</a>
+    <div style="display:flex;align-items:center;gap:10px"><button class="lang-btn" onclick="toggleLang()">English</button><a href="index.html" class="nav-back" data-i18n="navBack">← Volver al inicio</a></div>
   </nav>
 </div>
 
@@ -155,8 +157,8 @@ footer a{color:var(--blue);font-weight:500}
 
   <!-- Tabs -->
   <div class="tabs">
-    <button class="tab active" onclick="switchTab('contractor')">🔨 Soy Contratista</button>
-    <button class="tab" onclick="switchTab('homeowner')">🏠 Necesito Trabajo</button>
+    <button class="tab active" onclick="switchTab('contractor')" data-i18n="tab1">🔨 Soy Contratista</button>
+    <button class="tab" onclick="switchTab('homeowner')" data-i18n="tab2">🏠 Necesito Trabajo</button>
   </div>
 
   <!-- Card -->
@@ -220,7 +222,7 @@ footer a{color:var(--blue);font-weight:500}
           <input type="checkbox" id="tos-contractor" required>
           <label for="tos-contractor">He leído y acepto los <a href="terms.html" target="_blank">Términos de Servicio</a> de ContractingPR, incluyendo la regla de comunicación y pagos exclusivamente a través de la plataforma. Entiendo que el incumplimiento puede resultar en la terminación de mi cuenta.</label>
         </div>
-        <button type="submit" class="btn-submit" id="btn-contractor">Registrarme como contratista →</button>
+        <button type="submit" class="btn-submit" id="btn-contractor" data-i18n="btnContractor">Registrarme como contratista →</button>
       </form>
     </div>
 
@@ -255,7 +257,7 @@ footer a{color:var(--blue);font-weight:500}
           <input type="checkbox" id="tos-homeowner" required>
           <label for="tos-homeowner">He leído y acepto los <a href="terms.html" target="_blank">Términos de Servicio</a> de ContractingPR, incluyendo la regla de comunicación y pagos exclusivamente a través de la plataforma. Entiendo que el incumplimiento puede resultar en la terminación de mi cuenta.</label>
         </div>
-        <button type="submit" class="btn-submit" id="btn-homeowner">Crear mi cuenta — Es gratis →</button>
+        <button type="submit" class="btn-submit" id="btn-homeowner" data-i18n="btnHomeowner">Crear mi cuenta — Es gratis →</button>
       </form>
     </div>
   </div>
@@ -355,6 +357,31 @@ async function submitHomeowner(e) {
     btn.textContent = 'Crear mi cuenta — Es gratis →';
   }
 }
+let lang = localStorage.getItem('cpr_lang') || 'es';
+const T = {
+  navBack:{es:'← Volver al inicio',en:'← Back to home'},
+  tab1:{es:'🔨 Soy Contratista',en:'🔨 I'm a Contractor'},
+  tab2:{es:'🏠 Necesito Trabajo',en:'🏠 I Need Work Done'},
+  heroTag:{es:'Únete gratis hoy',en:'Join free today'},
+  heroTitle:{es:'Únete a <em>ContractingPR</em>',en:'Join <em>ContractingPR</em>'},
+  heroSub:{es:'Conectamos propietarios con contratistas licenciados en toda Puerto Rico',en:'Connecting homeowners with licensed contractors across Puerto Rico'},
+  btnContractor:{es:'Registrarme como contratista →',en:'Register as contractor →'},
+  btnHomeowner:{es:'Crear mi cuenta — Es gratis →',en:'Create my account — It's free →'},
+};
+function applyLang(){
+  document.querySelector('.lang-btn').textContent = lang==='es'?'English':'Español';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.dataset.i18n;
+    if(T[k]){if(el.tagName==='H1'||T[k][lang].includes('<em>'))el.innerHTML=T[k][lang];else el.textContent=T[k][lang];}
+  });
+}
+function toggleLang(){
+  lang=lang==='es'?'en':'es';
+  localStorage.setItem('cpr_lang',lang);
+  applyLang();
+}
+applyLang();
+
 </script>
 </body>
 </html>

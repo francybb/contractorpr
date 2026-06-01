@@ -143,8 +143,8 @@ footer a{color:var(--blue);font-weight:500}
 <div class="login-wrap" id="login-screen">
   <div class="login-card">
     <div class="login-icon">🔨</div>
-    <h2>Panel Contratista</h2>
-    <p>Ingresa tu correo para ver tus propuestas y trabajos activos</p>
+    <h2 data-i18n="loginTitle">Panel Contratista</h2>
+    <p data-i18n="loginSub">Ingresa tu correo para ver tus propuestas y trabajos activos</p>
     <div id="login-error" class="error-msg"></div>
     <div class="field">
       <label>Correo electrónico</label>
@@ -227,6 +227,10 @@ const T = {
   priceConfirmedMsg: {es:'✅ Precio confirmado. El propietario puede proceder al pago.', en:'✅ Price confirmed. The homeowner can proceed with payment.'},
   confirmPriceBtn: {es:'Confirmar precio →', en:'Confirm price →'},
   payoutNote: {es:'Recibirás', en:"You'll receive"},
+  loginTitle: {es:'Panel Contratista', en:'Contractor Dashboard'},
+  loginSub: {es:'Ingresa tu correo para ver tus propuestas y trabajos activos', en:'Enter your email to see your proposals and active jobs'},
+  loginBtn: {es:'Entrar →', en:'Enter →'},
+  emailLabel: {es:'Correo electrónico', en:'Email address'},
 };
 
 async function db(path) {
@@ -469,7 +473,7 @@ async function sendMsg(proposalId) {
 }
 
 const stored = sessionStorage.getItem('contractor_data');
-if (stored) { currentUser = JSON.parse(stored); showDashboard(); }
+if (stored) { currentUser = JSON.parse(stored); showDashboard(); } else { applyLang(); }
 
 
 function applyLang() {

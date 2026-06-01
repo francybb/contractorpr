@@ -72,6 +72,8 @@ input::placeholder,textarea::placeholder{color:var(--gray-3)}
 footer{border-top:1px solid var(--gray-2);background:white;padding:24px;text-align:center;font-size:13px;color:var(--gray-3)}
 footer a{color:var(--blue);font-weight:500}
 #job-form{display:none}
+.lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:Inter,sans-serif;color:var(--gray-4)}
+.lang-btn:hover{border-color:var(--blue);color:var(--blue)}
 @media(max-width:480px){.form-row{grid-template-columns:1fr}.card{padding:24px 20px}.success-btns{flex-direction:column}}
 </style>
 </head>
@@ -79,7 +81,7 @@ footer a{color:var(--blue);font-weight:500}
 <div class="nav-wrap">
   <nav class="nav">
     <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
-    <a href="index.html" class="nav-back">← Volver al inicio</a>
+    <div style="display:flex;align-items:center;gap:10px"><button class="lang-btn" onclick="toggleLang()">English</button><a href="index.html" class="nav-back" data-i18n="navBack">← Volver al inicio</a></div>
   </nav>
 </div>
 
@@ -113,7 +115,7 @@ footer a{color:var(--blue);font-weight:500}
         <label>Correo electrónico registrado</label>
         <input type="email" id="verify-email" placeholder="maria@correo.com" required>
       </div>
-      <button class="btn-submit" onclick="verifyHomeowner()">Continuar →</button>
+      <button class="btn-submit" onclick="verifyHomeowner()" data-i18n="continuBtn">Continuar →</button>
     </div>
 
     <!-- Step 2: Job form -->
@@ -170,7 +172,7 @@ footer a{color:var(--blue);font-weight:500}
             <option>Por discutir</option>
           </select>
         </div>
-        <button type="submit" class="btn-submit" id="btn-job">Publicar trabajo →</button>
+        <button type="submit" class="btn-submit" id="btn-job" data-i18n="submitJob">Publicar trabajo →</button>
       </form>
     </div>
   </div>
@@ -188,6 +190,44 @@ footer a{color:var(--blue);font-weight:500}
 </footer>
 
 <script>
+
+let lang = localStorage.getItem('cpr_lang') || 'es';
+const T = {
+  navBack:{es:'← Volver al inicio',en:'← Back to home'},
+  heroTag:{es:'100% gratis',en:'100% free'},
+  step1:{es:'Verificar cuenta',en:'Verify account'},
+  step2:{es:'Detalles del trabajo',en:'Job details'},
+  verifyInfo:{es:'📧 Ingresa tu correo registrado para continuar.',en:'📧 Enter your registered email to continue.'},
+  verifyLabel:{es:'Correo electrónico registrado',en:'Registered email'},
+  continuBtn:{es:'Continuar →',en:'Continue →'},
+  successTitle:{es:'¡Trabajo publicado!',en:'Job posted!'},
+  successMsg:{es:'Los contratistas ya pueden ver tu trabajo. Te contactarán con sus propuestas.',en:'Contractors can now see your job. They will contact you with proposals.'},
+  viewJobs:{es:'Ver trabajos publicados →',en:'View posted jobs →'},
+  backHome:{es:'Volver al inicio',en:'Back to home'},
+  titleLabel:{es:'Título del trabajo',en:'Job title'},
+  tradeLabel:{es:'Tipo de trabajo',en:'Type of work'},
+  cityLabel:{es:'Ciudad / Municipio',en:'City / Municipality'},
+  descLabel:{es:'Descripción del trabajo',en:'Job description'},
+  budgetLabel:{es:'Presupuesto aproximado',en:'Approximate budget'},
+  submitJob:{es:'Publicar trabajo →',en:'Post job →'},
+  trust1:{es:'✅ Gratis para propietarios',en:'✅ Free for homeowners'},
+  trust2:{es:'🔒 Tu info está segura',en:'🔒 Your info is safe'},
+  trust3:{es:'⚡ Respuestas en horas',en:'⚡ Responses in hours'},
+};
+function applyLang(){
+  document.querySelector('.lang-btn').textContent=lang==='es'?'English':'Español';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.dataset.i18n;
+    if(T[k]) el.textContent=T[k][lang];
+  });
+}
+function toggleLang(){
+  lang=lang==='es'?'en':'es';
+  localStorage.setItem('cpr_lang',lang);
+  applyLang();
+}
+applyLang();
+
 const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
 let homeownerId = null;

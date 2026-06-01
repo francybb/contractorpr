@@ -66,6 +66,8 @@ select.filter:focus{border-color:var(--blue)}
 .cta-bar-btn:hover{background:var(--blue-light)}
 footer{border-top:1px solid var(--gray-2);background:white;padding:24px;text-align:center;font-size:13px;color:var(--gray-3)}
 footer a{color:var(--blue);font-weight:500}
+.lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:Inter,sans-serif;color:var(--gray-4)}
+.lang-btn:hover{border-color:var(--blue);color:var(--blue)}
 @media(max-width:600px){.job-top{flex-direction:column}.cta-bar{flex-direction:column;text-align:center}}
 </style>
 </head>
@@ -74,8 +76,9 @@ footer a{color:var(--blue);font-weight:500}
   <nav class="nav">
     <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
     <div class="nav-right">
-      <a href="index.html" class="btn-nav-ghost">Inicio</a>
-      <a href="post-job.html" class="btn-nav">+ Publicar trabajo</a>
+      <button class="lang-btn" onclick="toggleLang()">English</button>
+      <a href="index.html" class="btn-nav-ghost" data-i18n="home">Inicio</a>
+      <a href="post-job.html" class="btn-nav" data-i18n="postJob">+ Publicar trabajo</a>
     </div>
   </nav>
 </div>
@@ -91,15 +94,15 @@ footer a{color:var(--blue);font-weight:500}
   <!-- CTA for homeowners -->
   <div class="cta-bar">
     <div class="cta-bar-text">
-      <h3>¿Eres propietario? Publica tu trabajo gratis</h3>
-      <p>Recibe propuestas de contratistas verificados en horas</p>
+      <h3 data-i18n="ctaTitle">¿Eres propietario? Publica tu trabajo gratis</h3>
+      <p data-i18n="ctaSub">Recibe propuestas de contratistas verificados en horas</p>
     </div>
-    <a href="post-job.html" class="cta-bar-btn">Publicar ahora →</a>
+    <a href="post-job.html" class="cta-bar-btn" data-i18n="ctaBtn">Publicar ahora →</a>
   </div>
 
   <!-- Filters -->
   <div class="filters">
-    <span class="filter-label">Filtrar:</span>
+    <span class="filter-label" data-i18n="filterLabel">Filtrar:</span>
     <select class="filter" id="filter-trade" onchange="filterJobs()">
       <option value="">Todos los oficios</option>
       <option>Carpintería</option>
@@ -124,7 +127,7 @@ footer a{color:var(--blue);font-weight:500}
   </div>
 
   <div class="jobs-header">
-    <div class="jobs-count" id="jobs-count">Cargando trabajos...</div>
+    <div class="jobs-count" id="jobs-count" data-i18n="loading">Cargando trabajos...</div>
   </div>
 
   <div id="jobs-container">
@@ -141,16 +144,52 @@ footer a{color:var(--blue);font-weight:500}
 </footer>
 
 <script>
+
+let lang = localStorage.getItem('cpr_lang') || 'es';
+const T = {
+  home:{es:'Inicio',en:'Home'},
+  postJob:{es:'+ Publicar trabajo',en:'+ Post job'},
+  filterLabel:{es:'Filtrar:',en:'Filter:'},
+  allTrades:{es:'Todos los oficios',en:'All trades'},
+  anyBudget:{es:'Cualquier presupuesto',en:'Any budget'},
+  loading:{es:'Cargando trabajos...',en:'Loading jobs...'},
+  emptyTitle:{es:'No hay trabajos disponibles',en:'No jobs available'},
+  emptySub:{es:'Sé el primero en publicar un trabajo.',en:'Be the first to post a job.'},
+  emptyBtn:{es:'Publicar trabajo →',en:'Post a job →'},
+  ctaTitle:{es:'¿Eres propietario? Publica tu trabajo gratis',en:'Are you a homeowner? Post your job free'},
+  ctaSub:{es:'Recibe propuestas de contratistas verificados en horas',en:'Get proposals from verified contractors in hours'},
+  ctaBtn:{es:'Publicar ahora →',en:'Post now →'},
+};
+function applyLang(){
+  document.querySelector('.lang-btn').textContent = lang==='es'?'English':'Español';
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.dataset.i18n;
+    if(T[k]) el.textContent=T[k][lang];
+  });
+  // Re-render if jobs loaded
+  if(allJobs.length) renderJobs(allJobs.filter(j=>{
+    const t=document.getElementById('filter-trade').value;
+    const b=document.getElementById('filter-budget').value;
+    return (!t||j.trade_needed===t)&&(!b||j.budget===b);
+  }));
+}
+function toggleLang(){
+  lang=lang==='es'?'en':'es';
+  localStorage.setItem('cpr_lang',lang);
+  applyLang();
+}
+
 const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
 let allJobs = [];
 
 function timeAgo(dateStr) {
   const diff = (Date.now() - new Date(dateStr + (dateStr.includes('Z') ? '' : 'Z'))) / 1000;
-  if (diff < 3600) return `hace ${Math.floor(diff/60)} min`;
-  if (diff < 86400) return `hace ${Math.floor(diff/3600)} horas`;
-  if (diff < 604800) return `hace ${Math.floor(diff/86400)} días`;
-  return new Date(dateStr).toLocaleDateString('es-PR');
+  const ago=lang==='en'?'ago':'hace';
+  if (diff < 3600) return lang==='en'?`${Math.floor(diff/60)} min ago`:`hace ${Math.floor(diff/60)} min`;
+  if (diff < 86400) return lang==='en'?`${Math.floor(diff/3600)}h ago`:`hace ${Math.floor(diff/3600)}h`;
+  if (diff < 604800) return lang==='en'?`${Math.floor(diff/86400)}d ago`:`hace ${Math.floor(diff/86400)} días`;
+  return new Date(dateStr).toLocaleDateString(lang==='en'?'en-US':'es-PR');
 }
 
 function renderJobs(jobs) {
@@ -158,18 +197,18 @@ function renderJobs(jobs) {
   const countEl = document.getElementById('jobs-count');
 
   if (jobs.length === 0) {
-    countEl.textContent = '0 trabajos encontrados';
+    countEl.textContent = lang==='en'?'0 jobs found':'0 trabajos encontrados';
     container.innerHTML = `
       <div class="empty-state">
         <div class="empty-icon">🔍</div>
-        <h3>No hay trabajos disponibles</h3>
-        <p>Sé el primero en publicar un trabajo en ContractingPR.</p>
-        <a href="post-job.html" class="btn-post">Publicar trabajo →</a>
+        <h3 data-i18n="emptyTitle">No hay trabajos disponibles</h3>
+        <p data-i18n="emptySub">Sé el primero en publicar un trabajo en ContractingPR.</p>
+        <a href="post-job.html" class="btn-post" data-i18n="emptyBtn">Publicar trabajo →</a>
       </div>`;
     return;
   }
 
-  countEl.textContent = `${jobs.length} trabajo${jobs.length !== 1 ? 's' : ''} disponible${jobs.length !== 1 ? 's' : ''}`;
+  countEl.textContent = lang==='en'?`${jobs.length} job${jobs.length!==1?'s':''} available`:`${jobs.length} trabajo${jobs.length!==1?'s':''} disponible${jobs.length!==1?'s':''}`;
   container.innerHTML = `<div class="jobs-grid">${jobs.map(job => `
     <div class="job-card" onclick="window.location.href='job-detail.html?id=${job.id}'" style="cursor:pointer">
       <div class="job-top">
@@ -206,6 +245,7 @@ async function loadJobs() {
   }
 }
 
+applyLang();
 loadJobs();
 </script>
 </body>
