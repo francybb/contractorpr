@@ -435,20 +435,13 @@ async function translateContent(propId, title, message, targetLang) {
   resultEl.textContent = targetLang === 'en' ? 'Translating...' : 'Traduciendo...';
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
+    const response = await fetch('/.netlify/functions/translate', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': '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', 'anthropic-version': '2023-06-01', 'anthropic-dangerous-direct-browser-access': 'true' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 500,
-        messages: [{
-          role: 'user',
-          content: `Translate the following job title and description to ${targetLang === 'en' ? 'English' : 'Spanish'}. Reply with only: TITLE: [translated title] | MESSAGE: [translated message]\n\nTitle: ${title}\nMessage: ${message}`
-        }]
-      })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, message, targetLang })
     });
     const data = await response.json();
-    const text = data.content?.[0]?.text || '';
+    const text = data.text || '';
     const titleMatch = text.match(/TITLE:\s*(.+?)\s*\|/);
     const msgMatch = text.match(/MESSAGE:\s*(.+)/s);
     const translatedTitle = titleMatch ? titleMatch[1].trim() : title;
