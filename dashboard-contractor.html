@@ -255,16 +255,16 @@ async function showDashboard() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('logout-btn').style.display = 'block';
-  document.getElementById('greeting').textContent = `Hola, ${currentUser.name.split(' ')[0]} 👋`;
+  document.getElementById('greeting').textContent = `${lang === 'en' ? 'Hi' : 'Hola'}, ${currentUser.name.split(' ')[0]} 👋`;
   document.getElementById('greeting-sub').textContent = `${currentUser.trade} · ${currentUser.email}`;
 
-  const statusText = currentUser.status === 'active' ? 'Activo' : 'Pendiente de aprobación';
+  const statusText = currentUser.status === 'active' ? T.active[lang] : T.pendingApproval[lang];
   const statusBadge = currentUser.status === 'active' ? 'badge-active' : 'badge-pending';
   document.getElementById('profile-card').innerHTML = `
     <div class="profile-avatar">${currentUser.name[0].toUpperCase()}</div>
     <div class="profile-info">
       <h3>${currentUser.name}</h3>
-      <p>${currentUser.email} · ${currentUser.phone || 'Sin teléfono'}</p>
+      <p>${currentUser.email} · ${currentUser.phone || T.noPhone[lang]}</p>
       <div class="profile-badges">
         <span class="badge badge-trade">${currentUser.trade}</span>
         ${currentUser.city ? `<span class="badge badge-city">📍 ${currentUser.city}</span>` : ''}
@@ -273,6 +273,7 @@ async function showDashboard() {
       </div>
     </div>`;
 
+  applyLang();
   await loadProposals();
 }
 
@@ -290,9 +291,9 @@ async function loadProposals() {
     document.getElementById('proposals-list').innerHTML = `
       <div class="empty-state">
         <div class="empty-icon">🔍</div>
-        <h3>Aún no has enviado propuestas</h3>
-        <p>Explora los trabajos disponibles y envía tu primera propuesta.</p>
-        <button class="btn-browse" onclick="window.location.href='jobs.html'">Ver trabajos →</button>
+        <h3>${lang === 'en' ? "You haven't sent any proposals yet" : 'Aún no has enviado propuestas'}</h3>
+        <p>${lang === 'en' ? 'Explore available jobs and send your first proposal.' : 'Explora los trabajos disponibles y envía tu primera propuesta.'}</p>
+        <button class="btn-browse" onclick="window.location.href='jobs.html'">${lang === 'en' ? 'Browse jobs →' : 'Ver trabajos →'}</button>
       </div>`;
     return;
   }
@@ -304,70 +305,82 @@ async function loadProposals() {
 
   const activeProps = proposals.filter(p => p.status === 'accepted');
   const pendingProps = proposals.filter(p => p.status === 'pending');
-  const otherProps = proposals.filter(p => p.status !== 'accepted' && p.status !== 'pending');
+  const completedProps = proposals.filter(p => p.status === 'completed');
 
   let html = '';
 
   // Active jobs section
-  html += `<div class="section-header-row"><span class="section-dot dot-active"></span><div class="section-title" style="margin:0">Trabajos activos <span class="count-badge">${activeProps.length}</span></div></div>`;
+  html += `<div class="section-header-row"><span class="section-dot dot-active"></span><div class="section-title" style="margin:0">${T.secActive[lang]} <span class="count-badge">${activeProps.length}</span></div></div>`;
   if (activeProps.length === 0) {
-    html += `<div class="section-empty">No tienes trabajos activos aún. Cuando un propietario acepte tu propuesta aparecerá aquí.</div>`;
+    html += `<div class="section-empty">${T.secEmptyActive[lang]}</div>`;
   } else {
-    html += activeProps.map(p => renderPropRow(p, jobMap[p.job_id] || {}, true)).join('');
+    html += activeProps.map(p => renderPropRow(p, jobMap[p.job_id] || {}, 'accepted')).join('');
   }
 
   // Pending proposals section
-  html += `<div class="section-header-row"><span class="section-dot dot-pending"></span><div class="section-title" style="margin:0">Propuestas enviadas <span class="count-badge">${pendingProps.length}</span></div></div>`;
+  html += `<div class="section-header-row"><span class="section-dot dot-pending"></span><div class="section-title" style="margin:0">${T.secPending[lang]} <span class="count-badge">${pendingProps.length}</span></div></div>`;
   if (pendingProps.length === 0) {
-    html += `<div class="section-empty">No tienes propuestas pendientes. <a href="jobs.html" style="color:var(--blue);font-weight:600">Ver trabajos disponibles →</a></div>`;
+    html += `<div class="section-empty">${T.secEmptyPending[lang]} <a href="jobs.html" style="color:var(--blue);font-weight:600">${T.browseLink[lang]}</a></div>`;
   } else {
-    html += pendingProps.map(p => renderPropRow(p, jobMap[p.job_id] || {}, false)).join('');
+    html += pendingProps.map(p => renderPropRow(p, jobMap[p.job_id] || {}, 'pending')).join('');
+  }
+
+  // Completed section
+  if (completedProps.length > 0) {
+    html += `<div class="section-header-row"><span class="section-dot dot-done"></span><div class="section-title" style="margin:0">${T.secCompleted[lang]} <span class="count-badge">${completedProps.length}</span></div></div>`;
+    html += completedProps.map(p => renderPropRow(p, jobMap[p.job_id] || {}, 'completed')).join('');
   }
 
   document.getElementById('proposals-list').innerHTML = html;
 }
 
-function renderPropRow(p, job, isActive) {
+function renderPropRow(p, job, status) {
+  const isActive = status === 'accepted';
+  const isCompleted = status === 'completed';
+  const statusLabel = isActive ? T.statusAccepted[lang] : isCompleted ? T.statusCompleted[lang] : T.statusPending[lang];
+  const statusClass = isActive ? 'prop-accepted' : isCompleted ? 'prop-accepted' : 'prop-pending';
+  const rowStyle = isActive ? 'border-color:var(--green);background:#F0FDF4' : isCompleted ? 'border-color:var(--gray-3);background:var(--gray-1)' : '';
+  const payout = p.price ? (parseFloat(p.price) * 0.90).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : null;
   return `
-  <div class="proposal-row" style="${isActive ? 'border-color:var(--green);background:#F0FDF4' : ''}">
+  <div class="proposal-row" style="${rowStyle}">
     <div class="prop-row-header">
-      <div class="prop-job-title">${job.title || 'Trabajo'}</div>
-      <div class="prop-status ${isActive ? 'prop-accepted' : 'prop-pending'}">${isActive ? '✅ Aceptada' : '⏳ En espera'}</div>
+      <div class="prop-job-title">${job.title || (lang === 'en' ? 'Job' : 'Trabajo')}</div>
+      <div class="prop-status ${statusClass}">${statusLabel}</div>
     </div>
     <div class="prop-meta">
       <span>📍 ${job.city || ''}</span>
       <span>🔧 ${job.trade_needed || ''}</span>
       <span>🕐 ${timeAgo(p.created_at)}</span>
-      ${p.price ? `<span class="prop-price-sent">💰 Tu precio: $${parseFloat(p.price).toLocaleString()}</span>` : ''}
+      ${p.price ? `<span class="prop-price-sent">💰 ${T.priceLabel[lang]} $${parseFloat(p.price).toLocaleString()} → ${T.payoutNote[lang]} $${payout}</span>` : ''}
     </div>
     <div class="prop-msg-preview">"${p.message.length > 120 ? p.message.substring(0,120)+'...' : p.message}"</div>
     <div>
-      <button class="btn-view-job" onclick="window.location.href='job-detail.html?id=${p.job_id}'">Ver trabajo →</button>
-      <button class="btn-chat-prop" onclick="toggleChat('${p.id}',event)">💬 Chat con propietario</button>
-      ${!p.price ? `<button class="btn-chat-prop" onclick="togglePriceForm('${p.id}',event)" style="background:var(--green);margin-left:4px">💰 Confirmar precio</button>` : `<span style="font-size:13px;color:var(--green);font-weight:600;margin-left:8px">✓ Precio: $${parseFloat(p.price).toLocaleString()}</span>`}
+      <button class="btn-view-job" onclick="window.location.href='job-detail.html?id=${p.job_id}'">${T.viewJob[lang]}</button>
+      ${!isCompleted ? `<button class="btn-chat-prop" onclick="toggleChat('${p.id}',event)">${T.chatOwner[lang]}</button>` : ''}
+      ${isActive && !p.price ? `<button class="btn-chat-prop" onclick="togglePriceForm('${p.id}',event)" style="background:var(--green);margin-left:4px">${T.confirmPrice[lang]}</button>` : ''}
+      ${isActive && p.price ? `<span style="font-size:13px;color:var(--green);font-weight:600;margin-left:8px">✓ $${parseFloat(p.price).toLocaleString()} → $${payout}</span>` : ''}
     </div>
     <div class="price-update-form" id="price-form-${p.id}">
-      <p>Envía el precio final al propietario para proceder al pago:</p>
+      <p>${T.priceSendLabel[lang]}</p>
       <div class="price-input-row">
         <span class="price-prefix">$</span>
         <input type="number" id="price-input-${p.id}" placeholder="0.00" min="1" step="0.01">
-        <button class="btn-confirm-price" onclick="submitPrice('${p.id}',event)">Confirmar precio →</button>
+        <button class="btn-confirm-price" onclick="submitPrice('${p.id}',event)">${T.confirmPriceBtn[lang]}</button>
       </div>
-      <div id="price-confirmed-${p.id}" class="price-confirmed" style="display:none">✅ Precio confirmado. El propietario puede proceder al pago.</div>
+      <div id="price-confirmed-${p.id}" class="price-confirmed" style="display:none">${T.priceConfirmedMsg[lang]}</div>
     </div>
-      <div class="chat-wrap" id="chat-${p.id}">
-        <div class="chat-head">
-          <span>Chat sobre: ${job.title || 'Trabajo'}</span>
-          <button style="background:none;border:none;cursor:pointer;color:var(--gray-3);font-size:18px" onclick="closeChat('${p.id}',event)">✕</button>
-        </div>
-        <div class="chat-msgs" id="msgs-${p.id}"></div>
-        <div class="chat-input">
-          <input type="text" id="input-${p.id}" placeholder="Escribe un mensaje..." onkeydown="if(event.key==='Enter')sendMsg('${p.id}')">
-          <button class="btn-send" onclick="sendMsg('${p.id}')">Enviar</button>
-        </div>
+    ${!isCompleted ? `<div class="chat-wrap" id="chat-${p.id}">
+      <div class="chat-head">
+        <span>${lang === 'en' ? 'Chat about:' : 'Chat sobre:'} ${job.title || (lang === 'en' ? 'Job' : 'Trabajo')}</span>
+        <button style="background:none;border:none;cursor:pointer;color:var(--gray-3);font-size:18px" onclick="closeChat('${p.id}',event)">✕</button>
       </div>
-    </div>`;
-  }).join('');
+      <div class="chat-msgs" id="msgs-${p.id}"></div>
+      <div class="chat-input">
+        <input type="text" id="input-${p.id}" placeholder="${T.writeMsg[lang]}" onkeydown="if(event.key==='Enter')sendMsg('${p.id}')">
+        <button class="btn-send" onclick="sendMsg('${p.id}')">${T.sendBtn[lang]}</button>
+      </div>
+    </div>` : ''}
+  </div>`;
 }
 
 async function toggleChat(proposalId, e) {
@@ -394,7 +407,7 @@ async function loadMsgs(proposalId) {
   const container = document.getElementById(`msgs-${proposalId}`);
   if (!container) return;
   if (!msgs.length) {
-    container.innerHTML = '<div style="text-align:center;color:var(--gray-3);font-size:13px;padding:12px">Empieza la conversación</div>';
+    container.innerHTML = '<div style="text-align:center;color:var(--gray-3);font-size:13px;padding:12px">' + T.startConvo[lang] + '</div>';
     return;
   }
   container.innerHTML = msgs.map(m => {
@@ -424,7 +437,7 @@ async function sendMsg(proposalId) {
 const stored = sessionStorage.getItem('contractor_data');
 if (stored) { currentUser = JSON.parse(stored); showDashboard(); }
 
-let lang = 'es';
+let lang = localStorage.getItem('cpr_lang') || 'es';
 const T = {
   logout: {es:'Cerrar sesión', en:'Log out'},
   browseBtn: {es:'🔍 Ver trabajos disponibles', en:'🔍 Browse available jobs'},
@@ -434,14 +447,42 @@ const T = {
   sectionTitle: {es:'Mis propuestas', en:'My proposals'},
   sendBtn: {es:'Enviar', en:'Send'},
   viewJob: {es:'Ver trabajo →', en:'View job →'},
+  secActive: {es:'Trabajos activos', en:'Active jobs'},
+  secPending: {es:'Propuestas enviadas', en:'Sent proposals'},
+  secCompleted: {es:'Completados', en:'Completed'},
+  secEmptyActive: {es:'No tienes trabajos activos aún. Cuando un propietario acepte tu propuesta aparecerá aquí.', en:'No active jobs yet. When a homeowner accepts your proposal it will appear here.'},
+  secEmptyPending: {es:'No tienes propuestas pendientes.', en:'No pending proposals.'},
+  secEmptyCompleted: {es:'No tienes trabajos completados aún.', en:'No completed jobs yet.'},
+  browseLink: {es:'Ver trabajos disponibles →', en:'Browse available jobs →'},
+  statusAccepted: {es:'✅ Aceptada', en:'✅ Accepted'},
+  statusPending: {es:'⏳ En espera', en:'⏳ Pending'},
+  statusCompleted: {es:'✅ Completado', en:'✅ Completed'},
+  chatOwner: {es:'💬 Chat con propietario', en:'💬 Chat with homeowner'},
+  confirmPrice: {es:'💰 Confirmar precio', en:'💰 Confirm price'},
+  priceLabel: {es:'Tu precio:', en:'Your price:'},
+  writeMsg: {es:'Escribe un mensaje...', en:'Write a message...'},
+  startConvo: {es:'Empieza la conversación', en:'Start the conversation'},
+  noPhone: {es:'Sin teléfono', en:'No phone'},
+  active: {es:'Activo', en:'Active'},
+  pendingApproval: {es:'Pendiente de aprobación', en:'Pending approval'},
+  priceSendLabel: {es:'Envía el precio final al propietario para proceder al pago:', en:'Send the final price to the homeowner to proceed with payment:'},
+  priceConfirmedMsg: {es:'✅ Precio confirmado. El propietario puede proceder al pago.', en:'✅ Price confirmed. The homeowner can proceed with payment.'},
+  confirmPriceBtn: {es:'Confirmar precio →', en:'Confirm price →'},
+  payoutNote: {es:'Recibirás', en:"You'll receive"},
 };
-function toggleLang() {
-  lang = lang === 'es' ? 'en' : 'es';
+
+function applyLang() {
   document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
     if (T[key]) el.textContent = T[key][lang];
   });
+}
+
+function toggleLang() {
+  lang = lang === 'es' ? 'en' : 'es';
+  localStorage.setItem('cpr_lang', lang);
+  applyLang();
   if (currentUser) loadProposals();
 }
 

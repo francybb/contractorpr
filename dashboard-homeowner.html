@@ -293,52 +293,55 @@ async function showDashboard() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
   document.getElementById('logout-btn').style.display = 'block';
-  document.getElementById('greeting').textContent = `Hola, ${currentUser.name.split(' ')[0]} 👋`;
+  document.getElementById('greeting').textContent = `${lang === 'en' ? 'Hi' : 'Hola'}, ${currentUser.name.split(' ')[0]} 👋`;
   document.getElementById('greeting-sub').textContent = `${currentUser.city} · ${currentUser.email}`;
+  applyLang();
   await loadJobs();
 }
 
 async function loadJobs() {
   const jobs = await db(`jobs?homeowner_id=eq.${currentUser.id}&order=created_at.desc&select=*`);
-  const proposals = await db(`proposals?job_id=in.(${jobs.length ? jobs.map(j=>j.id).join(',') : 'null'})&select=*`);
+  const proposals = jobs.length ? await db(`proposals?job_id=in.(${jobs.map(j=>j.id).join(',')})&select=*`) : [];
   const propMap = {};
-  proposals.forEach(p => { if (!propMap[p.job_id]) propMap[p.job_id] = []; propMap[p.job_id].push(p); });
+  const safeProposals = Array.isArray(proposals) ? proposals : [];
+  safeProposals.forEach(p => { if (!propMap[p.job_id]) propMap[p.job_id] = []; propMap[p.job_id].push(p); });
   const activeJobs = jobs.filter(j => j.status === 'accepted' || j.status === 'in_progress');
   const openJobs = jobs.filter(j => j.status === 'open');
   const completedJobs = jobs.filter(j => j.status === 'completed');
   document.getElementById('stat-jobs').textContent = jobs.length;
-  document.getElementById('stat-proposals').textContent = proposals.length;
+  document.getElementById('stat-proposals').textContent = safeProposals.length;
   document.getElementById('stat-accepted').textContent = activeJobs.length;
   if (jobs.length === 0) {
-    document.getElementById('jobs-list').innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><h3>Aún no tienes trabajos publicados</h3><p>Publica tu primer trabajo.</p><button class="btn-post" onclick="window.location.href='post-job.html'">+ Publicar trabajo</button></div>`;
+    document.getElementById('jobs-list').innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><h3>${T.emptyTitle[lang]}</h3><p>${lang === 'en' ? 'Post your first job.' : 'Publica tu primer trabajo.'}</p><button class="btn-post" onclick="window.location.href='post-job.html'">${T.emptyBtn[lang]}</button></div>`;
     return;
   }
   let html = '';
-  html += `<div class="section-header-row"><span class="section-dot dot-active"></span><span style="font-size:15px;font-weight:700">Trabajos activos <span class="count-badge">${activeJobs.length}</span></span></div>`;
-  html += activeJobs.length ? activeJobs.map(job => renderJobRow(job, propMap[job.id]||[])).join('') : `<div class="section-empty">No tienes trabajos activos aún.</div>`;
-  html += `<div class="section-header-row"><span class="section-dot dot-open"></span><span style="font-size:15px;font-weight:700">Trabajos abiertos <span class="count-badge">${openJobs.length}</span></span></div>`;
-  html += openJobs.length ? openJobs.map(job => renderJobRow(job, propMap[job.id]||[])).join('') : `<div class="section-empty">No tienes trabajos abiertos. <a href="post-job.html" style="color:var(--blue);font-weight:600">Publicar →</a></div>`;
+  html += `<div class="section-header-row"><span class="section-dot dot-active"></span><span style="font-size:15px;font-weight:700">${T.secActive[lang]} <span class="count-badge">${activeJobs.length}</span></span></div>`;
+  html += activeJobs.length ? activeJobs.map(job => renderJobRow(job, propMap[job.id]||[])).join('') : `<div class="section-empty">${T.secEmptyActive[lang]}</div>`;
+  html += `<div class="section-header-row"><span class="section-dot dot-open"></span><span style="font-size:15px;font-weight:700">${T.secOpen[lang]} <span class="count-badge">${openJobs.length}</span></span></div>`;
+  html += openJobs.length ? openJobs.map(job => renderJobRow(job, propMap[job.id]||[])).join('') : `<div class="section-empty">${T.secEmptyOpen[lang]} <a href="post-job.html" style="color:var(--blue);font-weight:600">${T.publishLink[lang]}</a></div>`;
   if (completedJobs.length > 0) {
-    html += `<div class="section-header-row"><span class="section-dot" style="background:var(--gray-3)"></span><span style="font-size:15px;font-weight:700">Completados <span class="count-badge">${completedJobs.length}</span></span></div>`;
+    html += `<div class="section-header-row"><span class="section-dot" style="background:var(--gray-3)"></span><span style="font-size:15px;font-weight:700">${T.secCompleted[lang]} <span class="count-badge">${completedJobs.length}</span></span></div>`;
     html += completedJobs.map(job => renderJobRow(job, propMap[job.id]||[])).join('');
   }
   document.getElementById('jobs-list').innerHTML = html;
 }
 
 function renderJobRow(job, jobProps) {
-  const statusMap = {open:'Abierto',accepted:'En progreso',in_progress:'En progreso',completed:'Completado'};
+  const statusMap = {open: T.openStatus[lang], accepted: T.acceptedStatus[lang], in_progress: T.acceptedStatus[lang], completed: T.closedStatus[lang]};
   const classMap = {open:'status-open',accepted:'status-accepted',in_progress:'status-accepted',completed:'status-closed'};
   const newProps = jobProps.filter(p => p.status === 'pending').length;
   const acceptedProp = jobProps.find(p => p.status === 'accepted');
-  const title = job.title.replace(/\/g,'\\').replace(/'/g,"\'");
-  return `<div class="job-row" onclick="openProposals('${job.id}','${title}')">
-    <div class="job-row-header"><div class="job-row-title">${job.title}</div><div class="status-badge ${classMap[job.status]||'status-open'}">${statusMap[job.status]||'Abierto'}</div></div>
+  const propWord = jobProps.length !== 1 ? T.proposalsPlural[lang] : T.proposals[lang];
+  const newWord = newProps !== 1 ? T.newPropPlural[lang] : T.newProp[lang];
+  return `<div class="job-row" onclick="openProposals('${job.id}','${job.title.replace(/[^a-zA-Z0-9áéíóúñÁÉÍÓÚÑ ]/g,'')}')">
+    <div class="job-row-header"><div class="job-row-title">${job.title}</div><div class="status-badge ${classMap[job.status]||'status-open'}">${statusMap[job.status]||T.openStatus[lang]}</div></div>
     <div class="job-row-meta"><span>📍 ${job.city}</span><span>🔧 ${job.trade_needed}</span><span>🕐 ${timeAgo(job.created_at)}</span>${job.budget?`<span>💰 ${job.budget}</span>`:''}</div>
     <div class="proposal-preview">
-      <div class="proposal-count">${jobProps.length} propuesta${jobProps.length!==1?'s':''}</div>
-      ${newProps>0?`<span class="new-badge">${newProps} nueva${newProps!==1?'s':''}</span>`:''}
-      ${acceptedProp?`<span style="font-size:13px;color:var(--green);font-weight:600;margin-left:8px">✅ Aceptada</span>`:''}
-      <span style="margin-left:auto;font-size:13px;color:var(--blue);font-weight:500">Ver →</span>
+      <div class="proposal-count">${jobProps.length} ${propWord}</div>
+      ${newProps>0?`<span class="new-badge">${newProps} ${newWord}</span>`:''}
+      ${acceptedProp?`<span style="font-size:13px;color:var(--green);font-weight:600;margin-left:8px">✅ ${T.accepted[lang]}</span>`:''}
+      <span style="margin-left:auto;font-size:13px;color:var(--blue);font-weight:500">${T.viewArrow[lang]}</span>
     </div>
   </div>`;
 }
@@ -352,7 +355,7 @@ async function openProposals(jobId, jobTitle) {
 
   const proposals = await db(`proposals?job_id=eq.${jobId}&order=created_at.asc&select=*`);
   if (!proposals.length) {
-    document.getElementById('proposals-list').innerHTML = '<div style="text-align:center;padding:24px;color:var(--gray-3)">Aún no hay propuestas para este trabajo.</div>';
+    document.getElementById('proposals-list').innerHTML = `<div style="text-align:center;padding:24px;color:var(--gray-3)">${T.noProps[lang]}</div>`;
     return;
   }
 
@@ -364,36 +367,40 @@ async function openProposals(jobId, jobTitle) {
   document.getElementById('proposals-list').innerHTML = proposals.map(p => {
     const c = cMap[p.contractor_id] || {};
     const isAccepted = p.status === 'accepted';
+    const contractorName = c.name || (lang === 'en' ? 'Contractor' : 'Contratista');
     return `
     <div class="proposal-item ${isAccepted ? 'accepted' : ''}" id="prop-${p.id}">
       <div class="prop-header">
         <div>
-          <div class="prop-contractor">${c.name || 'Contratista'}</div>
+          <div class="prop-contractor">${c.name || contractorName}</div>
           <div class="prop-trade">${c.trade || ''} ${c.city ? '· ' + c.city : ''}</div>
         </div>
-        ${p.price ? `<div class="prop-price">$${parseFloat(p.price).toLocaleString()}</div>` : '<div style="font-size:13px;color:var(--gray-3)">Precio por discutir</div>'}
+        ${p.price ? `<div class="prop-price">$${parseFloat(p.price).toLocaleString()}</div>` : `<div style="font-size:13px;color:var(--gray-3)">${lang === 'en' ? 'Price to be discussed' : 'Precio por discutir'}</div>`}
       </div>
       <div class="prop-msg">${p.message}</div>
       <div class="prop-actions">
         ${isAccepted
-          ? `<div class="accepted-tag">✅ Propuesta aceptada</div>
-             ${p.price 
-               ? `<button class="btn-chat" onclick="window.location.href='payment.html?proposal=${p.id}&job=${jobId}'" style="background:var(--green);color:white;margin-left:8px">💳 Pagar en custodia</button>`
-               : `<div style="margin-top:10px;padding:12px;background:var(--blue-light);border-radius:8px;font-size:13px;color:var(--blue-dark)">⏳ Esperando que el contratista confirme el precio antes de proceder al pago.</div>`
-             }`
-          : `<button class="btn-accept" onclick="acceptProposal('${p.id}','${jobId}',event)">✅ Aceptar propuesta</button>`
+          ? `<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+               <div class="accepted-tag">${T.propAccepted[lang]}</div>
+               ${p.price 
+                 ? `<button class="btn-chat" onclick="window.location.href='payment.html?proposal=${p.id}&job=${jobId}'" style="background:var(--green);color:white">${T.payEscrow[lang]}</button>
+                    <button class="btn-chat" onclick="markComplete('${jobId}','${p.id}',event)" style="background:var(--ink);color:white">${T.markDone[lang]}</button>`
+                 : `<div style="margin-top:10px;padding:12px;background:var(--blue-light);border-radius:8px;font-size:13px;color:var(--blue-dark);width:100%">${T.waitingPrice[lang]}</div>`
+               }
+             </div>`
+          : `<button class="btn-accept" onclick="acceptProposal('${p.id}','${jobId}',event)">${T.acceptBtn[lang]}</button>`
         }
-        <button class="btn-chat" onclick="toggleChat('${p.id}','${c.name || 'Contratista'}',event)">💬 Mensaje</button>
+        <button class="btn-chat" onclick="toggleChat('${p.id}','${contractorName}',event)">${T.chatBtn[lang]}</button>
       </div>
       <div class="chat-wrap" id="chat-${p.id}">
         <div class="chat-head">
-          <span>Chat con ${c.name || 'Contratista'}</span>
+          <span>${T.chatWith[lang]} ${contractorName}</span>
           <button class="btn-close" onclick="closeChat('${p.id}',event)">✕</button>
         </div>
         <div class="chat-msgs" id="msgs-${p.id}"></div>
         <div class="chat-input">
-          <input type="text" id="input-${p.id}" placeholder="Escribe un mensaje..." onkeydown="if(event.key==='Enter')sendMsg('${p.id}')">
-          <button class="btn-send" onclick="sendMsg('${p.id}')">Enviar</button>
+          <input type="text" id="input-${p.id}" placeholder="${T.writeMsg[lang]}" onkeydown="if(event.key==='Enter')sendMsg('${p.id}')">
+          <button class="btn-send" onclick="sendMsg('${p.id}')">${T.sendBtn[lang]}</button>
         </div>
       </div>
     </div>`;
@@ -483,7 +490,7 @@ if (stored) {
   showDashboard();
 }
 
-let lang = 'es';
+let lang = localStorage.getItem('cpr_lang') || 'es';
 const T = {
   loginTitle: {es:'Mi Panel', en:'My Dashboard'},
   loginSub: {es:'Ingresa tu correo para ver tus trabajos y propuestas', en:'Enter your email to see your jobs and proposals'},
@@ -496,28 +503,81 @@ const T = {
   sectionTitle: {es:'Mis trabajos', en:'My jobs'},
   greetingSub: {es:'Gestiona tus trabajos y propuestas', en:'Manage your jobs and proposals'},
   openStatus: {es:'Abierto', en:'Open'},
-  acceptedStatus: {es:'Aceptado', en:'Accepted'},
-  closedStatus: {es:'Cerrado', en:'Closed'},
+  acceptedStatus: {es:'En progreso', en:'In progress'},
+  closedStatus: {es:'Completado', en:'Completed'},
   viewProps: {es:'Ver propuestas →', en:'View proposals →'},
   acceptBtn: {es:'✅ Aceptar propuesta', en:'✅ Accept proposal'},
-  chatBtn: {es:'💬 Chatear con', en:'💬 Chat with'},
+  chatBtn: {es:'💬 Mensaje', en:'💬 Message'},
   sendBtn: {es:'Enviar', en:'Send'},
   closePanel: {es:'Propuestas', en:'Proposals'},
   emptyTitle: {es:'Aún no tienes trabajos publicados', en:"You haven't posted any jobs yet"},
   emptyBtn: {es:'+ Publicar trabajo', en:'+ Post job'},
+  secActive: {es:'Trabajos activos', en:'Active jobs'},
+  secOpen: {es:'Trabajos abiertos', en:'Open jobs'},
+  secCompleted: {es:'Completados', en:'Completed'},
+  secEmptyActive: {es:'No tienes trabajos activos aún.', en:'No active jobs yet.'},
+  secEmptyOpen: {es:'No tienes trabajos abiertos.', en:'No open jobs.'},
+  publishLink: {es:'Publicar →', en:'Post →'},
+  noProps: {es:'Aún no hay propuestas para este trabajo.', en:'No proposals yet for this job.'},
+  proposals: {es:'propuesta', en:'proposal'},
+  proposalsPlural: {es:'propuestas', en:'proposals'},
+  newProp: {es:'nueva', en:'new'},
+  newPropPlural: {es:'nuevas', en:'new'},
+  accepted: {es:'Aceptada', en:'Accepted'},
+  viewArrow: {es:'Ver →', en:'View →'},
+  payEscrow: {es:'💳 Pagar en custodia', en:'💳 Pay escrow'},
+  markDone: {es:'✔ Marcar como completado', en:'✔ Mark as complete'},
+  waitingPrice: {es:'⏳ Esperando que el contratista confirme el precio antes de proceder al pago.', en:'⏳ Waiting for the contractor to confirm the price before payment.'},
+  propAccepted: {es:'✅ Propuesta aceptada', en:'✅ Proposal accepted'},
+  chatWith: {es:'Chat con', en:'Chat with'},
+  startConvo: {es:'Empieza la conversación', en:'Start the conversation'},
+  writeMsg: {es:'Escribe un mensaje...', en:'Write a message...'},
+  loading: {es:'Cargando...', en:'Loading...'},
 };
 
-function toggleLang() {
-  lang = lang === 'es' ? 'en' : 'es';
+function applyLang() {
   document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
-  // Update all data-i18n elements
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
     if (T[key]) el.textContent = T[key][lang];
   });
-  // Reload jobs to re-render with new language
+}
+
+function toggleLang() {
+  lang = lang === 'es' ? 'en' : 'es';
+  localStorage.setItem('cpr_lang', lang);
+  applyLang();
   if (currentUser) loadJobs();
 }
+
+async function markComplete(jobId, proposalId, e) {
+  e.stopPropagation();
+  const modal = document.getElementById('confirm-modal');
+  document.querySelector('.confirm-box h3').textContent = '✔ Marcar trabajo como completado';
+  document.querySelector('.confirm-box p').textContent = '¿Confirmas que el trabajo fue completado satisfactoriamente? Esta acción liberará el pago al contratista.';
+  document.querySelector('.btn-confirm-yes').textContent = 'Sí, confirmar';
+  modal.classList.add('show');
+  document.getElementById('confirm-yes-btn').onclick = async () => {
+    modal.classList.remove('show');
+    document.getElementById('confirm-yes-btn').textContent = 'Sí, aceptar';
+    // Update job to completed
+    await fetch(`${SUPABASE_URL}/rest/v1/jobs?id=eq.${jobId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ status: 'completed' })
+    });
+    // Update proposal to completed
+    await fetch(`${SUPABASE_URL}/rest/v1/proposals?id=eq.${proposalId}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ status: 'completed' })
+    });
+    await loadJobs();
+    // Show success message
+    alert('✅ Trabajo marcado como completado. El pago ha sido liberado al contratista.');
+  };
+}
+
 </script>
 
 <div class="confirm-modal" id="confirm-modal">
