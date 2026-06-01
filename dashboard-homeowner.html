@@ -200,7 +200,7 @@ footer a{color:var(--blue);font-weight:500}
   <!-- Jobs -->
   <div id="jobs-count" style="display:none">0</div>
   <div id="jobs-list">
-    <div class="loading"><div class="spinner"></div>Cargando...</div>
+    <div class="loading"><div class="spinner"></div><span data-es="Cargando..." data-en="Loading...">Cargando...</span></div>
   </div>
 
   <!-- Proposal panel -->
@@ -393,7 +393,7 @@ async function loadJobs() {
     html += completedJobs.map(job => renderJobRow(job, propMap[job.id]||[])).join('');
   }
   document.getElementById('jobs-list').innerHTML = html;
-  autoTranslateJobs(jobs);
+  autoTranslateJobs(jobs); // runs in background, non-blocking
 }
 
 function renderJobRow(job, jobProps) {
