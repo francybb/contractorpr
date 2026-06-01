@@ -146,6 +146,380 @@ footer a{color:var(--blue);font-weight:500}
 .dot-open{background:var(--blue)}
 .dot-done{background:var(--gray-3)}
 .section-empty{text-align:center;padding:24px;background:white;border:1px dashed var(--gray-2);border-radius:var(--radius-lg);color:var(--gray-3);font-size:14px;margin-bottom:12px}
+
+.section-header-row{display:flex;align-items:center;gap:10px;margin:24px 0 14px}
+.section-header-row:first-child{margin-top:0}
+.section-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-active{background:var(--green)}
+.dot-open{background:var(--blue)}
+.dot-done{background:var(--gray-3)}
+.section-empty{text-align:center;padding:20px;background:white;border:1px dashed var(--gray-2);border-radius:var(--radius-lg);color:var(--gray-3);font-size:14px;margin-bottom:12px}
+
+</style>
+</head>
+<body>
+
+<div class="nav-wrap">
+  <nav class="nav">
+    <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
+    <div class="nav-right">
+      <button class="lang-btn" onclick="toggleLang()">English</button>
+      <button class="btn-logout" id="logout-btn" onclick="logout()" style="display:none">Cerrar sesión</button>
+    </div>
+  </nav>
+</div>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="login-screen">
+  <div class="login-card">
+    <div class="login-icon">🏠</div>
+    <h2>Mi Panel</h2>
+    <p>Ingresa tu correo para ver tus trabajos y propuestas</p>
+    <div id="login-error" class="error-msg"></div>
+    <div class="field">
+      <label>Correo electrónico</label>
+      <input type="email" id="login-email" placeholder="tu@correo.com" onkeydown="if(event.key==='Enter')login()">
+    </div>
+    <button class="btn-primary" onclick="login()" id="login-btn">Entrar →</button>
+    <div class="login-footer">
+      ¿No tienes cuenta? <a href="signup.html">Regístrate gratis</a><br>
+      ¿Eres contratista? <a href="dashboard-contractor.html">Panel de contratista →</a>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div class="dashboard" id="dashboard">
+  <div class="dash-header">
+    <div class="dash-greeting">
+      <h1 id="greeting">Bienvenido</h1>
+      <p id="greeting-sub">Gestiona tus trabajos y propuestas</p>
+    </div>
+    <button class="btn-post" onclick="window.location.href='post-job.html'" data-i18n="postBtn">+ Publicar nuevo trabajo</button>
+  </div>
+
+  <!-- Stats -->
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-val" id="stat-jobs">0</div><div class="stat-lbl" data-i18n="statJobs">Trabajos publicados</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-proposals">0</div><div class="stat-lbl" data-i18n="statProps">Propuestas recibidas</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-accepted">0</div><div class="stat-lbl" data-i18n="statAcc">Trabajos aceptados</div></div>
+  </div>
+
+  <!-- Jobs -->
+  <div id="jobs-count" style="display:none">0</div>
+  <div id="jobs-list">
+    <div class="loading"><div class="spinner"></div>Cargando...</div>
+  </div>
+
+  <!-- Proposal panel -->
+  <div class="proposal-panel" id="proposal-panel">
+    <div class="panel-header">
+      <h3 id="panel-job-title">Propuestas</h3>
+      <button class="btn-close" onclick="closePanel()">✕</button>
+    </div>
+    <div id="proposals-list"></div>
+  </div>
+</div>
+
+<footer>
+  <span>© 2026 ContractingPR · <a href="index.html">Inicio</a> · <a href="terms.html">Términos</a> · <a href="mailto:hola@contractingpr.com">hola@contractingpr.com</a></span>
+</footer>
+
+<script>
+const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
+let currentUser = null;
+let currentOpenJobId = null;
+let currentOpenJobTitle = null;
+let activeChatProposalId = null;
+let chatInterval = null;
+
+async function db(path) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+  });
+  return res.json();
+}
+
+async function dbPost(table, data) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=representation' },
+    body: JSON.stringify(data)
+  });
+  return res.json();
+}
+
+async function dbPatch(table, id, data) {
+  await fetch(`${SUPABASE_URL}/rest/v1/${table}?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=minimal' },
+    body: JSON.stringify(data)
+  });
+}
+
+function timeAgo(d) {
+  const diff = (Date.now() - new Date(d + (d.includes('Z') ? '' : 'Z'))) / 1000;
+  if (diff < 60) return 'ahora';
+  if (diff < 3600) return `hace ${Math.floor(diff/60)} min`;
+  if (diff < 86400) return `hace ${Math.floor(diff/3600)}h`;
+  return new Date(d).toLocaleDateString('es-PR');
+}
+
+async function login() {
+  const email = document.getElementById('login-email').value.trim();
+  const btn = document.getElementById('login-btn');
+  const errorEl = document.getElementById('login-error');
+  errorEl.classList.remove('show');
+  if (!email) return;
+  btn.disabled = true; btn.textContent = 'Verificando...';
+
+  const data = await db(`homeowners?email=eq.${encodeURIComponent(email)}&select=*`);
+  if (!data || data.length === 0) {
+    errorEl.textContent = 'No encontramos esa cuenta. ¿Ya te registraste como propietario?';
+    errorEl.classList.add('show');
+    btn.disabled = false; btn.textContent = 'Entrar →';
+    return;
+  }
+  currentUser = data[0];
+  sessionStorage.setItem('homeowner_id', currentUser.id);
+  sessionStorage.setItem('homeowner_data', JSON.stringify(currentUser));
+  showDashboard();
+}
+
+function logout() {
+  sessionStorage.removeItem('homeowner_id');
+  sessionStorage.removeItem('homeowner_data');
+  currentUser = null;
+  document.getElementById('dashboard').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('logout-btn').style.display = 'none';
+  document.getElementById('login-email').value = '';
+}
+
+async function showDashboard() {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('logout-btn').style.display = 'block';
+  document.getElementById('greeting').textContent = `Hola, ${currentUser.name.split(' ')[0]} 👋`;
+  document.getElementById('greeting-sub').textContent = `${currentUser.city} · ${currentUser.email}`;
+  await loadJobs();
+}
+
+async function loadJobs() {
+  const jobs = await db(`jobs?homeowner_id=eq.${currentUser.id}&order=created_at.desc&select=*`);
+  const proposals = await db(`proposals?job_id=in.(${jobs.length ? jobs.map(j=>j.id).join(',') : 'null'})&select=*`);
+
+  const propMap = {};
+  proposals.forEach(p => { if (!propMap[p.job_id]) propMap[p.job_id] = []; propMap[p.job_id].push(p); });
+
+  const activeJobs = jobs.filter(j => j.status === 'accepted' || j.status === 'in_progress');
+  const openJobs = jobs.filter(j => j.status === 'open');
+  const completedJobs = jobs.filter(j => j.status === 'completed');
+
+  document.getElementById('stat-jobs').textContent = jobs.length;
+  document.getElementById('stat-proposals').textContent = proposals.length;
+  document.getElementById('stat-accepted').textContent = activeJobs.length;
+
+  if (jobs.length === 0) {
+    document.getElementById('jobs-list').innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><h3>Aún no tienes trabajos publicados</h3><p>Publica tu primer trabajo y recibe propuestas de contratistas verificados.</p><button class="btn-post" onclick="window.location.href='post-job.html'">+ Publicar trabajo</button></div>`;
+    return;
+  }
+
+  let html = '';
+
+  // Active jobs
+  html += `<div class="section-header-row"><span class="section-dot dot-active"></span><span class="section-title" style="margin:0;font-size:15px;font-weight:700">Trabajos activos <span class="count-badge">${activeJobs.length}</span></span></div>`;
+  html += activeJobs.length ? activeJobs.map(job => renderJobRow(job, propMap[job.id]||[], '🟢 En progreso', 'status-accepted')).join('') : `<div class="section-empty">No tienes trabajos activos aún.</div>`;
+
+  // Open jobs
+  html += `<div class="section-header-row"><span class="section-dot dot-open"></span><span class="section-title" style="margin:0;font-size:15px;font-weight:700">Trabajos abiertos <span class="count-badge">${openJobs.length}</span></span></div>`;
+  html += openJobs.length ? openJobs.map(job => renderJobRow(job, propMap[job.id]||[], 'Abierto', 'status-open')).join('') : `<div class="section-empty">No tienes trabajos abiertos. <a href="post-job.html" style="color:var(--blue);font-weight:600">Publicar trabajo →</a></div>`;
+
+  // Completed
+  if (completedJobs.length > 0) {
+    html += `<div class="section-header-row"><span class="section-dot dot-done"></span><span class="section-title" style="margin:0;font-size:15px;font-weight:700">Completados <span class="count-badge">${completedJobs.length}</span></span></div>`;
+    html += completedJobs.map(job => renderJobRow(job, propMap[job.id]||[], 'Completado', 'status-closed')).join('');
+  }
+
+  document.getElementById('jobs-list').innerHTML = html;
+}
+
+function renderJobRow(job, jobProps, statusText, statusClass) {
+  const newProps = jobProps.filter(p => p.status === 'pending').length;
+  const acceptedProp = jobProps.find(p => p.status === 'accepted');
+  return `<div class="job-row" onclick="openProposals('${job.id}','${job.title.replace(/'/g,"\'")}')">
+    <div class="job-row-header">
+      <div class="job-row-title">${job.title}</div>
+      <div class="status-badge ${statusClass}">${statusText}</div>
+    </div>
+    <div class="job-row-meta">
+      <span>📍 ${job.city}</span>
+      <span>🔧 ${job.trade_needed}</span>
+      <span>🕐 ${timeAgo(job.created_at)}</span>
+      ${job.budget ? `<span>💰 ${job.budget}</span>` : ''}
+    </div>
+    <div class="proposal-preview">
+      <div class="proposal-count">${jobProps.length} propuesta${jobProps.length!==1?'s':''} <span>recibida${jobProps.length!==1?'s':''}</span></div>
+      ${newProps > 0 ? `<span class="new-badge">${newProps} nueva${newProps!==1?'s':''}</span>` : ''}
+      ${acceptedProp ? `<span style="font-size:13px;color:var(--green);font-weight:600;margin-left:8px">✅ Aceptada</span>` : ''}
+      <span style="margin-left:auto;font-size:13px;color:var(--blue);font-weight:500">Ver →</span>
+    </div>
+  </div>`;
+}F-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi Panel | ContractingPR</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --blue:#0066CC;--blue-dark:#004C99;--blue-light:#E6F0FA;
+  --ink:#0F172A;--gray-1:#F8FAFC;--gray-2:#E2E8F0;
+  --gray-3:#94A3B8;--gray-4:#475569;--gray-5:#1E293B;
+  --green:#10B981;--gold:#F59E0B;--red:#DC2626;
+  --radius:12px;--radius-lg:20px;
+}
+body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--gray-1);line-height:1.6}
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+.nav-wrap{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--gray-2)}
+.nav{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:800;color:var(--blue);display:flex;align-items:center;gap:10px}
+.logo-box{width:34px;height:34px;background:var(--blue);border-radius:8px;display:grid;place-items:center;color:white;font-weight:800;font-size:16px}
+.nav-right{display:flex;gap:10px;align-items:center}
+.lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;color:var(--gray-4);transition:all 0.2s}
+.lang-btn:hover{border-color:var(--blue);color:var(--blue)}
+.btn-logout{background:none;border:1px solid var(--gray-2);padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;font-family:'Inter',sans-serif;color:var(--gray-4);transition:all 0.2s}
+.btn-logout:hover{border-color:var(--red);color:var(--red)}
+
+/* LOGIN SCREEN */
+.login-wrap{min-height:calc(100vh - 64px);display:flex;align-items:center;justify-content:center;padding:24px}
+.login-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:40px;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,0.06)}
+.login-icon{width:56px;height:56px;background:var(--blue-light);border-radius:14px;display:grid;place-items:center;font-size:24px;margin-bottom:20px}
+.login-card h2{font-size:24px;font-weight:800;margin-bottom:6px}
+.login-card p{font-size:14px;color:var(--gray-3);margin-bottom:28px}
+.field{margin-bottom:16px}
+label{display:block;font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--gray-4);margin-bottom:7px}
+input{width:100%;background:var(--gray-1);border:1px solid var(--gray-2);border-radius:8px;padding:12px 14px;color:var(--ink);font-family:'Inter',sans-serif;font-size:15px;transition:border-color 0.2s,box-shadow 0.2s;outline:none}
+input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,102,204,0.1);background:white}
+input::placeholder{color:var(--gray-3)}
+.btn-primary{width:100%;padding:13px;background:var(--blue);color:white;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s}
+.btn-primary:hover{background:var(--blue-dark);transform:translateY(-1px)}
+.btn-primary:disabled{opacity:0.6;cursor:not-allowed;transform:none}
+.error-msg{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px;color:var(--red);font-size:13px;margin-bottom:14px;display:none}
+.error-msg.show{display:block}
+.login-footer{text-align:center;margin-top:20px;font-size:13px;color:var(--gray-3)}
+.login-footer a{color:var(--blue);font-weight:600}
+
+/* DASHBOARD */
+.dashboard{max-width:1000px;margin:0 auto;padding:32px 24px 80px;display:none}
+.dash-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+.dash-greeting h1{font-size:24px;font-weight:800;margin-bottom:4px}
+.dash-greeting p{font-size:14px;color:var(--gray-3)}
+.btn-post{background:var(--blue);color:white;padding:11px 20px;border-radius:8px;font-size:14px;font-weight:600;transition:all 0.2s;border:none;cursor:pointer;font-family:'Inter',sans-serif}
+.btn-post:hover{background:var(--blue-dark)}
+
+/* Stats */
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+.stat-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:20px;text-align:center}
+.stat-val{font-size:32px;font-weight:800;color:var(--blue);line-height:1}
+.stat-lbl{font-size:13px;color:var(--gray-3);margin-top:4px}
+
+/* Jobs list */
+.section-title{font-size:16px;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.count-badge{background:var(--blue-light);color:var(--blue);padding:2px 8px;border-radius:100px;font-size:12px;font-weight:700}
+.job-row{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:20px;margin-bottom:12px;cursor:pointer;transition:box-shadow 0.2s,transform 0.2s}
+.job-row:hover{box-shadow:0 4px 16px rgba(0,0,0,0.08);transform:translateY(-1px)}
+.job-row-header{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:8px}
+.job-row-title{font-size:16px;font-weight:700;color:var(--ink)}
+.job-row-meta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.job-row-meta span{font-size:13px;color:var(--gray-3)}
+.status-badge{padding:4px 10px;border-radius:100px;font-size:12px;font-weight:600}
+.status-open{background:rgba(16,185,129,0.1);color:var(--green)}
+.status-accepted{background:rgba(0,102,204,0.1);color:var(--blue)}
+.status-closed{background:var(--gray-2);color:var(--gray-4)}
+.proposal-preview{display:flex;align-items:center;gap:8px;margin-top:10px;padding-top:10px;border-top:1px solid var(--gray-2)}
+.proposal-count{font-size:13px;font-weight:600;color:var(--blue)}
+.proposal-count span{color:var(--gray-3);font-weight:400}
+.new-badge{background:var(--green);color:white;padding:2px 8px;border-radius:100px;font-size:11px;font-weight:700}
+.empty-state{text-align:center;padding:48px 24px;background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg)}
+.empty-icon{font-size:40px;margin-bottom:12px}
+.empty-state h3{font-size:18px;font-weight:700;margin-bottom:8px}
+.empty-state p{font-size:14px;color:var(--gray-3);margin-bottom:20px}
+
+/* Proposal panel */
+.proposal-panel{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:24px;margin-top:16px;display:none}
+.panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.panel-header h3{font-size:16px;font-weight:700}
+.btn-close{background:none;border:none;font-size:20px;cursor:pointer;color:var(--gray-3);padding:0 4px}
+.proposal-item{border:1px solid var(--gray-2);border-radius:var(--radius);padding:16px;margin-bottom:10px;transition:border-color 0.2s}
+.proposal-item.accepted{border-color:var(--green);background:#F0FDF4}
+.prop-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.prop-contractor{font-size:15px;font-weight:700}
+.prop-trade{font-size:12px;color:var(--gray-3)}
+.prop-price{font-size:18px;font-weight:800;color:var(--blue)}
+.prop-msg{font-size:14px;color:var(--gray-4);line-height:1.7;margin-bottom:12px;font-weight:300}
+.prop-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn-accept{background:var(--green);color:white;padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all 0.2s}
+.btn-accept:hover{background:#059669}
+.btn-chat{background:var(--blue-light);color:var(--blue);padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all 0.2s}
+.btn-chat:hover{background:#BFDBFE}
+.accepted-tag{background:rgba(16,185,129,0.1);color:var(--green);padding:6px 12px;border-radius:8px;font-size:13px;font-weight:600}
+
+/* Chat */
+.chat-wrap{border:1px solid var(--gray-2);border-radius:var(--radius);overflow:hidden;margin-top:12px;display:none}
+.chat-head{padding:12px 16px;background:var(--gray-1);border-bottom:1px solid var(--gray-2);display:flex;justify-content:space-between;align-items:center}
+.chat-head span{font-size:13px;font-weight:700}
+.chat-msgs{padding:12px 16px;min-height:150px;max-height:250px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:75%}
+.msg.sent{align-self:flex-end}
+.msg.received{align-self:flex-start}
+.bubble{padding:9px 13px;border-radius:12px;font-size:14px;line-height:1.5}
+.msg.sent .bubble{background:var(--blue);color:white;border-radius:12px 12px 2px 12px}
+.msg.received .bubble{background:var(--gray-1);color:var(--ink);border-radius:12px 12px 12px 2px}
+.msg-time{font-size:11px;color:var(--gray-3);margin-top:2px}
+.msg.sent .msg-time{text-align:right}
+.chat-input{padding:10px 12px;border-top:1px solid var(--gray-2);display:flex;gap:8px}
+.chat-input input{flex:1;border-radius:20px;padding:9px 14px;font-size:14px;border:1px solid var(--gray-2);outline:none;font-family:'Inter',sans-serif}
+.chat-input input:focus{border-color:var(--blue)}
+.btn-send{background:var(--blue);color:white;border:none;border-radius:20px;padding:9px 16px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer}
+
+.loading{text-align:center;padding:40px;color:var(--gray-3)}
+.spinner{width:24px;height:24px;border:3px solid var(--gray-2);border-top-color:var(--blue);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 10px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+footer{border-top:1px solid var(--gray-2);background:white;padding:20px 24px;text-align:center;font-size:13px;color:var(--gray-3)}
+footer a{color:var(--blue);font-weight:500}
+
+@media(max-width:600px){.stats-row{grid-template-columns:1fr 1fr}.job-row-header{flex-direction:column}}
+
+.confirm-modal{position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:999;display:none;align-items:center;justify-content:center;padding:24px}
+.confirm-modal.show{display:flex}
+.confirm-box{background:white;border-radius:var(--radius-lg);padding:28px;max-width:400px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.2)}
+.confirm-box h3{font-size:18px;font-weight:800;margin-bottom:8px}
+.confirm-box p{font-size:14px;color:var(--gray-4);margin-bottom:24px;line-height:1.6}
+.confirm-actions{display:flex;gap:10px}
+.btn-confirm-yes{flex:1;padding:12px;background:var(--green);color:white;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background 0.2s}
+.btn-confirm-yes:hover{background:#059669}
+.btn-confirm-no{flex:1;padding:12px;background:var(--gray-1);color:var(--gray-4);border:1px solid var(--gray-2);border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer}
+
+.section-header-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;margin-top:28px}
+.section-header-row:first-of-type{margin-top:0}
+.section-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-active{background:var(--green)}
+.dot-open{background:var(--blue)}
+.dot-done{background:var(--gray-3)}
+.section-empty{text-align:center;padding:24px;background:white;border:1px dashed var(--gray-2);border-radius:var(--radius-lg);color:var(--gray-3);font-size:14px;margin-bottom:12px}
+
+.section-header-row{display:flex;align-items:center;gap:10px;margin:24px 0 14px}
+.section-header-row:first-child{margin-top:0}
+.section-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.dot-active{background:var(--green)}
+.dot-open{background:var(--blue)}
+.dot-done{background:var(--gray-3)}
+.section-empty{text-align:center;padding:20px;background:white;border:1px dashed var(--gray-2);border-radius:var(--radius-lg);color:var(--gray-3);font-size:14px;margin-bottom:12px}
+
 </style>
 </head>
 <body>
@@ -414,40 +788,12 @@ function acceptProposal(proposalId, jobId, e) {
   modal.classList.add('show');
   document.getElementById('confirm-yes-btn').onclick = async () => {
     modal.classList.remove('show');
-    document.getElementById('confirm-yes-btn').textContent = 'Procesando...';
-    document.getElementById('confirm-yes-btn').disabled = true;
-    
-    try {
-      // Update proposal
-      const r1 = await fetch(`${SUPABASE_URL}/rest/v1/proposals?id=eq.${proposalId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ status: 'accepted' })
-      });
-      
-      // Update job
-      const r2 = await fetch(`${SUPABASE_URL}/rest/v1/jobs?id=eq.${jobId}`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=minimal' },
-        body: JSON.stringify({ status: 'accepted' })
-      });
-
-      // Reload everything
-      await loadJobs();
-      
-      // Re-open the proposal panel
-      setTimeout(() => {
-        if (currentOpenJobId && currentOpenJobTitle) {
-          openProposals(currentOpenJobId, currentOpenJobTitle);
-        }
-      }, 600);
-      
-    } catch(err) {
-      alert('Error al aceptar. Intenta de nuevo.');
-    }
-    
-    document.getElementById('confirm-yes-btn').textContent = 'Sí, aceptar';
-    document.getElementById('confirm-yes-btn').disabled = false;
+    await dbPatch('proposals', proposalId, { status: 'accepted' });
+    await dbPatch('jobs', jobId, { status: 'accepted' });
+    await loadJobs();
+    setTimeout(() => {
+      if (currentOpenJobId) openProposals(currentOpenJobId, currentOpenJobTitle);
+    }, 600);
   };
 }
 
