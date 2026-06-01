@@ -550,8 +550,6 @@ if (storedHomeownerCheck) {
 }
 
 let lang = localStorage.getItem('cpr_lang') || 'es';
-applyLang();
-loadJob();
 
 const t = {
   navBack: { es: '← Ver todos los trabajos', en: '← All jobs' },
@@ -621,6 +619,9 @@ function toggleLang() {
   const pn = document.querySelector('.platform-note');
   if (pn) pn.innerHTML = t.platformNote[lang] + '<br><a href="terms.html" style="color:var(--blue)">' + t.termsLink[lang] + '</a>';
 }
+
+applyLang();
+loadJob();
 
 </script>
 </body>
