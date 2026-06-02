@@ -381,13 +381,13 @@ async function submitHomeowner(e) {
 let lang = localStorage.getItem('cpr_lang') || 'es';
 const T = {
   navBack:{es:'← Volver al inicio',en:'← Back to home'},
-  tab1:{es:'🔨 Soy Contratista',en:'🔨 I'm a Contractor'},
+  tab1:{es:'🔨 Soy Contratista',en:'🔨 I am a Contractor'},
   tab2:{es:'🏠 Necesito Trabajo',en:'🏠 I Need Work Done'},
   heroTag:{es:'Únete gratis hoy',en:'Join free today'},
   heroTitle:{es:'Únete a <em>ContractingPR</em>',en:'Join <em>ContractingPR</em>'},
   heroSub:{es:'Conectamos propietarios con contratistas licenciados en toda Puerto Rico',en:'Connecting homeowners with licensed contractors across Puerto Rico'},
   btnContractor:{es:'Registrarme como contratista →',en:'Register as contractor →'},
-  btnHomeowner:{es:'Crear mi cuenta — Es gratis →',en:'Create my account — It's free →'},
+  btnHomeowner:{es:'Crear mi cuenta — Es gratis →',en:'Create my account — Free →'},
 };
 function applyLang(){
   document.querySelector('.lang-btn').textContent = lang==='es'?'English':'Español';
