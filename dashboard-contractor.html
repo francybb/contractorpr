@@ -220,7 +220,8 @@ footer a{color:var(--blue);font-weight:500}
 
 const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoZHN2eWxodHp1dWxlYWljZWhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDc3MTQsImV4cCI6MjA5NTgyMzcxNH0.ZVuC49Fz8f5dDzYRutq07YpnpSxmrewQQ8UHn49cWC0';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 let currentUser = null;
 let chatInterval = null;
 
@@ -298,7 +299,7 @@ async function login() {
   errorEl.classList.remove('show');
   if (!email || !password) { errorEl.textContent = lang === 'en' ? 'Enter your email and password.' : 'Ingresa tu correo y contraseña.'; errorEl.classList.add('show'); return; }
   btn.disabled = true; btn.textContent = lang === 'en' ? 'Verifying...' : 'Verificando...';
-  const { data: authData, error: authErr } = await supabase.auth.signInWithPassword({ email, password });
+  const { data: authData, error: authErr } = await sb.auth.signInWithPassword({ email, password });
   if (authErr) {
     errorEl.textContent = lang === 'en' ? 'Incorrect email or password.' : 'Correo o contraseña incorrectos.';
     errorEl.classList.add('show');
