@@ -482,7 +482,8 @@ footer a{color:var(--blue);font-weight:500}
 
 const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoZHN2eWxodHp1dWxlYWljZWhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDc3MTQsImV4cCI6MjA5NTgyMzcxNH0.ZVuC49Fz8f5dDzYRutq07YpnpSxmrewQQ8UHn49cWC0';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 function switchTab(type) {
   document.querySelectorAll('.tab').forEach((t, i) => {
@@ -504,7 +505,7 @@ async function submitContractor(e) {
   btn.disabled = true; btn.textContent = 'Enviando...';
   try {
     // Create auth user
-    const { data: authData, error: authErr } = await supabase.auth.signUp({ email: e.target.email.value, password: pass });
+    const { data: authData, error: authErr } = await sb.auth.signUp({ email: e.target.email.value, password: pass });
     if (authErr) throw new Error(authErr.message);
     // Insert contractor profile
     const res = await fetch(`${SUPABASE_URL}/rest/v1/contractors`, {
@@ -532,7 +533,7 @@ async function submitHomeowner(e) {
   if (pass !== pass2) { errorEl.textContent = 'Las contraseñas no coinciden.'; errorEl.classList.add('show'); return; }
   btn.disabled = true; btn.textContent = 'Enviando...';
   try {
-    const { data: authData, error: authErr } = await supabase.auth.signUp({ email: e.target.email.value, password: pass });
+    const { data: authData, error: authErr } = await sb.auth.signUp({ email: e.target.email.value, password: pass });
     if (authErr) throw new Error(authErr.message);
     const res = await fetch(`${SUPABASE_URL}/rest/v1/homeowners`, {
       method: 'POST',
