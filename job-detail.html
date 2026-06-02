@@ -461,6 +461,21 @@ async function submitProposal(e) {
   });
 
   if (result && result[0]) {
+    // Send email to homeowner
+    const homeowners = await db(`homeowners?id=eq.${homeownerId}&select=email,name`);
+    const contractor = JSON.parse(sessionStorage.getItem('contractor_data') || '{}');
+    if (homeowners?.[0]) {
+      fetch('/.netlify/functions/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'proposal_received', data: {
+          homeowner_email: homeowners[0].email,
+          job_title: document.querySelector('.job-title')?.textContent || 'Tu trabajo',
+          contractor_name: contractor.name || 'Un contratista',
+          amount: price || 'Por definir'
+        }})
+      }).catch(console.error);
+    }
     form.style.display = 'none';
     document.getElementById('proposal-success').style.display = 'block';
   } else {
