@@ -687,8 +687,12 @@ async function markComplete(jobId, proposalId, e) {
         amount: p2.price || j2.budget
       });
     }
-    // Show success message
-    alert('✅ Trabajo marcado como completado. El pago ha sido liberado al contratista.');
+    // Show success toast
+    const toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#10B981;color:white;padding:14px 24px;border-radius:10px;font-weight:600;font-size:15px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.2)';
+    toast.textContent = '✅ Trabajo completado. Pago liberado al contratista.';
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 4000);
   };
 }
 
