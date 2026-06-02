@@ -91,6 +91,33 @@ exports.handler = async (event) => {
         </div>
       `
     }
+    review_received: {
+      to: data.contractor_email,
+      subject: `Nueva reseña recibida — ${data.job_title}`,
+      html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
+          <div style="background:#1a1a2e;padding:24px;text-align:center">
+            <h1 style="color:#fff;margin:0;font-size:22px">ContractingPR</h1>
+          </div>
+          <div style="padding:32px">
+            <h2 style="color:#111;margin-top:0">¡Recibiste una nueva reseña!</h2>
+            <p style="color:#555">El propietario dejó una reseña sobre tu trabajo:</p>
+            <div style="background:#fffbeb;border-left:4px solid #f59e0b;padding:16px;border-radius:4px;margin:20px 0">
+              <p style="margin:0;font-weight:600;color:#111">${data.job_title}</p>
+              <p style="margin:8px 0 0;font-size:24px">${'⭐'.repeat(data.rating)}${'☆'.repeat(5 - data.rating)}</p>
+              ${data.comment ? `<p style="margin:10px 0 0;color:#555;font-style:italic">"${data.comment}"</p>` : ''}
+            </div>
+            <a href="https://contractingpr.com/dashboard-contractor.html"
+               style="display:inline-block;background:#f59e0b;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;margin-top:8px">
+              Ver mi perfil
+            </a>
+          </div>
+          <div style="background:#f9fafb;padding:16px;text-align:center;color:#9ca3af;font-size:12px">
+            ContractingPR · Puerto Rico · <a href="https://contractingpr.com" style="color:#9ca3af">contractingpr.com</a>
+          </div>
+        </div>
+      `
+    }
   };
 
   const template = templates[type];

@@ -142,7 +142,8 @@ footer a{color:var(--blue);font-weight:500}
 .review-box h3{font-size:18px;font-weight:800;margin-bottom:6px}
 .review-box p{font-size:14px;color:var(--gray-4);margin-bottom:20px}
 .stars{display:flex;gap:8px;margin-bottom:20px;cursor:pointer}
-.star{font-size:32px;user-select:none;cursor:pointer}
+.star{font-size:32px;transition:transform 0.1s;user-select:none}
+.star:hover{transform:scale(1.2)}
 .review-textarea{width:100%;border:1px solid var(--gray-2);border-radius:8px;padding:12px;font-family:Inter,sans-serif;font-size:14px;resize:vertical;min-height:80px;outline:none;box-sizing:border-box}
 .review-textarea:focus{border-color:var(--blue)}
 .btn-review-submit{background:var(--blue);color:white;border:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;width:100%;margin-top:12px}
@@ -747,7 +748,19 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 async function submitReview() {
   if (!reviewRating) { alert(lang === 'en' ? 'Please select a rating.' : 'Por favor selecciona una calificación.'); return; }
-  await dbPost('reviews', { job_id: reviewJobId, contractor_id: reviewContractorId, homeowner_id: currentUser.id, rating: reviewRating, comment: document.getElementById('review-comment').value.trim() || null });
+  const comment = document.getElementById('review-comment').value.trim() || null;
+  await dbPost('reviews', { job_id: reviewJobId, contractor_id: reviewContractorId, homeowner_id: currentUser.id, rating: reviewRating, comment });
+  // Send email to contractor
+  const jobData = await db(`jobs?id=eq.${reviewJobId}&select=title`);
+  const contractorData = await db(`contractors?id=eq.${reviewContractorId}&select=email`);
+  if (jobData?.[0] && contractorData?.[0]) {
+    sendEmail('review_received', {
+      contractor_email: contractorData[0].email,
+      job_title: jobData[0].title,
+      rating: reviewRating,
+      comment: comment || ''
+    });
+  }
   closeReview();
   const toast = document.createElement('div');
   toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#10B981;color:white;padding:14px 24px;border-radius:10px;font-weight:600;font-size:15px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.2)';
