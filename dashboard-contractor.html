@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panel Contratista | ContractingPR</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -151,8 +152,13 @@ footer a{color:var(--blue);font-weight:500}
       <label data-i18n="emailLabel">Correo electrónico</label>
       <input type="email" id="login-email" placeholder="tu@correo.com" data-placeholder-es="tu@correo.com" data-placeholder-en="your@email.com" onkeydown="if(event.key==='Enter')login()">
     </div>
+    <div class="field">
+      <label>Contraseña</label>
+      <input type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
+    </div>
     <button class="btn-primary" onclick="login()" id="login-btn" data-i18n="loginBtn">Entrar →</button>
     <div class="login-footer">
+      <a href="reset-password.html" style="color:var(--blue);font-weight:500;font-size:13px">¿Olvidaste tu contraseña?</a><br><br>
       <span data-i18n="footerNoAccount">¿No tienes cuenta?</span> <a href="signup.html" data-i18n="footerSignup">Regístrate como contratista</a><br>
       <span data-i18n="footerHomeowner">¿Eres propietario?</span> <a href="dashboard-homeowner.html" data-i18n="footerHomeownerLink">Panel de propietario →</a>
     </div>
@@ -214,6 +220,7 @@ footer a{color:var(--blue);font-weight:500}
 
 const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoZHN2eWxodHp1dWxlYWljZWhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDc3MTQsImV4cCI6MjA5NTgyMzcxNH0.ZVuC49Fz8f5dDzYRutq07YpnpSxmrewQQ8UHn49cWC0';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let currentUser = null;
 let chatInterval = null;
 
@@ -285,15 +292,22 @@ function timeAgo(d) {
 
 async function login() {
   const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
   const btn = document.getElementById('login-btn');
   const errorEl = document.getElementById('login-error');
   errorEl.classList.remove('show');
-  if (!email) return;
+  if (!email || !password) { errorEl.textContent = lang === 'en' ? 'Enter your email and password.' : 'Ingresa tu correo y contraseña.'; errorEl.classList.add('show'); return; }
   btn.disabled = true; btn.textContent = lang === 'en' ? 'Verifying...' : 'Verificando...';
-
+  const { data: authData, error: authErr } = await supabase.auth.signInWithPassword({ email, password });
+  if (authErr) {
+    errorEl.textContent = lang === 'en' ? 'Incorrect email or password.' : 'Correo o contraseña incorrectos.';
+    errorEl.classList.add('show');
+    btn.disabled = false; btn.textContent = T.loginBtn[lang];
+    return;
+  }
   const data = await db(`contractors?email=eq.${encodeURIComponent(email)}&select=*`);
   if (!data || data.length === 0) {
-    errorEl.textContent = 'No encontramos esa cuenta de contratista. ¿Ya te registraste?';
+    errorEl.textContent = lang === 'en' ? 'No contractor account found for this email.' : 'No encontramos una cuenta de contratista con ese correo.';
     errorEl.classList.add('show');
     btn.disabled = false; btn.textContent = T.loginBtn[lang];
     return;
