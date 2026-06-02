@@ -543,9 +543,11 @@ function acceptProposal(proposalId, jobId, e) {
     // Send email to contractor
     const proposals = await db(`proposals?id=eq.${proposalId}&select=*`);
     const jobs = await db(`jobs?id=eq.${jobId}&select=title,amount,homeowner_id`);
+    console.log('Email debug - proposals:', proposals, 'jobs:', jobs);
     if (proposals?.[0] && jobs?.[0]) {
       const p = proposals[0]; const j = jobs[0];
       const contractors = await db(`contractors?id=eq.${p.contractor_id}&select=name,email`);
+      console.log('Email debug - contractors:', contractors);
       sendEmail('proposal_accepted', {
         contractor_email: contractors?.[0]?.email,
         job_title: j.title,
