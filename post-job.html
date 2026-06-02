@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Publicar Trabajo | ContractingPR</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -310,7 +311,28 @@ applyLang();
 
 const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoZHN2eWxodHp1dWxlYWljZWhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDc3MTQsImV4cCI6MjA5NTgyMzcxNH0.ZVuC49Fz8f5dDzYRutq07YpnpSxmrewQQ8UHn49cWC0';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 let homeownerId = null;
+
+// Auto-skip verify step if already logged in via Supabase Auth
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if (session?.user?.email) {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/homeowners?email=eq.${encodeURIComponent(session.user.email)}&select=id,name`, {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
+    });
+    const data = await res.json();
+    if (data?.[0]) {
+      homeownerId = data[0].id;
+      document.getElementById('verify-form').style.display = 'none';
+      document.getElementById('job-form').style.display = 'block';
+      document.getElementById('step1-indicator').className = 'step done';
+      document.getElementById('step1-indicator').querySelector('.step-num').textContent = '✓';
+      document.getElementById('step2-indicator').className = 'step active';
+    }
+  }
+})();
 
 async function verifyHomeowner() {
   const email = document.getElementById('verify-email').value.trim();
