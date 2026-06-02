@@ -134,6 +134,17 @@ footer a{color:var(--blue);font-weight:500}
 .confirm-box{background:white;border-radius:var(--radius-lg);padding:28px;max-width:400px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.2)}
 .confirm-box h3{font-size:18px;font-weight:800;margin-bottom:8px}
 .confirm-box p{font-size:14px;color:var(--gray-4);margin-bottom:24px;line-height:1.6}
+.review-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:1000;padding:20px}
+.review-box{background:white;border-radius:var(--radius-lg);padding:28px;max-width:420px;width:100%;box-shadow:0 24px 64px rgba(0,0,0,0.2)}
+.review-box h3{font-size:18px;font-weight:800;margin-bottom:6px}
+.review-box p{font-size:14px;color:var(--gray-4);margin-bottom:20px}
+.stars{display:flex;gap:8px;margin-bottom:20px;cursor:pointer}
+.star{font-size:32px;transition:transform 0.1s;user-select:none}
+.star:hover{transform:scale(1.2)}
+.review-textarea{width:100%;border:1px solid var(--gray-2);border-radius:8px;padding:12px;font-family:Inter,sans-serif;font-size:14px;resize:vertical;min-height:80px;outline:none;box-sizing:border-box}
+.review-textarea:focus{border-color:var(--blue)}
+.btn-review-submit{background:var(--blue);color:white;border:none;padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;width:100%;margin-top:12px}
+.btn-review-skip{background:none;border:none;color:var(--gray-3);font-size:13px;cursor:pointer;width:100%;margin-top:8px;padding:4px}
 .confirm-actions{display:flex;gap:10px}
 .btn-confirm-yes{flex:1;padding:12px;background:var(--green);color:white;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer;transition:background 0.2s}
 .btn-confirm-yes:hover{background:#059669}
@@ -422,7 +433,7 @@ function renderJobRow(job, jobProps) {
       <div class="proposal-count">${jobProps.length} ${propWord}</div>
       ${newProps>0?`<span class="new-badge">${newProps} ${newWord}</span>`:''}
       ${acceptedProp?`<span style="font-size:13px;color:var(--green);font-weight:600;margin-left:8px">✅ ${T.accepted[lang]}</span>`:''}
-      <span style="margin-left:auto;font-size:13px;color:var(--blue);font-weight:500">${T.viewArrow[lang]}</span>
+      ${job.status==='completed'&&acceptedProp?`<button onclick="event.stopPropagation();openReview('${job.id}','${acceptedProp.contractor_id}','${safeTitle}')" style="margin-left:auto;background:var(--gold);color:white;border:none;padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">⭐ ${lang==='en'?'Leave Review':'Dejar Reseña'}</button>`:`<span style="margin-left:auto;font-size:13px;color:var(--blue);font-weight:500">${T.viewArrow[lang]}</span>`}
     </div>
   </div>`;
 }
@@ -696,6 +707,39 @@ async function markComplete(jobId, proposalId, e) {
   };
 }
 
+// ── Review System ─────────────────────────────────────
+let reviewJobId = null, reviewContractorId = null, reviewRating = 0;
+
+function openReview(jobId, contractorId, jobTitle) {
+  reviewJobId = jobId; reviewContractorId = contractorId; reviewRating = 0;
+  document.getElementById('review-comment').value = '';
+  setStars(0);
+  document.getElementById('review-modal').style.display = 'flex';
+}
+function closeReview() { document.getElementById('review-modal').style.display = 'none'; }
+function setStars(val) {
+  reviewRating = val;
+  document.querySelectorAll('.star').forEach(s => {
+    s.textContent = parseInt(s.dataset.val) <= val ? '⭐' : '☆';
+  });
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.star').forEach(s => {
+    s.addEventListener('click', () => setStars(parseInt(s.dataset.val)));
+    s.addEventListener('mouseover', () => document.querySelectorAll('.star').forEach(st => { st.textContent = parseInt(st.dataset.val) <= parseInt(s.dataset.val) ? '⭐' : '☆'; }));
+    s.addEventListener('mouseout', () => setStars(reviewRating));
+  });
+});
+async function submitReview() {
+  if (!reviewRating) { alert(lang === 'en' ? 'Please select a rating.' : 'Por favor selecciona una calificación.'); return; }
+  await dbPost('reviews', { job_id: reviewJobId, contractor_id: reviewContractorId, homeowner_id: currentUser.id, rating: reviewRating, comment: document.getElementById('review-comment').value.trim() || null });
+  closeReview();
+  const toast = document.createElement('div');
+  toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#10B981;color:white;padding:14px 24px;border-radius:10px;font-weight:600;font-size:15px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.2)';
+  toast.textContent = lang === 'en' ? '⭐ Review submitted!' : '⭐ ¡Reseña enviada!';
+  document.body.appendChild(toast); setTimeout(() => toast.remove(), 3000);
+}
+
 </script>
 
 <div class="confirm-modal" id="confirm-modal">
@@ -706,6 +750,23 @@ async function markComplete(jobId, proposalId, e) {
       <button class="btn-confirm-no" onclick="closeConfirm()">Cancelar</button>
       <button class="btn-confirm-yes" id="confirm-yes-btn">Sí, aceptar</button>
     </div>
+  </div>
+</div>
+
+<div class="review-overlay" id="review-modal" style="display:none">
+  <div class="review-box">
+    <h3>⭐ <span id="review-title">Dejar Reseña</span></h3>
+    <p id="review-sub">¿Cómo fue tu experiencia con este contratista?</p>
+    <div class="stars" id="stars">
+      <span class="star" data-val="1">☆</span>
+      <span class="star" data-val="2">☆</span>
+      <span class="star" data-val="3">☆</span>
+      <span class="star" data-val="4">☆</span>
+      <span class="star" data-val="5">☆</span>
+    </div>
+    <textarea class="review-textarea" id="review-comment" placeholder="Comparte tu experiencia (opcional)..."></textarea>
+    <button class="btn-review-submit" onclick="submitReview()">Enviar Reseña</button>
+    <button class="btn-review-skip" onclick="closeReview()">Omitir</button>
   </div>
 </div>
 

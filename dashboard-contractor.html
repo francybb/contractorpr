@@ -322,6 +322,8 @@ async function showDashboard() {
   document.getElementById('logout-btn').textContent = T.logout[lang];
   document.getElementById('greeting').textContent = `${lang === 'en' ? 'Hi' : 'Hola'}, ${currentUser.name.split(' ')[0]} 👋`;
   document.getElementById('greeting-sub').textContent = `${currentUser.trade} · ${currentUser.email}`;
+  // Load rating
+  loadRating(currentUser.id);
 
   const statusText = currentUser.status === 'active' ? T.active[lang] : T.pendingApproval[lang];
   const statusBadge = currentUser.status === 'active' ? 'badge-active' : 'badge-pending';
@@ -330,6 +332,7 @@ async function showDashboard() {
     <div class="profile-info">
       <h3>${currentUser.name}</h3>
       <p>${currentUser.email} · ${currentUser.phone || T.noPhone[lang]}</p>
+      <div id="contractor-rating" style="font-size:14px;color:var(--gold);margin:4px 0"></div>
       <div class="profile-badges">
         <span class="badge badge-trade">${currentUser.trade}</span>
         ${currentUser.city ? `<span class="badge badge-city">📍 ${currentUser.city}</span>` : ''}
@@ -536,6 +539,19 @@ async function sendMsg(proposalId) {
 
 const stored = sessionStorage.getItem('contractor_data');
 if (stored) { currentUser = JSON.parse(stored); showDashboard(); } else { applyLang(); }
+
+async function loadRating(contractorId) {
+  try {
+    const reviews = await db(`reviews?contractor_id=eq.${contractorId}&select=rating`);
+    const el = document.getElementById('contractor-rating');
+    if (!el) return;
+    if (!reviews || reviews.length === 0) { el.textContent = lang === 'en' ? 'No reviews yet' : 'Sin reseñas aún'; el.style.color = 'var(--gray-3)'; return; }
+    const avg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+    const stars = '⭐'.repeat(Math.round(avg)) + '☆'.repeat(5 - Math.round(avg));
+    el.textContent = `${stars} ${avg.toFixed(1)} (${reviews.length} ${reviews.length === 1 ? 'reseña' : 'reseñas'})`;
+    el.style.color = 'var(--gold)';
+  } catch(e) { console.log('Rating error:', e); }
+}
 
 
 function applyLang() {
