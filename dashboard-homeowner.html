@@ -959,18 +959,6 @@ async function submitPostJob(e) {
           <label>Descripción del trabajo</label>
           <textarea name="description" placeholder="Describe el trabajo: qué necesitas, cuándo, condiciones especiales..." required></textarea>
         </div>
-        <div class="field">
-          <label>Presupuesto aproximado</label>
-          <select name="budget">
-            <option value="" disabled selected>Seleccionar rango</option>
-            <option>Menos de $500</option>
-            <option>$500 - $1,000</option>
-            <option>$1,000 - $3,000</option>
-            <option>$3,000 - $10,000</option>
-            <option>Más de $10,000</option>
-            <option>Por discutir</option>
-          </select>
-        </div>
         <div id="post-job-error" style="background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px;color:#DC2626;font-size:13px;margin-bottom:12px;display:none"></div>
         <button type="submit" class="btn-post-submit" id="btn-post-submit">Publicar trabajo →</button>
       </form>
