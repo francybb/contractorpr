@@ -322,9 +322,6 @@ async function showDashboard() {
   document.getElementById('logout-btn').textContent = T.logout[lang];
   document.getElementById('greeting').textContent = `${lang === 'en' ? 'Hi' : 'Hola'}, ${currentUser.name.split(' ')[0]} 👋`;
   document.getElementById('greeting-sub').textContent = `${currentUser.trade} · ${currentUser.email}`;
-  // Load rating
-  loadRating(currentUser.id);
-
   const statusText = currentUser.status === 'active' ? T.active[lang] : T.pendingApproval[lang];
   const statusBadge = currentUser.status === 'active' ? 'badge-active' : 'badge-pending';
   document.getElementById('profile-card').innerHTML = `
@@ -341,6 +338,7 @@ async function showDashboard() {
       </div>
     </div>`;
 
+  loadRating(currentUser.id);
   applyLang();
   document.getElementById('logout-btn').textContent = T.logout[lang];
   await loadProposals();
