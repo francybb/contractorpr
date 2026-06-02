@@ -704,6 +704,12 @@ async function markComplete(jobId, proposalId, e) {
     toast.textContent = '✅ Trabajo completado. Pago liberado al contratista.';
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 4000);
+    // Auto-open review modal
+    const acceptedProposal = await db(`proposals?id=eq.${proposalId}&select=contractor_id,job_id`);
+    if (acceptedProposal?.[0]) {
+      const jobData = await db(`jobs?id=eq.${jobId}&select=title`);
+      setTimeout(() => openReview(jobId, acceptedProposal[0].contractor_id, jobData?.[0]?.title || ''), 600);
+    }
   };
 }
 
