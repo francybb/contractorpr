@@ -162,6 +162,29 @@ footer a{color:var(--blue);font-weight:500}
 .dot-done{background:var(--gray-3)}
 .section-empty{text-align:center;padding:24px;background:white;border:1px dashed var(--gray-2);border-radius:var(--radius-lg);color:var(--gray-3);font-size:14px;margin-bottom:12px}
 .section-header-row{display:flex;align-items:center;gap:10px;margin:24px 0 14px}.section-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}.dot-active{background:var(--green)}.dot-open{background:var(--blue)}.section-empty{text-align:center;padding:20px;background:white;border:1px dashed var(--gray-2);border-radius:var(--radius-lg);color:var(--gray-3);font-size:14px;margin-bottom:12px}
+
+/* Post Job Modal */
+.post-job-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:1000;display:none;align-items:center;justify-content:center;padding:20px}
+.post-job-overlay.show{display:flex}
+.post-job-modal{background:white;border-radius:var(--radius-lg);width:100%;max-width:580px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,0.25)}
+.post-job-modal-head{padding:20px 24px;border-bottom:1px solid var(--gray-2);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:white;z-index:1}
+.post-job-modal-head h3{font-size:18px;font-weight:800}
+.post-job-modal-body{padding:24px}
+.post-job-modal .field{margin-bottom:16px}
+.post-job-modal label{display:block;font-size:12px;font-weight:600;letter-spacing:0.04em;text-transform:uppercase;color:var(--gray-4);margin-bottom:7px}
+.post-job-modal input,.post-job-modal select,.post-job-modal textarea{width:100%;background:var(--gray-1);border:1px solid var(--gray-2);border-radius:8px;padding:11px 14px;color:var(--ink);font-family:'Inter',sans-serif;font-size:15px;transition:border-color 0.2s;outline:none;box-sizing:border-box}
+.post-job-modal input:focus,.post-job-modal select:focus,.post-job-modal textarea:focus{border-color:var(--blue);background:white}
+.post-job-modal select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%2394A3B8' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px}
+.post-job-modal textarea{resize:vertical;min-height:100px}
+.post-job-form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.btn-post-submit{width:100%;padding:13px;background:var(--blue);color:white;border:none;border-radius:10px;font-family:'Inter',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all 0.2s;margin-top:4px}
+.btn-post-submit:hover{background:var(--blue-dark)}
+.btn-post-submit:disabled{opacity:0.6;cursor:not-allowed}
+.post-job-success{text-align:center;padding:32px 24px;display:none}
+.post-job-success.show{display:block}
+.post-job-success h3{font-size:20px;font-weight:800;margin-bottom:8px}
+.post-job-success p{font-size:14px;color:var(--gray-3)}
+@media(max-width:500px){.post-job-form-row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -207,7 +230,7 @@ footer a{color:var(--blue);font-weight:500}
       <h1 id="greeting">Bienvenido</h1>
       <p id="greeting-sub">Gestiona tus trabajos y propuestas</p>
     </div>
-    <button class="btn-post" onclick="window.location.href='post-job.html'" data-i18n="postBtn">+ Publicar nuevo trabajo</button>
+    <button class="btn-post" onclick="openPostJobModal()" data-i18n="postBtn">+ Publicar nuevo trabajo</button>
   </div>
 
   <!-- Stats -->
@@ -406,7 +429,7 @@ async function loadJobs() {
   document.getElementById('stat-proposals').textContent = safeProposals.length;
   document.getElementById('stat-accepted').textContent = activeJobs.length;
   if (jobs.length === 0) {
-    document.getElementById('jobs-list').innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><h3>${T.emptyTitle[lang]}</h3><p>${lang === 'en' ? 'Post your first job.' : 'Publica tu primer trabajo.'}</p><button class="btn-post" onclick="window.location.href='post-job.html'">${T.emptyBtn[lang]}</button></div>`;
+    document.getElementById('jobs-list').innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><h3>${T.emptyTitle[lang]}</h3><p>${lang === 'en' ? 'Post your first job.' : 'Publica tu primer trabajo.'}</p><button class="btn-post" onclick="openPostJobModal()">${T.emptyBtn[lang]}</button></div>`;
     return;
   }
   let html = '';
@@ -785,6 +808,53 @@ async function submitReview() {
   document.body.appendChild(toast); setTimeout(() => toast.remove(), 3000);
 }
 
+function openPostJobModal() {
+  document.getElementById('post-job-overlay').classList.add('show');
+  document.getElementById('post-job-form').style.display = 'block';
+  document.getElementById('post-job-success').classList.remove('show');
+  document.getElementById('post-job-form').reset();
+  document.body.style.overflow = 'hidden';
+}
+function closePostJobModal() {
+  document.getElementById('post-job-overlay').classList.remove('show');
+  document.body.style.overflow = '';
+  loadJobs();
+}
+async function submitPostJob(e) {
+  e.preventDefault();
+  const btn = document.getElementById('btn-post-submit');
+  const errorEl = document.getElementById('post-job-error');
+  errorEl.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = lang === 'en' ? 'Improving your description...' : 'Mejorando tu descripción...';
+  const form = e.target;
+  let jobTitle = form.title.value;
+  let jobDesc = form.description.value;
+  try {
+    const rr = await fetch('/.netlify/functions/rewrite-job', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ title: jobTitle, description: jobDesc, language: lang })
+    });
+    if (rr.ok) { const rw = await rr.json(); if (rw.title) jobTitle = rw.title; if (rw.description) jobDesc = rw.description; }
+  } catch(e) {}
+  btn.textContent = lang === 'en' ? 'Publishing...' : 'Publicando...';
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs`, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
+    body: JSON.stringify({ homeowner_id: currentUser.id, title: jobTitle, description: jobDesc, trade_needed: form.trade_needed.value, city: form.city.value, budget: form.budget.value })
+  });
+  if (res.ok) {
+    document.getElementById('post-job-form').style.display = 'none';
+    document.getElementById('post-job-success').classList.add('show');
+  } else {
+    const err = await res.json().catch(()=>({}));
+    errorEl.textContent = err.message || 'Algo salió mal. Intenta de nuevo.';
+    errorEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = 'Publicar trabajo →';
+  }
+}
+
 </script>
 
 <div class="confirm-modal" id="confirm-modal">
@@ -812,6 +882,99 @@ async function submitReview() {
     <textarea class="review-textarea" id="review-comment" placeholder="Comparte tu experiencia (opcional)..."></textarea>
     <button class="btn-review-submit" onclick="submitReview()">Enviar Reseña</button>
     <button class="btn-review-skip" onclick="closeReview()">Omitir</button>
+  </div>
+</div>
+
+
+<!-- Post Job Modal -->
+<div class="post-job-overlay" id="post-job-overlay" onclick="if(event.target===this)closePostJobModal()">
+  <div class="post-job-modal">
+    <div class="post-job-modal-head">
+      <h3>📋 Publicar nuevo trabajo</h3>
+      <button class="btn-close" onclick="closePostJobModal()">✕</button>
+    </div>
+    <div class="post-job-modal-body">
+      <div class="post-job-success" id="post-job-success">
+        <div style="font-size:48px;margin-bottom:12px">🎉</div>
+        <h3>¡Trabajo publicado!</h3>
+        <p>Los contratistas ya pueden ver tu trabajo y enviarte propuestas.</p>
+        <button onclick="closePostJobModal()" style="margin-top:20px;background:var(--blue);color:white;border:none;padding:11px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer">Ver mi dashboard</button>
+      </div>
+      <form id="post-job-form" onsubmit="submitPostJob(event)">
+        <div class="field">
+          <label>Título del trabajo</label>
+          <input type="text" name="title" placeholder="ej. Reparación de techo después de lluvia" required>
+        </div>
+        <div class="post-job-form-row">
+          <div class="field">
+            <label>Tipo de trabajo</label>
+            <select name="trade_needed" required>
+              <option value="" disabled selected>Seleccionar</option>
+              <option>Carpintería</option>
+              <option>Plomería</option>
+              <option>Electricidad</option>
+              <option>Pintura</option>
+              <option>Techado / Roofing</option>
+              <option>A/C & Refrigeración</option>
+              <option>Albañilería</option>
+              <option>Pisos / Flooring</option>
+              <option>Remodelación General</option>
+              <option>Otro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Ciudad / Municipio</label>
+            <select name="city" required>
+              <option value="" disabled selected>Seleccionar municipio</option>
+              <option>Adjuntas</option><option>Aguada</option><option>Aguadilla</option>
+              <option>Aguas Buenas</option><option>Aibonito</option><option>Añasco</option>
+              <option>Arecibo</option><option>Arroyo</option><option>Barceloneta</option>
+              <option>Barranquitas</option><option>Bayamón</option><option>Cabo Rojo</option>
+              <option>Caguas</option><option>Camuy</option><option>Canóvanas</option>
+              <option>Carolina</option><option>Cataño</option><option>Cayey</option>
+              <option>Ceiba</option><option>Ciales</option><option>Cidra</option>
+              <option>Coamo</option><option>Comerío</option><option>Corozal</option>
+              <option>Culebra</option><option>Dorado</option><option>Fajardo</option>
+              <option>Florida</option><option>Guánica</option><option>Guayama</option>
+              <option>Guayanilla</option><option>Guaynabo</option><option>Gurabo</option>
+              <option>Hatillo</option><option>Hormigueros</option><option>Humacao</option>
+              <option>Isabela</option><option>Jayuya</option><option>Juana Díaz</option>
+              <option>Juncos</option><option>Lajas</option><option>Lares</option>
+              <option>Las Marías</option><option>Las Piedras</option><option>Loíza</option>
+              <option>Luquillo</option><option>Manatí</option><option>Maricao</option>
+              <option>Maunabo</option><option>Mayagüez</option><option>Moca</option>
+              <option>Morovis</option><option>Naguabo</option><option>Naranjito</option>
+              <option>Orocovis</option><option>Patillas</option><option>Peñuelas</option>
+              <option>Ponce</option><option>Quebradillas</option><option>Rincón</option>
+              <option>Río Grande</option><option>Sabana Grande</option><option>Salinas</option>
+              <option>San Germán</option><option>San Juan</option><option>San Lorenzo</option>
+              <option>San Sebastián</option><option>Santa Isabel</option><option>Toa Alta</option>
+              <option>Toa Baja</option><option>Trujillo Alto</option><option>Utuado</option>
+              <option>Vega Alta</option><option>Vega Baja</option><option>Vieques</option>
+              <option>Villalba</option><option>Yabucoa</option><option>Yauco</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label>Descripción del trabajo</label>
+          <textarea name="description" placeholder="Describe el trabajo: qué necesitas, cuándo, condiciones especiales..." required></textarea>
+        </div>
+        <div class="field">
+          <label>Presupuesto aproximado</label>
+          <select name="budget">
+            <option value="" disabled selected>Seleccionar rango</option>
+            <option>Menos de $500</option>
+            <option>$500 - $1,000</option>
+            <option>$1,000 - $3,000</option>
+            <option>$3,000 - $10,000</option>
+            <option>Más de $10,000</option>
+            <option>Por discutir</option>
+          </select>
+        </div>
+        <div id="post-job-error" style="background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px;color:#DC2626;font-size:13px;margin-bottom:12px;display:none"></div>
+        <button type="submit" class="btn-post-submit" id="btn-post-submit">Publicar trabajo →</button>
+      </form>
+    </div>
   </div>
 </div>
 
