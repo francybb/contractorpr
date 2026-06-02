@@ -170,12 +170,12 @@ footer a{color:var(--blue);font-weight:500}
     <div id="login-error" class="error-msg"></div>
     <div class="field">
       <label data-i18n="emailLabel">Correo electrónico</label>
-      <input type="email" id="login-email" placeholder="tu@correo.com" onkeydown="if(event.key==='Enter')login()">
+      <input type="email" id="login-email" placeholder="tu@correo.com" data-placeholder-es="tu@correo.com" data-placeholder-en="your@email.com" onkeydown="if(event.key==='Enter')login()">
     </div>
     <button class="btn-primary" onclick="login()" id="login-btn" data-i18n="loginBtn">Entrar →</button>
     <div class="login-footer">
-      ¿No tienes cuenta? <a href="signup.html">Regístrate gratis</a><br>
-      ¿Eres contratista? <a href="dashboard-contractor.html">Panel de contratista →</a>
+      <span data-i18n="footerNoAccount">¿No tienes cuenta?</span> <a href="signup.html" data-i18n="footerSignup">Regístrate gratis</a><br>
+      <span data-i18n="footerContractor">¿Eres contratista?</span> <a href="dashboard-contractor.html" data-i18n="footerContractorLink">Panel de contratista →</a>
     </div>
   </div>
 </div>
@@ -291,6 +291,10 @@ const T = {
   writeMsg: {es:'Escribe un mensaje...', en:'Write a message...'},
   loading: {es:'Cargando...', en:'Loading...'},
   emailLabel: {es:'Correo electrónico', en:'Email address'},
+  footerNoAccount: {es:'¿No tienes cuenta?', en:'No account?'},
+  footerSignup: {es:'Regístrate gratis', en:'Sign up free'},
+  footerContractor: {es:'¿Eres contratista?', en:'Are you a contractor?'},
+  footerContractorLink: {es:'Panel de contratista →', en:'Contractor dashboard →'},
 };
 
 async function db(path) {
@@ -620,6 +624,9 @@ function applyLang() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
     if (T[key]) el.textContent = T[key][lang];
+  });
+  document.querySelectorAll('[data-placeholder-es]').forEach(el => {
+    el.placeholder = lang === 'es' ? el.dataset.placeholderEs : el.dataset.placeholderEn;
   });
 }
 
