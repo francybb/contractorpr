@@ -542,7 +542,7 @@ function acceptProposal(proposalId, jobId, e) {
     await dbPatch('jobs', jobId, { status: 'accepted' });
     // Send email to contractor
     const proposals = await db(`proposals?id=eq.${proposalId}&select=*`);
-    const jobs = await db(`jobs?id=eq.${jobId}&select=title,amount,homeowner_id`);
+    const jobs = await db(`jobs?id=eq.${jobId}&select=title,amount`);
     console.log('Email debug - proposals:', proposals, 'jobs:', jobs);
     if (proposals?.[0] && jobs?.[0]) {
       const p = proposals[0]; const j = jobs[0];
@@ -674,13 +674,13 @@ async function markComplete(jobId, proposalId, e) {
     await loadJobs();
     // Send job_completed emails to both parties
     const proposals2 = await db(`proposals?id=eq.${proposalId}&select=*`);
-    const jobs2 = await db(`jobs?id=eq.${jobId}&select=title,amount,homeowner_id`);
+    const jobs2 = await db(`jobs?id=eq.${jobId}&select=title,amount`);
     if (proposals2?.[0] && jobs2?.[0]) {
       const p2 = proposals2[0]; const j2 = jobs2[0];
       const contractors2 = await db(`contractors?id=eq.${p2.contractor_id}&select=name,email`);
-      const homeowners2 = await db(`homeowners?id=eq.${j2.homeowner_id}&select=email`);
+      const homeownerData = JSON.parse(sessionStorage.getItem('homeowner_data') || '{}');
       sendEmail('job_completed', {
-        homeowner_email: homeowners2?.[0]?.email,
+        homeowner_email: currentUser?.email || homeownerData.email,
         contractor_email: contractors2?.[0]?.email,
         job_title: j2.title,
         contractor_name: contractors2?.[0]?.name,
