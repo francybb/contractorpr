@@ -12,10 +12,10 @@ CPR.lang = localStorage.getItem('cpr_lang') || 'es';
 CPR.translations = {
   // Navigation
   nav_home:           { es: 'Inicio',             en: 'Home' },
-  nav_jobs:           { es: 'Ver trabajos',        en: 'Browse jobs' },
+  nav_jobs:           { es: 'Ver Trabajos',        en: 'View Jobs' },
   nav_signup:         { es: 'Registrarse',         en: 'Sign up' },
   nav_login:          { es: 'Iniciar sesión',      en: 'Log in' },
-  nav_dashboard:      { es: 'Mi dashboard',        en: 'My dashboard' },
+  nav_dashboard:      { es: 'Dashboard',           en: 'Dashboard' },
   nav_logout:         { es: 'Cerrar sesión',       en: 'Log out' },
   nav_back_home:      { es: '← Volver al inicio',  en: '← Back to home' },
   nav_post_job:       { es: 'Publicar trabajo',    en: 'Post a job' },
@@ -435,10 +435,10 @@ CPR.buildNav = async function(activePage) {
     <style>
     .cpr-nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:1px solid #E2E8F0;font-family:'Inter',sans-serif}
     .cpr-nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
-    .cpr-nav-left{display:flex;align-items:center;gap:4px;margin-left:24px}
+    .cpr-nav-left{display:flex;align-items:center;gap:8px}
+    .cpr-nav-right{display:flex;align-items:center;gap:8px}
     .cpr-logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:800;color:#0066CC;text-decoration:none}
     .cpr-logo-box{width:34px;height:34px;background:#0066CC;border-radius:8px;display:grid;place-items:center;color:white;font-weight:800;font-size:16px;flex-shrink:0}
-    .cpr-nav-right{display:flex;align-items:center;gap:12px}
     .cpr-nav-link{font-size:14px;font-weight:500;color:#475569;text-decoration:none;transition:color 0.2s}
     .cpr-nav-link:hover{color:#0066CC}
     .cpr-nav-btn{background:#0066CC;color:white;padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:background 0.2s}
