@@ -126,13 +126,23 @@ async def render_check_errors():
 # ── AI fix generator ────────────────────────────────────────────
 
 async def generate_fix(file_path, current_content, problem_description):
-    prompt = "Fix this file for ContractingPR.\n\nFile: %s\nProblem: %s\n\nCurrent content (first 6000 chars):\n%s\n\nReturn ONLY the complete fixed file content. No markdown, no code blocks." % (
-        file_path, problem_description, current_content[:6000]
-    )
+    prompt = (
+        "You are fixing a specific bug in a production file for ContractingPR.\n\n"
+        "File: %s\n"
+        "Problem: %s\n\n"
+        "CRITICAL RULES:\n"
+        "1. Return the COMPLETE original file with ONLY the minimum lines changed to fix the problem\n"
+        "2. Do NOT rewrite, restructure, or improve anything else\n"
+        "3. Do NOT add demo data, placeholder content, or example text\n"
+        "4. Do NOT change any functionality that is not related to the problem\n"
+        "5. The file must remain fully functional with real Supabase data\n"
+        "6. Return raw file content only - no markdown, no code blocks\n\n"
+        "Current file content:\n%s"
+    ) % (file_path, problem_description, current_content[:10000])
     loop = asyncio.get_event_loop()
     response = await loop.run_in_executor(None, lambda: anthropic_client.messages.create(
         model="claude-opus-4-5",
-        max_tokens=4096,
+        max_tokens=8096,
         messages=[{"role": "user", "content": prompt}]
     ))
     return response.content[0].text
@@ -293,14 +303,20 @@ async def on_message(message):
                 "commit_msg": commit_msg
             }
 
-            orig_lines = len(file_content.splitlines())
-            fixed_lines = len(fixed_content.splitlines())
-            await message.channel.send(
-                "Found the issue and fixed it. Here's what I changed in `%s`:\n\n"
-                "Removed the pending approval badge — contractors are now auto-approved on signup so it's no longer needed. "
-                "(%d → %d lines)\n\n"
-                "Should I push this?" % (file_path, orig_lines, fixed_lines)
-            )
+            # Show a real diff snippet
+            import difflib
+            orig_lines_list = file_content.splitlines()
+            fixed_lines_list = fixed_content.splitlines()
+            diff = list(difflib.unified_diff(orig_lines_list, fixed_lines_list, lineterm='', n=2))
+            diff_preview = "\n".join(diff[:40]) if diff else "No visible changes detected"
+            orig_lines = len(orig_lines_list)
+            fixed_lines = len(fixed_lines_list)
+
+            msg = "Found the issue. Here's exactly what I changed in `%s` (%d → %d lines):\n" % (file_path, orig_lines, fixed_lines)
+            if diff_preview:
+                msg += "```diff\n%s\n```\n" % diff_preview[:1200]
+            msg += "\nShould I push this?"
+            await message.channel.send(msg[:1900])
             return
 
         # ── Check platform status ──
