@@ -572,8 +572,26 @@ async function sendMsg(proposalId) {
   loadMsgs(proposalId);
 }
 
-const stored = sessionStorage.getItem('contractor_data');
-if (stored) { currentUser = JSON.parse(stored); showDashboard(); } else { applyLang(); }
+async function checkSession() {
+  const stored = sessionStorage.getItem('contractor_data');
+  if (stored) { currentUser = JSON.parse(stored); showDashboard(); return; }
+  try {
+    const { data } = await sb.auth.getSession();
+    if (data?.session?.user?.email) {
+      const email = data.session.user.email;
+      const res = await db(`contractors?email=eq.${encodeURIComponent(email)}&select=*`);
+      if (res?.[0]) {
+        currentUser = res[0];
+        sessionStorage.setItem('contractor_id', currentUser.id);
+        sessionStorage.setItem('contractor_data', JSON.stringify(currentUser));
+        showDashboard();
+        return;
+      }
+    }
+  } catch(e) {}
+  applyLang();
+}
+checkSession();
 
 async function loadRating(contractorId) {
   try {

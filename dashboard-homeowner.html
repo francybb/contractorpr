@@ -725,14 +725,32 @@ function toggleLang() {
   if (currentUser) loadJobs();
 }
 
-// Check existing session
-const stored = sessionStorage.getItem('homeowner_data');
-if (stored) {
-  currentUser = JSON.parse(stored);
-  showDashboard();
-} else {
+// Check existing session — sessionStorage first, then Supabase Auth
+async function checkSession() {
+  const stored = sessionStorage.getItem('homeowner_data');
+  if (stored) {
+    currentUser = JSON.parse(stored);
+    showDashboard();
+    return;
+  }
+  // Try Supabase Auth session
+  try {
+    const { data } = await sb.auth.getSession();
+    if (data?.session?.user?.email) {
+      const email = data.session.user.email;
+      const res = await db(`homeowners?email=eq.${encodeURIComponent(email)}&select=*`);
+      if (res?.[0]) {
+        currentUser = res[0];
+        sessionStorage.setItem('homeowner_id', currentUser.id);
+        sessionStorage.setItem('homeowner_data', JSON.stringify(currentUser));
+        showDashboard();
+        return;
+      }
+    }
+  } catch(e) {}
   applyLang();
 }
+checkSession();
 
 async function markComplete(jobId, proposalId, e) {
   e.stopPropagation();

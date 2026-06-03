@@ -325,10 +325,29 @@ CPR.SUPABASE_KEY = SUPABASE_KEY;
 // Get current Supabase session
 CPR.getSession = async function() {
   try {
+    // Supabase v2 stores session under this key
     const stored = localStorage.getItem('sb-shdsvylhtzuuleaicehe-auth-token');
     if (stored) {
       const parsed = JSON.parse(stored);
       if (parsed?.access_token) return parsed;
+    }
+    // Also try the new format
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.includes('supabase') && key.includes('auth')) {
+        try {
+          const val = JSON.parse(localStorage.getItem(key));
+          if (val?.access_token) return val;
+          if (val?.session?.access_token) return val.session;
+        } catch(e) {}
+      }
+    }
+    // Try getting from supabase client directly
+    if (window.supabase) {
+      const { createClient } = supabase;
+      const sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_KEY);
+      const { data } = await sb.auth.getSession();
+      if (data?.session) return data.session;
     }
   } catch(e) {}
   return null;
@@ -629,6 +648,8 @@ CPR._doLogin = async function() {
     const { error } = await sb.auth.signInWithPassword({ email, password });
     if (error) throw new Error(error.message);
     CPR.hideAuthModal();
+    // Small delay to let Supabase store the session
+    await new Promise(r => setTimeout(r, 500));
     // Run pending action
     const user = await CPR.getCurrentUser();
     if (user && CPR._pendingAction) {
@@ -636,8 +657,8 @@ CPR._doLogin = async function() {
       CPR._pendingAction = null;
       action(user);
     } else if (user) {
-      // Refresh nav
-      CPR.injectNav();
+      // Refresh nav to show logged-in state
+      await CPR.injectNav();
     }
   } catch(err) {
     errorEl.innerHTML = CPR.lang === 'en'
@@ -683,13 +704,14 @@ CPR._doSignup = async function() {
       body: JSON.stringify(body)
     });
     CPR.hideAuthModal();
+    await new Promise(r => setTimeout(r, 500));
     const user = await CPR.getCurrentUser();
     if (user && CPR._pendingAction) {
       const action = CPR._pendingAction.fn;
       CPR._pendingAction = null;
       action(user);
     } else if (user) {
-      CPR.injectNav();
+      await CPR.injectNav();
     }
   } catch(err) {
     const msg = err.message.includes('already registered') ? (CPR.lang === 'en' ? 'That email is already registered.' : 'Ese correo ya está registrado.') : err.message;
