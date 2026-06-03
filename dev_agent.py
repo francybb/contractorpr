@@ -68,15 +68,19 @@ anthropic_client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 
 async def github_get_file(path):
     url = "https://api.github.com/repos/%s/contents/%s" % (GITHUB_REPO, path)
-    async with httpx.AsyncClient() as c:
-        r = await c.get(url, headers={
-            "Authorization": "Bearer " + GITHUB_TOKEN,
-            "Accept": "application/vnd.github+json"
-        })
-        if r.status_code == 200:
-            data = r.json()
-            content = base64.b64decode(data["content"]).decode("utf-8")
-            return content, data["sha"]
+    try:
+        async with httpx.AsyncClient(timeout=15.0) as c:
+            r = await c.get(url, headers={
+                "Authorization": "Bearer " + GITHUB_TOKEN,
+                "Accept": "application/vnd.github+json"
+            })
+            if r.status_code == 200:
+                data = r.json()
+                content = base64.b64decode(data["content"]).decode("utf-8")
+                return content, data["sha"]
+            return None, None
+    except Exception as ex:
+        print("github_get_file error: %s" % str(ex))
         return None, None
 
 async def github_push_file(path, content, sha, message):
@@ -270,7 +274,17 @@ async def on_message(message):
                 return
 
             await message.channel.send("Got it. Working on the fix...")
-            fixed_content = await generate_fix(file_path, file_content, problem)
+            try:
+                fixed_content = await asyncio.wait_for(
+                    generate_fix(file_path, file_content, problem),
+                    timeout=45.0
+                )
+            except asyncio.TimeoutError:
+                await message.channel.send("Took too long generating the fix. Try again or give me more details about the problem.")
+                return
+            except Exception as ex:
+                await message.channel.send("Something went wrong generating the fix: %s" % str(ex))
+                return
             commit_msg = "fix: %s" % problem[:70]
 
             pending_fix = {
