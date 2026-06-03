@@ -12,6 +12,7 @@ CPR.lang = localStorage.getItem('cpr_lang') || 'es';
 CPR.translations = {
   // Navigation
   nav_home:           { es: 'Inicio',             en: 'Home' },
+  nav_home:           { es: 'Inicio',              en: 'Home' },
   nav_jobs:           { es: 'Ver Trabajos',        en: 'View Jobs' },
   nav_signup:         { es: 'Registrarse',         en: 'Sign up' },
   nav_login:          { es: 'Iniciar sesión',      en: 'Log in' },
@@ -410,32 +411,33 @@ CPR.buildNav = async function(activePage) {
 
   const dashUrl = user ? (user.type === 'homeowner' ? 'dashboard-homeowner.html' : 'dashboard-contractor.html') : 'dashboard-homeowner.html';
 
-  // Left nav links (always visible)
-  const leftLinks = '<div class="cpr-nav-left">' +
+  // Center-left nav links
+  const centerLinks = '<div class="cpr-nav-center">' +
+    '<a href="index.html" class="cpr-nav-link">' + CPR.t('nav_home') + '</a>' +
     '<a href="jobs.html" class="cpr-nav-link">' + CPR.t('nav_jobs') + '</a>' +
     '<a href="' + dashUrl + '" class="cpr-nav-link">' + CPR.t('nav_dashboard') + '</a>' +
     '</div>';
 
-  // Right side: language + auth (always far right)
+  // Far right: login/logout then language
   const langDropdown = '<select id="lang-dropdown" class="cpr-lang-select" onchange="CPR.setLang(this.value)"><option value="es">Español</option><option value="en">English</option></select>';
 
   const authLink = user
     ? '<button onclick="CPR.logout()" class="cpr-nav-btn-ghost">' + CPR.t('nav_logout') + '</button>'
     : '<a href="dashboard-homeowner.html" class="cpr-nav-btn">' + CPR.t('nav_login') + '</a>';
 
-  const rightLinks = '<div class="cpr-nav-right">' + langDropdown + authLink + '</div>';
+  const rightLinks = '<div class="cpr-nav-right">' + authLink + langDropdown + '</div>';
 
   const navHtml = '<nav class="cpr-nav"><div class="cpr-nav-inner">' +
     logoHtml +
-    leftLinks +
+    centerLinks +
     rightLinks +
     '</div></nav>';
 
   const navCss = `
     <style>
     .cpr-nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:1px solid #E2E8F0;font-family:'Inter',sans-serif}
-    .cpr-nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
-    .cpr-nav-left{display:flex;align-items:center;gap:8px}
+    .cpr-nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .cpr-nav-center{display:flex;align-items:center;gap:4px;flex:1}
     .cpr-nav-right{display:flex;align-items:center;gap:8px}
     .cpr-logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:800;color:#0066CC;text-decoration:none}
     .cpr-logo-box{width:34px;height:34px;background:#0066CC;border-radius:8px;display:grid;place-items:center;color:white;font-weight:800;font-size:16px;flex-shrink:0}
@@ -447,7 +449,7 @@ CPR.buildNav = async function(activePage) {
     .cpr-nav-btn-ghost:hover{border-color:#0066CC;color:#0066CC}
     .cpr-lang-select{background:none;border:1px solid #E2E8F0;padding:6px 10px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;color:#475569;outline:none}
     .cpr-lang-select:hover{border-color:#0066CC}
-    @media(max-width:640px){.cpr-nav-left{display:none}.cpr-nav-inner{padding:0 16px}}
+    @media(max-width:640px){.cpr-nav-center{display:none}.cpr-nav-inner{padding:0 16px}}
     </style>
   `;
 
