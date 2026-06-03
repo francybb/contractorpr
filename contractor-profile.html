@@ -34,7 +34,6 @@ a{text-decoration:none;color:inherit}
 .avatar{width:100px;height:100px;border-radius:20px;background:var(--blue);display:grid;place-items:center;font-size:40px;font-weight:800;color:white;border:4px solid rgba(255,255,255,0.15)}
 .status-dot{position:absolute;bottom:24px;right:-4px;width:18px;height:18px;border-radius:50%;border:3px solid #0a1628}
 .status-dot.active{background:var(--green)}
-.status-dot.pending{background:var(--gold)}
 .profile-info{flex:1;min-width:200px;padding-bottom:24px}
 .profile-name{font-size:28px;font-weight:800;color:white;margin-bottom:6px;letter-spacing:-0.02em}
 .profile-trade{font-size:15px;color:rgba(255,255,255,0.6);margin-bottom:12px}
@@ -43,7 +42,7 @@ a{text-decoration:none;color:inherit}
 .badge-trade{background:rgba(0,102,204,0.3);color:#60A5FA;border:1px solid rgba(96,165,250,0.3)}
 .badge-city{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.15)}
 .badge-license{background:rgba(16,185,129,0.2);color:#34D399;border:1px solid rgba(52,211,153,0.3)}
-.badge-pending{background:rgba(245,158,11,0.2);color:#FCD34D;border:1px solid rgba(252,211,77,0.3)}
+.badge-verified{background:rgba(16,185,129,0.2);color:#34D399;border:1px solid rgba(52,211,153,0.3)}
 .profile-rating-hero{text-align:right;padding-bottom:28px;flex-shrink:0}
 .rating-big{font-size:48px;font-weight:800;color:white;line-height:1}
 .rating-stars-big{font-size:20px;color:var(--gold);margin:4px 0}
@@ -85,338 +84,123 @@ a{text-decoration:none;color:inherit}
 
 /* Sidebar */
 .sidebar-card{background:white;border:1px solid var(--gray-2);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px}
-.contact-btn{display:block;width:100%;text-align:center;background:var(--blue);color:white;padding:13px;border-radius:10px;font-weight:700;font-size:15px;margin-bottom:10px;transition:background 0.2s}
+.contact-btn{display:block;width:100%;text-align:center;background:var(--blue);color:white;padding:13px 20px;border-radius:var(--radius);font-size:15px;font-weight:600;border:none;cursor:pointer;transition:background 0.2s}
 .contact-btn:hover{background:var(--blue-dark)}
-.contact-btn-ghost{display:block;width:100%;text-align:center;background:var(--gray-1);color:var(--ink);padding:12px;border-radius:10px;font-weight:600;font-size:14px;border:1px solid var(--gray-2);transition:all 0.2s}
-.contact-btn-ghost:hover{border-color:var(--blue);color:var(--blue)}
-.info-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray-2);font-size:14px}
-.info-row:last-child{border-bottom:none}
-.info-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0}
-.info-label{color:var(--gray-3);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em}
-.info-val{font-weight:600;color:var(--ink)}
+.contact-info{margin-top:16px}
+.contact-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--gray-2);font-size:14px;color:var(--gray-4)}
+.contact-row:last-child{border-bottom:none}
+.contact-icon{width:32px;height:32px;background:var(--gray-1);border-radius:8px;display:grid;place-items:center;font-size:14px}
 
-/* Loading / Error */
-.loading-state{text-align:center;padding:80px 24px;color:var(--gray-3)}
-.spinner{width:36px;height:36px;border:3px solid var(--gray-2);border-top-color:var(--blue);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 16px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.error-state{text-align:center;padding:80px 24px}
-.error-state h2{font-size:22px;font-weight:800;margin-bottom:8px}
-.error-state p{color:var(--gray-3)}
+/* Services */
+.service-tag{display:inline-block;background:var(--blue-light);color:var(--blue);padding:6px 12px;border-radius:100px;font-size:13px;font-weight:500;margin:4px 4px 4px 0}
 
-/* Rating bar */
-.rating-bar-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;font-size:13px}
-.rating-bar-label{width:16px;text-align:right;color:var(--gray-4);font-weight:600}
-.rating-bar-track{flex:1;height:6px;background:var(--gray-2);border-radius:3px;overflow:hidden}
-.rating-bar-fill{height:100%;background:var(--gold);border-radius:3px;transition:width 0.6s ease}
-.rating-bar-count{width:24px;color:var(--gray-3);font-size:12px}
-
-footer{border-top:1px solid var(--gray-2);background:white;padding:20px 24px;text-align:center;font-size:13px;color:var(--gray-3)}
-footer a{color:var(--blue);font-weight:500}
+/* Footer */
+.footer{background:#0F172A;color:white;padding:48px 24px;text-align:center}
+.footer-text{font-size:14px;color:rgba(255,255,255,0.5)}
 </style>
 </head>
 <body>
 
 <div class="nav-wrap">
   <nav class="nav">
-    <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
+    <a href="index.html" class="logo">
+      <div class="logo-box">C</div>
+      ContractingPR
+    </a>
     <div class="nav-right">
-      <button class="lang-btn" onclick="toggleLang()">English</button>
-      <a href="jobs.html" class="btn-nav-ghost" id="nav-jobs">Ver trabajos</a>
-      <a href="signup.html" class="btn-nav" id="nav-signup">Registrarse</a>
+      <button class="lang-btn">ES | EN</button>
+      <a href="browse.html" class="btn-nav-ghost">Buscar</a>
+      <a href="register.html" class="btn-nav">Registrarse</a>
     </div>
   </nav>
 </div>
 
-<!-- Loading state -->
-<div id="loading-state" style="padding:80px 24px;text-align:center">
-  <div class="spinner"></div>
-  <p style="color:var(--gray-3)">Cargando perfil...</p>
+<section class="profile-hero">
+  <div class="profile-hero-inner">
+    <div class="avatar-wrap">
+      <div class="avatar">JR</div>
+      <div class="status-dot active"></div>
+    </div>
+    <div class="profile-info">
+      <h1 class="profile-name">Juan Rodríguez Construction</h1>
+      <p class="profile-trade">Contratista General · San Juan, PR</p>
+      <div class="profile-badges">
+        <span class="badge badge-trade">🔨 Construcción General</span>
+        <span class="badge badge-city">📍 Área Metro</span>
+        <span class="badge badge-verified">✓ Verificado</span>
+        <span class="badge badge-license">🪪 Licencia #12345</span>
+      </div>
+    </div>
+    <div class="profile-rating-hero">
+      <div class="rating-big">4.8</div>
+      <div class="rating-stars-big">★★★★★</div>
+      <div class="rating-count">47 reseñas</div>
+    </div>
+  </div>
+</section>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <button class="tab-btn active">Resumen</button>
+    <button class="tab-btn">Servicios</button>
+    <button class="tab-btn">Reseñas</button>
+    <button class="tab-btn">Portafolio</button>
+  </div>
 </div>
 
-<!-- Profile content (hidden until loaded) -->
-<div id="profile-content" style="display:none">
+<main class="main">
+  <div class="content">
+    <div class="panel">
+      <h2 class="panel-title"><span>📋</span> Sobre Nosotros</h2>
+      <p class="about-text">Con más de 15 años de experiencia en la industria de la construcción en Puerto Rico, Juan Rodríguez Construction se especializa en proyectos residenciales y comerciales. Nuestro compromiso es ofrecer trabajos de alta calidad, cumpliendo con todos los códigos de construcción y utilizando materiales de primera. Estamos licenciados, asegurados y listos para hacer realidad tu próximo proyecto.</p>
+    </div>
 
-  <div class="profile-hero">
-    <div class="profile-hero-inner">
-      <div class="avatar-wrap">
-        <div class="avatar" id="hero-avatar"></div>
-        <div class="status-dot" id="status-dot"></div>
+    <div class="panel">
+      <h2 class="panel-title"><span>📊</span> Estadísticas</h2>
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-num">127</div>
+          <div class="stat-label">Proyectos</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">15</div>
+          <div class="stat-label">Años Exp.</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">98%</div>
+          <div class="stat-label">Satisfacción</div>
+        </div>
       </div>
-      <div class="profile-info">
-        <div class="profile-name" id="hero-name"></div>
-        <div class="profile-trade" id="hero-trade"></div>
-        <div class="profile-badges" id="hero-badges"></div>
+    </div>
+
+    <div class="panel">
+      <h2 class="panel-title"><span>⭐</span> Reseñas Recientes</h2>
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-stars">★★★★★</span>
+          <span class="review-date">Hace 2 semanas</span>
+        </div>
+        <div class="review-job">Remodelación de Cocina</div>
+        <p class="review-comment">"Excelente trabajo. Juan y su equipo fueron muy profesionales y terminaron a tiempo. La cocina quedó espectacular."</p>
       </div>
-      <div class="profile-rating-hero" id="hero-rating" style="display:none">
-        <div class="rating-big" id="rating-number"></div>
-        <div class="rating-stars-big" id="rating-stars"></div>
-        <div class="rating-count" id="rating-count"></div>
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-stars">★★★★★</span>
+          <span class="review-date">Hace 1 mes</span>
+        </div>
+        <div class="review-job">Construcción de Terraza</div>
+        <p class="review-comment">"Muy recomendado. Precios justos y calidad superior. La terraza superó mis expectativas."</p>
+      </div>
+      <div class="review-item">
+        <div class="review-header">
+          <span class="review-stars">★★★★☆</span>
+          <span class="review-date">Hace 2 meses</span>
+        </div>
+        <div class="review-job">Reparación de Techo</div>
+        <p class="review-comment">"Buen trabajo en general. Hubo un pequeño retraso pero la calidad final fue buena."</p>
       </div>
     </div>
   </div>
 
-  <div class="tab-bar">
-    <div class="tab-bar-inner">
-      <button class="tab-btn active" onclick="switchTab('overview')" id="tab-overview" data-i18n="tabOverview">Resumen</button>
-      <button class="tab-btn" onclick="switchTab('reviews')" id="tab-reviews" data-i18n="tabReviews">Reseñas</button>
-    </div>
-  </div>
-
-  <div class="main">
-    <div class="content">
-
-      <!-- Overview tab -->
-      <div id="panel-overview">
-        <div class="stats-row" id="stats-row"></div>
-
-        <div class="panel" id="about-panel" style="display:none">
-          <div class="panel-title"><span>💼</span> <span data-i18n="aboutTitle">Sobre mí</span></div>
-          <div class="about-text" id="about-text"></div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-title"><span>⭐</span> <span data-i18n="recentReviews">Reseñas recientes</span></div>
-          <div id="reviews-preview"></div>
-        </div>
-      </div>
-
-      <!-- Reviews tab -->
-      <div id="panel-reviews" style="display:none">
-        <div class="panel">
-          <div class="panel-title"><span>⭐</span> <span data-i18n="allReviews">Todas las reseñas</span></div>
-          <div id="rating-breakdown" style="margin-bottom:20px"></div>
-          <div id="reviews-full"></div>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <div class="sidebar-card">
-        <a href="jobs.html" class="contact-btn">Ver trabajos disponibles →</a>
-      </div>
-
-      <div class="sidebar-card">
-        <div class="panel-title" style="margin-bottom:12px"><span>📋</span> <span data-i18n="infoTitle">Información</span></div>
-        <div id="info-rows"></div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<div id="error-state" style="display:none" class="error-state">
-  <div style="font-size:48px;margin-bottom:16px">🔍</div>
-  <h2>Contratista no encontrado</h2>
-  <p style="color:var(--gray-3);margin-bottom:20px">Este perfil no existe o no está disponible.</p>
-  <a href="jobs.html" style="background:var(--blue);color:white;padding:12px 24px;border-radius:8px;font-weight:600;font-size:14px">Ver trabajos →</a>
-</div>
-
-<footer>
-  <span>© 2026 ContractingPR · <a href="index.html">Inicio</a> · <a href="jobs.html">Trabajos</a> · <a href="mailto:hola@contractingpr.com">hola@contractingpr.com</a></span><br>
-  <span style="margin-top:4px;display:block">Hecho con orgullo en Puerto Rico 🇵🇷</span>
-</footer>
-
-<script>
-const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoZHN2eWxodHp1dWxlYWljZWhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDc3MTQsImV4cCI6MjA5NTgyMzcxNH0.ZVuC49Fz8f5dDzYRutq07YpnpSxmrewQQ8UHn49cWC0';
-
-let lang = localStorage.getItem('cpr_lang') || 'es';
-let contractor = null;
-let reviews = [];
-
-const T = {
-  tabOverview: {es:'Resumen', en:'Overview'},
-  tabReviews: {es:'Reseñas', en:'Reviews'},
-  aboutTitle: {es:'Sobre mí', en:'About'},
-  recentReviews: {es:'Reseñas recientes', en:'Recent reviews'},
-  allReviews: {es:'Todas las reseñas', en:'All reviews'},
-  ctaBtn: {es:'Solicitar propuesta →', en:'Request proposal →'},
-  viewJobs: {es:'Ver trabajos disponibles', en:'Browse open jobs'},
-  infoTitle: {es:'Información', en:'Info'},
-  navJobs: {es:'Ver trabajos', en:'Browse jobs'},
-  navSignup: {es:'Registrarse', en:'Sign up'},
-  noReviews: {es:'Aún no hay reseñas para este contratista.', en:'No reviews yet for this contractor.'},
-  completedJobs: {es:'Trabajos completados', en:'Jobs completed'},
-  avgRating: {es:'Calificación promedio', en:'Avg. rating'},
-  totalReviews: {es:'Reseñas', en:'Reviews'},
-  verified: {es:'Verificado', en:'Verified'},
-  pending: {es:'Pendiente aprobación', en:'Pending approval'},
-  license: {es:'Licencia CIAPR', en:'CIAPR License'},
-  location: {es:'Ubicación', en:'Location'},
-  trade: {es:'Especialidad', en:'Trade'},
-  memberSince: {es:'Miembro desde', en:'Member since'},
-};
-
-function applyLang() {
-  document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const k = el.dataset.i18n;
-    if (T[k]) el.textContent = T[k][lang];
-  });
-  document.getElementById('nav-jobs').textContent = T.navJobs[lang];
-  document.getElementById('nav-signup').textContent = T.navSignup[lang];
-}
-
-function toggleLang() {
-  lang = lang === 'es' ? 'en' : 'es';
-  localStorage.setItem('cpr_lang', lang);
-  applyLang();
-  if (contractor) renderProfile();
-}
-
-async function db(path) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
-    headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
-  });
-  return res.json();
-}
-
-function stars(rating) {
-  return '★'.repeat(rating) + '☆'.repeat(5 - rating);
-}
-
-function timeAgo(dateStr) {
-  const diff = (Date.now() - new Date(dateStr)) / 1000;
-  if (diff < 86400) return lang === 'en' ? 'Today' : 'Hoy';
-  if (diff < 604800) return lang === 'en' ? `${Math.floor(diff/86400)}d ago` : `hace ${Math.floor(diff/86400)} días`;
-  if (diff < 2592000) return lang === 'en' ? `${Math.floor(diff/604800)}w ago` : `hace ${Math.floor(diff/604800)} sem`;
-  return new Date(dateStr).toLocaleDateString(lang === 'en' ? 'en-US' : 'es-PR', {month:'short', year:'numeric'});
-}
-
-function switchTab(tab) {
-  document.getElementById('panel-overview').style.display = tab === 'overview' ? 'block' : 'none';
-  document.getElementById('panel-reviews').style.display = tab === 'reviews' ? 'block' : 'none';
-  document.getElementById('tab-overview').classList.toggle('active', tab === 'overview');
-  document.getElementById('tab-reviews').classList.toggle('active', tab === 'reviews');
-}
-
-function renderProfile() {
-  const c = contractor;
-
-  // Hero
-  document.title = `${c.name} — ContractingPR`;
-  document.getElementById('hero-avatar').textContent = c.name[0].toUpperCase();
-  document.getElementById('hero-name').textContent = c.name;
-  document.getElementById('hero-trade').textContent = c.trade || '';
-  document.getElementById('status-dot').className = `status-dot ${c.status === 'active' ? 'active' : 'pending'}`;
-
-  const badges = [];
-  if (c.trade) badges.push(`<span class="badge badge-trade">🔧 ${c.trade}</span>`);
-  if (c.city) badges.push(`<span class="badge badge-city">📍 ${c.city}</span>`);
-  if (c.license_number) badges.push(`<span class="badge badge-license">✓ ${T.license[lang]} ${c.license_number}</span>`);
-  
-  document.getElementById('hero-badges').innerHTML = badges.join('');
-
-  // Rating in hero
-  if (reviews.length > 0) {
-    const avg = (reviews.reduce((s,r) => s + r.rating, 0) / reviews.length).toFixed(1);
-    document.getElementById('hero-rating').style.display = 'block';
-    document.getElementById('rating-number').textContent = avg;
-    document.getElementById('rating-stars').textContent = stars(Math.round(avg));
-    document.getElementById('rating-count').textContent = `${reviews.length} ${T.totalReviews[lang]}`;
-  }
-
-  // Stats
-  const completedJobs = reviews.length; // proxy for now
-  const avg = reviews.length ? (reviews.reduce((s,r) => s + r.rating, 0) / reviews.length).toFixed(1) : '—';
-  document.getElementById('stats-row').innerHTML = `
-    <div class="stat-card"><div class="stat-num">${reviews.length}</div><div class="stat-label">${T.totalReviews[lang]}</div></div>
-    <div class="stat-card"><div class="stat-num">${avg}</div><div class="stat-label">${T.avgRating[lang]}</div></div>
-    <div class="stat-card"><div class="stat-num">✓</div><div class="stat-label">${T.verified[lang]}</div></div>
-  `;
-
-  // About
-  if (c.description) {
-    document.getElementById('about-panel').style.display = 'block';
-    document.getElementById('about-text').textContent = c.description;
-  }
-
-  // Reviews preview (overview tab)
-  const previewHtml = reviews.length === 0
-    ? `<div class="no-reviews">${T.noReviews[lang]}</div>`
-    : reviews.slice(0, 3).map(r => reviewHtml(r)).join('');
-  document.getElementById('reviews-preview').innerHTML = previewHtml;
-  if (reviews.length > 3) {
-    document.getElementById('reviews-preview').innerHTML += `<div style="text-align:center;margin-top:12px"><button onclick="switchTab('reviews')" style="background:none;border:none;color:var(--blue);font-weight:600;font-size:14px;cursor:pointer">${lang === 'en' ? `See all ${reviews.length} reviews →` : `Ver todas las ${reviews.length} reseñas →`}</button></div>`;
-  }
-
-  // Rating breakdown (reviews tab)
-  if (reviews.length > 0) {
-    const counts = [5,4,3,2,1].map(n => ({ n, count: reviews.filter(r => r.rating === n).length }));
-    document.getElementById('rating-breakdown').innerHTML = `
-      <div style="display:flex;align-items:center;gap:20px;margin-bottom:16px;flex-wrap:wrap">
-        <div style="text-align:center">
-          <div style="font-size:52px;font-weight:800;line-height:1">${avg}</div>
-          <div style="color:var(--gold);font-size:20px;margin:4px 0">${stars(Math.round(parseFloat(avg)))}</div>
-          <div style="font-size:13px;color:var(--gray-3)">${reviews.length} ${T.totalReviews[lang]}</div>
-        </div>
-        <div style="flex:1;min-width:160px">
-          ${counts.map(({n,count}) => `
-            <div class="rating-bar-row">
-              <div class="rating-bar-label">${n}</div>
-              <div class="rating-bar-track"><div class="rating-bar-fill" style="width:${reviews.length ? (count/reviews.length*100) : 0}%"></div></div>
-              <div class="rating-bar-count">${count}</div>
-            </div>`).join('')}
-        </div>
-      </div>`;
-  }
-
-  // All reviews
-  document.getElementById('reviews-full').innerHTML = reviews.length === 0
-    ? `<div class="no-reviews">${T.noReviews[lang]}</div>`
-    : reviews.map(r => reviewHtml(r)).join('');
-
-  // Sidebar info
-  const infoItems = [];
-  if (c.trade) infoItems.push({ icon: '🔧', label: T.trade[lang], val: c.trade });
-  if (c.city) infoItems.push({ icon: '📍', label: T.location[lang], val: c.city });
-  if (c.license_number) infoItems.push({ icon: '🪪', label: T.license[lang], val: c.license_number });
-  if (c.created_at) infoItems.push({ icon: '📅', label: T.memberSince[lang], val: new Date(c.created_at).toLocaleDateString(lang === 'en' ? 'en-US' : 'es-PR', {month:'long', year:'numeric'}) });
-  document.getElementById('info-rows').innerHTML = infoItems.map(i => `
-    <div class="info-row">
-      <div class="info-icon">${i.icon}</div>
-      <div><div class="info-label">${i.label}</div><div class="info-val">${i.val}</div></div>
-    </div>`).join('');
-}
-
-function reviewHtml(r) {
-  return `<div class="review-item">
-    <div class="review-header">
-      <div class="review-stars">${stars(r.rating)}</div>
-      <div class="review-date">${timeAgo(r.created_at)}</div>
-    </div>
-    ${r.comment ? `<div class="review-comment">"${r.comment}"</div>` : ''}
-  </div>`;
-}
-
-async function init() {
-  applyLang();
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
-  if (!id) { showError(); return; }
-
-  const [contractors, reviewData] = await Promise.all([
-    db(`contractors?id=eq.${id}&select=*`),
-    db(`reviews?contractor_id=eq.${id}&order=created_at.desc&select=*`)
-  ]);
-
-  if (!contractors?.[0]) { showError(); return; }
-  contractor = contractors[0];
-  reviews = reviewData || [];
-
-  document.getElementById('loading-state').style.display = 'none';
-  document.getElementById('profile-content').style.display = 'block';
-  renderProfile();
-}
-
-function showError() {
-  document.getElementById('loading-state').style.display = 'none';
-  document.getElementById('error-state').style.display = 'block';
-}
-
-init();
-</script>
-</body>
-</html>
+  <aside class="sidebar">
+    <div class="sidebar-card">
