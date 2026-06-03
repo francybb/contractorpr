@@ -214,45 +214,44 @@ async def on_message(message):
         return
 
     content = message.content.strip()
+    content_lower = content.lower().strip()
     history_context = " ".join([m["content"][:100] for m in conversation_history[-4:]])
+
+    # Check approval BEFORE anything else so it never falls through to general chat
+    APPROVE_WORDS = {"yes", "approve", "looks good", "do it", "push it", "go ahead", "yep", "sure", "ok", "okay", "push", "deploy", "si", "si"}
+    REJECT_WORDS = {"no", "cancel", "reject", "nevermind", "nope", "nah"}
+
+    if pending_fix and content_lower in APPROVE_WORDS:
+        async with message.channel.typing():
+            await message.channel.send("Pushing the fix now...")
+            success = await github_push_file(
+                pending_fix["path"],
+                pending_fix["content"],
+                pending_fix["sha"],
+                pending_fix["commit_msg"]
+            )
+            if success:
+                await message.channel.send(
+                    "Done! Pushed to GitHub. Netlify should deploy in about a minute. "
+                    "Check contractingpr.com once it's live."
+                )
+            else:
+                await message.channel.send(
+                    "Push failed. Make sure GITHUB_TOKEN has repo write access in Render env vars."
+                )
+            pending_fix = None
+        return
+
+    if pending_fix and content_lower in REJECT_WORDS:
+        pending_fix = None
+        await message.channel.send("Got it, cancelled.")
+        return
 
     async with message.channel.typing():
 
         # Detect what the user wants
         intent_data = await detect_intent(content, history_context)
         intent = intent_data.get("intent", "general_chat")
-
-        # ── Approve pending fix ──
-        if intent == "approve_fix" or (pending_fix and content.lower() in ("yes", "approve", "looks good", "do it", "push it", "go ahead")):
-            if pending_fix:
-                await message.channel.send("Pushing the fix now...")
-                success = await github_push_file(
-                    pending_fix["path"],
-                    pending_fix["content"],
-                    pending_fix["sha"],
-                    pending_fix["commit_msg"]
-                )
-                if success:
-                    await message.channel.send(
-                        "Done! Pushed to GitHub. Netlify should deploy in about a minute. "
-                        "You can check contractingpr.com once it's live."
-                    )
-                else:
-                    await message.channel.send(
-                        "Hmm, the push failed. Could be a GitHub token permissions issue. "
-                        "Make sure the token has `repo` write access."
-                    )
-                pending_fix = None
-                return
-            else:
-                pass  # Fall through to general chat
-
-        # ── Reject pending fix ──
-        if intent == "reject_fix" or (pending_fix and content.lower() in ("no", "cancel", "reject", "nevermind", "don't")):
-            if pending_fix:
-                pending_fix = None
-                await message.channel.send("Got it, cancelled. Let me know if you want to try a different approach.")
-                return
 
         # ── Fix a file ──
         if intent == "fix_file" and intent_data.get("confidence") in ("high", "medium"):
