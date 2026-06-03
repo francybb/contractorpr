@@ -142,6 +142,12 @@ async def generate_fix(file_path, current_content, problem_description):
 async def detect_intent(user_message, history_context):
     prompt = """You are helping a dev bot understand what the user wants.
 
+Available files in the repo:
+dashboard-homeowner.html, dashboard-contractor.html, signup.html, post-job.html,
+jobs.html, contractor-profile.html, admin.html, payment.html, reset-password.html,
+netlify/functions/send-email.js, netlify/functions/translate.js, netlify/functions/rewrite-job.js,
+ceo_agent.py, dev_agent.py, finance_agent.py, support_agent.py, marketing_agent.py, legal_agent.py
+
 Conversation so far:
 %s
 
@@ -149,7 +155,7 @@ Latest message: "%s"
 
 Respond with a JSON object (no markdown) with these fields:
 - intent: one of "fix_file", "check_status", "read_file", "approve_fix", "reject_fix", "general_chat"
-- file: filename if relevant (e.g. "signup.html", "dashboard-homeowner.html") or null
+- file: exact filename from the list above if relevant, or null. "contractor profile page" = "contractor-profile.html", "homeowner dashboard" = "dashboard-homeowner.html", "contractor dashboard" = "dashboard-contractor.html"
 - problem: description of the problem if fix_file, or null
 - confidence: high/medium/low""" % (history_context[-500:], user_message)
 
