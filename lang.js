@@ -252,6 +252,17 @@ CPR.translations = {
   submitReview:       { es: 'Enviar Reseña',          en: 'Submit Review' },
   skipReview:         { es: 'Omitir',                 en: 'Skip' },
 
+
+  // Jobs page specific
+  ctaTitle:           { es: '¿Eres cliente? Publica tu trabajo gratis', en: 'Are you a client? Post your job free' },
+  ctaSub:             { es: 'Recibe propuestas de contratistas verificados en horas', en: 'Get proposals from verified contractors in hours' },
+  ctaBtn:             { es: 'Publicar ahora →',        en: 'Post now →' },
+  filterLabel:        { es: 'Filtrar:',                en: 'Filter:' },
+  emptyTitle:         { es: 'No hay trabajos disponibles', en: 'No jobs available' },
+  emptySub:           { es: 'Sé el primero en publicar un trabajo.', en: 'Be the first to post a job.' },
+  emptyBtn:           { es: 'Publicar trabajo →',      en: 'Post a job →' },
+  loadingJobs:        { es: 'Cargando trabajos disponibles...', en: 'Loading available jobs...' },
+
   // Common
   loading:            { es: 'Cargando...',            en: 'Loading...' },
   error_generic:      { es: 'Algo salió mal. Intenta de nuevo.', en: 'Something went wrong. Please try again.' },
