@@ -306,7 +306,7 @@ function renderProfile() {
   if (c.trade) badges.push(`<span class="badge badge-trade">🔧 ${c.trade}</span>`);
   if (c.city) badges.push(`<span class="badge badge-city">📍 ${c.city}</span>`);
   if (c.license_number) badges.push(`<span class="badge badge-license">✓ ${T.license[lang]} ${c.license_number}</span>`);
-  if (c.status !== 'active') badges.push(`<span class="badge badge-pending">⏳ ${T.pending[lang]}</span>`);
+  
   document.getElementById('hero-badges').innerHTML = badges.join('');
 
   // Rating in hero
@@ -324,7 +324,7 @@ function renderProfile() {
   document.getElementById('stats-row').innerHTML = `
     <div class="stat-card"><div class="stat-num">${reviews.length}</div><div class="stat-label">${T.totalReviews[lang]}</div></div>
     <div class="stat-card"><div class="stat-num">${avg}</div><div class="stat-label">${T.avgRating[lang]}</div></div>
-    <div class="stat-card"><div class="stat-num">${c.status === 'active' ? '✓' : '⏳'}</div><div class="stat-label">${c.status === 'active' ? T.verified[lang] : T.pending[lang]}</div></div>
+    <div class="stat-card"><div class="stat-num">✓</div><div class="stat-label">${T.verified[lang]}</div></div>
   `;
 
   // About
