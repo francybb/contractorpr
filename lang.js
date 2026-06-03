@@ -40,7 +40,9 @@ CPR.translations = {
 
   // Signup
   signup_contractor_tab:  { es: '🔨 Soy Contratista',   en: '🔨 I am a Contractor' },
-  signup_homeowner_tab:   { es: '🏠 Necesito Trabajo',   en: '🏠 I Need Work Done' },
+  signup_homeowner_tab:   { es: '🏠 Soy Cliente',          en: '🏠 I am a Client' },
+  tab1:                   { es: '🔨 Soy Contratista',   en: '🔨 I am a Contractor' },
+  tab2:                   { es: '🏠 Soy Cliente',          en: '🏠 I am a Client' },
   full_name:              { es: 'Nombre completo',        en: 'Full name' },
   name_ph_contractor:     { es: 'Juan Rivera',            en: 'John Rivera' },
   name_ph_homeowner:      { es: 'María González',         en: 'Maria González' },
@@ -180,6 +182,22 @@ CPR.translations = {
   status_completed:   { es: 'Completado',             en: 'Completed' },
 
 
+
+  // Signup page missing keys
+  btnContractor:      { es: 'Registrarme como contratista →', en: 'Register as contractor →' },
+  btnHomeowner:       { es: 'Crear mi cuenta — Es gratis →',  en: 'Create my account — Free →' },
+  trade_select_ph:    { es: 'Seleccionar',                    en: 'Select' },
+  city_select_ph:     { es: 'Seleccionar municipio',          en: 'Select municipality' },
+  terms_text:         { es: 'He leído y acepto los',          en: 'I have read and agree to the' },
+  terms_of_service:   { es: 'Términos de Servicio',           en: 'Terms of Service' },
+  terms_platform:     { es: 'de ContractingPR, incluyendo la regla de comunicación y pagos exclusivamente a través de la plataforma. Entiendo que el incumplimiento puede resultar en la terminación de mi cuenta.', en: 'of ContractingPR, including the rule of communication and payments exclusively through the platform. I understand that non-compliance may result in account termination.' },
+  footer_free:        { es: '100% gratis para propietarios',  en: '100% free for clients' },
+  footer_escrow:      { es: 'Pagos en custodia',              en: 'Escrow payments' },
+  footer_pr:          { es: 'Solo Puerto Rico',               en: 'Puerto Rico only' },
+  sobre_ti:           { es: 'Sobre ti',                       en: 'About you' },
+  licencia_ciapr:     { es: 'Licencia CIAPR',                 en: 'CIAPR License' },
+  opcional:           { es: 'opcional',                       en: 'optional' },
+
   // Dashboard keys (legacy key names used in dashboards)
   loginTitle:         { es: 'Mi Panel',               en: 'My Dashboard' },
   loginTitleContractor: { es: 'Panel Contratista',    en: 'Contractor Dashboard' },
@@ -192,8 +210,8 @@ CPR.translations = {
   footerSignup:       { es: 'Regístrate gratis',      en: 'Sign up free' },
   footerContractor:   { es: '¿Eres contratista?',     en: 'Are you a contractor?' },
   footerContractorLink: { es: 'Panel de contratista →', en: 'Contractor dashboard →' },
-  footerHomeowner:    { es: '¿Eres propietario?',     en: 'Are you a homeowner?' },
-  footerHomeownerLink: { es: 'Panel de propietario →', en: 'Homeowner dashboard →' },
+  footerHomeowner:    { es: '¿Eres propietario?',     en: 'Are you a client?' },
+  footerHomeownerLink: { es: 'Panel de propietario →', en: 'Client dashboard →' },
   postBtn:            { es: '+ Publicar nuevo trabajo', en: '+ Post new job' },
   statJobs:           { es: 'Trabajos publicados',    en: 'Jobs posted' },
   statProps:          { es: 'Propuestas recibidas',   en: 'Proposals received' },
@@ -409,6 +427,268 @@ CPR.injectNav = async function(activePage) {
   const dd = document.getElementById('lang-dropdown');
   if (dd) dd.value = CPR.lang;
 };
+
+
+// ── Auth Modal ───────────────────────────────────────────────────
+// Shows a sign up / log in modal when user tries to do something that requires auth
+// After auth, calls the pending action automatically
+
+CPR._pendingAction = null; // { fn, label, userType }
+
+CPR.requireAuth = function(action, label, preferredType) {
+  // If already logged in, run action immediately
+  CPR.getCurrentUser().then(user => {
+    if (user) {
+      action(user);
+    } else {
+      CPR._pendingAction = { fn: action, label: label, userType: preferredType || null };
+      CPR.showAuthModal(preferredType);
+    }
+  });
+};
+
+CPR.showAuthModal = function(preferredType) {
+  // Remove existing modal if any
+  const existing = document.getElementById('cpr-auth-modal-overlay');
+  if (existing) existing.remove();
+
+  const lang = CPR.lang;
+  const isContractor = preferredType === 'contractor';
+
+  const overlay = document.createElement('div');
+  overlay.id = 'cpr-auth-modal-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;font-family:Inter,sans-serif';
+  overlay.onclick = function(e) { if(e.target===overlay) CPR.hideAuthModal(); };
+
+  overlay.innerHTML = `
+    <div style="background:white;border-radius:20px;width:100%;max-width:440px;box-shadow:0 24px 64px rgba(0,0,0,0.25);overflow:hidden">
+      <div style="background:#0a1628;padding:20px 24px;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:18px;font-weight:800;color:white" id="cpr-auth-title">
+            ${lang==='en' ? 'Sign in to continue' : 'Inicia sesión para continuar'}
+          </div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:2px" id="cpr-auth-subtitle">
+            ${CPR._pendingAction?.label || (lang==='en' ? 'Create an account or log in' : 'Crea una cuenta o inicia sesión')}
+          </div>
+        </div>
+        <button onclick="CPR.hideAuthModal()" style="background:none;border:none;color:rgba(255,255,255,0.6);font-size:20px;cursor:pointer;padding:4px 8px;line-height:1">✕</button>
+      </div>
+      
+      <!-- Tabs -->
+      <div style="display:flex;border-bottom:1px solid #E2E8F0">
+        <button id="cpr-tab-login" onclick="CPR._authTab('login')" style="flex:1;padding:14px;font-size:14px;font-weight:600;background:none;border:none;border-bottom:2px solid #0066CC;color:#0066CC;cursor:pointer;font-family:Inter,sans-serif">
+          ${lang==='en' ? 'Log in' : 'Iniciar sesión'}
+        </button>
+        <button id="cpr-tab-signup" onclick="CPR._authTab('signup')" style="flex:1;padding:14px;font-size:14px;font-weight:600;background:none;border:none;border-bottom:2px solid transparent;color:#94A3B8;cursor:pointer;font-family:Inter,sans-serif">
+          ${lang==='en' ? 'Sign up' : 'Registrarse'}
+        </button>
+      </div>
+
+      <div style="padding:24px">
+        <!-- Login form -->
+        <div id="cpr-login-form">
+          <div style="margin-bottom:14px">
+            <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#475569;margin-bottom:6px">
+              ${lang==='en' ? 'Email' : 'Correo electrónico'}
+            </label>
+            <input type="email" id="cpr-login-email" placeholder="${lang==='en' ? 'your@email.com' : 'tu@correo.com'}"
+              style="width:100%;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:11px 14px;font-size:15px;font-family:Inter,sans-serif;outline:none;box-sizing:border-box"
+              onfocus="this.style.borderColor='#0066CC'" onblur="this.style.borderColor='#E2E8F0'">
+          </div>
+          <div style="margin-bottom:16px">
+            <label style="display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:#475569;margin-bottom:6px">
+              ${lang==='en' ? 'Password' : 'Contraseña'}
+            </label>
+            <input type="password" id="cpr-login-password" placeholder="••••••••"
+              style="width:100%;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:11px 14px;font-size:15px;font-family:Inter,sans-serif;outline:none;box-sizing:border-box"
+              onfocus="this.style.borderColor='#0066CC'" onblur="this.style.borderColor='#E2E8F0'"
+              onkeydown="if(event.key==='Enter')CPR._doLogin()">
+          </div>
+          <div id="cpr-login-error" style="background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px;color:#DC2626;font-size:13px;margin-bottom:12px;display:none"></div>
+          <button onclick="CPR._doLogin()" id="cpr-login-btn"
+            style="width:100%;padding:13px;background:#0066CC;color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif;transition:background 0.2s">
+            ${lang==='en' ? 'Log in →' : 'Entrar →'}
+          </button>
+          <div style="text-align:center;margin-top:12px">
+            <a href="reset-password.html" style="font-size:13px;color:#0066CC;font-weight:500">${lang==='en' ? 'Forgot your password?' : '¿Olvidaste tu contraseña?'}</a>
+          </div>
+        </div>
+
+        <!-- Signup form -->
+        <div id="cpr-signup-form" style="display:none">
+          <div style="display:flex;gap:10px;margin-bottom:16px">
+            <button id="cpr-type-client" onclick="CPR._setSignupType('client')"
+              style="flex:1;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;background:#0066CC;color:white;border:none">
+              ${lang==='en' ? '🏠 Client' : '🏠 Cliente'}
+            </button>
+            <button id="cpr-type-contractor" onclick="CPR._setSignupType('contractor')"
+              style="flex:1;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;background:#F8FAFC;color:#475569;border:1px solid #E2E8F0">
+              ${lang==='en' ? '🔨 Contractor' : '🔨 Contratista'}
+            </button>
+          </div>
+          <div style="margin-bottom:12px">
+            <input type="text" id="cpr-signup-name" placeholder="${lang==='en' ? 'Full name' : 'Nombre completo'}"
+              style="width:100%;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:11px 14px;font-size:14px;font-family:Inter,sans-serif;outline:none;box-sizing:border-box"
+              onfocus="this.style.borderColor='#0066CC'" onblur="this.style.borderColor='#E2E8F0'">
+          </div>
+          <div style="margin-bottom:12px">
+            <input type="email" id="cpr-signup-email" placeholder="${lang==='en' ? 'your@email.com' : 'tu@correo.com'}"
+              style="width:100%;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:11px 14px;font-size:14px;font-family:Inter,sans-serif;outline:none;box-sizing:border-box"
+              onfocus="this.style.borderColor='#0066CC'" onblur="this.style.borderColor='#E2E8F0'">
+          </div>
+          <div style="margin-bottom:16px">
+            <input type="password" id="cpr-signup-password" placeholder="${lang==='en' ? 'At least 8 characters' : 'Mínimo 8 caracteres'}"
+              style="width:100%;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:11px 14px;font-size:14px;font-family:Inter,sans-serif;outline:none;box-sizing:border-box"
+              onfocus="this.style.borderColor='#0066CC'" onblur="this.style.borderColor='#E2E8F0'">
+          </div>
+          <div id="cpr-signup-error" style="background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px;color:#DC2626;font-size:13px;margin-bottom:12px;display:none"></div>
+          <button onclick="CPR._doSignup()" id="cpr-signup-btn"
+            style="width:100%;padding:13px;background:#0066CC;color:white;border:none;border-radius:10px;font-size:15px;font-weight:700;cursor:pointer;font-family:Inter,sans-serif">
+            ${lang==='en' ? 'Create account →' : 'Crear cuenta →'}
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.body.appendChild(overlay);
+  document.body.style.overflow = 'hidden';
+
+  // Set preferred type
+  if (isContractor && document.getElementById('cpr-tab-signup')) {
+    CPR._authTab('signup');
+    CPR._setSignupType('contractor');
+  }
+};
+
+CPR.hideAuthModal = function() {
+  const overlay = document.getElementById('cpr-auth-modal-overlay');
+  if (overlay) overlay.remove();
+  document.body.style.overflow = '';
+};
+
+CPR._authTab = function(tab) {
+  document.getElementById('cpr-login-form').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('cpr-signup-form').style.display = tab === 'signup' ? 'block' : 'none';
+  const loginTab = document.getElementById('cpr-tab-login');
+  const signupTab = document.getElementById('cpr-tab-signup');
+  if (loginTab) {
+    loginTab.style.borderBottomColor = tab === 'login' ? '#0066CC' : 'transparent';
+    loginTab.style.color = tab === 'login' ? '#0066CC' : '#94A3B8';
+  }
+  if (signupTab) {
+    signupTab.style.borderBottomColor = tab === 'signup' ? '#0066CC' : 'transparent';
+    signupTab.style.color = tab === 'signup' ? '#0066CC' : '#94A3B8';
+  }
+};
+
+CPR._signupType = 'client';
+CPR._setSignupType = function(type) {
+  CPR._signupType = type;
+  const clientBtn = document.getElementById('cpr-type-client');
+  const contractorBtn = document.getElementById('cpr-type-contractor');
+  if (clientBtn) {
+    clientBtn.style.background = type === 'client' ? '#0066CC' : '#F8FAFC';
+    clientBtn.style.color = type === 'client' ? 'white' : '#475569';
+    clientBtn.style.border = type === 'client' ? 'none' : '1px solid #E2E8F0';
+  }
+  if (contractorBtn) {
+    contractorBtn.style.background = type === 'contractor' ? '#0066CC' : '#F8FAFC';
+    contractorBtn.style.color = type === 'contractor' ? 'white' : '#475569';
+    contractorBtn.style.border = type === 'contractor' ? 'none' : '1px solid #E2E8F0';
+  }
+};
+
+CPR._doLogin = async function() {
+  const email = document.getElementById('cpr-login-email').value.trim();
+  const password = document.getElementById('cpr-login-password').value;
+  const btn = document.getElementById('cpr-login-btn');
+  const errorEl = document.getElementById('cpr-login-error');
+  errorEl.style.display = 'none';
+  if (!email || !password) {
+    errorEl.textContent = CPR.lang === 'en' ? 'Enter your email and password.' : 'Ingresa tu correo y contraseña.';
+    errorEl.style.display = 'block';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = CPR.lang === 'en' ? 'Logging in...' : 'Entrando...';
+  try {
+    const { createClient } = supabase;
+    const sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_KEY);
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) throw new Error(error.message);
+    CPR.hideAuthModal();
+    // Run pending action
+    const user = await CPR.getCurrentUser();
+    if (user && CPR._pendingAction) {
+      const action = CPR._pendingAction.fn;
+      CPR._pendingAction = null;
+      action(user);
+    } else if (user) {
+      // Refresh nav
+      CPR.injectNav();
+    }
+  } catch(err) {
+    errorEl.innerHTML = CPR.lang === 'en'
+      ? 'Incorrect email or password. <a href="reset-password.html" style="color:#DC2626;text-decoration:underline">Forgot password?</a>'
+      : 'Correo o contraseña incorrectos. <a href="reset-password.html" style="color:#DC2626;text-decoration:underline">¿Olvidaste tu contraseña?</a>';
+    errorEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = CPR.lang === 'en' ? 'Log in →' : 'Entrar →';
+  }
+};
+
+CPR._doSignup = async function() {
+  const name = document.getElementById('cpr-signup-name').value.trim();
+  const email = document.getElementById('cpr-signup-email').value.trim();
+  const password = document.getElementById('cpr-signup-password').value;
+  const btn = document.getElementById('cpr-signup-btn');
+  const errorEl = document.getElementById('cpr-signup-error');
+  errorEl.style.display = 'none';
+  if (!name || !email || !password) {
+    errorEl.textContent = CPR.lang === 'en' ? 'Please fill in all fields.' : 'Por favor completa todos los campos.';
+    errorEl.style.display = 'block';
+    return;
+  }
+  if (password.length < 8) {
+    errorEl.textContent = CPR.lang === 'en' ? 'Password must be at least 8 characters.' : 'La contraseña debe tener al menos 8 caracteres.';
+    errorEl.style.display = 'block';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = CPR.lang === 'en' ? 'Creating account...' : 'Creando cuenta...';
+  try {
+    const { createClient } = supabase;
+    const sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_KEY);
+    const { error: authErr } = await sb.auth.signUp({ email, password });
+    if (authErr) throw new Error(authErr.message);
+    const table = CPR._signupType === 'contractor' ? 'contractors' : 'homeowners';
+    const body = CPR._signupType === 'contractor'
+      ? { name, email, status: 'active' }
+      : { name, email };
+    await fetch(CPR.SUPABASE_URL + '/rest/v1/' + table, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': CPR.SUPABASE_KEY, 'Authorization': 'Bearer ' + CPR.SUPABASE_KEY, 'Prefer': 'return=minimal' },
+      body: JSON.stringify(body)
+    });
+    CPR.hideAuthModal();
+    const user = await CPR.getCurrentUser();
+    if (user && CPR._pendingAction) {
+      const action = CPR._pendingAction.fn;
+      CPR._pendingAction = null;
+      action(user);
+    } else if (user) {
+      CPR.injectNav();
+    }
+  } catch(err) {
+    const msg = err.message.includes('already registered') ? (CPR.lang === 'en' ? 'That email is already registered.' : 'Ese correo ya está registrado.') : err.message;
+    errorEl.textContent = msg;
+    errorEl.style.display = 'block';
+    btn.disabled = false;
+    btn.textContent = CPR.lang === 'en' ? 'Create account →' : 'Crear cuenta →';
+  }
+};
+
 
 // Auto-init on DOM ready
 document.addEventListener('DOMContentLoaded', function() {

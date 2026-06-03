@@ -133,17 +133,11 @@ footer a{color:var(--blue);font-weight:500}
 @media(max-width:768px){.layout{grid-template-columns:1fr}.sidebar-card{position:static}}
 .lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:Inter,sans-serif;color:var(--gray-4);transition:all 0.2s}.lang-btn:hover{border-color:var(--blue);color:var(--blue)}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
 </head>
 <body>
-<div class="nav-wrap">
-  <nav class="nav">
-    <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
-    <div class="nav-right">
-      <button class="lang-btn" onclick="toggleLang()">English</button>
-      <a href="jobs.html" class="btn-ghost" id="nav-back">← Ver todos los trabajos</a>
-      <a href="signup.html" class="btn-nav">Registrarse</a>
-    </div>
-  </nav>
+<div id="cpr-nav-placeholder"></div>
 </div>
 
 <div class="main">
@@ -196,13 +190,10 @@ footer a{color:var(--blue);font-weight:500}
 
           <div id="error-msg" class="error-msg"></div>
 
-          <!-- Verify contractor -->
+          <!-- Auth check -->
           <div id="verify-section" class="verify-section">
-            <p>Ingresa tu correo registrado como <strong>contratista</strong>:</p>
-            <div class="verify-row">
-              <input type="email" id="contractor-email" placeholder="tu@correo.com">
-              <button class="btn-verify" onclick="verifyContractor()">Verificar</button>
-            </div>
+            <p id="verify-msg">Inicia sesión como contratista para enviar una propuesta.</p>
+            <button class="btn-verify" onclick="triggerProposalAuth()" style="width:100%;margin-top:8px">Iniciar sesión / Registrarse</button>
           </div>
 
           <div id="verified-banner" class="verified-user" style="display:none">
@@ -408,29 +399,21 @@ async function loadProposals() {
   }).join('');
 }
 
-async function verifyContractor() {
-  const email = document.getElementById('contractor-email').value.trim();
-  const errorEl = document.getElementById('error-msg');
-  errorEl.classList.remove('show');
-  if (!email) return;
-
-  const data = await db(`contractors?email=eq.${encodeURIComponent(email)}&select=id,name,trade`);
-  if (!data || data.length === 0) {
-    errorEl.textContent = 'No encontramos esa cuenta de contratista. ¿Ya te registraste?';
-    errorEl.classList.add('show');
-    return;
-  }
-
-  contractorId = data[0].id;
-  contractorName = data[0].name;
-  sessionStorage.setItem('contractor_id', contractorId);
-  sessionStorage.setItem('contractor_name', contractorName);
-
-  document.getElementById('verify-section').style.display = 'none';
-  document.getElementById('verified-banner').style.display = 'flex';
-  document.getElementById('verified-name').textContent = `Verificado como ${contractorName}`;
-  document.getElementById('proposal-form').style.display = 'block';
+function triggerProposalAuth() {
+  CPR.requireAuth(function(user) {
+    if (user.type !== 'contractor') {
+      alert(CPR.lang === 'en' ? 'Only contractors can submit proposals. Please sign up as a contractor.' : 'Solo los contratistas pueden enviar propuestas. Por favor regístrate como contratista.');
+      return;
+    }
+    contractorId = user.id;
+    contractorName = user.name;
+    document.getElementById('verify-section').style.display = 'none';
+    document.getElementById('verified-banner').style.display = 'flex';
+    document.getElementById('verified-name').textContent = (CPR.lang === 'en' ? 'Verified as ' : 'Verificado como ') + user.name;
+    document.getElementById('proposal-form').style.display = 'block';
+  }, CPR.lang === 'en' ? 'Submit a proposal' : 'Enviar una propuesta', 'contractor');
 }
+
 
 async function submitProposal(e) {
   e.preventDefault();
@@ -639,5 +622,6 @@ applyLang();
 loadJob();
 
 </script>
+<script>CPR.injectNav("job-detail");</script>
 </body>
 </html>

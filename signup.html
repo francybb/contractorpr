@@ -162,7 +162,7 @@ footer a{color:var(--blue);font-weight:500}
   <!-- Tabs -->
   <div class="tabs">
     <button class="tab active" onclick="switchTab('contractor')" data-i18n="tab1">🔨 Soy Contratista</button>
-    <button class="tab" onclick="switchTab('homeowner')" data-i18n="tab2">🏠 Necesito Trabajo</button>
+    <button class="tab" onclick="switchTab('homeowner')" data-i18n="tab2">🏠 Soy Cliente</button>
   </div>
 
   <!-- Card -->
@@ -209,7 +209,7 @@ footer a{color:var(--blue);font-weight:500}
           <div class="field">
             <label data-i18n="trade_label">Especialidad / Trade</label>
             <select name="trade" required>
-              <option value="" disabled selected>Seleccionar</option>
+              <option value="" disabled selected data-i18n="trade_select_ph">Seleccionar</option>
               <option>Carpintería</option>
               <option>Plomería</option>
               <option>Electricidad</option>
@@ -225,7 +225,7 @@ footer a{color:var(--blue);font-weight:500}
           <div class="field">
             <label data-i18n="city_label">Ciudad / Municipio</label>
             <select name="city" required>
-              <option value="" disabled selected>Seleccionar municipio</option>
+              <option value="" disabled selected data-i18n="city_select_ph">Seleccionar municipio</option>
               <option>Adjuntas</option>
               <option>Aguada</option>
               <option>Aguadilla</option>
@@ -362,7 +362,7 @@ footer a{color:var(--blue);font-weight:500}
         <div class="field">
           <label data-i18n="city_label">Ciudad / Municipio</label>
           <select name="city" required>
-              <option value="" disabled selected>Seleccionar municipio</option>
+              <option value="" disabled selected data-i18n="city_select_ph">Seleccionar municipio</option>
               <option>Adjuntas</option>
               <option>Aguada</option>
               <option>Aguadilla</option>
@@ -454,8 +454,8 @@ footer a{color:var(--blue);font-weight:500}
 
   <!-- Trust badges -->
   <div class="trust-row">
-    <div class="trust-item">✅ 100% gratis para propietarios</div>
-    <div class="trust-item">🔒 Pagos en custodia</div>
+    <div class="trust-item"><span data-i18n="footer_free">✅ 100% gratis para propietarios</span></div>
+    <div class="trust-item"><span data-i18n="footer_escrow">🔒 Pagos en custodia</span></div>
     <div class="trust-item">🇵🇷 Solo Puerto Rico</div>
   </div>
 
@@ -563,7 +563,7 @@ let lang = localStorage.getItem('cpr_lang') || 'es';
 const T = {
   navBack:{es:'← Volver al inicio',en:'← Back to home'},
   tab1:{es:'🔨 Soy Contratista',en:'🔨 I am a Contractor'},
-  tab2:{es:'🏠 Necesito Trabajo',en:'🏠 I Need Work Done'},
+  tab2:{es:'🏠 Soy Cliente',en:'🏠 I Need Work Done'},
   heroTag:{es:'Únete gratis hoy',en:'Join free today'},
   heroTitle:{es:'Únete a <em>ContractingPR</em>',en:'Join <em>ContractingPR</em>'},
   heroSub:{es:'Conectamos propietarios con contratistas licenciados en toda Puerto Rico',en:'Connecting homeowners with licensed contractors across Puerto Rico'},
