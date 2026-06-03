@@ -126,22 +126,15 @@ async def render_check_errors():
 # ── AI fix generator ────────────────────────────────────────────
 
 async def generate_fix(file_path, current_content, problem_description):
-    prompt = """Fix this file for ContractingPR.
-
-File: %s
-Problem to fix: %s
-
-Current content:
-%s
-
-Return ONLY the complete fixed file. No explanation, no markdown, no code blocks. Just the raw file content.""" % (
-        file_path, problem_description, current_content[:10000]
+    prompt = "Fix this file for ContractingPR.\n\nFile: %s\nProblem: %s\n\nCurrent content (first 6000 chars):\n%s\n\nReturn ONLY the complete fixed file content. No markdown, no code blocks." % (
+        file_path, problem_description, current_content[:6000]
     )
-    response = anthropic_client.messages.create(
+    loop = asyncio.get_event_loop()
+    response = await loop.run_in_executor(None, lambda: anthropic_client.messages.create(
         model="claude-opus-4-5",
         max_tokens=4096,
         messages=[{"role": "user", "content": prompt}]
-    )
+    ))
     return response.content[0].text
 
 # ── Intent detection ────────────────────────────────────────────
@@ -160,12 +153,13 @@ Respond with a JSON object (no markdown) with these fields:
 - problem: description of the problem if fix_file, or null
 - confidence: high/medium/low""" % (history_context[-500:], user_message)
 
-    response = anthropic_client.messages.create(
-        model="claude-opus-4-5",
-        max_tokens=200,
-        messages=[{"role": "user", "content": prompt}]
-    )
     try:
+        loop = asyncio.get_event_loop()
+        response = await loop.run_in_executor(None, lambda: anthropic_client.messages.create(
+            model="claude-opus-4-5",
+            max_tokens=200,
+            messages=[{"role": "user", "content": prompt}]
+        ))
         return json.loads(response.content[0].text)
     except:
         return {"intent": "general_chat", "file": None, "problem": None, "confidence": "low"}
@@ -300,11 +294,12 @@ File: %s
 Problem: %s
 Just describe what changed and why, like you're explaining to a non-developer.""" % (file_path, problem)
 
-            summary_resp = anthropic_client.messages.create(
+            loop = asyncio.get_event_loop()
+            summary_resp = await loop.run_in_executor(None, lambda: anthropic_client.messages.create(
                 model="claude-opus-4-5",
                 max_tokens=200,
                 messages=[{"role": "user", "content": summary_prompt}]
-            )
+            ))
             summary = summary_resp.content[0].text
 
             await message.channel.send(
@@ -348,12 +343,13 @@ Just describe what changed and why, like you're explaining to a non-developer.""
             conversation_history.pop(0)
             conversation_history.pop(0)
 
-        response = anthropic_client.messages.create(
+        loop = asyncio.get_event_loop()
+        response = await loop.run_in_executor(None, lambda: anthropic_client.messages.create(
             model="claude-opus-4-5",
             max_tokens=1024,
             system=DEV_SYSTEM_PROMPT,
             messages=conversation_history
-        )
+        ))
         reply = response.content[0].text
         conversation_history.append({"role": "assistant", "content": reply})
 
