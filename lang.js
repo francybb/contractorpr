@@ -360,14 +360,20 @@ CPR.getSessionEmail = async function() {
   return session?.user?.email || null;
 };
 
-// Supabase query helper
+// Supabase query helper - routes through Netlify proxy to bypass host restrictions
 CPR.db = async function(path) {
-  const session = await CPR.getSession();
-  const token = session?.access_token || SUPABASE_KEY;
-  const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, {
-    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + token }
-  });
-  return res.json();
+  try {
+    // Split path into table and query string
+    const qIdx = path.indexOf('?');
+    const table = qIdx === -1 ? path : path.substring(0, qIdx);
+    const query = qIdx === -1 ? '' : path.substring(qIdx + 1);
+    const proxyUrl = '/.netlify/functions/supabase-proxy?table=' + encodeURIComponent(table) + (query ? '&' + query : '');
+    const res = await fetch(proxyUrl);
+    return res.json();
+  } catch(e) {
+    console.error('CPR.db error:', e);
+    return [];
+  }
 };
 
 // Logout
