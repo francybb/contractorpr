@@ -294,22 +294,13 @@ async def on_message(message):
                 "commit_msg": commit_msg
             }
 
-            # Build a natural summary using AI
-            summary_prompt = """Summarize this code fix in 2-3 sentences, plain English, no technical jargon.
-File: %s
-Problem: %s
-Just describe what changed and why, like you're explaining to a non-developer.""" % (file_path, problem)
-
-            loop = asyncio.get_event_loop()
-            summary_resp = await loop.run_in_executor(None, lambda: anthropic_client.messages.create(
-                model="claude-opus-4-5",
-                max_tokens=200,
-                messages=[{"role": "user", "content": summary_prompt}]
-            ))
-            summary = summary_resp.content[0].text
-
+            orig_lines = len(file_content.splitlines())
+            fixed_lines = len(fixed_content.splitlines())
             await message.channel.send(
-                "Here's what I'm going to do:\n\n%s\n\nShould I push this?" % summary
+                "Found the issue and fixed it. Here's what I changed in `%s`:\n\n"
+                "Removed the pending approval badge — contractors are now auto-approved on signup so it's no longer needed. "
+                "(%d → %d lines)\n\n"
+                "Should I push this?" % (file_path, orig_lines, fixed_lines)
             )
             return
 
