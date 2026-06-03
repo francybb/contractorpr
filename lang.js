@@ -432,15 +432,15 @@ CPR.buildNav = async function(activePage) {
     <style>
     .cpr-nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:1px solid #E2E8F0;font-family:'Inter',sans-serif}
     .cpr-nav-inner{max-width:1200px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between}
-    .cpr-nav-right{display:flex;align-items:center;gap:8px}
+    .cpr-nav-right{display:flex;align-items:center;gap:20px}
     .cpr-logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:800;color:#0066CC;text-decoration:none}
     .cpr-logo-box{width:34px;height:34px;background:#0066CC;border-radius:8px;display:grid;place-items:center;color:white;font-weight:800;font-size:16px;flex-shrink:0}
     .cpr-nav-link{font-size:14px;font-weight:500;color:#475569;text-decoration:none;transition:color 0.2s}
     .cpr-nav-link:hover{color:#0066CC}
     .cpr-nav-btn{background:#0066CC;color:white;padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:background 0.2s}
     .cpr-nav-btn:hover{background:#004C99}
-    .cpr-nav-btn-ghost{background:none;border:1px solid #E2E8F0;padding:8px 16px;border-radius:8px;font-size:14px;font-weight:500;color:#475569;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s}
-    .cpr-nav-btn-ghost:hover{border-color:#0066CC;color:#0066CC}
+    .cpr-nav-btn-ghost{background:#0066CC;border:none;padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;color:white;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s}
+    .cpr-nav-btn-ghost:hover{background:#004C99}
     .cpr-lang-select{background:none;border:1px solid #E2E8F0;padding:6px 10px;border-radius:6px;font-size:13px;cursor:pointer;font-family:'Inter',sans-serif;color:#475569;outline:none}
     .cpr-lang-select:hover{border-color:#0066CC}
     @media(max-width:640px){.cpr-nav-right .cpr-nav-link{display:none}.cpr-nav-inner{padding:0 16px}}
