@@ -180,29 +180,135 @@ Respond with a JSON object (no markdown) with these fields:
     except:
         return {"intent": "general_chat", "file": None, "problem": None, "confidence": "low"}
 
+# ── Code scanner ────────────────────────────────────────────────
+
+# Known bad patterns to scan for
+CODE_PATTERNS = [
+    {
+        "id": "supabase_init",
+        "pattern": "window.supabase.createClient",
+        "description": "Wrong Supabase v2 CDN init — should be `const { createClient } = supabase`",
+        "severity": "high"
+    },
+    {
+        "id": "budget_field",
+        "pattern": "form.budget.value",
+        "description": "Budget field reference — budget was removed from job posting",
+        "severity": "medium"
+    },
+    {
+        "id": "open_proposals",
+        "pattern": "openProposals(",
+        "description": "Old openProposals function — replaced by toggleProposals",
+        "severity": "medium"
+    },
+    {
+        "id": "close_panel",
+        "pattern": "closePanel()",
+        "description": "Old closePanel function — panel was replaced by inline expand",
+        "severity": "low"
+    },
+    {
+        "id": "hardcoded_demo",
+        "pattern": "Juan Rodríguez",
+        "description": "Hardcoded demo content found — should use dynamic data",
+        "severity": "high"
+    },
+    {
+        "id": "console_log",
+        "pattern": "console.log(",
+        "description": "console.log left in production code",
+        "severity": "low"
+    },
+    {
+        "id": "alert_debug",
+        "pattern": "alert(",
+        "description": "alert() found — should use toast notifications instead",
+        "severity": "medium"
+    },
+]
+
+FILES_TO_SCAN = [
+    "dashboard-homeowner.html",
+    "dashboard-contractor.html",
+    "signup.html",
+    "post-job.html",
+    "jobs.html",
+    "contractor-profile.html",
+    "admin.html",
+    "payment.html",
+    "reset-password.html",
+    "netlify/functions/send-email.js",
+    "netlify/functions/translate.js",
+    "netlify/functions/rewrite-job.js",
+]
+
+last_scan_issues = set()  # Track already-reported issues
+
+async def scan_codebase():
+    issues = []
+    for file_path in FILES_TO_SCAN:
+        file_content, _ = await github_get_file(file_path)
+        if not file_content:
+            continue
+        for pattern in CODE_PATTERNS:
+            if pattern["pattern"] in file_content:
+                issue_id = "%s::%s" % (file_path, pattern["id"])
+                issues.append({
+                    "id": issue_id,
+                    "file": file_path,
+                    "pattern": pattern["pattern"],
+                    "description": pattern["description"],
+                    "severity": pattern["severity"]
+                })
+    return issues
+
 # ── Monitor loop ────────────────────────────────────────────────
 
 async def monitor_loop():
+    global last_scan_issues
     await client.wait_until_ready()
     channel = client.get_channel(DEV_CHANNEL_ID)
+    scan_counter = 0
     while not client.is_closed():
         try:
+            # Check Netlify + Render every 5 min
             netlify_errors = await netlify_check_errors()
             if netlify_errors:
                 e = netlify_errors[0]
                 if channel:
                     await channel.send(
-                        "Hey Francy, heads up — Netlify just had a failed deploy on the `%s` branch.\n"
+                        "Hey Francy — Netlify had a failed deploy on `%s`.\n"
                         "Error: %s\n\n"
-                        "Want me to look into it?" % (e.get("branch", "main"), e.get("error_message", "unknown error"))
+                        "Want me to look into it?" % (e.get("branch", "main"), e.get("error_message", "unknown"))
                     )
+
             render_issues = await render_check_errors()
             if render_issues:
                 if channel:
                     await channel.send(
-                        "Hey, one of the Render services went down: %s\n"
-                        "Want me to check the logs and see what happened?" % ", ".join(render_issues)
+                        "Render service down: %s — want me to check what happened?" % ", ".join(render_issues)
                     )
+
+            # Scan codebase every 30 min (every 6th loop)
+            scan_counter += 1
+            if scan_counter >= 6:
+                scan_counter = 0
+                issues = await scan_codebase()
+                new_issues = [i for i in issues if i["id"] not in last_scan_issues]
+                high = [i for i in new_issues if i["severity"] == "high"]
+                medium = [i for i in new_issues if i["severity"] == "medium"]
+
+                if high or medium:
+                    msg = "🔍 **Code scan found %d issue(s):**\n\n" % len(new_issues)
+                    for issue in (high + medium)[:5]:
+                        emoji = "🔴" if issue["severity"] == "high" else "🟡"
+                        msg += "%s `%s` — %s\n" % (emoji, issue["file"], issue["description"])
+                    msg += "\nWant me to fix any of these?"
+                    if channel:
+                        await channel.send(msg)
+                    last_scan_issues.update(i["id"] for i in new_issues)
+
         except Exception as ex:
             print("Monitor error: %s" % str(ex))
         await asyncio.sleep(300)
