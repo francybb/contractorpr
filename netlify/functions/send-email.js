@@ -91,6 +91,28 @@ exports.handler = async (event) => {
         </div>
       `
     }
+    contractor_approved: {
+      to: data.contractor_email,
+      subject: '¡Tu cuenta en ContractingPR ha sido aprobada!',
+      html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
+          <div style="background:#1a1a2e;padding:24px;text-align:center">
+            <h1 style="color:#fff;margin:0;font-size:22px">ContractingPR</h1>
+          </div>
+          <div style="padding:32px">
+            <h2 style="color:#111;margin-top:0">¡Bienvenido, ${data.contractor_name}! 🎉</h2>
+            <p style="color:#555">Tu cuenta de contratista ha sido aprobada. Ya puedes iniciar sesión y empezar a recibir trabajos.</p>
+            <a href="https://contractingpr.com/dashboard-contractor.html"
+               style="display:inline-block;background:#0066CC;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;margin-top:8px">
+              Ir a mi dashboard →
+            </a>
+          </div>
+          <div style="background:#f9fafb;padding:16px;text-align:center;color:#9ca3af;font-size:12px">
+            ContractingPR · Puerto Rico · <a href="https://contractingpr.com" style="color:#9ca3af">contractingpr.com</a>
+          </div>
+        </div>
+      `
+    },
     review_received: {
       to: data.contractor_email,
       subject: `Nueva reseña recibida — ${data.job_title}`,

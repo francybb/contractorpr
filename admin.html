@@ -407,8 +407,10 @@ async function loadAll() {
 
   // Contractors table
   document.getElementById('count-contractors').textContent = contractors.length;
-  document.getElementById('tbody-contractors').innerHTML = contractors.length ? contractors.map(c => `
-    <tr>
+  // Sort pending first
+  const sortedContractors = [...contractors].sort((a,b) => a.status === 'pending' ? -1 : b.status === 'pending' ? 1 : 0);
+  document.getElementById('tbody-contractors').innerHTML = sortedContractors.length ? sortedContractors.map(c => `
+    <tr style="${c.status === 'pending' ? 'background:#fffbeb' : ''}">
       <td class="td-name">${c.name}</td>
       <td>${c.email}</td>
       <td>${c.trade}</td>
@@ -416,7 +418,17 @@ async function loadAll() {
       <td>${c.license_number || '—'}</td>
       <td><span class="badge badge-${c.status}">${c.status}</span></td>
       <td>${fmt(c.created_at)}</td>
-    </tr>`).join('') : '<tr class="empty-row"><td colspan="7">No contractors yet</td></tr>';
+      <td style="white-space:nowrap">
+        ${c.status === 'pending' ? `
+          <button onclick="approveContractor('${c.id}','${c.email}','${c.name}')" style="background:#10B981;color:white;border:none;padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;margin-right:4px">✓ Approve</button>
+          <button onclick="rejectContractor('${c.id}','${c.name}')" style="background:#DC2626;color:white;border:none;padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">✕ Reject</button>
+        ` : c.status === 'active' ? `
+          <button onclick="rejectContractor('${c.id}','${c.name}')" style="background:#f1f5f9;color:#64748b;border:none;padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">Deactivate</button>
+        ` : `
+          <button onclick="approveContractor('${c.id}','${c.email}','${c.name}')" style="background:#10B981;color:white;border:none;padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">Reactivate</button>
+        `}
+      </td>
+    </tr>`).join('') : '<tr class="empty-row"><td colspan="8">No contractors yet</td></tr>';
 
   // Homeowners table
   document.getElementById('count-homeowners').textContent = homeowners.length;
@@ -473,6 +485,34 @@ if (sessionStorage.getItem('admin_auth') === '1') {
 
 // Auto refresh every 60 seconds
 setInterval(() => { if (sessionStorage.getItem('admin_auth') === '1') loadAll(); }, 60000);
+
+async function approveContractor(id, email, name) {
+  if (!confirm(`Approve ${name}?`)) return;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/contractors?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`},
+    body: JSON.stringify({ status: 'active' })
+  });
+  if (res.ok) {
+    // Email contractor
+    await fetch('/.netlify/functions/send-email', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ type: 'contractor_approved', data: { contractor_email: email, contractor_name: name } })
+    });
+    loadData();
+  } else alert('Error approving contractor');
+}
+
+async function rejectContractor(id, name) {
+  if (!confirm(`Deactivate ${name}?`)) return;
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/contractors?id=eq.${id}`, {
+    method: 'PATCH',
+    headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`},
+    body: JSON.stringify({ status: 'rejected' })
+  });
+  if (res.ok) loadData();
+  else alert('Error deactivating contractor');
+}
 </script>
 </body>
 </html>

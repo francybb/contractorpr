@@ -129,6 +129,15 @@ footer a{color:var(--blue);font-weight:500}
 .tos-check label a{color:var(--blue);font-weight:600}
 .lang-btn{background:none;border:1px solid var(--gray-2);padding:6px 12px;border-radius:6px;font-size:13px;cursor:pointer;font-family:Inter,sans-serif;color:var(--gray-4)}
 .lang-btn:hover{border-color:var(--blue);color:var(--blue)}
+
+@media(max-width:640px){
+  .nav{padding:0 16px}
+  .form-card{padding:24px 16px}
+  .tabs{gap:4px}
+  .tab{padding:10px 12px;font-size:13px}
+  .form-row{grid-template-columns:1fr}
+  input,select,textarea{font-size:16px}/* prevent zoom on iOS */
+}
 </style>
 </head>
 <body>
@@ -169,9 +178,12 @@ footer a{color:var(--blue);font-weight:500}
     <!-- Contractor Form -->
     <div id="contractor-form" class="form-section active">
       <div id="contractor-success" class="success-msg">
-        <div class="success-icon">✓</div>
-        <h3>¡Estás en la lista!</h3>
-        <p>Revisaremos tu perfil y te contactaremos en menos de 24 horas para activar tu cuenta en ContractingPR.</p>
+        <div class="success-icon">✉️</div>
+        <h3>¡Revisa tu correo!</h3>
+        <p>Te enviamos un enlace de confirmación a tu correo electrónico.<br><br>
+        <strong>Debes confirmar tu correo antes de poder iniciar sesión.</strong><br><br>
+        Después de confirmar, revisaremos tu perfil y activaremos tu cuenta en menos de 24 horas.</p>
+        <p style="margin-top:12px;font-size:13px;color:var(--gray-3)">¿No lo ves? Revisa tu carpeta de spam.</p>
         <a href="index.html" class="btn-back">← Volver al inicio</a>
       </div>
       <form id="form-contractor" onsubmit="submitContractor(event)">
@@ -320,10 +332,13 @@ footer a{color:var(--blue);font-weight:500}
     <!-- Homeowner Form -->
     <div id="homeowner-form" class="form-section">
       <div id="homeowner-success" class="success-msg">
-        <div class="success-icon">✓</div>
-        <h3>¡Bienvenido a ContractingPR!</h3>
-        <p>Tu cuenta está lista. Pronto podrás publicar trabajos y recibir propuestas de contratistas verificados en tu área.</p>
-        <a href="index.html" class="btn-back">← Volver al inicio</a>
+        <div class="success-icon">✉️</div>
+        <h3>¡Revisa tu correo!</h3>
+        <p>Te enviamos un enlace de confirmación a tu correo electrónico.<br><br>
+        <strong>Debes confirmar tu correo antes de poder iniciar sesión.</strong><br><br>
+        Una vez confirmado, podrás publicar trabajos y recibir propuestas de contratistas verificados.</p>
+        <p style="margin-top:12px;font-size:13px;color:var(--gray-3)">¿No lo ves? Revisa tu carpeta de spam.</p>
+        <a href="dashboard-homeowner.html" class="btn-back">Ir a mi dashboard →</a>
       </div>
       <form id="form-homeowner" onsubmit="submitHomeowner(event)">
         <div class="form-row">
