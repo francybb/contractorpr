@@ -578,7 +578,7 @@ async function toggleProposals(jobId, jobTitle) {
     <div class="proposal-item ${isAccepted ? 'accepted' : ''}" id="prop-${p.id}">
       <div class="prop-header">
         <div>
-          <div class="prop-contractor">${c.name || contractorName}</div>
+          <div class="prop-contractor"><a href="contractor-profile.html?id=${p.contractor_id}" style="color:var(--ink);text-decoration:none;font-weight:700" onmouseover="this.style.color='var(--blue)'" onmouseout="this.style.color='var(--ink)'">${c.name || contractorName} ↗</a></div>
           <div class="prop-trade">${c.trade || ''} ${c.city ? '· ' + c.city : ''}</div>
         </div>
         ${p.price ? `<div class="prop-price">$${parseFloat(p.price).toLocaleString()}</div>` : `<div style="font-size:13px;color:var(--gray-3)">${lang === 'en' ? 'Price to be discussed' : 'Precio por discutir'}</div>`}
