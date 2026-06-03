@@ -11,52 +11,13 @@ ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 FINANCE_CHANNEL_ID = int(os.getenv("FINANCE_CHANNEL_ID", "0"))
 
 FINANCE_SYSTEM_PROMPT = """
-You are the Finance Manager of ContractingPR — a two-sided marketplace connecting 
-homeowners and licensed contractors across Puerto Rico.
-
-Your role:
-- Track all revenue, fees, and payouts on the platform
-- Design and monitor the fee structure
-- Handle payment integrations and escrow logic
-- Produce financial reports and projections
-- Flag any payment anomalies or fraud
-
-Fee structure you manage:
-- Platform takes 10% of every completed job
-- Contractors pay $29/month for Pro verified badge (optional)
-- Featured listing costs $49/month
-- Escrow holds payment until homeowner confirms job complete
-
-Payment methods supported:
-- Stripe (credit/debit cards)
-- ATH Movil (Puerto Rico's dominant payment app)
-- Bank transfer for large jobs over $5,000
-
-Your financial metrics to track:
-- GMV (Gross Merchandise Value) — total job value through platform
-- Net revenue — platform fees collected
-- Average job size
-- Monthly active contractors
-- Payout success rate
-
-Puerto Rico context:
-- ATH Movil is essential — most locals use it daily
-- Many contractors are used to cash — educate them on digital payments
-- Tax considerations: Puerto Rico has unique tax laws (Act 60, etc.)
-- Hurricane season affects construction demand (June-November = peak)
-
-Your communication style:
-- Precise and numbers-driven
-- Always show calculations and projections
-- Flag risks clearly
-- End every response with "FINANCE STATUS:" and key metrics
-
-When asked about revenue, always show the math.
-When asked about fees, explain the logic clearly to both contractors and homeowners.
+You are the Finance Manager of ContractingPR. You always have live platform data
+prepended to every message. Use it to give accurate, data-driven financial responses.
+Platform fee is 10% of completed jobs. Escrow holds payment until job is confirmed complete.
+End every response with FINANCE STATUS: and key metrics.
 """
 
 conversation_history = []
-
 intents = discord.Intents.default()
 intents.message_content = True
 client = discord.Client(intents=intents)
@@ -77,45 +38,30 @@ async def on_message(message):
 
     async with message.channel.typing():
         stats = await get_platform_stats()
-        rev = stats.get("revenue", {})
-        jobs = stats.get("jobs", {})
-        live_context = f"""
-LIVE FINANCE DATA:
-- Completed jobs: {jobs.get("completed", 0)}
-- Gross revenue processed: ${rev.get("gross", 0)}
-- Platform fees (10%): ${rev.get("platform_fees", 0)}
-- Jobs with payments: {rev.get("completed_jobs", 0)}
-- Open jobs (pending revenue): {jobs.get("open", 0)}
-- Total proposals accepted: {stats.get("proposals", {}).get("accepted", 0)}
-"""
-        conversation_history.append({
-            "role": "user",
-            "content": f"{live_context}
-
-User message: {message.content}"
-        })
-
+        r = stats.get("revenue", {})
+        j = stats.get("jobs", {})
+        data_lines = [
+            "=== LIVE FINANCE DATA ===",
+            "Completed jobs: %d" % j.get("completed", 0),
+            "Gross revenue: $%s" % r.get("gross", 0),
+            "Platform fees (10%%): $%s" % r.get("platform_fees", 0),
+            "Open jobs pending: %d" % j.get("open", 0),
+            "Proposals accepted: %d" % stats.get("proposals", {}).get("accepted", 0),
+            "=========================",
+        ]
+        user_msg = "\n".join(data_lines) + "\n\nUser message: " + message.content
+        conversation_history.append({"role": "user", "content": user_msg})
         if len(conversation_history) > 20:
             conversation_history.pop(0)
             conversation_history.pop(0)
-
         response = anthropic_client.messages.create(
-            model="claude-opus-4-5",
-            max_tokens=1024,
-            system=FINANCE_SYSTEM_PROMPT,
-            messages=conversation_history
+            model="claude-opus-4-5", max_tokens=1024,
+            system=FINANCE_SYSTEM_PROMPT, messages=conversation_history
         )
-
         reply = response.content[0].text
-
-        conversation_history.append({
-            "role": "assistant",
-            "content": reply
-        })
-
+        conversation_history.append({"role": "assistant", "content": reply})
         if len(reply) > 1900:
-            chunks = [reply[i:i+1900] for i in range(0, len(reply), 1900)]
-            for chunk in chunks:
+            for chunk in [reply[i:i+1900] for i in range(0, len(reply), 1900)]:
                 await message.channel.send(chunk)
         else:
             await message.channel.send(reply)
