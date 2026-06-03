@@ -183,21 +183,21 @@ footer a{color:var(--blue);font-weight:500}
       <form id="form-contractor" onsubmit="submitContractor(event)">
         <div class="form-row">
           <div class="field">
-            <label>Nombre completo</label>
+            <label data-i18n="full_name">Nombre completo</label>
             <input type="text" name="name" placeholder="Juan Rivera" data-i18n-ph="name_ph_contractor" required>
           </div>
           <div class="field">
-            <label>Teléfono</label>
+            <label data-i18n="phone_label">Teléfono</label>
             <input type="tel" name="phone" placeholder="787-555-0100" data-i18n-ph="phone_ph">
           </div>
         </div>
         <div class="field">
-          <label>Correo electrónico</label>
+          <label data-i18n="emailLabel">Correo electrónico</label>
           <input type="email" name="email" placeholder="juan@correo.com" data-i18n-ph="email_ph" required>
         </div>
         <div class="form-row">
           <div class="field">
-            <label>Contraseña</label>
+            <label data-i18n="passwordLabel">Contraseña</label>
             <input type="password" name="password" placeholder="Mínimo 8 caracteres" data-i18n-ph="password_ph" minlength="8" required>
           </div>
           <div class="field">
@@ -207,7 +207,7 @@ footer a{color:var(--blue);font-weight:500}
         </div>
         <div class="form-row">
           <div class="field">
-            <label>Especialidad / Trade</label>
+            <label data-i18n="trade_label">Especialidad / Trade</label>
             <select name="trade" required>
               <option value="" disabled selected>Seleccionar</option>
               <option>Carpintería</option>
@@ -223,7 +223,7 @@ footer a{color:var(--blue);font-weight:500}
             </select>
           </div>
           <div class="field">
-            <label>Ciudad / Municipio</label>
+            <label data-i18n="city_label">Ciudad / Municipio</label>
             <select name="city" required>
               <option value="" disabled selected>Seleccionar municipio</option>
               <option>Adjuntas</option>
@@ -313,7 +313,7 @@ footer a{color:var(--blue);font-weight:500}
         </div>
         <div class="field">
           <label>Sobre ti <span class="optional">(opcional)</span></label>
-          <textarea name="description" placeholder="Cuéntanos tu experiencia, años en el negocio, proyectos completados..."></textarea>
+          <textarea name="description" placeholder="Cuéntanos tu experiencia, años en el negocio, proyectos completados..." data-i18n-ph="description_ph"></textarea>
         </div>
         <div class="tos-check">
           <input type="checkbox" id="tos-contractor" required>
@@ -337,21 +337,21 @@ footer a{color:var(--blue);font-weight:500}
       <form id="form-homeowner" onsubmit="submitHomeowner(event)">
         <div class="form-row">
           <div class="field">
-            <label>Nombre completo</label>
+            <label data-i18n="full_name">Nombre completo</label>
             <input type="text" name="name" placeholder="María González" data-i18n-ph="name_ph_homeowner" required>
           </div>
           <div class="field">
-            <label>Teléfono</label>
+            <label data-i18n="phone_label">Teléfono</label>
             <input type="tel" name="phone" placeholder="787-555-0200" data-i18n-ph="phone_ph">
           </div>
         </div>
         <div class="field">
-          <label>Correo electrónico</label>
+          <label data-i18n="emailLabel">Correo electrónico</label>
           <input type="email" name="email" placeholder="maria@correo.com" data-i18n-ph="email_ph" required>
         </div>
         <div class="form-row">
           <div class="field">
-            <label>Contraseña</label>
+            <label data-i18n="passwordLabel">Contraseña</label>
             <input type="password" name="password" placeholder="Mínimo 8 caracteres" data-i18n-ph="password_ph" minlength="8" required>
           </div>
           <div class="field">
@@ -360,7 +360,7 @@ footer a{color:var(--blue);font-weight:500}
           </div>
         </div>
         <div class="field">
-          <label>Ciudad / Municipio</label>
+          <label data-i18n="city_label">Ciudad / Municipio</label>
           <select name="city" required>
               <option value="" disabled selected>Seleccionar municipio</option>
               <option>Adjuntas</option>
@@ -571,6 +571,7 @@ const T = {
   btnHomeowner:{es:'Crear mi cuenta — Es gratis →',en:'Create my account — Free →'},
 };
 function applyLang(){
+  if(window.CPR) CPR.applyLang();
   
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const k=el.dataset.i18n;

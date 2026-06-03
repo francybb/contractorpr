@@ -110,8 +110,8 @@ footer a{color:var(--blue);font-weight:500}
     <div id="verify-form">
       <div class="info-msg">📧 Ingresa tu correo registrado para continuar. ¿No tienes cuenta? <a href="signup.html" style="font-weight:600;color:var(--blue-dark)">Regístrate gratis aquí.</a></div>
       <div class="field">
-        <label>Correo electrónico registrado</label>
-        <input type="email" id="verify-email" placeholder="maria@correo.com" required>
+        <label data-i18n="emailLabel">Correo electrónico registrado</label>
+        <input type="email" id="verify-email" placeholder="maria@correo.com" data-i18n-ph="email_ph" required>
       </div>
       <button class="btn-submit" onclick="verifyHomeowner()" data-i18n="continuBtn">Continuar →</button>
     </div>
@@ -129,8 +129,8 @@ footer a{color:var(--blue);font-weight:500}
       </div>
       <form id="the-job-form" onsubmit="submitJob(event)">
         <div class="field">
-          <label>Título del trabajo</label>
-          <input type="text" name="title" placeholder="ej. Reparación de techo después de lluvia" required>
+          <label data-i18n="job_title_label">Título del trabajo</label>
+          <input type="text" name="title" placeholder="ej. Reparación de techo después de lluvia" data-i18n-ph="job_title_ph" required>
         </div>
         <div class="form-row">
           <div class="field">
@@ -150,7 +150,7 @@ footer a{color:var(--blue);font-weight:500}
             </select>
           </div>
           <div class="field">
-            <label>Ciudad / Municipio</label>
+            <label data-i18n="city_label">Ciudad / Municipio</label>
             <select name="city" required>
               <option value="" disabled selected>Seleccionar municipio</option>
               <option>Adjuntas</option>
@@ -235,8 +235,8 @@ footer a{color:var(--blue);font-weight:500}
           </div>
         </div>
         <div class="field">
-          <label>Descripción del trabajo</label>
-          <textarea name="description" placeholder="Describe el trabajo en detalle: qué necesitas, cuándo, condiciones especiales..." required></textarea>
+          <label data-i18n="job_desc_label">Descripción del trabajo</label>
+          <textarea name="description" placeholder="Describe el trabajo en detalle: qué necesitas, cuándo, condiciones especiales..." data-i18n-ph="job_desc_ph" required></textarea>
         </div>
         <button type="submit" class="btn-submit" id="btn-job" data-i18n="submitJob">Publicar trabajo →</button>
       </form>
@@ -281,6 +281,7 @@ const T = {
   trust3:{es:'⚡ Respuestas en horas',en:'⚡ Responses in hours'},
 };
 function applyLang(){
+  if(window.CPR) CPR.applyLang();
   
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const k=el.dataset.i18n;

@@ -230,7 +230,7 @@ footer a{color:var(--blue);font-weight:500}
     <div id="login-error" class="error-msg"></div>
     <div class="field">
       <label data-i18n="emailLabel">Correo electrónico</label>
-      <input type="email" id="login-email" placeholder="tu@correo.com" data-placeholder-es="tu@correo.com" data-placeholder-en="your@email.com" onkeydown="if(event.key==='Enter')login()">
+      <input type="email" id="login-email" placeholder="tu@correo.com" data-i18n-ph="email_ph" data-placeholder-es="tu@correo.com" data-placeholder-en="your@email.com" onkeydown="if(event.key==='Enter')login()">
     </div>
     <div class="field">
       <label data-i18n="passwordLabel">Contraseña</label>
@@ -706,6 +706,7 @@ async function sendMsg(proposalId) {
 
 
 function applyLang() {
+  if(window.CPR) CPR.applyLang();
   document.querySelector('.lang-btn').textContent = lang === 'es' ? 'Español' : 'English';
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.dataset.i18n;
@@ -925,7 +926,7 @@ async function submitPostJob(e) {
       </div>
       <form id="post-job-form" onsubmit="submitPostJob(event)">
         <div class="field">
-          <label>Título del trabajo</label>
+          <label data-i18n="job_title_label">Título del trabajo</label>
           <input type="text" name="title" placeholder="ej. Reparación de techo después de lluvia" data-i18n-ph="job_title_ph" required>
         </div>
         <div class="post-job-form-row">
@@ -946,7 +947,7 @@ async function submitPostJob(e) {
             </select>
           </div>
           <div class="field">
-            <label>Ciudad / Municipio</label>
+            <label data-i18n="city_label">Ciudad / Municipio</label>
             <select name="city" required>
               <option value="" disabled selected>Seleccionar municipio</option>
               <option>Adjuntas</option><option>Aguada</option><option>Aguadilla</option>
@@ -979,7 +980,7 @@ async function submitPostJob(e) {
           </div>
         </div>
         <div class="field">
-          <label>Descripción del trabajo</label>
+          <label data-i18n="job_desc_label">Descripción del trabajo</label>
           <textarea name="description" placeholder="Describe el trabajo: qué necesitas, cuándo, condiciones especiales..." data-i18n-ph="job_desc_ph" required></textarea>
         </div>
         <div id="post-job-error" style="background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px;color:#DC2626;font-size:13px;margin-bottom:12px;display:none"></div>
