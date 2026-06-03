@@ -116,13 +116,34 @@ footer a{color:var(--blue);font-weight:500}
       <option>Remodelación General</option>
       <option>Otro</option>
     </select>
-    <select class="filter" id="filter-budget" onchange="filterJobs()">
-      <option value="">Cualquier presupuesto</option>
-      <option>Menos de $500</option>
-      <option>$500 - $1,000</option>
-      <option>$1,000 - $3,000</option>
-      <option>$3,000 - $10,000</option>
-      <option>Más de $10,000</option>
+    <select class="filter" id="filter-city" onchange="filterJobs()">
+      <option value="">Todos los municipios</option>
+      <option>Adjuntas</option><option>Aguada</option><option>Aguadilla</option>
+      <option>Aguas Buenas</option><option>Aibonito</option><option>Añasco</option>
+      <option>Arecibo</option><option>Arroyo</option><option>Barceloneta</option>
+      <option>Barranquitas</option><option>Bayamón</option><option>Cabo Rojo</option>
+      <option>Caguas</option><option>Camuy</option><option>Canóvanas</option>
+      <option>Carolina</option><option>Cataño</option><option>Cayey</option>
+      <option>Ceiba</option><option>Ciales</option><option>Cidra</option>
+      <option>Coamo</option><option>Comerío</option><option>Corozal</option>
+      <option>Culebra</option><option>Dorado</option><option>Fajardo</option>
+      <option>Florida</option><option>Guánica</option><option>Guayama</option>
+      <option>Guayanilla</option><option>Guaynabo</option><option>Gurabo</option>
+      <option>Hatillo</option><option>Hormigueros</option><option>Humacao</option>
+      <option>Isabela</option><option>Jayuya</option><option>Juana Díaz</option>
+      <option>Juncos</option><option>Lajas</option><option>Lares</option>
+      <option>Las Marías</option><option>Las Piedras</option><option>Loíza</option>
+      <option>Luquillo</option><option>Manatí</option><option>Maricao</option>
+      <option>Maunabo</option><option>Mayagüez</option><option>Moca</option>
+      <option>Morovis</option><option>Naguabo</option><option>Naranjito</option>
+      <option>Orocovis</option><option>Patillas</option><option>Peñuelas</option>
+      <option>Ponce</option><option>Quebradillas</option><option>Rincón</option>
+      <option>Río Grande</option><option>Sabana Grande</option><option>Salinas</option>
+      <option>San Germán</option><option>San Juan</option><option>San Lorenzo</option>
+      <option>San Sebastián</option><option>Santa Isabel</option><option>Toa Alta</option>
+      <option>Toa Baja</option><option>Trujillo Alto</option><option>Utuado</option>
+      <option>Vega Alta</option><option>Vega Baja</option><option>Vieques</option>
+      <option>Villalba</option><option>Yabucoa</option><option>Yauco</option>
     </select>
   </div>
 
@@ -169,8 +190,8 @@ function applyLang(){
   // Re-render if jobs loaded
   if(allJobs.length) renderJobs(allJobs.filter(j=>{
     const t=document.getElementById('filter-trade').value;
-    const b=document.getElementById('filter-budget').value;
-    return (!t||j.trade_needed===t)&&(!b||j.budget===b);
+    const c=document.getElementById('filter-city').value;
+    return (!t||j.trade_needed===t)&&(!c||j.city===c);
   }));
 }
 function toggleLang(){
@@ -219,17 +240,16 @@ function renderJobs(jobs) {
       <div class="job-meta">
         <div class="job-meta-item"><span>📍</span>${job.city}</div>
         <div class="job-meta-item"><span>🕐</span>${timeAgo(job.created_at)}</div>
-        ${job.budget ? `<div class="job-budget">💰 ${job.budget}</div>` : ''}
       </div>
     </div>`).join('')}</div>`;
 }
 
 function filterJobs() {
   const trade = document.getElementById('filter-trade').value;
-  const budget = document.getElementById('filter-budget').value;
+  const city = document.getElementById('filter-city').value;
   let filtered = allJobs;
   if (trade) filtered = filtered.filter(j => j.trade_needed === trade);
-  if (budget) filtered = filtered.filter(j => j.budget === budget);
+  if (city) filtered = filtered.filter(j => j.city === city);
   renderJobs(filtered);
 }
 
