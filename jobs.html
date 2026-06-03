@@ -261,9 +261,11 @@ async function loadJobs() {
 }
 
 applyLang();
-loadJobs();
+document.addEventListener('DOMContentLoaded', function() {
+  loadJobs();
+  if(window.CPR) CPR.injectNav("jobs");
+});
+if(document.readyState !== 'loading') { loadJobs(); if(window.CPR) CPR.injectNav("jobs"); }
 </script>
-
-<script>CPR.injectNav("jobs");</script>
 </body>
 </html>
