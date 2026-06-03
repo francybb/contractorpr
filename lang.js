@@ -413,7 +413,8 @@ CPR.buildNav = async function(activePage) {
   let rightLinks = '';
   if (user) {
     const dashUrl = user.type === 'homeowner' ? 'dashboard-homeowner.html' : 'dashboard-contractor.html';
-    rightLinks = '<a href="' + dashUrl + '" class="cpr-nav-link">' + CPR.t('nav_dashboard') + '</a>' +
+    rightLinks = '<a href="jobs.html" class="cpr-nav-link">' + CPR.t('nav_jobs') + '</a>' +
+                 '<a href="' + dashUrl + '" class="cpr-nav-link">' + CPR.t('nav_dashboard') + '</a>' +
                  '<button onclick="CPR.logout()" class="cpr-nav-btn-ghost">' + CPR.t('nav_logout') + '</button>';
   } else {
     rightLinks = '<a href="jobs.html" class="cpr-nav-link">' + CPR.t('nav_jobs') + '</a>' +
