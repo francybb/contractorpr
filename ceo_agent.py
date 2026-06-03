@@ -1,7 +1,9 @@
 import discord
 import anthropic
 import os
+import asyncio
 from dotenv import load_dotenv
+from supabase_client import get_platform_stats, get_pending_contractors
 
 load_dotenv()
 
@@ -59,9 +61,28 @@ async def on_message(message):
         return
 
     async with message.channel.typing():
+        # Inject live platform data into every message
+        stats = await get_platform_stats()
+        pending = await get_pending_contractors()
+        live_context = f"""
+LIVE PLATFORM DATA (as of right now):
+- Contractors: {stats.get('contractors', {}).get('total', 0)} total ({stats.get('contractors', {}).get('active', 0)} active, {stats.get('contractors', {}).get('pending', 0)} pending approval)
+- Homeowners: {stats.get('homeowners', {}).get('total', 0)} registered
+- Jobs: {stats.get('jobs', {}).get('total', 0)} total ({stats.get('jobs', {}).get('open', 0)} open, {stats.get('jobs', {}).get('completed', 0)} completed)
+- Proposals: {stats.get('proposals', {}).get('total', 0)} total ({stats.get('proposals', {}).get('accepted', 0)} accepted)
+- Revenue: ${stats.get('revenue', {}).get('gross', 0)} gross, ${stats.get('revenue', {}).get('platform_fees', 0)} platform fees
+- Reviews: {stats.get('reviews', {}).get('total', 0)} total, avg rating {stats.get('reviews', {}).get('avg_rating', 0)}/5
+- Top trades: {stats.get('top_trades', [])}
+- Top cities: {stats.get('top_cities', [])}
+- Pending contractor approvals: {len(pending)} ({', '.join([c['name'] for c in pending]) if pending else 'none'})
+"""
+        user_msg = f"{live_context}
+
+User message: {message.content}"
+
         conversation_history.append({
             "role": "user",
-            "content": message.content
+            "content": user_msg
         })
 
         if len(conversation_history) > 20:

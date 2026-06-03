@@ -2,6 +2,7 @@ import discord
 import anthropic
 import os
 from dotenv import load_dotenv
+from supabase_client import get_platform_stats
 
 load_dotenv()
 
@@ -75,9 +76,23 @@ async def on_message(message):
         return
 
     async with message.channel.typing():
+        stats = await get_platform_stats()
+        rev = stats.get("revenue", {})
+        jobs = stats.get("jobs", {})
+        live_context = f"""
+LIVE FINANCE DATA:
+- Completed jobs: {jobs.get("completed", 0)}
+- Gross revenue processed: ${rev.get("gross", 0)}
+- Platform fees (10%): ${rev.get("platform_fees", 0)}
+- Jobs with payments: {rev.get("completed_jobs", 0)}
+- Open jobs (pending revenue): {jobs.get("open", 0)}
+- Total proposals accepted: {stats.get("proposals", {}).get("accepted", 0)}
+"""
         conversation_history.append({
             "role": "user",
-            "content": message.content
+            "content": f"{live_context}
+
+User message: {message.content}"
         })
 
         if len(conversation_history) > 20:

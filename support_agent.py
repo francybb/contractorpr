@@ -2,6 +2,7 @@ import discord
 import anthropic
 import os
 from dotenv import load_dotenv
+from supabase_client import get_platform_stats, get_pending_contractors
 
 load_dotenv()
 
@@ -72,9 +73,22 @@ async def on_message(message):
         return
 
     async with message.channel.typing():
+        stats = await get_platform_stats()
+        pending = await get_pending_contractors()
+        live_context = f"""
+LIVE SUPPORT DATA:
+- Pending contractor approvals: {len(pending)}
+- Pending contractors: {[c["name"] + " (" + c["trade"] + ")" for c in pending]}
+- Active contractors: {stats.get("contractors", {}).get("active", 0)}
+- Total homeowners: {stats.get("homeowners", {}).get("total", 0)}
+- Open jobs: {stats.get("jobs", {}).get("open", 0)}
+- Avg platform rating: {stats.get("reviews", {}).get("avg_rating", 0)}/5
+"""
         conversation_history.append({
             "role": "user",
-            "content": message.content
+            "content": f"{live_context}
+
+User message: {message.content}"
         })
 
         if len(conversation_history) > 20:
