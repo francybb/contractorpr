@@ -214,6 +214,8 @@ async def on_ready():
     print(f"Dev Agent (Luis) online as {client.user}")
     client.loop.create_task(monitor_loop())
 
+processing_messages = set()
+
 @client.event
 async def on_message(message):
     global pending_fix
@@ -222,6 +224,9 @@ async def on_message(message):
         return
     if message.channel.id != DEV_CHANNEL_ID:
         return
+    if message.id in processing_messages:
+        return
+    processing_messages.add(message.id)
 
     content = message.content.strip()
     content_lower = content.lower().strip()
@@ -286,7 +291,7 @@ async def on_message(message):
             try:
                 fixed_content = await asyncio.wait_for(
                     generate_fix(file_path, file_content, problem),
-                    timeout=45.0
+                    timeout=90.0
                 )
             except asyncio.TimeoutError:
                 await message.channel.send("Took too long generating the fix. Try again or give me more details about the problem.")
