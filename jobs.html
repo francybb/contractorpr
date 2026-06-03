@@ -160,7 +160,7 @@ footer a{color:var(--blue);font-weight:500}
 
 <script>
 
-let lang = localStorage.getItem('cpr_lang') || 'es';
+let lang = (window.CPR ? CPR.lang : null) || localStorage.getItem('cpr_lang') || 'es';
 const T = {
   home:{es:'Inicio',en:'Home'},
   postJob:{es:'+ Publicar trabajo',en:'+ Post job'},
@@ -197,7 +197,6 @@ function toggleLang(){
 
 const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoZHN2eWxodHp1dWxlYWljZWhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDc3MTQsImV4cCI6MjA5NTgyMzcxNH0.ZVuC49Fz8f5dDzYRutq07YpnpSxmrewQQ8UHn49cWC0';
-let lang = (window.CPR ? CPR.lang : null) || localStorage.getItem('cpr_lang') || 'es';
 let allJobs = [];
 
 function timeAgo(dateStr) {
