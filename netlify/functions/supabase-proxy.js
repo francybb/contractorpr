@@ -4,7 +4,7 @@
  */
 
 const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
-const SUPABASE_KEY = process.env.SUPABASE_KEY || 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
+const SUPABASE_KEY = process.env.SUPABASE_KEY;
 
 exports.handler = async (event) => {
   const headers = {

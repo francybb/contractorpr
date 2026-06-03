@@ -318,10 +318,10 @@ CPR.setLang = function(lang) {
 // ── Auth System ──────────────────────────────────────────────────
 
 const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
+const SUPABASE_PK = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
 
 CPR.SUPABASE_URL = SUPABASE_URL;
-CPR.SUPABASE_KEY = SUPABASE_KEY;
+CPR.SUPABASE_PK = SUPABASE_PK;
 
 // Get current Supabase session
 CPR.getSession = async function() {
@@ -346,7 +346,7 @@ CPR.getSession = async function() {
     // Try getting from supabase client directly
     if (window.supabase) {
       const { createClient } = supabase;
-      const sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_KEY);
+      const sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK);
       const { data } = await sb.auth.getSession();
       if (data?.session) return data.session;
     }
@@ -380,7 +380,7 @@ CPR.db = async function(path) {
 CPR.logout = async function() {
   if (window.supabase) {
     const { createClient } = supabase;
-    const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+    const sb = createClient(SUPABASE_URL, SUPABASE_PK);
     await sb.auth.signOut();
   }
   localStorage.removeItem('homeowner_id');
@@ -652,7 +652,7 @@ CPR._doLogin = async function() {
   btn.textContent = CPR.lang === 'en' ? 'Logging in...' : 'Entrando...';
   try {
     const { createClient } = supabase;
-    const sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_KEY);
+    const sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK);
     const { error } = await sb.auth.signInWithPassword({ email, password });
     if (error) throw new Error(error.message);
     CPR.hideAuthModal();
@@ -699,7 +699,7 @@ CPR._doSignup = async function() {
   btn.textContent = CPR.lang === 'en' ? 'Creating account...' : 'Creando cuenta...';
   try {
     const { createClient } = supabase;
-    const sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_KEY);
+    const sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK);
     const { error: authErr } = await sb.auth.signUp({ email, password });
     if (authErr) throw new Error(authErr.message);
     const table = CPR._signupType === 'contractor' ? 'contractors' : 'homeowners';
@@ -708,7 +708,7 @@ CPR._doSignup = async function() {
       : { name, email };
     await fetch(CPR.SUPABASE_URL + '/rest/v1/' + table, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'apikey': CPR.SUPABASE_KEY, 'Authorization': 'Bearer ' + CPR.SUPABASE_KEY, 'Prefer': 'return=minimal' },
+      headers: { 'Content-Type': 'application/json', 'apikey': CPR.SUPABASE_PK, 'Authorization': 'Bearer ' + CPR.SUPABASE_PK, 'Prefer': 'return=minimal' },
       body: JSON.stringify(body)
     });
     CPR.hideAuthModal();
