@@ -75,17 +75,12 @@ footer a{color:var(--blue);font-weight:500}
   .content{padding:24px 20px}
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
 </head>
 <body>
 
-<div class="nav-wrap">
-  <nav class="nav">
-    <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
-    <div class="nav-right">
-      <button class="lang-btn" onclick="toggleLang()">English</button>
-      <a href="index.html" class="nav-back">← Volver al inicio</a>
-    </div>
-  </nav>
+<div id="cpr-nav-placeholder"></div>
 </div>
 
 <div class="hero-strip">
@@ -425,5 +420,6 @@ window.addEventListener('DOMContentLoaded', () => {
   spanishContent = document.getElementById('terms-content').innerHTML;
 });
 </script>
+<script>CPR.injectNav("terms");</script>
 </body>
 </html>

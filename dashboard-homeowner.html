@@ -6,6 +6,7 @@
 <title>Mi Panel | ContractingPR</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -217,14 +218,7 @@ footer a{color:var(--blue);font-weight:500}
 </head>
 <body>
 
-<div class="nav-wrap">
-  <nav class="nav">
-    <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
-    <div class="nav-right">
-      <button class="lang-btn" onclick="toggleLang()">English</button>
-      <button class="btn-logout" id="logout-btn" onclick="logout()" style="display:none" data-i18n="logout">Cerrar sesión</button>
-    </div>
-  </nav>
+<div id="cpr-nav-placeholder"></div>
 </div>
 
 <!-- LOGIN -->
@@ -312,7 +306,7 @@ let currentOpenJobTitle = null;
 let activeChatProposalId = null;
 let chatInterval = null;
 
-let lang = localStorage.getItem('cpr_lang') || 'es';
+let lang = CPR.lang;
 const T = {
   loginTitle: {es:'Mi Panel', en:'My Dashboard'},
   loginSub: {es:'Ingresa tu correo para ver tus trabajos y propuestas', en:'Enter your email to see your jobs and proposals'},
@@ -605,7 +599,7 @@ async function toggleProposals(jobId, jobTitle) {
         </div>
         <div class="chat-msgs" id="msgs-${p.id}"></div>
         <div class="chat-input">
-          <input type="text" id="input-${p.id}" placeholder="${T.writeMsg[lang]}" onkeydown="if(event.key==='Enter')sendMsg('${p.id}')">
+          <input type="text" id="input-${p.id}" placeholder="${T.writeMsg[lang]}" data-i18n-ph="write_msg_ph" onkeydown="if(event.key==='Enter')sendMsg('${p.id}')">
           <button class="btn-send" onclick="sendMsg('${p.id}')">${T.sendBtn[lang]}</button>
         </div>
       </div>
@@ -724,6 +718,7 @@ function applyLang() {
 
 function toggleLang() {
   lang = lang === 'es' ? 'en' : 'es';
+  CPR.setLang(lang);
   localStorage.setItem('cpr_lang', lang);
   applyLang();
   if (currentUser) loadJobs();
@@ -907,7 +902,7 @@ async function submitPostJob(e) {
       <span class="star" data-val="4">☆</span>
       <span class="star" data-val="5">☆</span>
     </div>
-    <textarea class="review-textarea" id="review-comment" placeholder="Comparte tu experiencia (opcional)..."></textarea>
+    <textarea class="review-textarea" id="review-comment" placeholder="Comparte tu experiencia (opcional)..." data-i18n-ph="review_ph"></textarea>
     <button class="btn-review-submit" onclick="submitReview()">Enviar Reseña</button>
     <button class="btn-review-skip" onclick="closeReview()">Omitir</button>
   </div>
@@ -931,7 +926,7 @@ async function submitPostJob(e) {
       <form id="post-job-form" onsubmit="submitPostJob(event)">
         <div class="field">
           <label>Título del trabajo</label>
-          <input type="text" name="title" placeholder="ej. Reparación de techo después de lluvia" required>
+          <input type="text" name="title" placeholder="ej. Reparación de techo después de lluvia" data-i18n-ph="job_title_ph" required>
         </div>
         <div class="post-job-form-row">
           <div class="field">
@@ -985,7 +980,7 @@ async function submitPostJob(e) {
         </div>
         <div class="field">
           <label>Descripción del trabajo</label>
-          <textarea name="description" placeholder="Describe el trabajo: qué necesitas, cuándo, condiciones especiales..." required></textarea>
+          <textarea name="description" placeholder="Describe el trabajo: qué necesitas, cuándo, condiciones especiales..." data-i18n-ph="job_desc_ph" required></textarea>
         </div>
         <div id="post-job-error" style="background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:10px 12px;color:#DC2626;font-size:13px;margin-bottom:12px;display:none"></div>
         <button type="submit" class="btn-post-submit" id="btn-post-submit">Publicar trabajo →</button>
@@ -994,6 +989,7 @@ async function submitPostJob(e) {
   </div>
 </div>
 
+<script>CPR.injectNav("dashboard-homeowner");</script>
 </body>
 </html>
 <!-- CPR-v2-budget-fix -->

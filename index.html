@@ -229,6 +229,8 @@ footer ul li a:hover{color:white}
   .steps-grid,.features-grid,.trades-grid{grid-template-columns:1fr}
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
 </head>
 <body>
 
@@ -242,44 +244,7 @@ footer ul li a:hover{color:white}
 </div>
 
 <!-- NAV -->
-<div class="nav-wrap">
-  <nav class="nav">
-    <div class="logo"><div class="logo-box">C</div>ContractingPR</div>
-    <ul class="nav-links">
-      <li><a href="#como-funciona" data-es="Cómo funciona" data-en="How it works">Cómo funciona</a></li>
-      <li><a href="#servicios" data-es="Servicios" data-en="Services">Servicios</a></li>
-      <li><a href="#seguridad" data-es="Seguridad" data-en="Safety">Seguridad</a></li>
-      <li><a href="#opiniones" data-es="Opiniones" data-en="Reviews">Opiniones</a></li>
-      <li><a href="jobs.html" data-es="Ver Trabajos" data-en="Browse Jobs">Ver Trabajos</a></li>
-    </ul>
-    <div class="nav-right">
-      <button class="lang-btn" onclick="toggleLang()">English</button>
-      <div class="dropdown" id="signin-dropdown">
-        <button class="dropdown-btn" onclick="toggleDropdown()">
-          <span data-es="Iniciar sesión" data-en="Sign in">Iniciar sesión</span>
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="dropdown-menu">
-          <a href="dashboard-homeowner.html" class="dropdown-item homeowner">
-            <div class="dropdown-item-icon">🏠</div>
-            <div>
-              <div style="font-weight:600;color:var(--ink)" data-es="Propietario" data-en="Homeowner">Propietario</div>
-              <div style="font-size:12px;color:var(--gray-3)" data-es="Ver mis trabajos y propuestas" data-en="View my jobs and proposals">Ver mis trabajos y propuestas</div>
-            </div>
-          </a>
-          <div class="dropdown-divider"></div>
-          <a href="dashboard-contractor.html" class="dropdown-item contractor">
-            <div class="dropdown-item-icon">🔨</div>
-            <div>
-              <div style="font-weight:600;color:var(--ink)" data-es="Contratista" data-en="Contractor">Contratista</div>
-              <div style="font-size:12px;color:var(--gray-3)" data-es="Ver mis propuestas y trabajos" data-en="View my proposals and jobs">Ver mis propuestas y trabajos</div>
-            </div>
-          </a>
-          <div class="dropdown-register" data-es="¿No tienes cuenta? <a href='signup.html'>Regístrate gratis</a>" data-en="No account? <a href='signup.html'>Sign up free</a>">¿No tienes cuenta? <a href="signup.html">Regístrate gratis</a></div>
-        </div>
-      </div>
-    </div>
-  </nav>
+<div id="cpr-nav-placeholder"></div>
 </div>
 
 <!-- HERO -->
@@ -558,5 +523,6 @@ window.addEventListener('scroll',()=>{
   document.addEventListener('DOMContentLoaded', () => applyPageLang(lang));
 })();
 </script>
+<script>CPR.injectNav("index");</script>
 </body>
 </html>

@@ -70,17 +70,11 @@ footer a{color:var(--blue);font-weight:500}
 .lang-btn:hover{border-color:var(--blue);color:var(--blue)}
 @media(max-width:600px){.job-top{flex-direction:column}.cta-bar{flex-direction:column;text-align:center}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
 </head>
 <body>
-<div class="nav-wrap">
-  <nav class="nav">
-    <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
-    <div class="nav-right">
-      <button class="lang-btn" onclick="toggleLang()">English</button>
-      <a href="index.html" class="btn-nav-ghost" data-i18n="home">Inicio</a>
-      <a href="post-job.html" class="btn-nav" data-i18n="postJob">+ Publicar trabajo</a>
-    </div>
-  </nav>
+<div id="cpr-nav-placeholder"></div>
 </div>
 
 <div class="hero-strip">
@@ -182,7 +176,7 @@ const T = {
   ctaBtn:{es:'Publicar ahora →',en:'Post now →'},
 };
 function applyLang(){
-  document.querySelector('.lang-btn').textContent = lang==='es'?'English':'Español';
+  
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const k=el.dataset.i18n;
     if(T[k]) el.textContent=T[k][lang];
@@ -289,5 +283,6 @@ loadJobs();
   document.addEventListener('DOMContentLoaded', () => applyPageLang(lang));
 })();
 </script>
+<script>CPR.injectNav("jobs");</script>
 </body>
 </html>

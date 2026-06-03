@@ -6,6 +6,7 @@
 <title>Únete | ContractingPR</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -143,14 +144,7 @@ footer a{color:var(--blue);font-weight:500}
 <body>
 
 <!-- NAV -->
-<div class="nav-wrap">
-  <nav class="nav">
-    <a href="index.html" class="logo">
-      <div class="logo-box">C</div>
-      ContractingPR
-    </a>
-    <div style="display:flex;align-items:center;gap:10px"><button class="lang-btn" onclick="toggleLang()">English</button><a href="index.html" class="nav-back" data-i18n="navBack">← Volver al inicio</a></div>
-  </nav>
+<div id="cpr-nav-placeholder"></div>
 </div>
 
 <!-- HERO STRIP -->
@@ -190,25 +184,25 @@ footer a{color:var(--blue);font-weight:500}
         <div class="form-row">
           <div class="field">
             <label>Nombre completo</label>
-            <input type="text" name="name" placeholder="Juan Rivera" required>
+            <input type="text" name="name" placeholder="Juan Rivera" data-i18n-ph="name_ph_contractor" required>
           </div>
           <div class="field">
             <label>Teléfono</label>
-            <input type="tel" name="phone" placeholder="787-555-0100">
+            <input type="tel" name="phone" placeholder="787-555-0100" data-i18n-ph="phone_ph">
           </div>
         </div>
         <div class="field">
           <label>Correo electrónico</label>
-          <input type="email" name="email" placeholder="juan@correo.com" required>
+          <input type="email" name="email" placeholder="juan@correo.com" data-i18n-ph="email_ph" required>
         </div>
         <div class="form-row">
           <div class="field">
             <label>Contraseña</label>
-            <input type="password" name="password" placeholder="Mínimo 8 caracteres" minlength="8" required>
+            <input type="password" name="password" placeholder="Mínimo 8 caracteres" data-i18n-ph="password_ph" minlength="8" required>
           </div>
           <div class="field">
-            <label>Confirmar contraseña</label>
-            <input type="password" name="password2" placeholder="Repite tu contraseña" minlength="8" required>
+            <label data-i18n="password2_label">Confirmar contraseña</label>
+            <input type="password" name="password2" placeholder="Repite tu contraseña" data-i18n-ph="password2_ph" minlength="8" required>
           </div>
         </div>
         <div class="form-row">
@@ -315,7 +309,7 @@ footer a{color:var(--blue);font-weight:500}
         </div>
         <div class="field">
           <label>Licencia CIAPR <span class="optional">(opcional)</span></label>
-          <input type="text" name="license_number" placeholder="ej. 12345">
+          <input type="text" name="license_number" placeholder="ej. 12345" data-i18n-ph="license_ph">
         </div>
         <div class="field">
           <label>Sobre ti <span class="optional">(opcional)</span></label>
@@ -344,25 +338,25 @@ footer a{color:var(--blue);font-weight:500}
         <div class="form-row">
           <div class="field">
             <label>Nombre completo</label>
-            <input type="text" name="name" placeholder="María González" required>
+            <input type="text" name="name" placeholder="María González" data-i18n-ph="name_ph_homeowner" required>
           </div>
           <div class="field">
             <label>Teléfono</label>
-            <input type="tel" name="phone" placeholder="787-555-0200">
+            <input type="tel" name="phone" placeholder="787-555-0200" data-i18n-ph="phone_ph">
           </div>
         </div>
         <div class="field">
           <label>Correo electrónico</label>
-          <input type="email" name="email" placeholder="maria@correo.com" required>
+          <input type="email" name="email" placeholder="maria@correo.com" data-i18n-ph="email_ph" required>
         </div>
         <div class="form-row">
           <div class="field">
             <label>Contraseña</label>
-            <input type="password" name="password" placeholder="Mínimo 8 caracteres" minlength="8" required>
+            <input type="password" name="password" placeholder="Mínimo 8 caracteres" data-i18n-ph="password_ph" minlength="8" required>
           </div>
           <div class="field">
-            <label>Confirmar contraseña</label>
-            <input type="password" name="password2" placeholder="Repite tu contraseña" minlength="8" required>
+            <label data-i18n="password2_label">Confirmar contraseña</label>
+            <input type="password" name="password2" placeholder="Repite tu contraseña" data-i18n-ph="password2_ph" minlength="8" required>
           </div>
         </div>
         <div class="field">
@@ -577,7 +571,7 @@ const T = {
   btnHomeowner:{es:'Crear mi cuenta — Es gratis →',en:'Create my account — Free →'},
 };
 function applyLang(){
-  document.querySelector('.lang-btn').textContent = lang==='es'?'English':'Español';
+  
   document.querySelectorAll('[data-i18n]').forEach(el=>{
     const k=el.dataset.i18n;
     if(T[k]){if(el.tagName==='H1'||T[k][lang].includes('<em>'))el.innerHTML=T[k][lang];else el.textContent=T[k][lang];}
@@ -591,5 +585,6 @@ function toggleLang(){
 applyLang();
 
 </script>
+<script>CPR.injectNav("signup");</script>
 </body>
 </html>

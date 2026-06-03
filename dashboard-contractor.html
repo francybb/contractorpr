@@ -6,6 +6,7 @@
 <title>Panel Contratista | ContractingPR</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 :root{
@@ -159,14 +160,7 @@ footer a{color:var(--blue);font-weight:500}
 </head>
 <body>
 
-<div class="nav-wrap">
-  <nav class="nav">
-    <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
-    <div class="nav-right">
-      <button class="lang-btn" onclick="toggleLang()">English</button>
-      <button class="btn-logout" id="logout-btn" onclick="logout()" style="display:none" data-i18n="logout">Cerrar sesión</button>
-    </div>
-  </nav>
+<div id="cpr-nav-placeholder"></div>
 </div>
 
 <!-- LOGIN -->
@@ -253,7 +247,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 let currentUser = null;
 let chatInterval = null;
 
-let lang = localStorage.getItem('cpr_lang') || 'es';
+let lang = CPR.lang;
 const T = {
   logout: {es:'Cerrar sesión', en:'Log out'},
   browseBtn: {es:'🔍 Ver trabajos disponibles', en:'🔍 Browse available jobs'},
@@ -608,6 +602,7 @@ function applyLang() {
 
 function toggleLang() {
   lang = lang === 'es' ? 'en' : 'es';
+  CPR.setLang(lang);
   localStorage.setItem('cpr_lang', lang);
   applyLang();
   if (currentUser) loadProposals();
@@ -637,6 +632,7 @@ async function submitPrice(proposalId, e) {
 }
 
 </script>
+<script>CPR.injectNav("dashboard-contractor");</script>
 </body>
 </html>
 <!-- review-system-v1 -->

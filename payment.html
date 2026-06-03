@@ -91,14 +91,12 @@ footer a{color:var(--blue);font-weight:500}
 
 @media(max-width:680px){.layout{grid-template-columns:1fr}.summary-card{position:static}}
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
 </head>
 <body>
 
-<div class="nav-wrap">
-  <nav class="nav">
-    <a href="index.html" class="logo"><div class="logo-box">C</div>ContractingPR</a>
-    <button class="lang-btn" onclick="toggleLang()">English</button>
-  </nav>
+<div id="cpr-nav-placeholder"></div>
 </div>
 
 <div class="main">
@@ -351,7 +349,7 @@ loadPaymentInfo();
 let lang = 'es';
 function toggleLang() {
   lang = lang === 'es' ? 'en' : 'es';
-  document.querySelector('.lang-btn').textContent = lang === 'es' ? 'English' : 'Español';
+  
   document.querySelectorAll('[data-es]').forEach(el => {
     const val = lang === 'es' ? el.dataset.es : el.dataset.en;
     if (!val) return;
@@ -360,5 +358,6 @@ function toggleLang() {
   });
 }
 </script>
+<script>CPR.injectNav("payment");</script>
 </body>
 </html>
