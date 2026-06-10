@@ -250,8 +250,9 @@ function filterJobs() {
 
 async function loadJobs() {
   try {
-    const res = await fetch('/.netlify/functions/supabase-proxy?table=jobs&status=eq.open&order=created_at.desc&select=*');
-    allJobs = await res.json();
+    const res = await fetch('/.netlify/functions/supabase-proxy?table=jobs&query=status%3Deq.open%26order%3Dcreated_at.desc%26select%3D*');
+    const data = await res.json();
+    allJobs = Array.isArray(data) ? data : [];
     renderJobs(allJobs);
   } catch(err) {
     document.getElementById('jobs-container').innerHTML = `<div class="empty-state"><div class="empty-icon">⚠️</div><h3>Error al cargar</h3><p>Intenta recargar la página.</p></div>`;

@@ -624,6 +624,7 @@ async function checkSession() {
         currentUser = res[0];
         sessionStorage.setItem('contractor_id', currentUser.id);
         sessionStorage.setItem('contractor_data', JSON.stringify(currentUser));
+        localStorage.setItem('cpr_user_type', 'contractor');
         showDashboard();
         return;
       }

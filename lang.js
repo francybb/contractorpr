@@ -314,9 +314,8 @@ CPR.applyLang = function() {
 CPR.setLang = function(lang) {
   CPR.lang = lang;
   localStorage.setItem('cpr_lang', lang);
-  CPR.applyLang();
-  // Dispatch event so pages can react
-  window.dispatchEvent(new CustomEvent('langchange', { detail: { lang } }));
+  // Reload page so all dynamic content re-renders in new language
+  window.location.reload();
 };
 
 // ── Auth System ──────────────────────────────────────────────────
@@ -387,6 +386,8 @@ CPR.logout = async function() {
     sessionStorage.removeItem(k);
     localStorage.removeItem(k);
   });
+  localStorage.removeItem('cpr_user_type');
+  sessionStorage.clear();
   window.location.href = 'index.html';
 };
 
@@ -414,7 +415,13 @@ CPR.buildNav = async function(activePage, knownUser) {
 
   const logoHtml = '<a href="index.html" class="cpr-logo"><div class="cpr-logo-box">C</div>ContractingPR</a>';
 
-  const dashUrl = user ? (user.type === 'homeowner' ? 'dashboard-homeowner.html' : 'dashboard-contractor.html') : 'dashboard-homeowner.html';
+  // Use stored type from localStorage for immediate nav (no async lookup needed)
+  const storedType = localStorage.getItem('cpr_user_type');
+  const dashUrl = user
+    ? (user.type === 'homeowner' ? 'dashboard-homeowner.html' : 'dashboard-contractor.html')
+    : storedType === 'contractor' ? 'dashboard-contractor.html'
+    : storedType === 'homeowner' ? 'dashboard-homeowner.html'
+    : 'dashboard-homeowner.html';
 
   const langDropdown = '<select id="lang-dropdown" class="cpr-lang-select" onchange="CPR.setLang(this.value)"><option value="es">Español</option><option value="en">English</option></select>';
 
@@ -425,7 +432,7 @@ CPR.buildNav = async function(activePage, knownUser) {
   const navHtml = '<nav class="cpr-nav"><div class="cpr-nav-inner">' +
     logoHtml +
     '<div class="cpr-nav-right">' +
-      '<a href="index.html" class="cpr-nav-link">' + CPR.t('nav_home') + '</a>' +
+      '<a href="' + homeUrl + '" class="cpr-nav-link">' + CPR.t('nav_home') + '</a>' +
       '<a href="jobs.html" class="cpr-nav-link">' + CPR.t('nav_jobs') + '</a>' +
       '<a href="' + dashUrl + '" class="cpr-nav-link">' + CPR.t('nav_dashboard') + '</a>' +
       authLink +

@@ -771,6 +771,7 @@ async function checkSession() {
   let stored = sessionStorage.getItem('homeowner_data');
   if (stored) {
     currentUser = JSON.parse(stored);
+    localStorage.setItem('cpr_user_type', 'homeowner');
     showDashboard();
     return;
   }
@@ -784,6 +785,7 @@ async function checkSession() {
         currentUser = res[0];
         sessionStorage.setItem('homeowner_id', currentUser.id);
         sessionStorage.setItem('homeowner_data', JSON.stringify(currentUser));
+        localStorage.setItem('cpr_user_type', 'homeowner');
         showDashboard();
         return;
       }
