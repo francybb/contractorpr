@@ -439,7 +439,7 @@ async function showDashboard() {
   document.getElementById('greeting').textContent = `${lang === 'en' ? 'Hi' : 'Hola'}, ${currentUser.name.split(' ')[0]} 👋`;
   document.getElementById('greeting-sub').textContent = `${currentUser.city} · ${currentUser.email}`;
   applyLang();
-  if(window.CPR) CPR.injectNav('dashboard-homeowner');
+  if(window.CPR) CPR.injectNav('dashboard-homeowner', currentUser);
   await loadJobs();
 }
 

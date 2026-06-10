@@ -380,7 +380,7 @@ async function showDashboard() {
 
   loadRating(currentUser.id);
   applyLang();
-  if(window.CPR) CPR.injectNav('dashboard-contractor');
+  if(window.CPR) CPR.injectNav('dashboard-contractor', currentUser);
   let lb2 = document.getElementById('logout-btn'); if(lb2) lb2.textContent = T.logout[lang];
   await loadProposals();
 }

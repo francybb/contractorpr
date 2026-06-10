@@ -404,8 +404,8 @@ CPR.getCurrentUser = async function() {
 
 // ── Nav Builder ──────────────────────────────────────────────────
 
-CPR.buildNav = async function(activePage) {
-  let user = await CPR.getCurrentUser();
+CPR.buildNav = async function(activePage, knownUser) {
+  let user = knownUser || await CPR.getCurrentUser();
   let lang = CPR.lang;
 
   const logoHtml = '<a href="index.html" class="cpr-logo"><div class="cpr-logo-box">C</div>ContractingPR</a>';
@@ -452,7 +452,7 @@ CPR.buildNav = async function(activePage) {
 };
 
 // Inject nav into element with id="cpr-nav-placeholder"
-CPR.injectNav = async function(activePage) {
+CPR.injectNav = async function(activePage, knownUser) {
   const placeholder = document.getElementById('cpr-nav-placeholder');
   if (!placeholder) {
     // Nav already injected - just update auth button state
@@ -476,7 +476,7 @@ CPR.injectNav = async function(activePage) {
     if (dd) dd.value = CPR.lang;
     return;
   }
-  placeholder.outerHTML = await CPR.buildNav(activePage);
+  placeholder.outerHTML = await CPR.buildNav(activePage, knownUser);
   const dd = document.getElementById('lang-dropdown');
   if (dd) dd.value = CPR.lang;
 };
