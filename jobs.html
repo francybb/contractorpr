@@ -75,6 +75,11 @@ footer a{color:var(--blue);font-weight:500}
 </head>
 <body>
 <div id="cpr-nav-placeholder"></div>
+<div style="max-width:1000px;margin:0 auto;padding:16px 24px 0">
+  <a id="back-dash-btn" href="#" onclick="goBack()" style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--blue);text-decoration:none">
+    ← <span id="back-dash-label">Panel</span>
+  </a>
+</div>
 </div>
 
 <div class="hero-strip">
@@ -260,9 +265,17 @@ async function loadJobs() {
 }
 
 applyLang();
+function goBack() {
+  const t = localStorage.getItem('cpr_user_type');
+  window.location.href = t === 'contractor' ? 'dashboard-contractor.html' : 'dashboard-homeowner.html';
+}
 loadJobs();
 if(window.CPR) CPR.injectNav("jobs");
-window.addEventListener('langchange', function() { loadJobs(); });
+window.addEventListener('langchange', function() {
+  loadJobs();
+  const lbl = document.getElementById('back-dash-label');
+  if (lbl) lbl.textContent = CPR.lang === 'en' ? 'Dashboard' : 'Panel';
+});
 </script>
 </body>
 </html>

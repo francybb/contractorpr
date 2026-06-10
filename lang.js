@@ -433,8 +433,6 @@ CPR.buildNav = async function(activePage, knownUser) {
   const navHtml = '<nav class="cpr-nav"><div class="cpr-nav-inner">' +
     logoHtml +
     '<div class="cpr-nav-right">' +
-      '<a href="jobs.html" class="cpr-nav-link">' + CPR.t('nav_jobs') + '</a>' +
-      '<a href="' + dashUrl + '" class="cpr-nav-link">' + CPR.t('nav_dashboard') + '</a>' +
       authLink +
       langDropdown +
     '</div>' +

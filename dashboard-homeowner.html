@@ -155,6 +155,13 @@ footer a{color:var(--blue);font-weight:500}
 .btn-confirm-yes:hover{background:#059669}
 .btn-confirm-no{flex:1;padding:12px;background:var(--gray-1);color:var(--gray-4);border:1px solid var(--gray-2);border-radius:8px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;cursor:pointer}
 
+/* Portal Tabs */
+.portal-tabs{display:flex;gap:4px;background:var(--gray-1);border:1px solid var(--gray-2);border-radius:12px;padding:4px;margin-bottom:24px}
+.ptab{flex:1;padding:10px 16px;border:none;border-radius:9px;font-family:'Inter',sans-serif;font-size:14px;font-weight:500;color:var(--gray-4);background:none;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.ptab:hover{color:var(--ink)}
+.ptab.active{background:white;color:var(--blue);font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.tab-panel{min-height:200px}
+
 .section-header-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;margin-top:28px}
 .section-header-row:first-of-type{margin-top:0}
 .section-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
@@ -274,7 +281,7 @@ footer a{color:var(--blue);font-weight:500}
   <div class="dash-header">
     <div class="dash-greeting">
       <h1 id="greeting">Bienvenido</h1>
-      <p id="greeting-sub">Gestiona tus trabajos y propuestas</p>
+      <p id="greeting-sub" data-i18n="greetingSub">Gestiona tus trabajos y propuestas</p>
     </div>
     <button class="btn-post" onclick="openPostJobModal()" data-i18n="postBtn">+ Publicar nuevo trabajo</button>
   </div>
@@ -286,10 +293,22 @@ footer a{color:var(--blue);font-weight:500}
     <div class="stat-card"><div class="stat-val" id="stat-accepted">0</div><div class="stat-lbl" data-i18n="statAcc">Trabajos aceptados</div></div>
   </div>
 
-  <!-- Jobs -->
-  <div id="jobs-count" style="display:none">0</div>
-  <div id="jobs-list">
-    <div class="loading"><div class="spinner"></div><span data-es="Cargando..." data-en="Loading...">Cargando...</span></div>
+  <!-- Tabs -->
+  <div class="portal-tabs">
+    <button class="ptab active" id="tab-open"   onclick="switchTab('open')"      data-i18n="tabOpen">Abiertos</button>
+    <button class="ptab"        id="tab-active"  onclick="switchTab('active')"    data-i18n="tabActive">En progreso</button>
+    <button class="ptab"        id="tab-done"    onclick="switchTab('done')"      data-i18n="tabDone">Completados</button>
+  </div>
+
+  <!-- Tab panels -->
+  <div id="panel-open"   class="tab-panel">
+    <div class="loading"><div class="spinner"></div><span data-i18n="loading">Cargando...</span></div>
+  </div>
+  <div id="panel-active" class="tab-panel" style="display:none">
+    <div class="loading"><div class="spinner"></div><span data-i18n="loading">Cargando...</span></div>
+  </div>
+  <div id="panel-done"   class="tab-panel" style="display:none">
+    <div class="loading"><div class="spinner"></div><span data-i18n="loading">Cargando...</span></div>
   </div>
 
 </div>
@@ -375,6 +394,9 @@ const T = {
   startConvo: {es:'Empieza la conversación', en:'Start the conversation'},
   writeMsg: {es:'Escribe un mensaje...', en:'Write a message...'},
   loading: {es:'Cargando...', en:'Loading...'},
+  tabOpen:   {es:'Abiertos',      en:'Open'},
+  tabActive: {es:'En progreso',   en:'In Progress'},
+  tabDone:   {es:'Completados',   en:'Completed'},
   emailLabel: {es:'Correo electrónico', en:'Email address'},
   footerNoAccount: {es:'¿No tienes cuenta?', en:'No account?'},
   footerSignup: {es:'Regístrate gratis', en:'Sign up free'},
@@ -481,33 +503,44 @@ async function showDashboard() {
   await loadJobs();
 }
 
+let currentTab = 'open';
+function switchTab(tab) {
+  currentTab = tab;
+  ['open','active','done'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+    document.getElementById('panel-'+t).style.display = t===tab ? 'block' : 'none';
+  });
+}
+
 async function loadJobs() {
   let jobs = await db(`jobs?homeowner_id=eq.${currentUser.id}&order=created_at.desc&select=*`);
   let proposals = jobs.length ? await db(`proposals?job_id=in.(${jobs.map(j=>j.id).join(',')})&select=*`) : [];
   let propMap = {};
   let safeProposals = Array.isArray(proposals) ? proposals : [];
   safeProposals.forEach(p => { if (!propMap[p.job_id]) propMap[p.job_id] = []; propMap[p.job_id].push(p); });
-  let activeJobs = jobs.filter(j => j.status === 'accepted' || j.status === 'in_progress');
-  let openJobs = jobs.filter(j => j.status === 'open');
+  let activeJobs    = jobs.filter(j => j.status === 'accepted' || j.status === 'in_progress');
+  let openJobs      = jobs.filter(j => j.status === 'open');
   let completedJobs = jobs.filter(j => j.status === 'completed');
   document.getElementById('stat-jobs').textContent = jobs.length;
   document.getElementById('stat-proposals').textContent = safeProposals.length;
   document.getElementById('stat-accepted').textContent = activeJobs.length;
-  if (jobs.length === 0) {
-    document.getElementById('jobs-list').innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><h3>${T.emptyTitle[lang]}</h3><p>${lang === 'en' ? 'Post your first job.' : 'Publica tu primer trabajo.'}</p><button class="btn-post" onclick="openPostJobModal()">${T.emptyBtn[lang]}</button></div>`;
-    return;
-  }
-  let html = '';
-  html += `<div class="section-header-row"><span class="section-dot dot-active"></span><span style="font-size:15px;font-weight:700">${T.secActive[lang]} <span class="count-badge">${activeJobs.length}</span></span></div>`;
-  html += activeJobs.length ? activeJobs.map(job => renderJobRow(job, propMap[job.id]||[])).join('') : `<div class="section-empty">${T.secEmptyActive[lang]}</div>`;
-  html += `<div class="section-header-row"><span class="section-dot dot-open"></span><span style="font-size:15px;font-weight:700">${T.secOpen[lang]} <span class="count-badge">${openJobs.length}</span></span></div>`;
-  html += openJobs.length ? openJobs.map(job => renderJobRow(job, propMap[job.id]||[])).join('') : `<div class="section-empty">${T.secEmptyOpen[lang]} <a href="post-job.html" style="color:var(--blue);font-weight:600">${T.publishLink[lang]}</a></div>`;
-  if (completedJobs.length > 0) {
-    html += `<div class="section-header-row"><span class="section-dot" style="background:var(--gray-3)"></span><span style="font-size:15px;font-weight:700">${T.secCompleted[lang]} <span class="count-badge">${completedJobs.length}</span></span></div>`;
-    html += completedJobs.map(job => renderJobRow(job, propMap[job.id]||[])).join('');
-  }
-  document.getElementById('jobs-list').innerHTML = html;
-  autoTranslateJobs(jobs); // runs in background, non-blocking
+
+  // Tab: Abiertos
+  document.getElementById('panel-open').innerHTML = openJobs.length
+    ? openJobs.map(job => renderJobRow(job, propMap[job.id]||[])).join('')
+    : `<div class="empty-state"><div class="empty-icon">📋</div><h3>${T.emptyTitle[lang]}</h3><p>${lang==='en'?'Post your first job to get proposals from contractors.':'Publica tu primer trabajo para recibir propuestas.'}</p><button class="btn-post" onclick="openPostJobModal()">${T.emptyBtn[lang]}</button></div>`;
+
+  // Tab: En progreso
+  document.getElementById('panel-active').innerHTML = activeJobs.length
+    ? activeJobs.map(job => renderJobRow(job, propMap[job.id]||[])).join('')
+    : `<div class="empty-state"><div class="empty-icon">🔧</div><h3>${lang==='en'?'No active jobs':'Sin trabajos en progreso'}</h3><p>${lang==='en'?'Accepted jobs will appear here.':'Los trabajos aceptados aparecerán aquí.'}</p></div>`;
+
+  // Tab: Completados
+  document.getElementById('panel-done').innerHTML = completedJobs.length
+    ? completedJobs.map(job => renderJobRow(job, propMap[job.id]||[])).join('')
+    : `<div class="empty-state"><div class="empty-icon">✅</div><h3>${lang==='en'?'No completed jobs yet':'Sin trabajos completados'}</h3><p>${lang==='en'?'Completed jobs will appear here.':'Los trabajos completados aparecerán aquí.'}</p></div>`;
+
+  autoTranslateJobs(jobs);
 }
 
 function renderJobRow(job, jobProps) {

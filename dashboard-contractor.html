@@ -121,6 +121,13 @@ footer a{color:var(--blue);font-weight:500}
 .btn-confirm-price:hover{background:var(--blue-dark)}
 .price-confirmed{background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:8px;padding:10px 12px;font-size:13px;color:#059669;margin-top:8px;display:flex;align-items:center;gap:6px}
 
+/* Portal Tabs */
+.portal-tabs{display:flex;gap:4px;background:var(--gray-1);border:1px solid var(--gray-2);border-radius:12px;padding:4px;margin-bottom:24px}
+.ptab{flex:1;padding:10px 16px;border:none;border-radius:9px;font-family:'Inter',sans-serif;font-size:14px;font-weight:500;color:var(--gray-4);background:none;cursor:pointer;transition:all 0.2s;white-space:nowrap}
+.ptab:hover{color:var(--ink)}
+.ptab.active{background:white;color:var(--blue);font-weight:600;box-shadow:0 1px 4px rgba(0,0,0,0.08)}
+.tab-panel{min-height:200px}
+
 .section-header-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;margin-top:28px}
 .section-header-row:first-of-type{margin-top:0}
 .section-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
@@ -215,7 +222,7 @@ footer a{color:var(--blue);font-weight:500}
   <div class="dash-header">
     <div class="dash-greeting">
       <h1 id="greeting">Bienvenido</h1>
-      <p id="greeting-sub">Gestiona tus propuestas y trabajos</p>
+      <p id="greeting-sub" data-i18n="greetingSub">Gestiona tus propuestas y trabajos</p>
     </div>
     <button class="btn-browse" onclick="window.location.href='jobs.html'" data-i18n="browseBtn">🔍 Ver trabajos disponibles</button>
   </div>
@@ -230,11 +237,24 @@ footer a{color:var(--blue);font-weight:500}
     <div class="stat-card"><div class="stat-val" id="stat-pending">0</div><div class="stat-lbl" data-i18n="statPend">En espera de respuesta</div></div>
   </div>
 
-  <!-- Proposals -->
-  <div id="props-count" style="display:none">0</div>
-  <div id="proposals-list">
-    <div class="loading"><div class="spinner"></div>Cargando...</div>
+  <!-- Tabs -->
+  <div class="portal-tabs">
+    <button class="ptab active" id="tab-pending"  onclick="switchTab('pending')"  data-i18n="tabPending">Enviadas</button>
+    <button class="ptab"        id="tab-active"   onclick="switchTab('active')"   data-i18n="tabActive">En progreso</button>
+    <button class="ptab"        id="tab-done"     onclick="switchTab('done')"     data-i18n="tabDone">Completados</button>
   </div>
+
+  <!-- Tab panels -->
+  <div id="panel-pending" class="tab-panel">
+    <div class="loading"><div class="spinner"></div><span data-i18n="loading">Cargando...</span></div>
+  </div>
+  <div id="panel-active"  class="tab-panel" style="display:none">
+    <div class="loading"><div class="spinner"></div><span data-i18n="loading">Cargando...</span></div>
+  </div>
+  <div id="panel-done"    class="tab-panel" style="display:none">
+    <div class="loading"><div class="spinner"></div><span data-i18n="loading">Cargando...</span></div>
+  </div>
+
 </div>
 
 <footer>
@@ -288,6 +308,9 @@ const T = {
   secEmptyPending: {es:'No tienes propuestas pendientes.', en:'No pending proposals.'},
   secEmptyCompleted: {es:'No tienes trabajos completados aún.', en:'No completed jobs yet.'},
   browseLink: {es:'Ver trabajos disponibles →', en:'Browse available jobs →'},
+  tabPending: {es:'Enviadas',     en:'Sent'},
+  tabActive:  {es:'En progreso',  en:'In Progress'},
+  tabDone:    {es:'Completados',  en:'Completed'},
   statusAccepted: {es:'✅ Aceptada', en:'✅ Accepted'},
   statusPending: {es:'⏳ En espera', en:'⏳ Pending'},
   statusCompleted: {es:'✅ Completado', en:'✅ Completed'},
@@ -422,62 +445,48 @@ async function showDashboard() {
   await loadProposals();
 }
 
+let currentTab = 'pending';
+function switchTab(tab) {
+  currentTab = tab;
+  ['pending','active','done'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+    document.getElementById('panel-'+t).style.display = t===tab ? 'block' : 'none';
+  });
+}
+
 async function loadProposals() {
   let proposals = await db(`proposals?contractor_id=eq.${currentUser.id}&order=created_at.desc&select=*`);
 
-  let accepted = proposals.filter(p => p.status === 'accepted').length;
-  let pending = proposals.filter(p => p.status === 'pending').length;
-  document.getElementById('stat-sent').textContent = proposals.length;
+  let accepted  = proposals.filter(p => p.status === 'accepted').length;
+  let pending   = proposals.filter(p => p.status === 'pending').length;
+  document.getElementById('stat-sent').textContent     = proposals.length;
   document.getElementById('stat-accepted').textContent = accepted;
-  document.getElementById('stat-pending').textContent = pending;
-  document.getElementById('props-count').textContent = proposals.length;
+  document.getElementById('stat-pending').textContent  = pending;
 
-  if (proposals.length === 0) {
-    document.getElementById('proposals-list').innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon">🔍</div>
-        <h3>${lang === 'en' ? "You haven't sent any proposals yet" : 'Aún no has enviado propuestas'}</h3>
-        <p>${lang === 'en' ? 'Explore available jobs and send your first proposal.' : 'Explora los trabajos disponibles y envía tu primera propuesta.'}</p>
-        <button class="btn-browse" onclick="window.location.href='jobs.html'">${lang === 'en' ? 'Browse jobs →' : 'Ver trabajos →'}</button>
-      </div>`;
-    return;
-  }
-
-  let jobIds = [...new Set(proposals.map(p => p.job_id))];
-  let jobs = await db(`jobs?id=in.(${jobIds.join(',')})&select=id,title,city,trade_needed,status`);
+  let jobIds = proposals.length ? [...new Set(proposals.map(p => p.job_id))] : [];
+  let jobs   = jobIds.length ? await db(`jobs?id=in.(${jobIds.join(',')})&select=id,title,city,trade_needed,status`) : [];
   let jobMap = {};
   jobs.forEach(j => jobMap[j.id] = j);
 
-  let activeProps = proposals.filter(p => p.status === 'accepted');
-  let pendingProps = proposals.filter(p => p.status === 'pending');
+  let pendingProps   = proposals.filter(p => p.status === 'pending');
+  let activeProps    = proposals.filter(p => p.status === 'accepted');
   let completedProps = proposals.filter(p => p.status === 'completed');
 
-  let html = '';
+  const browseBtn = `<button class="btn-browse" onclick="window.location.href='jobs.html'">${lang==='en'?'Browse jobs →':'Ver trabajos →'}</button>`;
 
-  // Active jobs section
-  html += `<div class="section-header-row"><span class="section-dot dot-active"></span><div class="section-title" style="margin:0">${T.secActive[lang]} <span class="count-badge">${activeProps.length}</span></div></div>`;
-  if (activeProps.length === 0) {
-    html += `<div class="section-empty">${T.secEmptyActive[lang]}</div>`;
-  } else {
-    html += activeProps.map(p => renderPropRow(p, jobMap[p.job_id] || {}, 'accepted')).join('');
-  }
+  document.getElementById('panel-pending').innerHTML = pendingProps.length
+    ? pendingProps.map(p => renderPropRow(p, jobMap[p.job_id]||{}, 'pending')).join('')
+    : `<div class="empty-state"><div class="empty-icon">📤</div><h3>${lang==='en'?'No proposals sent yet':'Aún no has enviado propuestas'}</h3><p>${lang==='en'?'Browse open jobs and send your first proposal.':'Explora trabajos disponibles y envía tu primera propuesta.'}</p>${browseBtn}</div>`;
 
-  // Pending proposals section
-  html += `<div class="section-header-row"><span class="section-dot dot-pending"></span><div class="section-title" style="margin:0">${T.secPending[lang]} <span class="count-badge">${pendingProps.length}</span></div></div>`;
-  if (pendingProps.length === 0) {
-    html += `<div class="section-empty">${T.secEmptyPending[lang]} <a href="jobs.html" style="color:var(--blue);font-weight:600">${T.browseLink[lang]}</a></div>`;
-  } else {
-    html += pendingProps.map(p => renderPropRow(p, jobMap[p.job_id] || {}, 'pending')).join('');
-  }
+  document.getElementById('panel-active').innerHTML = activeProps.length
+    ? activeProps.map(p => renderPropRow(p, jobMap[p.job_id]||{}, 'accepted')).join('')
+    : `<div class="empty-state"><div class="empty-icon">🔧</div><h3>${lang==='en'?'No active jobs':'Sin trabajos activos'}</h3><p>${lang==='en'?'Accepted proposals will appear here.':'Las propuestas aceptadas aparecerán aquí.'}</p>${browseBtn}</div>`;
 
-  // Completed section
-  if (completedProps.length > 0) {
-    html += `<div class="section-header-row"><span class="section-dot dot-done"></span><div class="section-title" style="margin:0">${T.secCompleted[lang]} <span class="count-badge">${completedProps.length}</span></div></div>`;
-    html += completedProps.map(p => renderPropRow(p, jobMap[p.job_id] || {}, 'completed')).join('');
-  }
+  document.getElementById('panel-done').innerHTML = completedProps.length
+    ? completedProps.map(p => renderPropRow(p, jobMap[p.job_id]||{}, 'completed')).join('')
+    : `<div class="empty-state"><div class="empty-icon">✅</div><h3>${lang==='en'?'No completed jobs yet':'Sin trabajos completados'}</h3><p>${lang==='en'?'Completed jobs will appear here.':'Los trabajos completados aparecerán aquí.'}</p></div>`;
 
-  document.getElementById('proposals-list').innerHTML = html;
-  autoTranslateJobs([...activeProps, ...pendingProps, ...completedProps], jobMap);
+  autoTranslateJobs([...pendingProps, ...activeProps, ...completedProps], jobMap);
 }
 
 function renderPropRow(p, job, status) {
