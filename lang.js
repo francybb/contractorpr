@@ -454,25 +454,29 @@ CPR.buildNav = async function(activePage) {
 // Inject nav into element with id="cpr-nav-placeholder"
 CPR.injectNav = async function(activePage) {
   const placeholder = document.getElementById('cpr-nav-placeholder');
-  if (placeholder) {
-    // First time - replace placeholder with full nav
-    const navHtml = await CPR.buildNav(activePage);
-    const temp = document.createElement('div');
-    temp.innerHTML = navHtml;
-    const navEl = temp.querySelector('nav') || temp.firstChild;
-    if (navEl) placeholder.replaceWith(navEl);
-  } else {
-    // Nav already exists - just update the auth button
+  if (!placeholder) {
+    // Nav already injected - just update auth button state
     const user = await CPR.getCurrentUser();
-    const authEl = document.querySelector('.cpr-nav-right .cpr-nav-btn, .cpr-nav-right .cpr-nav-btn-ghost');
-    if (authEl) {
-      if (user) {
-        authEl.outerHTML = '<button onclick="CPR.logout()" class="cpr-nav-btn-ghost">' + CPR.t('nav_logout') + '</button>';
-      } else {
-        authEl.outerHTML = '<a href="dashboard-homeowner.html" class="cpr-nav-btn">' + CPR.t('nav_login') + '</a>';
+    const navRight = document.querySelector('.cpr-nav-right');
+    if (navRight) {
+      const authBtn = navRight.querySelector('.cpr-nav-btn, .cpr-nav-btn-ghost');
+      if (authBtn) {
+        if (user) {
+          authBtn.className = 'cpr-nav-btn-ghost';
+          authBtn.textContent = CPR.t('nav_logout');
+          authBtn.setAttribute('onclick', 'CPR.logout()');
+          authBtn.removeAttribute('href');
+          authBtn.tagName === 'A' && authBtn.outerHTML.replace('<a ', '<button ');
+        } else {
+          authBtn.textContent = CPR.t('nav_login');
+        }
       }
     }
+    const dd = document.getElementById('lang-dropdown');
+    if (dd) dd.value = CPR.lang;
+    return;
   }
+  placeholder.outerHTML = await CPR.buildNav(activePage);
   const dd = document.getElementById('lang-dropdown');
   if (dd) dd.value = CPR.lang;
 };
