@@ -287,18 +287,18 @@ CPR.t = function(key) {
 // Apply translations to all data-i18n elements
 CPR.applyLang = function() {
   document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.dataset.i18n;
-    const val = CPR.t(key);
+    let key = el.dataset.i18n;
+    let val = CPR.t(key);
     if (val) el.textContent = val;
   });
   document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-    const key = el.dataset.i18nPh;
-    const val = CPR.t(key);
+    let key = el.dataset.i18nPh;
+    let val = CPR.t(key);
     if (val) el.placeholder = val;
   });
   document.querySelectorAll('[data-i18n-html]').forEach(el => {
-    const key = el.dataset.i18nHtml;
-    const val = CPR.t(key);
+    let key = el.dataset.i18nHtml;
+    let val = CPR.t(key);
     if (val) el.innerHTML = val;
   });
   // Update lang dropdown if present
@@ -346,7 +346,7 @@ CPR.getSession = async function() {
     // Try getting from supabase client directly
     if (window.supabase) {
       const { createClient } = supabase;
-      const sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK);
+      let sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK);
       const { data } = await sb.auth.getSession();
       if (data?.session) return data.session;
     }
@@ -365,7 +365,7 @@ CPR.db = async function(path) {
   try {
     // Split path into table and query string
     const qIdx = path.indexOf('?');
-    const table = qIdx === -1 ? path : path.substring(0, qIdx);
+    let table = qIdx === -1 ? path : path.substring(0, qIdx);
     const query = qIdx === -1 ? '' : path.substring(qIdx + 1);
     const proxyUrl = '/.netlify/functions/supabase-proxy?table=' + encodeURIComponent(table) + (query ? '&' + query : '');
     const res = await fetch(proxyUrl);
@@ -380,7 +380,7 @@ CPR.db = async function(path) {
 CPR.logout = async function() {
   if (window.supabase) {
     const { createClient } = supabase;
-    const sb = createClient(SUPABASE_URL, SUPABASE_PK);
+    let sb = createClient(SUPABASE_URL, SUPABASE_PK);
     await sb.auth.signOut();
   }
   localStorage.removeItem('homeowner_id');
@@ -393,7 +393,7 @@ CPR.logout = async function() {
 
 // Check if logged in and get user type + data
 CPR.getCurrentUser = async function() {
-  const email = await CPR.getSessionEmail();
+  let email = await CPR.getSessionEmail();
   if (!email) return null;
 
   // Check homeowners first
@@ -410,8 +410,8 @@ CPR.getCurrentUser = async function() {
 // ── Nav Builder ──────────────────────────────────────────────────
 
 CPR.buildNav = async function(activePage) {
-  const user = await CPR.getCurrentUser();
-  const lang = CPR.lang;
+  let user = await CPR.getCurrentUser();
+  let lang = CPR.lang;
 
   const logoHtml = '<a href="index.html" class="cpr-logo"><div class="cpr-logo-box">C</div>ContractingPR</a>';
 
@@ -490,10 +490,10 @@ CPR.showAuthModal = function(preferredType) {
   const existing = document.getElementById('cpr-auth-modal-overlay');
   if (existing) existing.remove();
 
-  const lang = CPR.lang;
+  let lang = CPR.lang;
   const isContractor = preferredType === 'contractor';
 
-  const overlay = document.createElement('div');
+  let overlay = document.createElement('div');
   overlay.id = 'cpr-auth-modal-overlay';
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9000;display:flex;align-items:center;justify-content:center;padding:20px;font-family:Inter,sans-serif';
   overlay.onclick = function(e) { if(e.target===overlay) CPR.hideAuthModal(); };
@@ -638,10 +638,10 @@ CPR._setSignupType = function(type) {
 };
 
 CPR._doLogin = async function() {
-  const email = document.getElementById('cpr-login-email').value.trim();
-  const password = document.getElementById('cpr-login-password').value;
-  const btn = document.getElementById('cpr-login-btn');
-  const errorEl = document.getElementById('cpr-login-error');
+  let email = document.getElementById('cpr-login-email').value.trim();
+  let password = document.getElementById('cpr-login-password').value;
+  let btn = document.getElementById('cpr-login-btn');
+  let errorEl = document.getElementById('cpr-login-error');
   errorEl.style.display = 'none';
   if (!email || !password) {
     errorEl.textContent = CPR.lang === 'en' ? 'Enter your email and password.' : 'Ingresa tu correo y contraseña.';
@@ -652,16 +652,16 @@ CPR._doLogin = async function() {
   btn.textContent = CPR.lang === 'en' ? 'Logging in...' : 'Entrando...';
   try {
     const { createClient } = supabase;
-    const sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK);
+    let sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK);
     const { error } = await sb.auth.signInWithPassword({ email, password });
     if (error) throw new Error(error.message);
     CPR.hideAuthModal();
     // Small delay to let Supabase store the session
     await new Promise(r => setTimeout(r, 500));
     // Run pending action
-    const user = await CPR.getCurrentUser();
+    let user = await CPR.getCurrentUser();
     if (user && CPR._pendingAction) {
-      const action = CPR._pendingAction.fn;
+      let action = CPR._pendingAction.fn;
       CPR._pendingAction = null;
       action(user);
     } else if (user) {
@@ -679,11 +679,11 @@ CPR._doLogin = async function() {
 };
 
 CPR._doSignup = async function() {
-  const name = document.getElementById('cpr-signup-name').value.trim();
-  const email = document.getElementById('cpr-signup-email').value.trim();
-  const password = document.getElementById('cpr-signup-password').value;
-  const btn = document.getElementById('cpr-signup-btn');
-  const errorEl = document.getElementById('cpr-signup-error');
+  let name = document.getElementById('cpr-signup-name').value.trim();
+  let email = document.getElementById('cpr-signup-email').value.trim();
+  let password = document.getElementById('cpr-signup-password').value;
+  let btn = document.getElementById('cpr-signup-btn');
+  let errorEl = document.getElementById('cpr-signup-error');
   errorEl.style.display = 'none';
   if (!name || !email || !password) {
     errorEl.textContent = CPR.lang === 'en' ? 'Please fill in all fields.' : 'Por favor completa todos los campos.';
@@ -699,10 +699,10 @@ CPR._doSignup = async function() {
   btn.textContent = CPR.lang === 'en' ? 'Creating account...' : 'Creando cuenta...';
   try {
     const { createClient } = supabase;
-    const sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK);
+    let sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK);
     const { error: authErr } = await sb.auth.signUp({ email, password });
     if (authErr) throw new Error(authErr.message);
-    const table = CPR._signupType === 'contractor' ? 'contractors' : 'homeowners';
+    let table = CPR._signupType === 'contractor' ? 'contractors' : 'homeowners';
     const body = CPR._signupType === 'contractor'
       ? { name, email, status: 'active' }
       : { name, email };
@@ -713,9 +713,9 @@ CPR._doSignup = async function() {
     });
     CPR.hideAuthModal();
     await new Promise(r => setTimeout(r, 500));
-    const user = await CPR.getCurrentUser();
+    let user = await CPR.getCurrentUser();
     if (user && CPR._pendingAction) {
-      const action = CPR._pendingAction.fn;
+      let action = CPR._pendingAction.fn;
       CPR._pendingAction = null;
       action(user);
     } else if (user) {

@@ -278,12 +278,12 @@ footer a{color:var(--blue);font-weight:500}
 
 // ── Language persistence ──────────────────────────────
 (function() {
-  const lang = localStorage.getItem('cpr_lang') || 'es';
+  let lang = localStorage.getItem('cpr_lang') || 'es';
   function applyPageLang(l) {
-    const btn = document.querySelector('.lang-btn');
+    let btn = document.querySelector('.lang-btn');
     if (btn) btn.textContent = l === 'es' ? 'Español' : 'English';
     document.querySelectorAll('[data-es][data-en]').forEach(el => {
-      const val = l === 'es' ? el.dataset.es : el.dataset.en;
+      let val = l === 'es' ? el.dataset.es : el.dataset.en;
       if (!val) return;
       if (el.tagName === 'H1' || el.tagName === 'H2' || val.includes('<')) el.innerHTML = val;
       else el.textContent = val;
@@ -358,14 +358,14 @@ const T = {
 };
 
 async function db(path) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+  let res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
   });
   return res.json();
 }
 
 async function dbPost(table, data) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+  let res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=representation' },
     body: JSON.stringify(data)
@@ -382,7 +382,7 @@ async function dbPatch(table, id, data) {
 }
 
 function timeAgo(d) {
-  const diff = (Date.now() - new Date(d + (d.includes('Z') ? '' : 'Z'))) / 1000;
+  let diff = (Date.now() - new Date(d + (d.includes('Z') ? '' : 'Z'))) / 1000;
   if (diff < 60) return 'ahora';
   if (diff < 3600) return `hace ${Math.floor(diff/60)} min`;
   if (diff < 86400) return `hace ${Math.floor(diff/3600)}h`;
@@ -390,21 +390,21 @@ function timeAgo(d) {
 }
 
 async function login() {
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  const btn = document.getElementById('login-btn');
-  const errorEl = document.getElementById('login-error');
+  let email = document.getElementById('login-email').value.trim();
+  let password = document.getElementById('login-password').value;
+  let btn = document.getElementById('login-btn');
+  let errorEl = document.getElementById('login-error');
   errorEl.classList.remove('show');
   if (!email || !password) { errorEl.textContent = lang === 'en' ? 'Enter your email and password.' : 'Ingresa tu correo y contraseña.'; errorEl.classList.add('show'); return; }
   btn.disabled = true; btn.textContent = lang === 'en' ? 'Verifying...' : 'Verificando...';
-  const { data: authData, error: authErr } = await sb.auth.signInWithPassword({ email, password });
+  let { data: authData, error: authErr } = await sb.auth.signInWithPassword({ email, password });
   if (authErr) {
     errorEl.textContent = lang === 'en' ? 'Incorrect email or password.' : 'Correo o contraseña incorrectos.';
     errorEl.classList.add('show');
     btn.disabled = false; btn.textContent = T.loginBtn[lang];
     return;
   }
-  const data = await db(`homeowners?email=eq.${encodeURIComponent(email)}&select=*`);
+  let data = await db(`homeowners?email=eq.${encodeURIComponent(email)}&select=*`);
   if (!data || data.length === 0) {
     errorEl.textContent = lang === 'en' ? 'No homeowner account found for this email.' : 'No encontramos una cuenta de propietario con ese correo.';
     errorEl.classList.add('show');
@@ -423,14 +423,14 @@ function logout() {
   currentUser = null;
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('logout-btn').style.display = 'none';
+  { let _lb = document.getElementById('logout-btn'); if(_lb) _lb.style.display = 'none'; }
   document.getElementById('login-email').value = '';
 }
 
 async function showDashboard() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
-  const logoutBtn = document.getElementById('logout-btn');
+  let logoutBtn = document.getElementById('logout-btn');
   if (logoutBtn) { logoutBtn.style.display = 'block'; logoutBtn.textContent = T.logout[lang]; }
   document.getElementById('greeting').textContent = `${lang === 'en' ? 'Hi' : 'Hola'}, ${currentUser.name.split(' ')[0]} 👋`;
   document.getElementById('greeting-sub').textContent = `${currentUser.city} · ${currentUser.email}`;
@@ -440,14 +440,14 @@ async function showDashboard() {
 }
 
 async function loadJobs() {
-  const jobs = await db(`jobs?homeowner_id=eq.${currentUser.id}&order=created_at.desc&select=*`);
-  const proposals = jobs.length ? await db(`proposals?job_id=in.(${jobs.map(j=>j.id).join(',')})&select=*`) : [];
-  const propMap = {};
-  const safeProposals = Array.isArray(proposals) ? proposals : [];
+  let jobs = await db(`jobs?homeowner_id=eq.${currentUser.id}&order=created_at.desc&select=*`);
+  let proposals = jobs.length ? await db(`proposals?job_id=in.(${jobs.map(j=>j.id).join(',')})&select=*`) : [];
+  let propMap = {};
+  let safeProposals = Array.isArray(proposals) ? proposals : [];
   safeProposals.forEach(p => { if (!propMap[p.job_id]) propMap[p.job_id] = []; propMap[p.job_id].push(p); });
-  const activeJobs = jobs.filter(j => j.status === 'accepted' || j.status === 'in_progress');
-  const openJobs = jobs.filter(j => j.status === 'open');
-  const completedJobs = jobs.filter(j => j.status === 'completed');
+  let activeJobs = jobs.filter(j => j.status === 'accepted' || j.status === 'in_progress');
+  let openJobs = jobs.filter(j => j.status === 'open');
+  let completedJobs = jobs.filter(j => j.status === 'completed');
   document.getElementById('stat-jobs').textContent = jobs.length;
   document.getElementById('stat-proposals').textContent = safeProposals.length;
   document.getElementById('stat-accepted').textContent = activeJobs.length;
@@ -469,14 +469,14 @@ async function loadJobs() {
 }
 
 function renderJobRow(job, jobProps) {
-  const statusMap = {open: T.openStatus[lang], accepted: T.acceptedStatus[lang], in_progress: T.acceptedStatus[lang], completed: T.closedStatus[lang]};
-  const classMap = {open:'status-open',accepted:'status-accepted',in_progress:'status-accepted',completed:'status-closed'};
-  const newProps = jobProps.filter(p => p.status === 'pending').length;
-  const acceptedProp = jobProps.find(p => p.status === 'accepted' || p.status === 'completed');
-  const propWord = jobProps.length !== 1 ? T.proposalsPlural[lang] : T.proposals[lang];
-  const newWord = newProps !== 1 ? T.newPropPlural[lang] : T.newProp[lang];
-  const safeTitle = job.title.replace(/[^a-zA-Z0-9áéíóúñÁÉÍÓÚÑ ]/g,'');
-  const isCompleted = job.status === 'completed';
+  let statusMap = {open: T.openStatus[lang], accepted: T.acceptedStatus[lang], in_progress: T.acceptedStatus[lang], completed: T.closedStatus[lang]};
+  let classMap = {open:'status-open',accepted:'status-accepted',in_progress:'status-accepted',completed:'status-closed'};
+  let newProps = jobProps.filter(p => p.status === 'pending').length;
+  let acceptedProp = jobProps.find(p => p.status === 'accepted' || p.status === 'completed');
+  let propWord = jobProps.length !== 1 ? T.proposalsPlural[lang] : T.proposals[lang];
+  let newWord = newProps !== 1 ? T.newPropPlural[lang] : T.newProp[lang];
+  let safeTitle = job.title.replace(/[^a-zA-Z0-9áéíóúñÁÉÍÓÚÑ ]/g,'');
+  let isCompleted = job.status === 'completed';
   return `<div class="job-row" id="job-row-${job.id}" onclick="toggleProposals('${job.id}','${safeTitle}')">
     <div class="job-row-header">
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
@@ -502,26 +502,26 @@ function renderJobRow(job, jobProps) {
 }
 async function autoTranslateJobs(jobs) {
   if (lang === 'es') return;
-  const items = jobs.filter(j => j.title).map(j => ({ id: j.id, title: j.title, message: j.description || '' }));
+  let items = jobs.filter(j => j.title).map(j => ({ id: j.id, title: j.title, message: j.description || '' }));
   if (!items.length) return;
   try {
-    const res = await fetch('/.netlify/functions/translate', {
+    let res = await fetch('/.netlify/functions/translate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ items, targetLang: 'en' })
     });
-    const data = await res.json();
+    let data = await res.json();
     if (!data.results) return;
     items.forEach(item => {
-      const r = data.results[item.id];
+      let r = data.results[item.id];
       if (!r) return;
-      const titleEl = document.querySelector(`#translate-job-${item.id}`);
-      const rowTitleEl = document.querySelector(`.job-row [id="translate-job-${item.id}"]`);
+      let titleEl = document.querySelector(`#translate-job-${item.id}`);
+      let rowTitleEl = document.querySelector(`.job-row [id="translate-job-${item.id}"]`);
       // Update the job row title
-      const jobRows = document.querySelectorAll('.job-row');
+      let jobRows = document.querySelectorAll('.job-row');
       jobRows.forEach(row => {
         if (row.onclick && row.onclick.toString().includes(item.id)) {
-          const titleDiv = row.querySelector('.job-row-title');
+          let titleDiv = row.querySelector('.job-row-title');
           if (titleDiv) titleDiv.textContent = r.title;
         }
       });
@@ -534,10 +534,10 @@ async function autoTranslateJobs(jobs) {
 }
 
 async function toggleProposals(jobId, jobTitle) {
-  const panel = document.getElementById('inline-panel-' + jobId);
-  const row = document.getElementById('job-row-' + jobId);
-  const arrow = document.getElementById('job-arrow-' + jobId);
-  const isOpen = panel.classList.contains('open');
+  let panel = document.getElementById('inline-panel-' + jobId);
+  let row = document.getElementById('job-row-' + jobId);
+  let arrow = document.getElementById('job-arrow-' + jobId);
+  let isOpen = panel.classList.contains('open');
 
   // Close all open panels
   document.querySelectorAll('.inline-panel.open').forEach(p => p.classList.remove('open'));
@@ -554,21 +554,21 @@ async function toggleProposals(jobId, jobTitle) {
 
   // Load proposals into the inline panel
   panel.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
-  const proposals = await db('proposals?job_id=eq.' + jobId + '&order=created_at.asc&select=*');
+  let proposals = await db('proposals?job_id=eq.' + jobId + '&order=created_at.asc&select=*');
   if (!proposals.length) {
     panel.innerHTML = '<div style="text-align:center;padding:24px;color:var(--gray-3)">' + T.noProps[lang] + '</div>';
     return;
   }
 
-  const cIds = [...new Set(proposals.map(p => p.contractor_id))];
-  const contractors = await db('contractors?id=in.(' + cIds.join(',') + ')&select=id,name,trade,city');
-  const cMap = {};
+  let cIds = [...new Set(proposals.map(p => p.contractor_id))];
+  let contractors = await db('contractors?id=in.(' + cIds.join(',') + ')&select=id,name,trade,city');
+  let cMap = {};
   contractors.forEach(c => cMap[c.id] = c);
 
   panel.innerHTML = proposals.map(p => {
-    const c = cMap[p.contractor_id] || {};
-    const isAccepted = p.status === 'accepted';
-    const contractorName = c.name || (lang === 'en' ? 'Contractor' : 'Contratista');
+    let c = cMap[p.contractor_id] || {};
+    let isAccepted = p.status === 'accepted';
+    let contractorName = c.name || (lang === 'en' ? 'Contractor' : 'Contratista');
     return `
     <div class="proposal-item ${isAccepted ? 'accepted' : ''}" id="prop-${p.id}">
       <div class="prop-header">
@@ -622,19 +622,19 @@ async function sendEmail(type, data) {
 function acceptProposal(proposalId, jobId, e) {
   e.stopPropagation();
   e.preventDefault();
-  const modal = document.getElementById('confirm-modal');
+  let modal = document.getElementById('confirm-modal');
   modal.classList.add('show');
   document.getElementById('confirm-yes-btn').onclick = async () => {
     modal.classList.remove('show');
     await dbPatch('proposals', proposalId, { status: 'accepted' });
     await dbPatch('jobs', jobId, { status: 'accepted' });
     // Send email to contractor
-    const proposals = await db(`proposals?id=eq.${proposalId}&select=*`);
-    const jobs = await db(`jobs?id=eq.${jobId}&select=title,budget`);
+    let proposals = await db(`proposals?id=eq.${proposalId}&select=*`);
+    let jobs = await db(`jobs?id=eq.${jobId}&select=title,budget`);
     console.log('Email debug - proposals:', proposals, 'jobs:', jobs);
     if (proposals?.[0] && jobs?.[0]) {
-      const p = proposals[0]; const j = jobs[0];
-      const contractors = await db(`contractors?id=eq.${p.contractor_id}&select=name,email`);
+      let p = proposals[0]; const j = jobs[0];
+      let contractors = await db(`contractors?id=eq.${p.contractor_id}&select=name,email`);
       console.log('Email debug - contractors:', contractors);
       sendEmail('proposal_accepted', {
         contractor_email: contractors?.[0]?.email,
@@ -654,8 +654,8 @@ function closeConfirm() {
 
 async function toggleChat(proposalId, name, e) {
   e.stopPropagation();
-  const chatEl = document.getElementById(`chat-${proposalId}`);
-  const isOpen = chatEl.style.display === 'block';
+  let chatEl = document.getElementById(`chat-${proposalId}`);
+  let isOpen = chatEl.style.display === 'block';
   // Close all chats first
   document.querySelectorAll('.chat-wrap').forEach(c => c.style.display = 'none');
   if (chatInterval) clearInterval(chatInterval);
@@ -674,15 +674,15 @@ function closeChat(proposalId, e) {
 }
 
 async function loadMsgs(proposalId) {
-  const msgs = await db(`messages?proposal_id=eq.${proposalId}&order=created_at.asc&select=*`);
-  const container = document.getElementById(`msgs-${proposalId}`);
+  let msgs = await db(`messages?proposal_id=eq.${proposalId}&order=created_at.asc&select=*`);
+  let container = document.getElementById(`msgs-${proposalId}`);
   if (!container) return;
   if (!msgs.length) {
     container.innerHTML = '<div style="text-align:center;color:var(--gray-3);font-size:13px;padding:12px">Empieza la conversación</div>';
     return;
   }
   container.innerHTML = msgs.map(m => {
-    const isMine = m.sender_id === currentUser.id;
+    let isMine = m.sender_id === currentUser.id;
     return `<div class="msg ${isMine ? 'sent' : 'received'}">
       <div class="bubble">${m.content}</div>
       <div class="msg-time">${timeAgo(m.created_at)}</div>
@@ -692,8 +692,8 @@ async function loadMsgs(proposalId) {
 }
 
 async function sendMsg(proposalId) {
-  const input = document.getElementById(`input-${proposalId}`);
-  const content = input.value.trim();
+  let input = document.getElementById(`input-${proposalId}`);
+  let content = input.value.trim();
   if (!content) return;
   input.value = '';
   await dbPost('messages', {
@@ -710,7 +710,7 @@ function applyLang() {
   if(window.CPR) CPR.applyLang();
   document.querySelector('.lang-btn').textContent = lang === 'es' ? 'Español' : 'English';
   document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.dataset.i18n;
+    let key = el.dataset.i18n;
     if (T[key]) el.textContent = T[key][lang];
   });
   document.querySelectorAll('[data-placeholder-es]').forEach(el => {
@@ -728,7 +728,7 @@ function toggleLang() {
 
 // Check existing session — sessionStorage first, then Supabase Auth
 async function checkSession() {
-  const stored = sessionStorage.getItem('homeowner_data');
+  let stored = sessionStorage.getItem('homeowner_data');
   if (stored) {
     currentUser = JSON.parse(stored);
     showDashboard();
@@ -736,10 +736,10 @@ async function checkSession() {
   }
   // Try Supabase Auth session
   try {
-    const { data } = await sb.auth.getSession();
+    let { data } = await sb.auth.getSession();
     if (data?.session?.user?.email) {
-      const email = data.session.user.email;
-      const res = await db(`homeowners?email=eq.${encodeURIComponent(email)}&select=*`);
+      let email = data.session.user.email;
+      let res = await db(`homeowners?email=eq.${encodeURIComponent(email)}&select=*`);
       if (res?.[0]) {
         currentUser = res[0];
         sessionStorage.setItem('homeowner_id', currentUser.id);
@@ -755,7 +755,7 @@ checkSession();
 
 async function markComplete(jobId, proposalId, e) {
   e.stopPropagation();
-  const modal = document.getElementById('confirm-modal');
+  let modal = document.getElementById('confirm-modal');
   document.querySelector('.confirm-box h3').textContent = '✔ Marcar trabajo como completado';
   document.querySelector('.confirm-box p').textContent = '¿Confirmas que el trabajo fue completado satisfactoriamente? Esta acción liberará el pago al contratista.';
   document.querySelector('.btn-confirm-yes').textContent = 'Sí, confirmar';
@@ -777,12 +777,12 @@ async function markComplete(jobId, proposalId, e) {
     });
     await loadJobs();
     // Send job_completed emails to both parties
-    const proposals2 = await db(`proposals?id=eq.${proposalId}&select=*`);
-    const jobs2 = await db(`jobs?id=eq.${jobId}&select=title,budget`);
+    let proposals2 = await db(`proposals?id=eq.${proposalId}&select=*`);
+    let jobs2 = await db(`jobs?id=eq.${jobId}&select=title,budget`);
     if (proposals2?.[0] && jobs2?.[0]) {
-      const p2 = proposals2[0]; const j2 = jobs2[0];
-      const contractors2 = await db(`contractors?id=eq.${p2.contractor_id}&select=name,email`);
-      const homeownerData = JSON.parse(sessionStorage.getItem('homeowner_data') || '{}');
+      let p2 = proposals2[0]; const j2 = jobs2[0];
+      let contractors2 = await db(`contractors?id=eq.${p2.contractor_id}&select=name,email`);
+      let homeownerData = JSON.parse(sessionStorage.getItem('homeowner_data') || '{}');
       sendEmail('job_completed', {
         homeowner_email: currentUser?.email || homeownerData.email,
         contractor_email: contractors2?.[0]?.email,
@@ -792,15 +792,15 @@ async function markComplete(jobId, proposalId, e) {
       });
     }
     // Show success toast
-    const toast = document.createElement('div');
+    let toast = document.createElement('div');
     toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#10B981;color:white;padding:14px 24px;border-radius:10px;font-weight:600;font-size:15px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.2)';
     toast.textContent = '✅ Trabajo completado. Pago liberado al contratista.';
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 4000);
     // Auto-open review modal
-    const acceptedProposal = await db(`proposals?id=eq.${proposalId}&select=contractor_id,job_id`);
+    let acceptedProposal = await db(`proposals?id=eq.${proposalId}&select=contractor_id,job_id`);
     if (acceptedProposal?.[0]) {
-      const jobData = await db(`jobs?id=eq.${jobId}&select=title`);
+      let jobData = await db(`jobs?id=eq.${jobId}&select=title`);
       setTimeout(() => openReview(jobId, acceptedProposal[0].contractor_id, jobData?.[0]?.title || ''), 600);
     }
   };
@@ -831,11 +831,11 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 async function submitReview() {
   if (!reviewRating) { alert(lang === 'en' ? 'Please select a rating.' : 'Por favor selecciona una calificación.'); return; }
-  const comment = document.getElementById('review-comment').value.trim() || null;
+  let comment = document.getElementById('review-comment').value.trim() || null;
   await dbPost('reviews', { job_id: reviewJobId, contractor_id: reviewContractorId, homeowner_id: currentUser.id, rating: reviewRating, comment });
   // Send email to contractor
-  const jobData = await db(`jobs?id=eq.${reviewJobId}&select=title`);
-  const contractorData = await db(`contractors?id=eq.${reviewContractorId}&select=email`);
+  let jobData = await db(`jobs?id=eq.${reviewJobId}&select=title`);
+  let contractorData = await db(`contractors?id=eq.${reviewContractorId}&select=email`);
   if (jobData?.[0] && contractorData?.[0]) {
     sendEmail('review_received', {
       contractor_email: contractorData[0].email,
@@ -845,7 +845,7 @@ async function submitReview() {
     });
   }
   closeReview();
-  const toast = document.createElement('div');
+  let toast = document.createElement('div');
   toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#10B981;color:white;padding:14px 24px;border-radius:10px;font-weight:600;font-size:15px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.2)';
   toast.textContent = lang === 'en' ? '⭐ Review submitted!' : '⭐ ¡Reseña enviada!';
   document.body.appendChild(toast); setTimeout(() => toast.remove(), 3000);
@@ -865,23 +865,23 @@ function closePostJobModal() {
 }
 async function submitPostJob(e) {
   e.preventDefault();
-  const btn = document.getElementById('btn-post-submit');
-  const errorEl = document.getElementById('post-job-error');
+  let btn = document.getElementById('btn-post-submit');
+  let errorEl = document.getElementById('post-job-error');
   errorEl.style.display = 'none';
   btn.disabled = true;
   btn.textContent = lang === 'en' ? 'Improving your description...' : 'Mejorando tu descripción...';
-  const form = e.target;
+  let form = e.target;
   let jobTitle = form.title.value;
   let jobDesc = form.description.value;
   try {
-    const rr = await fetch('/.netlify/functions/rewrite-job', {
+    let rr = await fetch('/.netlify/functions/rewrite-job', {
       method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ title: jobTitle, description: jobDesc, language: lang })
     });
     if (rr.ok) { const rw = await rr.json(); if (rw.title) jobTitle = rw.title; if (rw.description) jobDesc = rw.description; }
   } catch(e) {}
   btn.textContent = lang === 'en' ? 'Publishing...' : 'Publicando...';
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/jobs`, {
+  let res = await fetch(`${SUPABASE_URL}/rest/v1/jobs`, {
     method: 'POST',
     headers: {'Content-Type':'application/json','apikey':SUPABASE_KEY,'Authorization':`Bearer ${SUPABASE_KEY}`,'Prefer':'return=minimal'},
     body: JSON.stringify({ homeowner_id: currentUser.id, title: jobTitle, description: jobDesc, trade_needed: form.trade_needed.value, city: form.city.value })
@@ -890,7 +890,7 @@ async function submitPostJob(e) {
     document.getElementById('post-job-form').style.display = 'none';
     document.getElementById('post-job-success').classList.add('show');
   } else {
-    const err = await res.json().catch(()=>({}));
+    let err = await res.json().catch(()=>({}));
     errorEl.textContent = err.message || 'Algo salió mal. Intenta de nuevo.';
     errorEl.style.display = 'block';
     btn.disabled = false;

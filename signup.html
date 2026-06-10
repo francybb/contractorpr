@@ -471,12 +471,12 @@ footer a{color:var(--blue);font-weight:500}
 
 // ── Language persistence ──────────────────────────────
 (function() {
-  const lang = localStorage.getItem('cpr_lang') || 'es';
+  let lang = localStorage.getItem('cpr_lang') || 'es';
   function applyPageLang(l) {
-    const btn = document.querySelector('.lang-btn');
+    let btn = document.querySelector('.lang-btn');
     if (btn) btn.textContent = l === 'es' ? 'Español' : 'English';
     document.querySelectorAll('[data-es][data-en]').forEach(el => {
-      const val = l === 'es' ? el.dataset.es : el.dataset.en;
+      let val = l === 'es' ? el.dataset.es : el.dataset.en;
       if (!val) return;
       if (el.tagName === 'H1' || el.tagName === 'H2' || val.includes('<')) el.innerHTML = val;
       else el.textContent = val;
@@ -505,19 +505,19 @@ function switchTab(type) {
 
 async function submitContractor(e) {
   e.preventDefault();
-  const btn = document.getElementById('btn-contractor');
-  const errorEl = document.getElementById('error-msg');
+  let btn = document.getElementById('btn-contractor');
+  let errorEl = document.getElementById('error-msg');
   errorEl.classList.remove('show');
-  const pass = e.target.password.value;
-  const pass2 = e.target.password2.value;
+  let pass = e.target.password.value;
+  let pass2 = e.target.password2.value;
   if (pass !== pass2) { errorEl.textContent = 'Las contraseñas no coinciden.'; errorEl.classList.add('show'); return; }
   btn.disabled = true; btn.textContent = 'Enviando...';
   try {
     // Create auth user
-    const { data: authData, error: authErr } = await sb.auth.signUp({ email: e.target.email.value, password: pass });
+    let { data: authData, error: authErr } = await sb.auth.signUp({ email: e.target.email.value, password: pass });
     if (authErr) throw new Error(authErr.message);
     // Insert contractor profile
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/contractors`, {
+    let res = await fetch(`${SUPABASE_URL}/rest/v1/contractors`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=minimal' },
       body: JSON.stringify({ name: e.target.name.value, email: e.target.email.value, phone: e.target.phone.value, trade: e.target.trade.value, city: e.target.city.value, license_number: e.target.license_number.value, description: e.target.description.value })
@@ -534,17 +534,17 @@ async function submitContractor(e) {
 
 async function submitHomeowner(e) {
   e.preventDefault();
-  const btn = document.getElementById('btn-homeowner');
-  const errorEl = document.getElementById('error-msg');
+  let btn = document.getElementById('btn-homeowner');
+  let errorEl = document.getElementById('error-msg');
   errorEl.classList.remove('show');
-  const pass = e.target.password.value;
-  const pass2 = e.target.password2.value;
+  let pass = e.target.password.value;
+  let pass2 = e.target.password2.value;
   if (pass !== pass2) { errorEl.textContent = 'Las contraseñas no coinciden.'; errorEl.classList.add('show'); return; }
   btn.disabled = true; btn.textContent = 'Enviando...';
   try {
-    const { data: authData, error: authErr } = await sb.auth.signUp({ email: e.target.email.value, password: pass });
+    let { data: authData, error: authErr } = await sb.auth.signUp({ email: e.target.email.value, password: pass });
     if (authErr) throw new Error(authErr.message);
-    const res = await fetch(`${SUPABASE_URL}/rest/v1/homeowners`, {
+    let res = await fetch(`${SUPABASE_URL}/rest/v1/homeowners`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=minimal' },
       body: JSON.stringify({ name: e.target.name.value, email: e.target.email.value, phone: e.target.phone.value, city: e.target.city.value })
@@ -574,7 +574,7 @@ function applyLang(){
   if(window.CPR) CPR.applyLang();
   
   document.querySelectorAll('[data-i18n]').forEach(el=>{
-    const k=el.dataset.i18n;
+    let k=el.dataset.i18n;
     if(T[k]){if(el.tagName==='H1'||T[k][lang].includes('<em>'))el.innerHTML=T[k][lang];else el.textContent=T[k][lang];}
   });
 }

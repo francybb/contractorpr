@@ -222,12 +222,12 @@ footer a{color:var(--blue);font-weight:500}
 
 // ── Language persistence ──────────────────────────────
 (function() {
-  const lang = localStorage.getItem('cpr_lang') || 'es';
+  let lang = localStorage.getItem('cpr_lang') || 'es';
   function applyPageLang(l) {
-    const btn = document.querySelector('.lang-btn');
+    let btn = document.querySelector('.lang-btn');
     if (btn) btn.textContent = l === 'es' ? 'Español' : 'English';
     document.querySelectorAll('[data-es][data-en]').forEach(el => {
-      const val = l === 'es' ? el.dataset.es : el.dataset.en;
+      let val = l === 'es' ? el.dataset.es : el.dataset.en;
       if (!val) return;
       if (el.tagName === 'H1' || el.tagName === 'H2' || val.includes('<')) el.innerHTML = val;
       else el.textContent = val;
@@ -290,14 +290,14 @@ const T = {
 };
 
 async function db(path) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+  let res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
     headers: { 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}` }
   });
   return res.json();
 }
 
 async function dbPost(table, data) {
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+  let res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': `Bearer ${SUPABASE_KEY}`, 'Prefer': 'return=representation' },
     body: JSON.stringify(data)
@@ -306,7 +306,7 @@ async function dbPost(table, data) {
 }
 
 function timeAgo(d) {
-  const diff = (Date.now() - new Date(d + (d.includes('Z') ? '' : 'Z'))) / 1000;
+  let diff = (Date.now() - new Date(d + (d.includes('Z') ? '' : 'Z'))) / 1000;
   if (diff < 60) return 'ahora';
   if (diff < 3600) return `hace ${Math.floor(diff/60)} min`;
   if (diff < 86400) return `hace ${Math.floor(diff/3600)}h`;
@@ -314,21 +314,21 @@ function timeAgo(d) {
 }
 
 async function login() {
-  const email = document.getElementById('login-email').value.trim();
-  const password = document.getElementById('login-password').value;
-  const btn = document.getElementById('login-btn');
-  const errorEl = document.getElementById('login-error');
+  let email = document.getElementById('login-email').value.trim();
+  let password = document.getElementById('login-password').value;
+  let btn = document.getElementById('login-btn');
+  let errorEl = document.getElementById('login-error');
   errorEl.classList.remove('show');
   if (!email || !password) { errorEl.textContent = lang === 'en' ? 'Enter your email and password.' : 'Ingresa tu correo y contraseña.'; errorEl.classList.add('show'); return; }
   btn.disabled = true; btn.textContent = lang === 'en' ? 'Verifying...' : 'Verificando...';
-  const { data: authData, error: authErr } = await sb.auth.signInWithPassword({ email, password });
+  let { data: authData, error: authErr } = await sb.auth.signInWithPassword({ email, password });
   if (authErr) {
     errorEl.textContent = lang === 'en' ? 'Incorrect email or password.' : 'Correo o contraseña incorrectos.';
     errorEl.classList.add('show');
     btn.disabled = false; btn.textContent = T.loginBtn[lang];
     return;
   }
-  const data = await db(`contractors?email=eq.${encodeURIComponent(email)}&select=*`);
+  let data = await db(`contractors?email=eq.${encodeURIComponent(email)}&select=*`);
   if (!data || data.length === 0) {
     errorEl.textContent = lang === 'en' ? 'No contractor account found for this email.' : 'No encontramos una cuenta de contratista con ese correo.';
     errorEl.classList.add('show');
@@ -349,17 +349,17 @@ function logout() {
   currentUser = null;
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
-  const lb0 = document.getElementById('logout-btn'); if(lb0) lb0.style.display = 'none';
+  let lb0 = document.getElementById('logout-btn'); if(lb0) lb0.style.display = 'none';
 }
 
 async function showDashboard() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
-  const lb1 = document.getElementById('logout-btn'); if(lb1) { lb1.style.display = 'block'; lb1.textContent = T.logout[lang]; }
+  let lb1 = document.getElementById('logout-btn'); if(lb1) { lb1.style.display = 'block'; lb1.textContent = T.logout[lang]; }
   document.getElementById('greeting').textContent = `${lang === 'en' ? 'Hi' : 'Hola'}, ${currentUser.name.split(' ')[0]} 👋`;
   document.getElementById('greeting-sub').textContent = `${currentUser.trade} · ${currentUser.email}`;
-  const statusText = currentUser.status === 'active' ? T.active[lang] : T.pendingApproval[lang];
-  const statusBadge = currentUser.status === 'active' ? 'badge-active' : 'badge-pending';
+  let statusText = currentUser.status === 'active' ? T.active[lang] : T.pendingApproval[lang];
+  let statusBadge = currentUser.status === 'active' ? 'badge-active' : 'badge-pending';
   document.getElementById('profile-card').innerHTML = `
     <div class="profile-avatar">${currentUser.name[0].toUpperCase()}</div>
     <div class="profile-info">
@@ -377,15 +377,15 @@ async function showDashboard() {
   loadRating(currentUser.id);
   applyLang();
   if(window.CPR) CPR.injectNav('dashboard-contractor');
-  const lb2 = document.getElementById('logout-btn'); if(lb2) lb2.textContent = T.logout[lang];
+  let lb2 = document.getElementById('logout-btn'); if(lb2) lb2.textContent = T.logout[lang];
   await loadProposals();
 }
 
 async function loadProposals() {
-  const proposals = await db(`proposals?contractor_id=eq.${currentUser.id}&order=created_at.desc&select=*`);
+  let proposals = await db(`proposals?contractor_id=eq.${currentUser.id}&order=created_at.desc&select=*`);
 
-  const accepted = proposals.filter(p => p.status === 'accepted').length;
-  const pending = proposals.filter(p => p.status === 'pending').length;
+  let accepted = proposals.filter(p => p.status === 'accepted').length;
+  let pending = proposals.filter(p => p.status === 'pending').length;
   document.getElementById('stat-sent').textContent = proposals.length;
   document.getElementById('stat-accepted').textContent = accepted;
   document.getElementById('stat-pending').textContent = pending;
@@ -402,14 +402,14 @@ async function loadProposals() {
     return;
   }
 
-  const jobIds = [...new Set(proposals.map(p => p.job_id))];
-  const jobs = await db(`jobs?id=in.(${jobIds.join(',')})&select=id,title,city,trade_needed,status`);
-  const jobMap = {};
+  let jobIds = [...new Set(proposals.map(p => p.job_id))];
+  let jobs = await db(`jobs?id=in.(${jobIds.join(',')})&select=id,title,city,trade_needed,status`);
+  let jobMap = {};
   jobs.forEach(j => jobMap[j.id] = j);
 
-  const activeProps = proposals.filter(p => p.status === 'accepted');
-  const pendingProps = proposals.filter(p => p.status === 'pending');
-  const completedProps = proposals.filter(p => p.status === 'completed');
+  let activeProps = proposals.filter(p => p.status === 'accepted');
+  let pendingProps = proposals.filter(p => p.status === 'pending');
+  let completedProps = proposals.filter(p => p.status === 'completed');
 
   let html = '';
 
@@ -440,13 +440,13 @@ async function loadProposals() {
 }
 
 function renderPropRow(p, job, status) {
-  const isActive = status === 'accepted';
-  const isCompleted = status === 'completed';
-  const statusLabel = isActive ? T.statusAccepted[lang] : isCompleted ? T.statusCompleted[lang] : T.statusPending[lang];
-  const statusClass = isActive ? 'prop-accepted' : isCompleted ? 'prop-accepted' : 'prop-pending';
-  const rowClass = isActive ? 'proposal-row active-job' : isCompleted ? 'proposal-row' : 'proposal-row';
-  const rowStyle = isCompleted ? 'border-color:var(--gray-3)' : '';
-  const payout = p.price ? (parseFloat(p.price) * 0.90).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : null;
+  let isActive = status === 'accepted';
+  let isCompleted = status === 'completed';
+  let statusLabel = isActive ? T.statusAccepted[lang] : isCompleted ? T.statusCompleted[lang] : T.statusPending[lang];
+  let statusClass = isActive ? 'prop-accepted' : isCompleted ? 'prop-accepted' : 'prop-pending';
+  let rowClass = isActive ? 'proposal-row active-job' : isCompleted ? 'proposal-row' : 'proposal-row';
+  let rowStyle = isCompleted ? 'border-color:var(--gray-3)' : '';
+  let payout = p.price ? (parseFloat(p.price) * 0.90).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) : null;
   return `
   <div class="${rowClass}" style="${rowStyle}">
     <div class="prop-row-header">
@@ -495,23 +495,23 @@ function renderPropRow(p, job, status) {
 
 async function autoTranslateJobs(proposals, jobMap) {
   if (lang === 'es') return; // only translate when UI is English
-  const items = proposals
+  let items = proposals
     .filter(p => jobMap[p.job_id] && jobMap[p.job_id].title)
     .map(p => ({ id: p.id, title: jobMap[p.job_id].title, message: p.message || '' }));
   if (!items.length) return;
   try {
-    const res = await fetch('/.netlify/functions/translate', {
+    let res = await fetch('/.netlify/functions/translate', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ items, targetLang: 'en' })
     });
-    const data = await res.json();
+    let data = await res.json();
     if (!data.results) return;
     items.forEach(item => {
-      const r = data.results[item.id];
+      let r = data.results[item.id];
       if (!r) return;
-      const titleEl = document.getElementById(`title-${item.id}`);
-      const transEl = document.getElementById(`translate-${item.id}`);
+      let titleEl = document.getElementById(`title-${item.id}`);
+      let transEl = document.getElementById(`translate-${item.id}`);
       if (titleEl) titleEl.textContent = r.title;
       if (transEl && r.message) {
         transEl.style.display = 'block';
@@ -523,8 +523,8 @@ async function autoTranslateJobs(proposals, jobMap) {
 
 async function toggleChat(proposalId, e) {
   e.stopPropagation();
-  const chatEl = document.getElementById(`chat-${proposalId}`);
-  const isOpen = chatEl.style.display === 'block';
+  let chatEl = document.getElementById(`chat-${proposalId}`);
+  let isOpen = chatEl.style.display === 'block';
   document.querySelectorAll('.chat-wrap').forEach(c => c.style.display = 'none');
   if (chatInterval) clearInterval(chatInterval);
   if (!isOpen) {
@@ -541,15 +541,15 @@ function closeChat(proposalId, e) {
 }
 
 async function loadMsgs(proposalId) {
-  const msgs = await db(`messages?proposal_id=eq.${proposalId}&order=created_at.asc&select=*`);
-  const container = document.getElementById(`msgs-${proposalId}`);
+  let msgs = await db(`messages?proposal_id=eq.${proposalId}&order=created_at.asc&select=*`);
+  let container = document.getElementById(`msgs-${proposalId}`);
   if (!container) return;
   if (!msgs.length) {
     container.innerHTML = '<div style="text-align:center;color:var(--gray-3);font-size:13px;padding:12px">' + T.startConvo[lang] + '</div>';
     return;
   }
   container.innerHTML = msgs.map(m => {
-    const isMine = m.sender_id === currentUser.id;
+    let isMine = m.sender_id === currentUser.id;
     return `<div class="msg ${isMine ? 'sent' : 'received'}">
       <div class="bubble">${m.content}</div>
       <div class="msg-time">${timeAgo(m.created_at)}</div>
@@ -559,8 +559,8 @@ async function loadMsgs(proposalId) {
 }
 
 async function sendMsg(proposalId) {
-  const input = document.getElementById(`input-${proposalId}`);
-  const content = input.value.trim();
+  let input = document.getElementById(`input-${proposalId}`);
+  let content = input.value.trim();
   if (!content) return;
   input.value = '';
   await dbPost('messages', {
@@ -573,13 +573,13 @@ async function sendMsg(proposalId) {
 }
 
 async function checkSession() {
-  const stored = sessionStorage.getItem('contractor_data');
+  let stored = sessionStorage.getItem('contractor_data');
   if (stored) { currentUser = JSON.parse(stored); showDashboard(); return; }
   try {
-    const { data } = await sb.auth.getSession();
+    let { data } = await sb.auth.getSession();
     if (data?.session?.user?.email) {
-      const email = data.session.user.email;
-      const res = await db(`contractors?email=eq.${encodeURIComponent(email)}&select=*`);
+      let email = data.session.user.email;
+      let res = await db(`contractors?email=eq.${encodeURIComponent(email)}&select=*`);
       if (res?.[0]) {
         currentUser = res[0];
         sessionStorage.setItem('contractor_id', currentUser.id);
@@ -595,12 +595,12 @@ checkSession();
 
 async function loadRating(contractorId) {
   try {
-    const reviews = await db(`reviews?contractor_id=eq.${contractorId}&select=rating`);
-    const el = document.getElementById('contractor-rating');
+    let reviews = await db(`reviews?contractor_id=eq.${contractorId}&select=rating`);
+    let el = document.getElementById('contractor-rating');
     if (!el) return;
     if (!reviews || reviews.length === 0) { el.textContent = lang === 'en' ? 'No reviews yet' : 'Sin reseñas aún'; el.style.color = 'var(--gray-3)'; return; }
-    const avg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
-    const stars = '⭐'.repeat(Math.round(avg)) + '☆'.repeat(5 - Math.round(avg));
+    let avg = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length;
+    let stars = '⭐'.repeat(Math.round(avg)) + '☆'.repeat(5 - Math.round(avg));
     el.textContent = `${stars} ${avg.toFixed(1)} (${reviews.length} ${reviews.length === 1 ? 'reseña' : 'reseñas'})`;
     el.style.color = 'var(--gold)';
   } catch(e) { console.log('Rating error:', e); }
@@ -611,7 +611,7 @@ function applyLang() {
   if(window.CPR) CPR.applyLang();
   document.querySelector('.lang-btn').textContent = lang === 'es' ? 'Español' : 'English';
   document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.dataset.i18n;
+    let key = el.dataset.i18n;
     if (T[key]) el.textContent = T[key][lang];
   });
   document.querySelectorAll('[data-placeholder-es]').forEach(el => {
@@ -629,14 +629,14 @@ function toggleLang() {
 
 function togglePriceForm(proposalId, e) {
   e.stopPropagation();
-  const form = document.getElementById(`price-form-${proposalId}`);
+  let form = document.getElementById(`price-form-${proposalId}`);
   form.classList.toggle('show');
 }
 
 async function submitPrice(proposalId, e) {
   e.stopPropagation();
-  const input = document.getElementById(`price-input-${proposalId}`);
-  const price = parseFloat(input.value);
+  let input = document.getElementById(`price-input-${proposalId}`);
+  let price = parseFloat(input.value);
   if (!price || price <= 0) { alert('Ingresa un precio válido.'); return; }
   
   await fetch(`${SUPABASE_URL}/rest/v1/proposals?id=eq.${proposalId}`, {
