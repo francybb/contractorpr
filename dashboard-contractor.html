@@ -382,9 +382,11 @@ async function login() {
 }
 
 function logout() {
+  if(window._sb) window._sb.auth.signOut();
   sessionStorage.removeItem('contractor_id');
   sessionStorage.removeItem('contractor_name');
   sessionStorage.removeItem('contractor_data');
+  localStorage.removeItem('cpr_user_type');
   currentUser = null;
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';

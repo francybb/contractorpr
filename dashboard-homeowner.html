@@ -458,8 +458,10 @@ async function login() {
 }
 
 function logout() {
+  if(window._sb) window._sb.auth.signOut();
   sessionStorage.removeItem('homeowner_id');
   sessionStorage.removeItem('homeowner_data');
+  localStorage.removeItem('cpr_user_type');
   currentUser = null;
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';

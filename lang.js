@@ -12,7 +12,6 @@ CPR.lang = localStorage.getItem('cpr_lang') || 'es';
 CPR.translations = {
   // Navigation
   nav_home:           { es: 'Inicio',             en: 'Home' },
-  nav_home:           { es: 'Inicio',              en: 'Home' },
   nav_jobs:           { es: 'Ver Trabajos',        en: 'View Jobs' },
   nav_signup:         { es: 'Registrarse',         en: 'Sign up' },
   nav_login:          { es: 'Iniciar sesión',      en: 'Log in' },
@@ -422,6 +421,9 @@ CPR.buildNav = async function(activePage, knownUser) {
     : storedType === 'contractor' ? 'dashboard-contractor.html'
     : storedType === 'homeowner' ? 'dashboard-homeowner.html'
     : 'dashboard-homeowner.html';
+
+  // Home goes to dashboard when logged in, landing page when logged out
+  const homeUrl = (user || storedType) ? dashUrl : 'index.html';
 
   const langDropdown = '<select id="lang-dropdown" class="cpr-lang-select" onchange="CPR.setLang(this.value)"><option value="es">Español</option><option value="en">English</option></select>';
 

@@ -195,8 +195,8 @@ function toggleLang(){
   applyLang();
 }
 
-const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoZHN2eWxodHp1dWxlYWljZWhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDc3MTQsImV4cCI6MjA5NTgyMzcxNH0.ZVuC49Fz8f5dDzYRutq07YpnpSxmrewQQ8UHn49cWC0';
+var SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
+var SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoZHN2eWxodHp1dWxlYWljZWhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDc3MTQsImV4cCI6MjA5NTgyMzcxNH0.ZVuC49Fz8f5dDzYRutq07YpnpSxmrewQQ8UHn49cWC0';
 let allJobs = [];
 
 function timeAgo(dateStr) {
@@ -262,6 +262,7 @@ async function loadJobs() {
 applyLang();
 loadJobs();
 if(window.CPR) CPR.injectNav("jobs");
+window.addEventListener('langchange', function() { loadJobs(); });
 </script>
 </body>
 </html>
