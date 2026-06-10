@@ -15,7 +15,7 @@ CPR.translations = {
   nav_jobs:           { es: 'Ver Trabajos',        en: 'View Jobs' },
   nav_signup:         { es: 'Registrarse',         en: 'Sign up' },
   nav_login:          { es: 'Iniciar sesión',      en: 'Log in' },
-  nav_dashboard:      { es: 'Dashboard',           en: 'Dashboard' },
+  nav_dashboard:      { es: 'Panel',              en: 'Dashboard' },
   nav_logout:         { es: 'Cerrar sesión',       en: 'Log out' },
   nav_back_home:      { es: '← Volver al inicio',  en: '← Back to home' },
   nav_post_job:       { es: 'Publicar trabajo',    en: 'Post a job' },
@@ -414,27 +414,25 @@ CPR.buildNav = async function(activePage, knownUser) {
 
   const logoHtml = '<a href="index.html" class="cpr-logo"><div class="cpr-logo-box">C</div>ContractingPR</a>';
 
-  // Use stored type from localStorage for immediate nav (no async lookup needed)
+  // Use stored type from localStorage as reliable fallback (no async failure risk)
   const storedType = localStorage.getItem('cpr_user_type');
+  const isLoggedIn = !!(user || storedType);
   const dashUrl = user
     ? (user.type === 'homeowner' ? 'dashboard-homeowner.html' : 'dashboard-contractor.html')
     : storedType === 'contractor' ? 'dashboard-contractor.html'
     : storedType === 'homeowner' ? 'dashboard-homeowner.html'
     : 'dashboard-homeowner.html';
 
-  // Home goes to dashboard when logged in, landing page when logged out
-  const homeUrl = (user || storedType) ? dashUrl : 'index.html';
-
   const langDropdown = '<select id="lang-dropdown" class="cpr-lang-select" onchange="CPR.setLang(this.value)"><option value="es">Español</option><option value="en">English</option></select>';
 
-  const authLink = user
+  // Use storedType as fallback so nav shows correct state even if DB query is slow/fails
+  const authLink = isLoggedIn
     ? '<button onclick="CPR.logout()" class="cpr-nav-btn-ghost">' + CPR.t('nav_logout') + '</button>'
     : '<a href="dashboard-homeowner.html" class="cpr-nav-btn">' + CPR.t('nav_login') + '</a>';
 
   const navHtml = '<nav class="cpr-nav"><div class="cpr-nav-inner">' +
     logoHtml +
     '<div class="cpr-nav-right">' +
-      '<a href="' + homeUrl + '" class="cpr-nav-link">' + CPR.t('nav_home') + '</a>' +
       '<a href="jobs.html" class="cpr-nav-link">' + CPR.t('nav_jobs') + '</a>' +
       '<a href="' + dashUrl + '" class="cpr-nav-link">' + CPR.t('nav_dashboard') + '</a>' +
       authLink +
