@@ -326,28 +326,20 @@ CPR.SUPABASE_PK = SUPABASE_PK;
 // Get current Supabase session
 CPR.getSession = async function() {
   try {
-    // Supabase v2 stores session under this key
-    const stored = localStorage.getItem('sb-shdsvylhtzuuleaicehe-auth-token');
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      if (parsed?.access_token) return parsed;
-    }
-    // Also try the new format
+    // Try localStorage first (fastest, no network)
     for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i);
-      if (key && key.includes('supabase') && key.includes('auth')) {
+      let k = localStorage.key(i);
+      if (k && k.includes('supabase') && k.includes('auth')) {
         try {
-          const val = JSON.parse(localStorage.getItem(key));
-          if (val?.access_token) return val;
-          if (val?.session?.access_token) return val.session;
+          let v = JSON.parse(localStorage.getItem(k));
+          if (v?.access_token) return v;
+          if (v?.session?.access_token) return v.session;
         } catch(e) {}
       }
     }
-    // Try getting from supabase client directly
-    if (window.supabase) {
-      const { createClient } = supabase;
-      let sb = createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK);
-      const { data } = await sb.auth.getSession();
+    // Fall back to reusing existing sb client
+    if (window._sb) {
+      let { data } = await window._sb.auth.getSession();
       if (data?.session) return data.session;
     }
   } catch(e) {}
