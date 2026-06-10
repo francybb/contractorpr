@@ -214,6 +214,17 @@ footer a{color:var(--blue);font-weight:500}
   .review-box{padding:20px}
   .confirm-box{padding:20px;margin:0 12px}
 }
+
+.type-selector{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
+.type-btn{border:1.5px solid var(--gray-2);border-radius:var(--radius);padding:16px 12px;cursor:pointer;background:white;text-align:center;transition:all 0.2s;outline:none}
+.type-btn:hover{border-color:var(--blue);background:#E6F1FB}
+.type-btn.selected{border-color:var(--blue);background:#E6F1FB}
+.type-btn .type-icon{font-size:22px;margin-bottom:6px;display:block}
+.type-btn .type-label{font-size:13px;font-weight:600;color:var(--ink);display:block}
+.type-btn .type-sub{font-size:11px;color:var(--gray-3);margin-top:2px;display:block}
+.type-divider{border:none;border-top:1px solid var(--gray-2);margin:16px 0}
+.login-fields{display:none}
+.login-fields.visible{display:block}
 </style>
 </head>
 <body>
@@ -224,23 +235,36 @@ footer a{color:var(--blue);font-weight:500}
 <!-- LOGIN -->
 <div class="login-wrap" id="login-screen">
   <div class="login-card">
-    <div class="login-icon">🏠</div>
     <h2 data-i18n="loginTitle">Mi Panel</h2>
-    <p data-i18n="loginSub">Ingresa tu correo para ver tus trabajos y propuestas</p>
-    <div id="login-error" class="error-msg"></div>
-    <div class="field">
-      <label data-i18n="emailLabel">Correo electrónico</label>
-      <input type="email" id="login-email" placeholder="tu@correo.com" data-i18n-ph="email_ph" data-placeholder-es="tu@correo.com" data-placeholder-en="your@email.com" onkeydown="if(event.key==='Enter')login()">
+    <p data-i18n="loginSub">¿Cómo vas a ingresar hoy?</p>
+    <div class="type-selector">
+      <button class="type-btn" id="type-client" onclick="selectType('client')" type="button">
+        <span class="type-icon">🏠</span>
+        <span class="type-label" data-i18n="typeClient">Soy Cliente</span>
+        <span class="type-sub" data-i18n="typeClientSub">Publicar trabajos</span>
+      </button>
+      <button class="type-btn" id="type-contractor" onclick="selectType('contractor')" type="button">
+        <span class="type-icon">🔨</span>
+        <span class="type-label" data-i18n="typeContractor">Soy Contratista</span>
+        <span class="type-sub" data-i18n="typeContractorSub">Encontrar trabajo</span>
+      </button>
     </div>
-    <div class="field">
-      <label data-i18n="passwordLabel">Contraseña</label>
-      <input type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
-    </div>
-    <button class="btn-primary" onclick="login()" id="login-btn" data-i18n="loginBtn">Entrar →</button>
-    <div class="login-footer">
-      <a href="reset-password.html" style="color:var(--blue);font-weight:500;font-size:13px" data-i18n="forgotPassword">¿Olvidaste tu contraseña?</a><br><br>
-      <span data-i18n="footerNoAccount">¿No tienes cuenta?</span> <a href="signup.html" data-i18n="footerSignup">Regístrate gratis</a><br>
-      <span data-i18n="footerContractor">¿Eres contratista?</span> <a href="dashboard-contractor.html" data-i18n="footerContractorLink">Panel de contratista →</a>
+    <hr class="type-divider">
+    <div class="login-fields" id="login-fields">
+      <div id="login-error" class="error-msg"></div>
+      <div class="field">
+        <label data-i18n="emailLabel">Correo electrónico</label>
+        <input type="email" id="login-email" placeholder="tu@correo.com" data-i18n-ph="email_ph" onkeydown="if(event.key==='Enter')login()">
+      </div>
+      <div class="field">
+        <label data-i18n="passwordLabel">Contraseña</label>
+        <input type="password" id="login-password" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
+      </div>
+      <button class="btn-primary" onclick="login()" id="login-btn" data-i18n="loginBtn">Entrar →</button>
+      <div class="login-footer">
+        <a href="reset-password.html" style="color:var(--blue);font-weight:500;font-size:13px" data-i18n="forgotPassword">¿Olvidaste tu contraseña?</a><br><br>
+        <span data-i18n="footerNoAccount">¿No tienes cuenta?</span> <a href="signup.html" data-i18n="footerSignup">Regístrate gratis</a>
+      </div>
     </div>
   </div>
 </div>
@@ -399,6 +423,18 @@ async function login() {
   let btn = document.getElementById('login-btn');
   let errorEl = document.getElementById('login-error');
   errorEl.classList.remove('show');
+  if (!selectedUserType) {
+    errorEl.innerHTML = lang === 'en' ? 'Please select whether you are a client or contractor.' : 'Por favor selecciona si eres cliente o contratista.';
+    errorEl.classList.add('show');
+    return;
+  }
+  // Redirect contractor to correct dashboard
+  if (selectedUserType === 'contractor') {
+    sessionStorage.setItem('pending_login_email', email);
+    sessionStorage.setItem('pending_login_password', password);
+    window.location.href = 'dashboard-contractor.html';
+    return;
+  }
   if (!email || !password) { errorEl.textContent = lang === 'en' ? 'Enter your email and password.' : 'Ingresa tu correo y contraseña.'; errorEl.classList.add('show'); return; }
   btn.disabled = true; btn.textContent = lang === 'en' ? 'Verifying...' : 'Verificando...';
   let { data: authData, error: authErr } = await sb.auth.signInWithPassword({ email, password });
@@ -761,6 +797,20 @@ async function checkSession() {
   } catch(e) {}
   applyLang();
 }
+
+let selectedUserType = null;
+
+function selectType(type) {
+  selectedUserType = type;
+  document.getElementById('type-client').classList.toggle('selected', type === 'client');
+  document.getElementById('type-contractor').classList.toggle('selected', type === 'contractor');
+  document.getElementById('login-fields').classList.add('visible');
+  document.getElementById('login-email').focus();
+  // Update login button text
+  const btn = document.getElementById('login-btn');
+  if (btn) btn.textContent = lang === 'en' ? 'Log in →' : 'Entrar →';
+}
+
 checkSession();
 window.addEventListener('langchange', function(e) {
   lang = e.detail.lang;

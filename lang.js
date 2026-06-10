@@ -200,6 +200,10 @@ CPR.translations = {
   opcional:           { es: 'opcional',                       en: 'optional' },
 
   // Dashboard keys (legacy key names used in dashboards)
+  typeClient:         { es: 'Soy Cliente',          en: 'I am a Client' },
+  typeClientSub:      { es: 'Publicar trabajos',    en: 'Post jobs' },
+  typeContractor:     { es: 'Soy Contratista',       en: 'I am a Contractor' },
+  typeContractorSub:  { es: 'Encontrar trabajo',     en: 'Find work' },
   loginTitle:         { es: 'Mi Panel',               en: 'My Dashboard' },
   loginTitleContractor: { es: 'Panel Contratista',    en: 'Contractor Dashboard' },
   loginSub:           { es: 'Ingresa tu correo para ver tus trabajos y propuestas', en: 'Enter your email to see your jobs and proposals' },
