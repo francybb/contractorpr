@@ -738,11 +738,11 @@ async function checkSession() {
     showDashboard();
     return;
   }
-  // Try Supabase Auth session
   try {
     let { data } = await sb.auth.getSession();
     if (data?.session?.user?.email) {
       let email = data.session.user.email;
+      // Verify this user is a homeowner
       let res = await db(`homeowners?email=eq.${encodeURIComponent(email)}&select=*`);
       if (res?.[0]) {
         currentUser = res[0];
@@ -751,11 +751,21 @@ async function checkSession() {
         showDashboard();
         return;
       }
+      // Not a homeowner - check if contractor and redirect
+      let cRes = await db(`contractors?email=eq.${encodeURIComponent(email)}&select=id`);
+      if (cRes?.[0]) {
+        window.location.href = 'dashboard-contractor.html';
+        return;
+      }
     }
   } catch(e) {}
   applyLang();
 }
 checkSession();
+window.addEventListener('langchange', function(e) {
+  lang = e.detail.lang;
+  applyLang();
+});
 
 async function markComplete(jobId, proposalId, e) {
   e.stopPropagation();
