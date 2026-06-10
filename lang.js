@@ -318,7 +318,7 @@ CPR.setLang = function(lang) {
 // ── Auth System ──────────────────────────────────────────────────
 
 const SUPABASE_URL = 'https://shdsvylhtzuuleaicehe.supabase.co';
-const SUPABASE_PK = 'sb_publishable_kdTAeplF4CWosV_gpC0yaw_8rvgSb3v';
+const SUPABASE_PK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNoZHN2eWxodHp1dWxlYWljZWhlIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAyNDc3MTQsImV4cCI6MjA5NTgyMzcxNH0.ZVuC49Fz8f5dDzYRutq07YpnpSxmrewQQ8UHn49cWC0';
 
 CPR.SUPABASE_URL = SUPABASE_URL;
 CPR.SUPABASE_PK = SUPABASE_PK;
