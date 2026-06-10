@@ -281,7 +281,7 @@ footer a{color:var(--blue);font-weight:500}
   <div class="dash-header">
     <div class="dash-greeting">
       <h1 id="greeting">Bienvenido</h1>
-      <p id="greeting-sub" data-i18n="greetingSub">Gestiona tus trabajos y propuestas</p>
+      <p id="greeting-sub">Gestiona tus trabajos y propuestas</p>
     </div>
     <button class="btn-post" onclick="openPostJobModal()" data-i18n="postBtn">+ Publicar nuevo trabajo</button>
   </div>
@@ -295,9 +295,9 @@ footer a{color:var(--blue);font-weight:500}
 
   <!-- Tabs -->
   <div class="portal-tabs">
-    <button class="ptab active" id="tab-open"   onclick="switchTab('open')"      data-i18n="tabOpen">Abiertos</button>
-    <button class="ptab"        id="tab-active"  onclick="switchTab('active')"    data-i18n="tabActive">En progreso</button>
-    <button class="ptab"        id="tab-done"    onclick="switchTab('done')"      data-i18n="tabDone">Completados</button>
+    <button class="ptab active" id="tab-open"   onclick="switchTab('open')"  >Abiertos</button>
+    <button class="ptab"        id="tab-active"  onclick="switchTab('active')">En progreso</button>
+    <button class="ptab"        id="tab-done"    onclick="switchTab('done')"  >Completados</button>
   </div>
 
   <!-- Tab panels -->
@@ -497,7 +497,11 @@ async function showDashboard() {
   let logoutBtn = document.getElementById('logout-btn');
   if (logoutBtn) { logoutBtn.style.display = 'block'; logoutBtn.textContent = T.logout[lang]; }
   document.getElementById('greeting').textContent = `${lang === 'en' ? 'Hi' : 'Hola'}, ${currentUser.name.split(' ')[0]} 👋`;
-  document.getElementById('greeting-sub').textContent = `${currentUser.city} · ${currentUser.email}`;
+  document.getElementById('greeting-sub').textContent = lang === 'en' ? '🏠 Client Portal' : '🏠 Portal de Cliente';
+  // Update tab labels from T object (avoids data-i18n conflict with applyLang)
+  document.getElementById('tab-open').textContent   = T.tabOpen[lang];
+  document.getElementById('tab-active').textContent = T.tabActive[lang];
+  document.getElementById('tab-done').textContent   = T.tabDone[lang];
   applyLang();
   if(window.CPR) CPR.injectNav('dashboard-homeowner', currentUser);
   await loadJobs();

@@ -222,7 +222,7 @@ footer a{color:var(--blue);font-weight:500}
   <div class="dash-header">
     <div class="dash-greeting">
       <h1 id="greeting">Bienvenido</h1>
-      <p id="greeting-sub" data-i18n="greetingSub">Gestiona tus propuestas y trabajos</p>
+      <p id="greeting-sub">Gestiona tus propuestas y trabajos</p>
     </div>
     <button class="btn-browse" onclick="window.location.href='jobs.html'" data-i18n="browseBtn">🔍 Ver trabajos disponibles</button>
   </div>
@@ -239,9 +239,9 @@ footer a{color:var(--blue);font-weight:500}
 
   <!-- Tabs -->
   <div class="portal-tabs">
-    <button class="ptab active" id="tab-pending"  onclick="switchTab('pending')"  data-i18n="tabPending">Enviadas</button>
-    <button class="ptab"        id="tab-active"   onclick="switchTab('active')"   data-i18n="tabActive">En progreso</button>
-    <button class="ptab"        id="tab-done"     onclick="switchTab('done')"     data-i18n="tabDone">Completados</button>
+    <button class="ptab active" id="tab-pending"  onclick="switchTab('pending')">Enviadas</button>
+    <button class="ptab"        id="tab-active"   onclick="switchTab('active')" >En progreso</button>
+    <button class="ptab"        id="tab-done"     onclick="switchTab('done')"   >Completados</button>
   </div>
 
   <!-- Tab panels -->
@@ -421,7 +421,10 @@ async function showDashboard() {
   document.getElementById('dashboard').style.display = 'block';
   let lb1 = document.getElementById('logout-btn'); if(lb1) { lb1.style.display = 'block'; lb1.textContent = T.logout[lang]; }
   document.getElementById('greeting').textContent = `${lang === 'en' ? 'Hi' : 'Hola'}, ${currentUser.name.split(' ')[0]} 👋`;
-  document.getElementById('greeting-sub').textContent = `${currentUser.trade} · ${currentUser.email}`;
+  document.getElementById('greeting-sub').textContent = lang === 'en' ? '🔨 Contractor Portal' : '🔨 Portal de Contratista';
+  document.getElementById('tab-pending').textContent = T.tabPending[lang];
+  document.getElementById('tab-active').textContent  = T.tabActive[lang];
+  document.getElementById('tab-done').textContent    = T.tabDone[lang];
   let statusText = currentUser.status === 'active' ? T.active[lang] : T.pendingApproval[lang];
   let statusBadge = currentUser.status === 'active' ? 'badge-active' : 'badge-pending';
   document.getElementById('profile-card').innerHTML = `
