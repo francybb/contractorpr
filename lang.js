@@ -453,15 +453,26 @@ CPR.buildNav = async function(activePage) {
 
 // Inject nav into element with id="cpr-nav-placeholder"
 CPR.injectNav = async function(activePage) {
-  // Find placeholder OR existing nav to replace
-  const target = document.getElementById('cpr-nav-placeholder') || document.querySelector('nav.cpr-nav');
-  if (!target) return;
-  const navHtml = await CPR.buildNav(activePage);
-  // Parse and replace
-  const temp = document.createElement('div');
-  temp.innerHTML = navHtml;
-  target.replaceWith(temp.firstChild);
-  // Set dropdown to current lang
+  const placeholder = document.getElementById('cpr-nav-placeholder');
+  if (placeholder) {
+    // First time - replace placeholder with full nav
+    const navHtml = await CPR.buildNav(activePage);
+    const temp = document.createElement('div');
+    temp.innerHTML = navHtml;
+    const navEl = temp.querySelector('nav') || temp.firstChild;
+    if (navEl) placeholder.replaceWith(navEl);
+  } else {
+    // Nav already exists - just update the auth button
+    const user = await CPR.getCurrentUser();
+    const authEl = document.querySelector('.cpr-nav-right .cpr-nav-btn, .cpr-nav-right .cpr-nav-btn-ghost');
+    if (authEl) {
+      if (user) {
+        authEl.outerHTML = '<button onclick="CPR.logout()" class="cpr-nav-btn-ghost">' + CPR.t('nav_logout') + '</button>';
+      } else {
+        authEl.outerHTML = '<a href="dashboard-homeowner.html" class="cpr-nav-btn">' + CPR.t('nav_login') + '</a>';
+      }
+    }
+  }
   const dd = document.getElementById('lang-dropdown');
   if (dd) dd.value = CPR.lang;
 };
