@@ -283,14 +283,14 @@ footer a{color:var(--blue);font-weight:500}
       <h1 id="greeting">Bienvenido</h1>
       <p id="greeting-sub">Gestiona tus trabajos y propuestas</p>
     </div>
-    <button class="btn-post" onclick="openPostJobModal()" data-i18n="postBtn">+ Publicar nuevo trabajo</button>
+    <button class="btn-post" onclick="openPostJobModal()" id="post-btn">+ Publicar nuevo trabajo</button>
   </div>
 
   <!-- Stats -->
   <div class="stats-row">
-    <div class="stat-card"><div class="stat-val" id="stat-jobs">0</div><div class="stat-lbl" data-i18n="statJobs">Trabajos publicados</div></div>
-    <div class="stat-card"><div class="stat-val" id="stat-proposals">0</div><div class="stat-lbl" data-i18n="statProps">Propuestas recibidas</div></div>
-    <div class="stat-card"><div class="stat-val" id="stat-accepted">0</div><div class="stat-lbl" data-i18n="statAcc">Trabajos aceptados</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-jobs">0</div><div class="stat-lbl" id="lbl-jobs">Trabajos publicados</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-proposals">0</div><div class="stat-lbl" id="lbl-props">Propuestas recibidas</div></div>
+    <div class="stat-card"><div class="stat-val" id="stat-accepted">0</div><div class="stat-lbl" id="lbl-acc">Trabajos aceptados</div></div>
   </div>
 
   <!-- Tabs -->
@@ -497,13 +497,9 @@ async function showDashboard() {
   let logoutBtn = document.getElementById('logout-btn');
   if (logoutBtn) { logoutBtn.style.display = 'block'; logoutBtn.textContent = T.logout[lang]; }
   document.getElementById('greeting').textContent = `${lang === 'en' ? 'Hi' : 'Hola'}, ${currentUser.name.split(' ')[0]} 👋`;
-  document.getElementById('greeting-sub').textContent = lang === 'en' ? '🏠 Client Portal' : '🏠 Portal de Cliente';
-  // Update tab labels from T object (avoids data-i18n conflict with applyLang)
-  document.getElementById('tab-open').textContent   = T.tabOpen[lang];
-  document.getElementById('tab-active').textContent = T.tabActive[lang];
-  document.getElementById('tab-done').textContent   = T.tabDone[lang];
+  document.getElementById('greeting-sub').textContent = `${currentUser.city} · ${currentUser.email}`;
   applyLang();
-  if(window.CPR) CPR.injectNav('dashboard-homeowner', currentUser);
+  refreshLabels();
   await loadJobs();
 }
 
@@ -852,10 +848,24 @@ function selectType(type) {
   if (btn) btn.textContent = lang === 'en' ? 'Log in →' : 'Entrar →';
 }
 
+function refreshLabels() {
+  const el = id => document.getElementById(id);
+  if (el('lbl-jobs'))    el('lbl-jobs').textContent    = T.statJobs[lang];
+  if (el('lbl-props'))   el('lbl-props').textContent   = T.statProps[lang];
+  if (el('lbl-acc'))     el('lbl-acc').textContent     = T.statAcc[lang];
+  if (el('post-btn'))    el('post-btn').textContent     = T.postBtn[lang];
+  if (el('tab-open'))    el('tab-open').textContent     = T.tabOpen[lang];
+  if (el('tab-active'))  el('tab-active').textContent   = T.tabActive[lang];
+  if (el('tab-done'))    el('tab-done').textContent     = T.tabDone[lang];
+  if (el('greeting-sub') && currentUser) el('greeting-sub').textContent = lang === 'en' ? '🏠 Client Portal' : '🏠 Portal de Cliente';
+}
+
 checkSession();
 window.addEventListener('langchange', function(e) {
   lang = e.detail.lang;
   applyLang();
+  refreshLabels();
+  if (currentUser) loadJobs();
 });
 
 async function markComplete(jobId, proposalId, e) {
