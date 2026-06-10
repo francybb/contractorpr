@@ -370,16 +370,19 @@ CPR.db = async function(path) {
 
 // Logout
 CPR.logout = async function() {
-  if (window.supabase) {
-    const { createClient } = supabase;
-    let sb = createClient(SUPABASE_URL, SUPABASE_PK);
-    await sb.auth.signOut();
+  // Sign out from Supabase Auth using existing client
+  if (window._sb) {
+    await window._sb.auth.signOut();
+  } else if (window.supabase) {
+    let { createClient } = supabase;
+    let _sb2 = createClient(SUPABASE_URL, SUPABASE_PK);
+    await _sb2.auth.signOut();
   }
-  localStorage.removeItem('homeowner_id');
-  localStorage.removeItem('homeowner_data');
-  localStorage.removeItem('contractor_id');
-  localStorage.removeItem('contractor_data');
-  localStorage.removeItem('contractor_name');
+  // Clear all session data from both storage types
+  ['homeowner_id','homeowner_data','contractor_id','contractor_data','contractor_name'].forEach(k => {
+    sessionStorage.removeItem(k);
+    localStorage.removeItem(k);
+  });
   window.location.href = 'index.html';
 };
 
@@ -450,9 +453,14 @@ CPR.buildNav = async function(activePage) {
 
 // Inject nav into element with id="cpr-nav-placeholder"
 CPR.injectNav = async function(activePage) {
-  const placeholder = document.getElementById('cpr-nav-placeholder');
-  if (!placeholder) return;
-  placeholder.outerHTML = await CPR.buildNav(activePage);
+  // Find placeholder OR existing nav to replace
+  const target = document.getElementById('cpr-nav-placeholder') || document.querySelector('nav.cpr-nav');
+  if (!target) return;
+  const navHtml = await CPR.buildNav(activePage);
+  // Parse and replace
+  const temp = document.createElement('div');
+  temp.innerHTML = navHtml;
+  target.replaceWith(temp.firstChild);
   // Set dropdown to current lang
   const dd = document.getElementById('lang-dropdown');
   if (dd) dd.value = CPR.lang;
