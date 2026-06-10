@@ -430,11 +430,12 @@ function logout() {
 async function showDashboard() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
-  document.getElementById('logout-btn').style.display = 'block';
-  document.getElementById('logout-btn').textContent = T.logout[lang];
+  const logoutBtn = document.getElementById('logout-btn');
+  if (logoutBtn) { logoutBtn.style.display = 'block'; logoutBtn.textContent = T.logout[lang]; }
   document.getElementById('greeting').textContent = `${lang === 'en' ? 'Hi' : 'Hola'}, ${currentUser.name.split(' ')[0]} 👋`;
   document.getElementById('greeting-sub').textContent = `${currentUser.city} · ${currentUser.email}`;
   applyLang();
+  if(window.CPR) CPR.injectNav('dashboard-homeowner');
   await loadJobs();
 }
 

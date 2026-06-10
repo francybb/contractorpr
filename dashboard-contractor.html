@@ -349,14 +349,13 @@ function logout() {
   currentUser = null;
   document.getElementById('dashboard').style.display = 'none';
   document.getElementById('login-screen').style.display = 'flex';
-  document.getElementById('logout-btn').style.display = 'none';
+  const lb0 = document.getElementById('logout-btn'); if(lb0) lb0.style.display = 'none';
 }
 
 async function showDashboard() {
   document.getElementById('login-screen').style.display = 'none';
   document.getElementById('dashboard').style.display = 'block';
-  document.getElementById('logout-btn').style.display = 'block';
-  document.getElementById('logout-btn').textContent = T.logout[lang];
+  const lb1 = document.getElementById('logout-btn'); if(lb1) { lb1.style.display = 'block'; lb1.textContent = T.logout[lang]; }
   document.getElementById('greeting').textContent = `${lang === 'en' ? 'Hi' : 'Hola'}, ${currentUser.name.split(' ')[0]} 👋`;
   document.getElementById('greeting-sub').textContent = `${currentUser.trade} · ${currentUser.email}`;
   const statusText = currentUser.status === 'active' ? T.active[lang] : T.pendingApproval[lang];
@@ -377,7 +376,8 @@ async function showDashboard() {
 
   loadRating(currentUser.id);
   applyLang();
-  document.getElementById('logout-btn').textContent = T.logout[lang];
+  if(window.CPR) CPR.injectNav('dashboard-contractor');
+  const lb2 = document.getElementById('logout-btn'); if(lb2) lb2.textContent = T.logout[lang];
   await loadProposals();
 }
 
