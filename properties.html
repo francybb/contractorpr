@@ -227,8 +227,13 @@ a{color:inherit;text-decoration:none}
       </div>
       <div class="modal-err" id="m-err"></div>
       <div class="field"><label id="m-nick-l">Apodo (opcional)</label><input type="text" id="m-nick" placeholder="ej. Casa de playa"><div class="hint" id="m-nick-h">Si lo dejas vacío usaremos la dirección.</div></div>
-      <div class="field"><label id="m-addr-l">Dirección</label><input type="text" id="m-addr" placeholder="Calle, número, urbanización"></div>
+      <div class="field"><label id="m-street-l">Calle</label><input type="text" id="m-street" placeholder="ej. Calle Begonia"></div>
+      <div class="field" style="display:flex;gap:12px">
+        <div style="flex:1"><label id="m-num-l">Número / Apt</label><input type="text" id="m-num" placeholder="ej. 24 / Apt 3B"></div>
+        <div style="flex:1"><label id="m-zip-l">Código postal</label><input type="text" id="m-zip" placeholder="00949" inputmode="numeric" maxlength="5"></div>
+      </div>
       <div class="field"><label id="m-muni-l">Municipio</label><select id="m-muni"></select></div>
+      <div class="field" id="m-urb-wrap"><label id="m-urb-l">Urbanización / sector (opcional)</label><input type="text" id="m-urb" placeholder="ej. Urb. Vista Verde"></div>
       <div class="modal-foot"><button class="btn-line" onclick="closeAdd()" id="m-cancel">Cancelar</button><button class="btn-primary" id="m-save" onclick="saveProperty()">Guardar propiedad</button></div>
     </div>
   </div>
@@ -260,8 +265,9 @@ var T = {
   t1:{es:'Propiedad',en:'Property'},t1s:{es:'Casa, apto, local',en:'House, apt, unit'},t2:{es:'Complejo',en:'Complex'},t2s:{es:'Varias unidades',en:'Multiple units'},
   c1:{es:'Residencial',en:'Residential'},c2:{es:'Comercial',en:'Commercial'},
   nickL:{es:'Apodo (opcional)',en:'Nickname (optional)'},nickH:{es:'Si lo dejas vacío usaremos la dirección.',en:'If left blank we use the address.'},
+  streetL:{es:'Calle',en:'Street'},numL:{es:'Número / Apt',en:'Number / Apt'},zipL:{es:'Código postal',en:'Zip code'},urbL:{es:'Urbanización / sector (opcional)',en:'Subdivision / area (optional)'},
   addrL:{es:'Dirección',en:'Address'},muniL:{es:'Municipio',en:'Municipality'},cancel:{es:'Cancelar',en:'Cancel'},save:{es:'Guardar propiedad',en:'Save property'},
-  errAddr:{es:'Escribe la dirección de la propiedad.',en:'Enter the property address.'},errSave:{es:'No se pudo guardar. Intenta de nuevo.',en:'Could not save. Try again.'},
+  errAddr:{es:'Escribe al menos la calle de la propiedad.',en:'Enter at least the property street.'},errSave:{es:'No se pudo guardar. Intenta de nuevo.',en:'Could not save. Try again.'},
   saving:{es:'Guardando...',en:'Saving...'}
 };
 function t(k){ return (T[k] && T[k][lang]) || (T[k] && T[k].es) || ''; }
@@ -306,7 +312,9 @@ function applyStaticLabels(){
   el('m-t2').textContent = t('t2'); el('m-t2s').textContent = t('t2s');
   el('m-c1').textContent = t('c1'); el('m-c2').textContent = t('c2');
   el('m-nick-l').textContent = t('nickL'); el('m-nick-h').textContent = t('nickH');
-  el('m-addr-l').textContent = t('addrL'); el('m-muni-l').textContent = t('muniL');
+  el('m-street-l').textContent = t('streetL'); el('m-num-l').textContent = t('numL');
+  el('m-zip-l').textContent = t('zipL'); el('m-urb-l').textContent = t('urbL');
+  el('m-muni-l').textContent = t('muniL');
   el('m-cancel').textContent = t('cancel'); el('m-save').textContent = t('save');
   // chips
   var chipLabels = {all:{es:'Todas',en:'All'},residential:t('c1'),commercial:t('c2'),complex:{es:'Complejos',en:'Complexes'}};
@@ -421,9 +429,20 @@ function openAdd(){ el('m-err').classList.remove('show'); el('add-modal').classL
 function closeAdd(){ el('add-modal').classList.remove('show'); }
 
 async function saveProperty(){
-  var addr = (el('m-addr').value || '').trim();
+  var street = (el('m-street').value || '').trim();
+  var num = (el('m-num').value || '').trim();
+  var zip = (el('m-zip').value || '').trim();
+  var urb = (el('m-urb').value || '').trim();
+  var muni = el('m-muni').value || '';
   var errEl = el('m-err');
-  if(!addr){ errEl.textContent = t('errAddr'); errEl.classList.add('show'); return; }
+  if(!street){ errEl.textContent = t('errAddr'); errEl.classList.add('show'); return; }
+  // compose a human-readable full address for display
+  var parts = [];
+  if(street) parts.push(street + (num ? ' ' + num : ''));
+  if(urb) parts.push(urb);
+  if(muni) parts.push(muni);
+  if(zip) parts.push('PR ' + zip);
+  var fullAddr = parts.join(', ');
   var btn = el('m-save'); btn.disabled = true; btn.textContent = t('saving');
   try{
     await dbInsert('properties', {
@@ -431,11 +450,14 @@ async function saveProperty(){
       type: pendType,
       category: pendCat,
       nickname: (el('m-nick').value || '').trim() || null,
-      address: addr,
-      municipality: el('m-muni').value || null
+      address: fullAddr,
+      street: street || null,
+      unit_number: num || null,
+      zip_code: zip || null,
+      municipality: muni || null
     });
     closeAdd();
-    el('m-nick').value=''; el('m-addr').value='';
+    el('m-nick').value=''; el('m-street').value=''; el('m-num').value=''; el('m-zip').value=''; el('m-urb').value='';
     btn.disabled = false; btn.textContent = t('save');
     await loadLibrary();
   }catch(e){
