@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ContractingPR · Complejo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0B1F33;--ink-2:#3A4A5C;--muted:#6B7A8D;--blue:#1A56DB;--blue-deep:#103FA8;--blue-soft:#EBF1FE;--canvas:#F6F7F9;--card:#FFFFFF;--line:#E6E9EF;--line-2:#EFF1F5;--ok:#0E9F6E;--ok-soft:#E3F5EE;--warn:#E08A00;--warn-soft:#FBF1DF;--post:#64748B;--post-soft:#EEF1F5;--rose:#D6336C;--rose-soft:#FCE7EF;--radius:16px;--shadow:0 1px 2px rgba(11,31,51,.04),0 8px 24px -12px rgba(11,31,51,.12);--shadow-lg:0 4px 12px rgba(11,31,51,.06),0 24px 48px -16px rgba(11,31,51,.18)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--canvas);color:var(--ink);line-height:1.5}
+.serif{font-family:'Fraunces',Georgia,serif}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1100px;margin:0 auto;padding:34px 28px 80px}
+.loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:80px;color:var(--muted);font-size:14px}
+.spinner{width:18px;height:18px;border:2px solid var(--line);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.notfound{text-align:center;padding:80px 24px;color:var(--muted)}
+.notfound h2{font-family:'Fraunces',serif;font-size:24px;color:var(--ink);margin-bottom:10px}.notfound a{color:var(--blue);font-weight:600}
+.back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:22px}
+.back-btn:hover{color:var(--blue)}.back-btn svg{width:16px;height:16px}
+.detail-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;margin-bottom:28px}
+@media(max-width:820px){.detail-hero{grid-template-columns:1fr}}
+.hero-cover{border-radius:var(--radius);min-height:260px;position:relative;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
+.hero-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(11,31,51,.28))}
+.cover-img{position:absolute;inset:0;background-size:cover;background-position:center}
+.cv-complex{background:linear-gradient(157deg,#C9E3D4,#84B79C 36%,#3E7D6A 72%,#23564A)}
+.change-cover{position:absolute;top:14px;right:14px;z-index:3;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);font-size:12px;font-weight:600;color:var(--ink-2);padding:7px 12px;border-radius:9px;display:flex;align-items:center;gap:6px}
+.change-cover svg{width:14px;height:14px}
+.map-inset{position:absolute;bottom:14px;left:14px;z-index:3;width:104px;height:78px;border-radius:11px;overflow:hidden;border:2px solid #fff;box-shadow:0 6px 16px -4px rgba(11,31,51,.4);background:repeating-linear-gradient(0deg,transparent,transparent 18px,rgba(26,86,219,.07) 19px),repeating-linear-gradient(90deg,transparent,transparent 18px,rgba(26,86,219,.07) 19px),linear-gradient(135deg,#E8EEF7,#D8E3F2)}
+.map-inset .pm{position:absolute;left:50%;top:48%;transform:translate(-50%,-100%)}.map-inset .pm svg{width:20px;height:20px}
+.hero-info{display:flex;flex-direction:column}
+.hero-eyebrow{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;display:flex;align-items:center;gap:7px}.hero-eyebrow svg{width:13px;height:13px}
+.hero-info h1{font-family:'Fraunces',serif;font-size:34px;font-weight:500;letter-spacing:-.02em;line-height:1.08}
+.hero-addr{color:var(--ink-2);font-size:15px;margin-top:10px;display:flex;align-items:flex-start;gap:8px}.hero-addr svg{width:16px;height:16px;color:var(--blue);flex-shrink:0;margin-top:2px}
+.hero-meta{display:flex;gap:24px;margin-top:20px;padding-top:20px;border-top:1px solid var(--line-2)}
+.hero-meta .v{font-family:'Fraunces',serif;font-size:22px;font-weight:500}.hero-meta .v.money{color:var(--blue)}.hero-meta .k{font-size:12px;color:var(--muted);margin-top:2px;font-weight:500}
+.hero-cta{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.btn-primary{background:var(--blue);color:#fff;font-weight:600;font-size:13.5px;padding:11px 18px;border-radius:10px;display:inline-flex;align-items:center;gap:7px}.btn-primary:hover{background:var(--blue-deep)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed}
+.btn-line{border:1px solid var(--line);background:var(--card);color:var(--ink-2);font-weight:600;font-size:13.5px;padding:11px 16px;border-radius:10px;display:inline-flex;align-items:center;gap:7px}.btn-line:hover{border-color:#cdd4df;color:var(--ink)}
+.btn-line svg,.btn-primary svg{width:15px;height:15px}
+.tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:26px;overflow-x:auto}
+.tab{font-size:14px;font-weight:600;color:var(--muted);padding:11px 16px;position:relative;display:flex;align-items:center;gap:7px;white-space:nowrap}
+.tab:hover{color:var(--ink)}.tab.on{color:var(--blue)}.tab.on::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:2px;background:var(--blue);border-radius:2px}
+.tab .badge{background:var(--blue-soft);color:var(--blue);font-size:11px;font-weight:700;padding:1px 7px;border-radius:20px}
+.tab-panel{display:none}.tab-panel.on{display:block;animation:rise .3s ease}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.unit-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px}
+.unit-card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px;cursor:pointer;transition:.16s;box-shadow:var(--shadow)}
+.unit-card:hover{border-color:#d6dce6;transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.unit-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;gap:8px}
+.unit-no{font-family:'Fraunces',serif;font-size:18px;font-weight:500;line-height:1.1}
+.unit-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0}
+.ub-active{background:var(--warn-soft);color:var(--warn)}.ub-ok{background:var(--ok-soft);color:var(--ok)}
+.unit-tenant{font-size:12.5px;color:var(--muted)}
+.unit-stats{display:flex;gap:14px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line-2)}
+.unit-stats div{font-size:12px;color:var(--muted)}.unit-stats div b{color:var(--ink);font-family:'Fraunces',serif;font-size:15px;font-weight:500;display:block}
+.unit-add{border:2px dashed var(--line);border-radius:13px;display:grid;place-items:center;min-height:120px;color:var(--muted);font-size:13px;font-weight:600;cursor:pointer;transition:.16s;text-align:center}
+.unit-add:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-soft)}
+.project-block{margin-bottom:26px}
+.project-bar{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.project-bar h3{font-family:'Fraunces',serif;font-size:19px;font-weight:500}
+.proj-pill{font-size:11.5px;font-weight:600;color:var(--blue);background:var(--blue-soft);padding:3px 10px;border-radius:20px}
+.proj-prog{flex:1;height:6px;background:var(--line-2);border-radius:6px;overflow:hidden;max-width:200px;min-width:90px}.proj-prog i{display:block;height:100%;background:var(--blue);border-radius:6px}
+.proj-prog-lbl{font-size:12px;color:var(--muted);font-weight:500}
+.job-row{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 18px;margin-bottom:10px;transition:.16s;cursor:pointer}
+.job-row:hover{border-color:#d6dce6;box-shadow:var(--shadow)}
+.job-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}.dot-post{background:var(--post)}.dot-active{background:var(--warn)}.dot-done{background:var(--ok)}
+.job-main{flex:1;min-width:0}.job-title{font-size:14.5px;font-weight:600}.job-sub{font-size:12.5px;color:var(--muted);margin-top:2px}.job-sub .trade{color:var(--blue);font-weight:600}
+.job-status{font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:20px;white-space:nowrap;text-transform:uppercase;letter-spacing:.03em}
+.js-post{background:var(--post-soft);color:var(--post)}.js-active{background:var(--warn-soft);color:var(--warn)}.js-done{background:var(--ok-soft);color:var(--ok)}
+.standalone-head{font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:30px 0 14px;display:flex;align-items:center;gap:10px}.standalone-head::after{content:"";flex:1;height:1px;background:var(--line-2)}
+.empty-tab{text-align:center;padding:50px 20px;color:var(--muted)}
+.empty-tab .ei{width:54px;height:54px;border-radius:14px;background:var(--line-2);display:grid;place-items:center;margin:0 auto 14px;color:var(--muted)}.empty-tab .ei svg{width:26px;height:26px}
+.empty-tab h3{font-size:16px;color:var(--ink);margin-bottom:6px}.empty-tab p{font-size:13.5px;max-width:38ch;margin:0 auto}
+.timeline{position:relative;padding-left:30px}.timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)}
+.tl-item{position:relative;padding-bottom:26px}.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-30px;top:2px;width:16px;height:16px;border-radius:50%;background:var(--card);border:3px solid var(--ok);box-shadow:0 0 0 3px var(--card)}.tl-dot.blue{border-color:var(--blue)}
+.tl-date{font-size:12px;font-weight:600;color:var(--muted)}.tl-title{font-size:15px;font-weight:600;margin:3px 0 4px}.tl-meta{font-size:12.5px;color:var(--muted);margin-top:4px}
+.modal-bg{position:fixed;inset:0;background:rgba(11,31,51,.42);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:90;padding:20px}.modal-bg.show{display:flex}
+.modal{background:var(--card);border-radius:18px;max-width:480px;width:100%;box-shadow:var(--shadow-lg);max-height:90vh;overflow:auto;position:relative;animation:rise .3s cubic-bezier(.2,.7,.2,1)}
+.modal-head{padding:24px 26px 0}.modal-head h2{font-family:'Fraunces',serif;font-size:24px;font-weight:500;letter-spacing:-.01em}.modal-head p{color:var(--muted);font-size:13.5px;margin-top:6px}
+.modal-body{padding:22px 26px 26px}
+.field{margin-bottom:16px}.field label{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:14px;color:var(--ink);background:var(--card)}
+.field textarea{resize:vertical;min-height:90px}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+.field .hint{font-size:12px;color:var(--muted);margin-top:6px}
+.modal-err{color:var(--rose);font-size:13px;margin-bottom:12px;display:none}.modal-err.show{display:block}
+.modal-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+.modal-x{position:absolute;top:18px;right:18px;width:30px;height:30px;border-radius:8px;color:var(--muted);display:grid;place-items:center}.modal-x:hover{background:var(--line-2);color:var(--ink)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13.5px;font-weight:500;padding:12px 20px;border-radius:11px;box-shadow:var(--shadow-lg);opacity:0;transition:.25s;z-index:200;pointer-events:none}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:560px){.wrap{padding:24px 18px 60px}.hero-meta{flex-wrap:wrap;gap:16px}}
+</style>
+</head>
+<body>
+<div id="cpr-nav-placeholder"></div>
+<div class="wrap">
+  <div id="boot" class="loading"><div class="spinner"></div><span>Cargando...</span></div>
+  <div id="notfound" class="notfound" style="display:none">
+    <h2 class="serif" id="nf-title">Complejo no encontrado</h2>
+    <p style="margin-bottom:14px" id="nf-sub">No pudimos encontrar este complejo en tu biblioteca.</p>
+    <a href="properties.html" id="nf-link">← Volver a mis propiedades</a>
+  </div>
+  <div id="detail" style="display:none"></div>
+</div>
+
+<!-- ADD UNIT MODAL -->
+<div class="modal-bg" id="unit-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeUnit()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head"><h2 class="serif" id="u-title">Añadir unidad</h2><p id="u-sub">Una unidad dentro de este complejo.</p></div>
+    <div class="modal-body">
+      <div class="modal-err" id="u-err"></div>
+      <div class="field"><label id="u-name-l">Nombre / etiqueta</label><input type="text" id="u-name" placeholder="ej. Apt 101"></div>
+      <div class="field"><label id="u-num-l">Número de unidad (opcional)</label><input type="text" id="u-num" placeholder="101"></div>
+      <div class="field"><label id="u-tenant-l">Inquilino (opcional)</label><input type="text" id="u-tenant" placeholder="ej. María Colón"></div>
+      <div class="modal-foot"><button class="btn-line" onclick="closeUnit()" id="u-cancel">Cancelar</button><button class="btn-primary" id="u-save" onclick="saveUnit()">Añadir unidad</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- BUILDING JOB MODAL -->
+<div class="modal-bg" id="job-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeJob()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head"><h2 class="serif" id="j-title">Trabajo del edificio</h2><p id="j-sub">Un trabajo de áreas comunes para todo el complejo.</p></div>
+    <div class="modal-body">
+      <div class="modal-err" id="j-err"></div>
+      <div class="field"><label id="j-title-l">Título del trabajo</label><input type="text" id="j-jtitle"></div>
+      <div class="field"><label id="j-desc-l">Descripción</label><textarea id="j-desc"></textarea></div>
+      <div class="field"><label id="j-trade-l">Tipo de trabajo</label><select id="j-trade"></select></div>
+      <div class="field"><label id="j-proj-l">Proyecto del edificio (opcional)</label><select id="j-proj"></select></div>
+      <div class="modal-foot"><button class="btn-line" onclick="closeJob()" id="j-cancel">Cancelar</button><button class="btn-primary" id="j-save" onclick="saveJob()">Publicar trabajo</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- BUILDING PROJECT MODAL -->
+<div class="modal-bg" id="proj-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeProj()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head"><h2 class="serif" id="p-title">Nuevo proyecto del edificio</h2><p id="p-sub">Agrupa trabajos de áreas comunes.</p></div>
+    <div class="modal-body">
+      <div class="modal-err" id="p-err"></div>
+      <div class="field"><label id="p-name-l">Nombre del proyecto</label><input type="text" id="p-name" placeholder="ej. Renovación de áreas comunes"></div>
+      <div class="field"><label id="p-desc-l">Descripción (opcional)</label><textarea id="p-desc"></textarea></div>
+      <div class="modal-foot"><button class="btn-line" onclick="closeProj()" id="p-cancel">Cancelar</button><button class="btn-primary" id="p-save" onclick="saveProj()">Crear proyecto</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT COMPLEX MODAL -->
+<div class="modal-bg" id="edit-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeEdit()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head"><h2 class="serif" id="e-title">Editar complejo</h2><p id="e-sub">Actualiza la información del complejo.</p></div>
+    <div class="modal-body">
+      <div class="modal-err" id="e-err"></div>
+      <div class="field"><label id="e-nick-l">Apodo</label><input type="text" id="e-nick"></div>
+      <div class="field"><label id="e-muni-l">Municipio</label><select id="e-muni"></select></div>
+      <div class="field"><label id="e-street-l">Calle</label><input type="text" id="e-street"></div>
+      <div class="field"><label id="e-urb-l">Urbanización / sector (opcional)</label><input type="text" id="e-urb"></div>
+      <div class="field"><label id="e-zip-l">Código postal</label><input type="text" id="e-zip" inputmode="numeric" maxlength="5"></div>
+      <div class="modal-foot"><button class="btn-line" onclick="closeEdit()" id="e-cancel">Cancelar</button><button class="btn-primary" id="e-save" onclick="saveEdit()">Guardar cambios</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
+<script>
+var lang=(window.CPR&&CPR.lang)||'es';
+var currentUser=null, complex=null, units=[], bJobs=[], bProjects=[];
+var jobsByProp={}, investedByProp={}, pendingByJob={}, contractorByJob={};
+
+var T={
+  nfTitle:{es:'Complejo no encontrado',en:'Complex not found'},nfSub:{es:'No pudimos encontrar este complejo en tu biblioteca.',en:"We couldn't find this complex in your library."},nfLink:{es:'← Volver a mis propiedades',en:'← Back to my properties'},
+  back:{es:'Mis propiedades',en:'My properties'},complexEyebrow:{es:'Complejo',en:'Complex'},
+  units:{es:'Unidades',en:'Units'},activeJobs:{es:'Trabajos activos',en:'Active jobs'},invested:{es:'Invertido',en:'Invested'},
+  addUnit:{es:'Añadir unidad',en:'Add unit'},buildingJob:{es:'Trabajo del edificio',en:'Building job'},buildingProject:{es:'Nuevo proyecto',en:'New project'},edit:{es:'Editar',en:'Edit'},transfer:{es:'Transferir',en:'Transfer'},changeCover:{es:'Cambiar foto',en:'Change photo'},
+  tabUnits:{es:'Unidades',en:'Units'},tabBldg:{es:'Actividad del edificio',en:'Building activity'},tabDocs:{es:'Documentos',en:'Documents'},tabHist:{es:'Historial',en:'History'},
+  unitsEmptyT:{es:'Sin unidades todavía',en:'No units yet'},unitsEmptyP:{es:'Añade la primera unidad de este complejo.',en:'Add the first unit of this complex.'},
+  tenant:{es:'Inquilino',en:'Tenant'},vacant:{es:'Vacante',en:'Vacant'},jobsWord:{es:'trabajos',en:'jobs'},activeWord:{es:'activos',en:'active'},upToDate:{es:'Al día',en:'Up to date'},
+  bldgEmptyT:{es:'Sin trabajos del edificio',en:'No building jobs'},bldgEmptyP:{es:'Crea un trabajo de áreas comunes para el complejo.',en:'Create a common-area job for the complex.'},
+  standalone:{es:'Trabajos sueltos del edificio',en:'Standalone building jobs'},
+  docsEmptyT:{es:'Documentos próximamente',en:'Documents coming soon'},docsEmptyP:{es:'Planos, pólizas e inspecciones del edificio vivirán aquí cuando activemos el almacenamiento.',en:'Building plans, policies and inspections will live here once storage is enabled.'},
+  histEmptyT:{es:'Aún no hay historial',en:'No history yet'},histEmptyP:{es:'El trabajo completado del edificio aparecerá aquí.',en:'Completed building work will appear here.'},
+  complexAdded:{es:'Complejo añadido a tu biblioteca',en:'Complex added to your library'},
+  stPost:{es:'Abierto',en:'Open'},stActive:{es:'En curso',en:'In progress'},stDone:{es:'Completado',en:'Completed'},proposalsCt:{es:'propuestas',en:'proposals'},paid:{es:'pagado',en:'paid'},
+  uTitle:{es:'Añadir unidad',en:'Add unit'},uSub:{es:'Una unidad dentro de este complejo.',en:'A unit inside this complex.'},uNameL:{es:'Nombre / etiqueta',en:'Name / label'},uNumL:{es:'Número de unidad (opcional)',en:'Unit number (optional)'},uTenantL:{es:'Inquilino (opcional)',en:'Tenant (optional)'},uSave:{es:'Añadir unidad',en:'Add unit'},errUnit:{es:'Escribe un nombre o etiqueta para la unidad.',en:'Enter a name or label for the unit.'},unitAdded:{es:'Unidad añadida',en:'Unit added'},
+  jTitle:{es:'Trabajo del edificio',en:'Building job'},jSub:{es:'Un trabajo de áreas comunes para todo el complejo.',en:'A common-area job for the whole complex.'},jTitleL:{es:'Título del trabajo',en:'Job title'},jDescL:{es:'Descripción',en:'Description'},jTradeL:{es:'Tipo de trabajo',en:'Type of work'},jProjL:{es:'Proyecto del edificio (opcional)',en:'Building project (optional)'},jNoProj:{es:'Ninguno — trabajo suelto',en:'None — standalone job'},jPost:{es:'Publicar trabajo',en:'Post job'},errJob:{es:'Escribe un título y una descripción.',en:'Enter a title and description.'},jobCreated:{es:'Trabajo publicado',en:'Job posted'},
+  pTitle:{es:'Nuevo proyecto del edificio',en:'New building project'},pSub:{es:'Agrupa trabajos de áreas comunes.',en:'Group common-area jobs.'},pNameL:{es:'Nombre del proyecto',en:'Project name'},pDescL:{es:'Descripción (opcional)',en:'Description (optional)'},pCreate:{es:'Crear proyecto',en:'Create project'},errProj:{es:'Escribe un nombre para el proyecto.',en:'Enter a project name.'},projCreated:{es:'Proyecto creado',en:'Project created'},
+  eTitle:{es:'Editar complejo',en:'Edit complex'},eSub:{es:'Actualiza la información del complejo.',en:'Update the complex information.'},nickL:{es:'Apodo',en:'Nickname'},muniL:{es:'Municipio',en:'Municipality'},streetL:{es:'Calle',en:'Street'},urbL:{es:'Urbanización / sector (opcional)',en:'Subdivision / area (optional)'},zipL:{es:'Código postal',en:'Zip code'},cancel:{es:'Cancelar',en:'Cancel'},saveChanges:{es:'Guardar cambios',en:'Save changes'},saving:{es:'Guardando...',en:'Saving...'},errStreet:{es:'Escribe al menos la calle.',en:'Enter at least the street.'},errSave:{es:'No se pudo guardar. Intenta de nuevo.',en:'Could not save. Try again.'},
+  building:{es:'Edificio',en:'Building'},project:{es:'Proyecto',en:'Project'}
+};
+function t(k){var v=T[k];return v?(v[lang]!==undefined?v[lang]:v.es):'';}
+function el(id){return document.getElementById(id);}
+function getParam(n){return new URLSearchParams(location.search).get(n);}
+function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function money(n){return '$'+Math.round(n).toLocaleString('en-US');}
+function statusBucket(s){if(s==='open')return 'open';if(s==='accepted'||s==='in_progress'||s==='active')return 'active';if(s==='completed')return 'done';return 'other';}
+function toast(m){var x=el('toast');x.textContent=m;x.classList.add('show');setTimeout(function(){x.classList.remove('show');},1800);}
+var pinSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+var MUNIS=["Adjuntas","Aguada","Aguadilla","Aguas Buenas","Aibonito","Añasco","Arecibo","Arroyo","Barceloneta","Barranquitas","Bayamón","Cabo Rojo","Caguas","Camuy","Canóvanas","Carolina","Cataño","Cayey","Ceiba","Ciales","Cidra","Coamo","Comerío","Corozal","Culebra","Dorado","Fajardo","Florida","Guánica","Guayama","Guayanilla","Guaynabo","Gurabo","Hatillo","Hormigueros","Humacao","Isabela","Jayuya","Juana Díaz","Juncos","Lajas","Lares","Las Marías","Las Piedras","Loíza","Luquillo","Manatí","Maricao","Maunabo","Mayagüez","Moca","Morovis","Naguabo","Naranjito","Orocovis","Patillas","Peñuelas","Ponce","Quebradillas","Rincón","Río Grande","Sabana Grande","Salinas","San Germán","San Juan","San Lorenzo","San Sebastián","Santa Isabel","Toa Alta","Toa Baja","Trujillo Alto","Utuado","Vega Alta","Vega Baja","Vieques","Villalba","Yabucoa","Yauco"];
+var TRADES=[{v:'Plomería',es:'Plomería',en:'Plumbing'},{v:'Electricidad',es:'Electricidad',en:'Electrical'},{v:'Carpintería',es:'Carpintería',en:'Carpentry'},{v:'Pintura',es:'Pintura',en:'Painting'},{v:'Techado',es:'Techado',en:'Roofing'},{v:'Albañilería',es:'Albañilería',en:'Masonry'},{v:'Aire acondicionado',es:'Aire acondicionado',en:'HVAC'},{v:'Mecánica',es:'Mecánica',en:'Mechanical'},{v:'Demolición',es:'Demolición',en:'Demolition'},{v:'Soldadura',es:'Soldadura',en:'Welding'},{v:'Jardinería',es:'Jardinería',en:'Landscaping'},{v:'Limpieza',es:'Limpieza',en:'Cleaning'},{v:'Otro',es:'Otro',en:'Other'}];
+
+async function dbInsert(table,obj){
+  var url='/.netlify/functions/supabase-proxy?table='+encodeURIComponent(table)+'&prefer='+encodeURIComponent('return=representation');
+  var res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)});
+  if(!res.ok) throw new Error('insert '+res.status); return res.json();
+}
+async function dbPatch(table,query,obj){
+  var url='/.netlify/functions/supabase-proxy?table='+encodeURIComponent(table)+'&query='+encodeURIComponent(query)+'&prefer='+encodeURIComponent('return=representation');
+  var res=await fetch(url,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)});
+  if(!res.ok) throw new Error('patch '+res.status); return res.json();
+}
+
+function renderJobRow(j){
+  var b=statusBucket(j.status);
+  var dotCls=b==='done'?'dot-done':(b==='active'?'dot-active':'dot-post');
+  var stCls=b==='done'?'js-done':(b==='active'?'js-active':'js-post');
+  var stTxt=b==='done'?t('stDone'):(b==='active'?t('stActive'):t('stPost'));
+  var sub='<span class="trade">'+esc(j.trade_needed||'')+'</span>';
+  var cn=contractorByJob[j.id];
+  if(cn) sub+=' · '+esc(cn);
+  else if(b==='open' && pendingByJob[j.id]) sub+=' · '+pendingByJob[j.id]+' '+t('proposalsCt');
+  return '<div class="job-row" onclick="location.href=\'job.html?id='+j.id+'\'"><div class="job-dot '+dotCls+'"></div>'+
+    '<div class="job-main"><div class="job-title">'+esc(j.title||'')+'</div><div class="job-sub">'+sub+'</div></div>'+
+    '<div class="job-status '+stCls+'">'+stTxt+'</div></div>';
+}
+
+function unitCard(u){
+  var name=u.nickname||u.unit_label||u.address||(t('units'));
+  var ujobs=jobsByProp[u.id]||[];
+  var active=ujobs.filter(function(j){return statusBucket(j.status)==='active';}).length;
+  var badge=active>0?'<span class="unit-badge ub-active">'+active+' '+t('activeWord')+'</span>':'<span class="unit-badge ub-ok">'+t('upToDate')+'</span>';
+  var inv=investedByProp[u.id]||0;
+  return '<div class="unit-card" onclick="location.href=\'property.html?id='+u.id+'\'">'+
+    '<div class="unit-top"><div class="unit-no serif">'+esc(name)+'</div>'+badge+'</div>'+
+    '<div class="unit-tenant">'+(u.tenant_name?esc(t('tenant')+' · '+u.tenant_name):t('vacant'))+'</div>'+
+    '<div class="unit-stats"><div><b>'+ujobs.length+'</b>'+t('jobsWord')+'</div><div><b>'+money(inv)+'</b>'+t('invested').toLowerCase()+'</div></div></div>';
+}
+
+function renderUnits(){
+  var html='<div class="unit-grid">';
+  html+=units.map(unitCard).join('');
+  html+='<div class="unit-add" onclick="openUnit()">+ '+t('addUnit')+'</div></div>';
+  if(units.length===0){
+    html='<div class="empty-tab"><div class="ei"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div><h3>'+t('unitsEmptyT')+'</h3><p>'+t('unitsEmptyP')+'</p><div style="margin-top:18px"><button class="btn-primary" onclick="openUnit()" style="display:inline-flex">+ '+t('addUnit')+'</button></div></div>';
+  }
+  return html;
+}
+
+function renderBldg(){
+  if(bJobs.length===0){
+    return '<div class="empty-tab"><div class="ei"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><h3>'+t('bldgEmptyT')+'</h3><p>'+t('bldgEmptyP')+'</p></div>';
+  }
+  var html='';
+  bProjects.forEach(function(pr){
+    var pjobs=bJobs.filter(function(j){return j.project_id===pr.id;});
+    if(pjobs.length===0 && pr.status!=='active') return;
+    var done=pjobs.filter(function(j){return statusBucket(j.status)==='done';}).length;
+    var pct=pjobs.length?Math.round(done/pjobs.length*100):0;
+    html+='<div class="project-block"><div class="project-bar"><h3 class="serif">'+esc(pr.name)+'</h3><span class="proj-pill">'+t('building')+'</span>'+
+      '<div class="proj-prog"><i style="width:'+pct+'%"></i></div><span class="proj-prog-lbl">'+done+' '+(lang==='en'?'of':'de')+' '+pjobs.length+' '+(lang==='en'?'done':'hechos')+'</span></div>'+
+      pjobs.map(renderJobRow).join('')+'</div>';
+  });
+  var loose=bJobs.filter(function(j){return !j.project_id;});
+  if(loose.length){ html+='<div class="standalone-head">'+t('standalone')+'</div>'+loose.map(renderJobRow).join(''); }
+  return html;
+}
+
+function renderHist(){
+  var done=bJobs.filter(function(j){return statusBucket(j.status)==='done';}).sort(function(a,b){return (b.created_at||'')<(a.created_at||'')?-1:1;});
+  var html='<div class="timeline">';
+  var monAbbr=lang==='en'?['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  done.forEach(function(j){
+    var d=j.created_at?new Date(j.created_at):null;
+    var ds=d?(d.getDate()+' '+monAbbr[d.getMonth()].toUpperCase()+' '+d.getFullYear()):'';
+    html+='<div class="tl-item"><div class="tl-dot"></div><div class="tl-date">'+ds+'</div><div class="tl-title">'+esc(j.title||'')+' — '+t('stDone')+'</div></div>';
+  });
+  if(complex&&complex.created_at){var pd=new Date(complex.created_at);html+='<div class="tl-item"><div class="tl-dot blue"></div><div class="tl-date">'+pd.getDate()+' '+monAbbr[pd.getMonth()].toUpperCase()+' '+pd.getFullYear()+'</div><div class="tl-title">'+t('complexAdded')+'</div></div>';}
+  html+='</div>';
+  if(done.length===0 && !(complex&&complex.created_at)){ return '<div class="empty-tab"><div class="ei"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg></div><h3>'+t('histEmptyT')+'</h3><p>'+t('histEmptyP')+'</p></div>'; }
+  return html;
+}
+
+function render(){
+  var name=complex.nickname||complex.address||t('complexEyebrow');
+  var activeCount=0, invested=0;
+  Object.keys(jobsByProp).forEach(function(pid){ jobsByProp[pid].forEach(function(j){ if(statusBucket(j.status)==='active') activeCount++; }); });
+  Object.keys(investedByProp).forEach(function(pid){ invested+=investedByProp[pid]; });
+  var cover=complex.cover_url?'<div class="cover-img" style="background-image:url(\''+esc(complex.cover_url)+'\')"></div>':'<div class="cover-img cv-complex"></div>';
+
+  var html=''+
+    '<button class="back-btn" onclick="location.href=\'properties.html\'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>'+t('back')+'</button>'+
+    '<div class="detail-hero"><div class="hero-cover">'+cover+
+      '<button class="change-cover" onclick="toast(lang===\'en\'?\'Coming soon\':\'Próximamente\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>'+t('changeCover')+'</button>'+
+      '<div class="map-inset"><div class="pm"><svg viewBox="0 0 24 24" fill="#1A56DB" stroke="#fff" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg></div></div></div>'+
+      '<div class="hero-info"><div class="hero-eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18"/><rect x="14" y="9" width="7" height="12"/></svg> '+t('complexEyebrow')+(complex.municipality?' · '+esc(complex.municipality)+', PR':'')+'</div>'+
+      '<h1>'+esc(name)+'</h1>'+
+      '<div class="hero-addr">'+pinSvg+'<span>'+esc(complex.address||'')+'</span></div>'+
+      '<div class="hero-meta"><div><div class="v serif">'+units.length+'</div><div class="k">'+t('units')+'</div></div>'+
+        '<div><div class="v serif">'+activeCount+'</div><div class="k">'+t('activeJobs')+'</div></div>'+
+        '<div><div class="v serif money">'+money(invested)+'</div><div class="k">'+t('invested')+'</div></div></div>'+
+      '<div class="hero-cta"><button class="btn-primary" onclick="openUnit()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'+t('addUnit')+'</button>'+
+        '<button class="btn-line" onclick="openEdit()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>'+t('edit')+'</button>'+
+        '<button class="btn-line" onclick="openJob()">'+t('buildingJob')+'</button></div></div></div>'+
+    '<div class="tabs"><button class="tab on" data-p="units" onclick="switchTab(this)">'+t('tabUnits')+' <span class="badge">'+units.length+'</span></button>'+
+      '<button class="tab" data-p="bldg" onclick="switchTab(this)">'+t('tabBldg')+'</button>'+
+      '<button class="tab" data-p="docs" onclick="switchTab(this)">'+t('tabDocs')+'</button>'+
+      '<button class="tab" data-p="hist" onclick="switchTab(this)">'+t('tabHist')+'</button></div>'+
+    '<div class="tab-panel on" id="tp-units">'+renderUnits()+'</div>'+
+    '<div class="tab-panel" id="tp-bldg"><div style="margin-bottom:18px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn-primary" onclick="openJob()" style="display:inline-flex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'+t('buildingJob')+'</button><button class="btn-line" onclick="openProj()" style="display:inline-flex">'+t('buildingProject')+'</button></div>'+renderBldg()+'</div>'+
+    '<div class="tab-panel" id="tp-docs"><div class="empty-tab"><div class="ei"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><h3>'+t('docsEmptyT')+'</h3><p>'+t('docsEmptyP')+'</p></div></div>'+
+    '<div class="tab-panel" id="tp-hist">'+renderHist()+'</div>';
+  el('detail').innerHTML=html;
+  el('detail').style.display='block';
+}
+
+function switchTab(btn){
+  document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.tab').forEach(function(tb){tb.classList.remove('on');});
+  el('tp-'+btn.getAttribute('data-p')).classList.add('on'); btn.classList.add('on');
+}
+
+// ── Add unit ──
+function openUnit(){
+  el('u-title').textContent=t('uTitle'); el('u-sub').textContent=t('uSub');
+  el('u-name-l').textContent=t('uNameL'); el('u-num-l').textContent=t('uNumL'); el('u-tenant-l').textContent=t('uTenantL');
+  el('u-cancel').textContent=t('cancel'); el('u-save').textContent=t('uSave');
+  el('u-name').value=''; el('u-num').value=''; el('u-tenant').value=''; el('u-err').classList.remove('show');
+  el('unit-modal').classList.add('show');
+}
+function closeUnit(){ el('unit-modal').classList.remove('show'); }
+async function saveUnit(){
+  var name=(el('u-name').value||'').trim();
+  var errEl=el('u-err');
+  if(!name){ errEl.textContent=t('errUnit'); errEl.classList.add('show'); return; }
+  var num=(el('u-num').value||'').trim();
+  var btn=el('u-save'); btn.disabled=true; btn.textContent=t('saving');
+  try{
+    var addr=(complex.address||'')+' — '+name;
+    await dbInsert('properties',{
+      client_id:currentUser.id, type:'unit', parent_id:complex.id,
+      category:complex.category||'residential',
+      nickname:name, unit_label:name, unit_number:num||null,
+      tenant_name:(el('u-tenant').value||'').trim()||null,
+      address:addr, municipality:complex.municipality||null,
+      street:complex.street||null, zip_code:complex.zip_code||null, urbanization:complex.urbanization||null
+    });
+    btn.disabled=false; btn.textContent=t('uSave'); closeUnit();
+    await reload(); toast(t('unitAdded'));
+  }catch(e){ errEl.textContent=t('errSave'); errEl.classList.add('show'); btn.disabled=false; btn.textContent=t('uSave'); }
+}
+
+// ── Building job ──
+function openJob(){
+  el('j-title').textContent=t('jTitle'); el('j-sub').textContent=t('jSub');
+  el('j-title-l').textContent=t('jTitleL'); el('j-desc-l').textContent=t('jDescL'); el('j-trade-l').textContent=t('jTradeL'); el('j-proj-l').textContent=t('jProjL');
+  el('j-cancel').textContent=t('cancel'); el('j-save').textContent=t('jPost');
+  var ts=el('j-trade'); ts.innerHTML=''; TRADES.forEach(function(tr){var o=document.createElement('option');o.value=tr.v;o.textContent=(lang==='en'?tr.en:tr.es);ts.appendChild(o);});
+  var ps=el('j-proj'); ps.innerHTML=''; var none=document.createElement('option');none.value='';none.textContent=t('jNoProj');ps.appendChild(none);
+  bProjects.forEach(function(pr){var o=document.createElement('option');o.value=pr.id;o.textContent=pr.name;ps.appendChild(o);});
+  el('j-jtitle').value=''; el('j-desc').value=''; el('j-err').classList.remove('show');
+  el('job-modal').classList.add('show');
+}
+function closeJob(){ el('job-modal').classList.remove('show'); }
+async function saveJob(){
+  var title=(el('j-jtitle').value||'').trim(); var desc=(el('j-desc').value||'').trim(); var errEl=el('j-err');
+  if(!title||!desc){ errEl.textContent=t('errJob'); errEl.classList.add('show'); return; }
+  var btn=el('j-save'); btn.disabled=true; btn.textContent=t('saving');
+  try{
+    await dbInsert('jobs',{ homeowner_id:currentUser.id, property_id:complex.id, project_id:el('j-proj').value||null, title:title, description:desc, trade_needed:el('j-trade').value||null, city:complex.municipality||null, status:'open' });
+    btn.disabled=false; btn.textContent=t('jPost'); closeJob();
+    await reload(); toast(t('jobCreated'));
+  }catch(e){ errEl.textContent=t('errSave'); errEl.classList.add('show'); btn.disabled=false; btn.textContent=t('jPost'); }
+}
+
+// ── Building project ──
+function openProj(){
+  el('p-title').textContent=t('pTitle'); el('p-sub').textContent=t('pSub'); el('p-name-l').textContent=t('pNameL'); el('p-desc-l').textContent=t('pDescL');
+  el('p-cancel').textContent=t('cancel'); el('p-save').textContent=t('pCreate');
+  el('p-name').value=''; el('p-desc').value=''; el('p-err').classList.remove('show');
+  el('proj-modal').classList.add('show');
+}
+function closeProj(){ el('proj-modal').classList.remove('show'); }
+async function saveProj(){
+  var name=(el('p-name').value||'').trim(); var errEl=el('p-err');
+  if(!name){ errEl.textContent=t('errProj'); errEl.classList.add('show'); return; }
+  var btn=el('p-save'); btn.disabled=true; btn.textContent=t('saving');
+  try{
+    await dbInsert('projects',{ property_id:complex.id, client_id:currentUser.id, name:name, description:(el('p-desc').value||'').trim()||null, status:'active', is_building:true });
+    btn.disabled=false; btn.textContent=t('pCreate'); closeProj();
+    await reload(); toast(t('projCreated'));
+  }catch(e){ errEl.textContent=t('errSave'); errEl.classList.add('show'); btn.disabled=false; btn.textContent=t('pCreate'); }
+}
+
+// ── Edit complex ──
+function openEdit(){
+  el('e-title').textContent=t('eTitle'); el('e-sub').textContent=t('eSub');
+  el('e-nick-l').textContent=t('nickL'); el('e-muni-l').textContent=t('muniL'); el('e-street-l').textContent=t('streetL'); el('e-urb-l').textContent=t('urbL'); el('e-zip-l').textContent=t('zipL');
+  el('e-cancel').textContent=t('cancel'); el('e-save').textContent=t('saveChanges');
+  var sel=el('e-muni'); if(!sel.options.length){ MUNIS.forEach(function(m){var o=document.createElement('option');o.value=m;o.textContent=m;sel.appendChild(o);}); }
+  el('e-nick').value=complex.nickname||''; el('e-street').value=complex.street||''; el('e-urb').value=complex.urbanization||''; el('e-zip').value=complex.zip_code||'';
+  if(complex.municipality) sel.value=complex.municipality;
+  el('e-err').classList.remove('show'); el('edit-modal').classList.add('show');
+}
+function closeEdit(){ el('edit-modal').classList.remove('show'); }
+async function saveEdit(){
+  var street=(el('e-street').value||'').trim(); var zip=(el('e-zip').value||'').trim(); var urb=(el('e-urb').value||'').trim(); var muni=el('e-muni').value||'';
+  var errEl=el('e-err');
+  if(!street){ errEl.textContent=t('errStreet'); errEl.classList.add('show'); return; }
+  var parts=[]; if(street)parts.push(street); if(urb)parts.push(urb); if(muni)parts.push(muni); if(zip)parts.push('PR '+zip);
+  var fullAddr=parts.join(', ');
+  var btn=el('e-save'); btn.disabled=true; btn.textContent=t('saving');
+  try{
+    var up=await dbPatch('properties','id=eq.'+encodeURIComponent(complex.id),{ nickname:(el('e-nick').value||'').trim()||null, address:fullAddr, street:street||null, zip_code:zip||null, urbanization:urb||null, municipality:muni||null });
+    if(Array.isArray(up)&&up[0]) complex=up[0];
+    btn.disabled=false; btn.textContent=t('saveChanges'); closeEdit(); render(); toast(lang==='en'?'Saved':'Guardado');
+  }catch(e){ errEl.textContent=t('errSave'); errEl.classList.add('show'); btn.disabled=false; btn.textContent=t('saveChanges'); }
+}
+
+async function loadAggregates(){
+  units=await CPR.db('properties?parent_id=eq.'+encodeURIComponent(complex.id)+'&order=created_at.asc&select=*');
+  units=Array.isArray(units)?units:[];
+  bJobs=await CPR.db('jobs?property_id=eq.'+encodeURIComponent(complex.id)+'&order=created_at.desc&select=*');
+  bJobs=Array.isArray(bJobs)?bJobs:[];
+  bProjects=await CPR.db('projects?property_id=eq.'+encodeURIComponent(complex.id)+'&select=*');
+  bProjects=Array.isArray(bProjects)?bProjects:[];
+
+  var allIds=[complex.id].concat(units.map(function(u){return u.id;}));
+  var allJobs=await CPR.db('jobs?property_id=in.('+allIds.join(',')+')&select=id,property_id,status');
+  allJobs=Array.isArray(allJobs)?allJobs:[];
+  jobsByProp={}; var jobToProp={};
+  allJobs.forEach(function(j){ (jobsByProp[j.property_id]=jobsByProp[j.property_id]||[]).push(j); jobToProp[j.id]=j.property_id; });
+
+  investedByProp={}; pendingByJob={}; contractorByJob={};
+  var allJobIds=allJobs.map(function(j){return j.id;});
+  if(allJobIds.length){
+    var props=await CPR.db('proposals?job_id=in.('+allJobIds.join(',')+')&select=job_id,status,price,contractor_id');
+    props=Array.isArray(props)?props:[];
+    var acceptedCids=[];
+    props.forEach(function(pr){
+      if(pr.status==='pending') pendingByJob[pr.job_id]=(pendingByJob[pr.job_id]||0)+1;
+      if(pr.status==='completed'){ var pid=jobToProp[pr.job_id]; var v=parseFloat(pr.price); if(!isNaN(v)&&pid) investedByProp[pid]=(investedByProp[pid]||0)+v; }
+      if(pr.status==='accepted'||pr.status==='completed'){ contractorByJob[pr.job_id]=pr.contractor_id; if(pr.contractor_id) acceptedCids.push(pr.contractor_id); }
+    });
+    if(acceptedCids.length){
+      var cs=await CPR.db('contractors?id=in.('+acceptedCids.join(',')+')&select=id,name');
+      var nameById={}; (Array.isArray(cs)?cs:[]).forEach(function(c){nameById[c.id]=c.name;});
+      Object.keys(contractorByJob).forEach(function(jid){ contractorByJob[jid]=nameById[contractorByJob[jid]]||''; });
+    }
+  }
+}
+
+async function reload(){ await loadAggregates(); render(); }
+
+async function loadData(){
+  var id=getParam('id');
+  if(!id){ showNotFound(); return; }
+  var res=await CPR.db('properties?id=eq.'+encodeURIComponent(id)+'&select=*');
+  var p=Array.isArray(res)?res[0]:null;
+  if(!p || p.client_id!==currentUser.id){ showNotFound(); return; }
+  if(p.type!=='complex'){ location.replace('property.html?id='+id); return; }
+  complex=p;
+  await loadAggregates();
+  el('boot').style.display='none';
+  render();
+}
+function showNotFound(){ el('boot').style.display='none'; el('nf-title').textContent=t('nfTitle'); el('nf-sub').textContent=t('nfSub'); el('nf-link').textContent=t('nfLink'); el('notfound').style.display='block'; }
+
+(function init(){
+  if(!window.CPR){ return; }
+  if(!window._sb && window.supabase){ window._sb=supabase.createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK); }
+  CPR.injectNav('properties', null);
+  CPR.requireAuth(async function(user){
+    if(user.type==='contractor'){ location.replace('dashboard-contractor.html'); return; }
+    currentUser=user; CPR.injectNav('properties', user);
+    await loadData();
+  }, (lang==='en'?'Log in to view this complex':'Inicia sesión para ver este complejo'), 'homeowner');
+})();
+</script>
+</body>
+</html>
