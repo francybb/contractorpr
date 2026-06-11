@@ -174,7 +174,8 @@ a{color:inherit;text-decoration:none}
 .field{margin-bottom:16px}
 .field label{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
 .field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:14px;color:var(--ink);transition:.15s;background:var(--card)}
-.field input:focus,.field select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+.field textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:14px;color:var(--ink);transition:.15s;background:var(--card);resize:vertical;min-height:90px}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
 .field .hint{font-size:12px;color:var(--muted);margin-top:6px}
 .modal-err{color:var(--rose);font-size:13px;margin-bottom:12px;display:none}
 .modal-err.show{display:block}
@@ -220,6 +221,39 @@ a{color:inherit;text-decoration:none}
     </div>
   </div>
 </div>
+<!-- CREATE JOB MODAL -->
+<div class="modal-bg" id="job-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeJob()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head"><h2 class="serif" id="j-title">Crear trabajo</h2><p id="j-sub">Publica un trabajo para esta propiedad.</p></div>
+    <div class="modal-body">
+      <div class="modal-err" id="j-err"></div>
+      <div class="field"><label id="j-title-l">Título del trabajo</label><input type="text" id="j-jtitle"></div>
+      <div class="field"><label id="j-desc-l">Descripción</label><textarea id="j-desc"></textarea></div>
+      <div class="field" style="display:flex;gap:12px">
+        <div style="flex:1"><label id="j-trade-l">Tipo de trabajo</label><select id="j-trade"></select></div>
+        <div style="flex:1"><label id="j-budget-l">Presupuesto (opcional)</label><input type="text" id="j-budget" placeholder="$"></div>
+      </div>
+      <div class="field"><label id="j-proj-l">Proyecto (opcional)</label><select id="j-proj"></select></div>
+      <div class="modal-foot"><button class="btn-line" onclick="closeJob()" id="j-cancel">Cancelar</button><button class="btn-primary" id="j-save" onclick="saveJob()">Publicar trabajo</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE PROJECT MODAL -->
+<div class="modal-bg" id="proj-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeProj()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head"><h2 class="serif" id="p-title">Nuevo proyecto</h2><p id="p-sub">Agrupa varios trabajos relacionados bajo un proyecto.</p></div>
+    <div class="modal-body">
+      <div class="modal-err" id="p-err"></div>
+      <div class="field"><label id="p-name-l">Nombre del proyecto</label><input type="text" id="p-name"></div>
+      <div class="field"><label id="p-desc-l">Descripción (opcional)</label><textarea id="p-desc"></textarea></div>
+      <div class="modal-foot"><button class="btn-line" onclick="closeProj()" id="p-cancel">Cancelar</button><button class="btn-primary" id="p-save" onclick="saveProj()">Crear proyecto</button></div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -242,6 +276,16 @@ var T = {
   nickL:{es:'Apodo (opcional)',en:'Nickname (optional)'},streetL:{es:'Calle',en:'Street'},numL:{es:'Número / Apt',en:'Number / Apt'},zipL:{es:'Código postal',en:'Zip code'},urbL:{es:'Urbanización / sector (opcional)',en:'Subdivision / area (optional)'},
   cancel:{es:'Cancelar',en:'Cancel'},saveChanges:{es:'Guardar cambios',en:'Save changes'},saving:{es:'Guardando...',en:'Saving...'},
   errStreet:{es:'Escribe al menos la calle.',en:'Enter at least the street.'},errSave:{es:'No se pudo guardar. Intenta de nuevo.',en:'Could not save. Try again.'},
+  jTitle:{es:'Crear trabajo',en:'Create job'},jSub:{es:'Publica un trabajo para esta propiedad. Los contratistas podrán enviarte propuestas.',en:'Post a job for this property. Contractors can send you proposals.'},
+  jTitleL:{es:'Título del trabajo',en:'Job title'},jTitlePh:{es:'ej. Cambiar inodoro del baño',en:'ej. Replace bathroom toilet'},
+  jDescL:{es:'Descripción',en:'Description'},jDescPh:{es:'Describe lo que necesitas con detalle...',en:'Describe what you need in detail...'},
+  jTradeL:{es:'Tipo de trabajo',en:'Type of work'},jBudgetL:{es:'Presupuesto aproximado (opcional)',en:'Approximate budget (optional)'},
+  jProjL:{es:'Proyecto (opcional)',en:'Project (optional)'},jNoProj:{es:'Ninguno — trabajo suelto',en:'None — standalone job'},
+  jPost:{es:'Publicar trabajo',en:'Post job'},errJob:{es:'Escribe un título y una descripción.',en:'Enter a title and description.'},
+  pTitle:{es:'Nuevo proyecto',en:'New project'},pSub:{es:'Agrupa varios trabajos relacionados bajo un proyecto.',en:'Group several related jobs under one project.'},
+  pNameL:{es:'Nombre del proyecto',en:'Project name'},pNamePh:{es:'ej. Remodelación de cocina',en:'ej. Kitchen remodel'},
+  pDescL:{es:'Descripción (opcional)',en:'Description (optional)'},pCreate:{es:'Crear proyecto',en:'Create project'},errProj:{es:'Escribe un nombre para el proyecto.',en:'Enter a project name.'},
+  jobCreated:{es:'Trabajo publicado',en:'Job posted'},projCreated:{es:'Proyecto creado',en:'Project created'},
   tabWork:{es:'Trabajos y proyectos',en:'Jobs & projects'},tabCal:{es:'Calendario',en:'Calendar'},tabDocs:{es:'Documentos',en:'Documents'},tabHist:{es:'Historial',en:'History'},
   attN:{es:'Necesita tu atención',en:'Needs your attention'},attEmpty:{es:'Todo al día. Nada pendiente.',en:'All caught up. Nothing pending.'},
   newProps:{es:'propuestas nuevas en',en:'new proposals on'},awaiting:{es:'Esperando tu decisión',en:'Awaiting your decision'},review:{es:'Revisar →',en:'Review →'},
@@ -280,6 +324,12 @@ async function dbPatch(table, query, obj){
   var url='/.netlify/functions/supabase-proxy?table='+encodeURIComponent(table)+'&query='+encodeURIComponent(query)+'&prefer='+encodeURIComponent('return=representation');
   var res=await fetch(url,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)});
   if(!res.ok){ throw new Error('patch '+res.status); }
+  return res.json();
+}
+async function dbInsert(table, obj){
+  var url='/.netlify/functions/supabase-proxy?table='+encodeURIComponent(table)+'&prefer='+encodeURIComponent('return=representation');
+  var res=await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)});
+  if(!res.ok){ throw new Error('insert '+res.status); }
   return res.json();
 }
 
@@ -348,8 +398,105 @@ async function saveEdit(){
   }
 }
 
-var pinSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+var TRADES=[
+  {v:'Plomería',es:'Plomería',en:'Plumbing'},
+  {v:'Electricidad',es:'Electricidad',en:'Electrical'},
+  {v:'Carpintería',es:'Carpintería',en:'Carpentry'},
+  {v:'Pintura',es:'Pintura',en:'Painting'},
+  {v:'Techado',es:'Techado',en:'Roofing'},
+  {v:'Albañilería',es:'Albañilería',en:'Masonry'},
+  {v:'Aire acondicionado',es:'Aire acondicionado',en:'HVAC'},
+  {v:'Demolición',es:'Demolición',en:'Demolition'},
+  {v:'Soldadura',es:'Soldadura',en:'Welding'},
+  {v:'Jardinería',es:'Jardinería',en:'Landscaping'},
+  {v:'Limpieza',es:'Limpieza',en:'Cleaning'},
+  {v:'Mudanza',es:'Mudanza',en:'Moving'},
+  {v:'Otro',es:'Otro',en:'Other'}
+];
+
+// ── Create job ──
+function openCreateJob(){
+  el('j-title').textContent=t('jTitle'); el('j-sub').textContent=t('jSub');
+  el('j-title-l').textContent=t('jTitleL'); el('j-jtitle').placeholder=t('jTitlePh');
+  el('j-desc-l').textContent=t('jDescL'); el('j-desc').placeholder=t('jDescPh');
+  el('j-trade-l').textContent=t('jTradeL'); el('j-budget-l').textContent=t('jBudgetL');
+  el('j-proj-l').textContent=t('jProjL'); el('j-cancel').textContent=t('cancel'); el('j-save').textContent=t('jPost');
+  var ts=el('j-trade'); ts.innerHTML='';
+  TRADES.forEach(function(tr){ var o=document.createElement('option'); o.value=tr.v; o.textContent=(lang==='en'?tr.en:tr.es); ts.appendChild(o); });
+  var ps=el('j-proj'); ps.innerHTML='';
+  var none=document.createElement('option'); none.value=''; none.textContent=t('jNoProj'); ps.appendChild(none);
+  projects.forEach(function(pr){ var o=document.createElement('option'); o.value=pr.id; o.textContent=pr.name; ps.appendChild(o); });
+  el('j-jtitle').value=''; el('j-desc').value=''; el('j-budget').value='';
+  el('j-err').classList.remove('show');
+  el('job-modal').classList.add('show');
+}
+function closeJob(){ el('job-modal').classList.remove('show'); }
+async function saveJob(){
+  var title=(el('j-jtitle').value||'').trim();
+  var desc=(el('j-desc').value||'').trim();
+  var errEl=el('j-err');
+  if(!title || !desc){ errEl.textContent=t('errJob'); errEl.classList.add('show'); return; }
+  var budgetRaw=(el('j-budget').value||'').trim();
+  var btn=el('j-save'); btn.disabled=true; btn.textContent=t('saving');
+  try{
+    await dbInsert('jobs', {
+      homeowner_id: currentUser.id,
+      property_id: prop.id,
+      project_id: el('j-proj').value || null,
+      title: title,
+      description: desc,
+      trade_needed: el('j-trade').value || null,
+      city: prop.municipality || null,
+      budget: budgetRaw || null,
+      status: 'open'
+    });
+    btn.disabled=false; btn.textContent=t('jPost');
+    closeJob();
+    await refreshJobs();
+    render();
+    toast(t('jobCreated'));
+  }catch(e){
+    errEl.textContent=t('errSave'); errEl.classList.add('show');
+    btn.disabled=false; btn.textContent=t('jPost');
+  }
+}
+
+// ── Create project ──
+function openCreateProject(){
+  el('p-title').textContent=t('pTitle'); el('p-sub').textContent=t('pSub');
+  el('p-name-l').textContent=t('pNameL'); el('p-name').placeholder=t('pNamePh');
+  el('p-desc-l').textContent=t('pDescL'); el('p-cancel').textContent=t('cancel'); el('p-save').textContent=t('pCreate');
+  el('p-name').value=''; el('p-desc').value='';
+  el('p-err').classList.remove('show');
+  el('proj-modal').classList.add('show');
+}
+function closeProj(){ el('proj-modal').classList.remove('show'); }
+async function saveProj(){
+  var name=(el('p-name').value||'').trim();
+  var errEl=el('p-err');
+  if(!name){ errEl.textContent=t('errProj'); errEl.classList.add('show'); return; }
+  var btn=el('p-save'); btn.disabled=true; btn.textContent=t('saving');
+  try{
+    await dbInsert('projects', {
+      property_id: prop.id,
+      client_id: currentUser.id,
+      name: name,
+      description: (el('p-desc').value||'').trim() || null,
+      status: 'active',
+      is_building: false
+    });
+    btn.disabled=false; btn.textContent=t('pCreate');
+    closeProj();
+    await refreshJobs();
+    render();
+    toast(t('projCreated'));
+  }catch(e){
+    errEl.textContent=t('errSave'); errEl.classList.add('show');
+    btn.disabled=false; btn.textContent=t('pCreate');
+  }
+}
 var chevSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>';
+var pinSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>';
 
 function contractorName(jobId){ var c=contractorByJob[jobId]; return c||''; }
 
@@ -522,9 +669,9 @@ function render(){
     '<div class="hero-meta"><div><div class="v serif">'+totalJobs+'</div><div class="k">'+t('totalJobs')+'</div></div>'+
       '<div><div class="v serif">'+projects.length+'</div><div class="k">'+t('projects')+'</div></div>'+
       '<div><div class="v serif money">'+money(invested)+'</div><div class="k">'+t('invested')+'</div></div></div>'+
-    '<div class="hero-cta"><button class="btn-primary" onclick="soon()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'+t('createJob')+'</button>'+
+    '<div class="hero-cta"><button class="btn-primary" onclick="openCreateJob()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'+t('createJob')+'</button>'+
       '<button class="btn-line" onclick="openEdit()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>'+t('edit')+'</button>'+
-      '<button class="btn-line" onclick="soon()">'+t('newProject')+'</button>'+
+      '<button class="btn-line" onclick="openCreateProject()">'+t('newProject')+'</button>'+
       '<button class="btn-line" onclick="soon()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>'+t('transfer')+'</button></div></div></div>'+
   '<div class="detail-strips">'+attentionStrip()+spendStrip()+'</div>'+
   '<div class="tabs">'+
@@ -548,19 +695,13 @@ function switchTab(btn){
 }
 function soon(){ toast(t('soon')); }
 
-async function loadData(){
-  var id=getParam('id');
-  if(!id){ showNotFound(); return; }
-  var res=await CPR.db('properties?id=eq.'+encodeURIComponent(id)+'&select=*');
-  var p=Array.isArray(res)?res[0]:null;
-  if(!p || p.client_id!==currentUser.id){ showNotFound(); return; }
-  prop=p;
-  if(p.type==='complex'){ location.replace('complex.html?id='+id); return; }
+async function refreshJobs(){
+  var id=prop.id;
   jobs=await CPR.db('jobs?property_id=eq.'+encodeURIComponent(id)+'&order=created_at.desc&select=*');
   jobs=Array.isArray(jobs)?jobs:[];
   projects=await CPR.db('projects?property_id=eq.'+encodeURIComponent(id)+'&select=*');
   projects=Array.isArray(projects)?projects:[];
-  // proposals for these jobs: pending counts + accepted contractor
+  pendingByJob={}; contractorByJob={};
   var jobIds=jobs.map(function(j){return j.id;});
   if(jobIds.length){
     var props=await CPR.db('proposals?job_id=in.('+jobIds.join(',')+')&select=id,job_id,status,contractor_id');
@@ -577,6 +718,17 @@ async function loadData(){
       Object.keys(contractorByJob).forEach(function(jid){ contractorByJob[jid]=nameById[contractorByJob[jid]]||''; });
     }
   }
+}
+
+async function loadData(){
+  var id=getParam('id');
+  if(!id){ showNotFound(); return; }
+  var res=await CPR.db('properties?id=eq.'+encodeURIComponent(id)+'&select=*');
+  var p=Array.isArray(res)?res[0]:null;
+  if(!p || p.client_id!==currentUser.id){ showNotFound(); return; }
+  prop=p;
+  if(p.type==='complex'){ location.replace('complex.html?id='+id); return; }
+  await refreshJobs();
   el('boot').style.display='none';
   render();
 }
