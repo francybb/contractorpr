@@ -230,10 +230,7 @@ a{color:inherit;text-decoration:none}
       <div class="modal-err" id="j-err"></div>
       <div class="field"><label id="j-title-l">Título del trabajo</label><input type="text" id="j-jtitle"></div>
       <div class="field"><label id="j-desc-l">Descripción</label><textarea id="j-desc"></textarea></div>
-      <div class="field" style="display:flex;gap:12px">
-        <div style="flex:1"><label id="j-trade-l">Tipo de trabajo</label><select id="j-trade"></select></div>
-        <div style="flex:1"><label id="j-budget-l">Presupuesto (opcional)</label><input type="text" id="j-budget" placeholder="$"></div>
-      </div>
+      <div class="field"><label id="j-trade-l">Tipo de trabajo</label><select id="j-trade"></select></div>
       <div class="field"><label id="j-proj-l">Proyecto (opcional)</label><select id="j-proj"></select></div>
       <div class="modal-foot"><button class="btn-line" onclick="closeJob()" id="j-cancel">Cancelar</button><button class="btn-primary" id="j-save" onclick="saveJob()">Publicar trabajo</button></div>
     </div>
@@ -419,14 +416,14 @@ function openCreateJob(){
   el('j-title').textContent=t('jTitle'); el('j-sub').textContent=t('jSub');
   el('j-title-l').textContent=t('jTitleL'); el('j-jtitle').placeholder=t('jTitlePh');
   el('j-desc-l').textContent=t('jDescL'); el('j-desc').placeholder=t('jDescPh');
-  el('j-trade-l').textContent=t('jTradeL'); el('j-budget-l').textContent=t('jBudgetL');
+  el('j-trade-l').textContent=t('jTradeL');
   el('j-proj-l').textContent=t('jProjL'); el('j-cancel').textContent=t('cancel'); el('j-save').textContent=t('jPost');
   var ts=el('j-trade'); ts.innerHTML='';
   TRADES.forEach(function(tr){ var o=document.createElement('option'); o.value=tr.v; o.textContent=(lang==='en'?tr.en:tr.es); ts.appendChild(o); });
   var ps=el('j-proj'); ps.innerHTML='';
   var none=document.createElement('option'); none.value=''; none.textContent=t('jNoProj'); ps.appendChild(none);
   projects.forEach(function(pr){ var o=document.createElement('option'); o.value=pr.id; o.textContent=pr.name; ps.appendChild(o); });
-  el('j-jtitle').value=''; el('j-desc').value=''; el('j-budget').value='';
+  el('j-jtitle').value=''; el('j-desc').value='';
   el('j-err').classList.remove('show');
   el('job-modal').classList.add('show');
 }
@@ -436,7 +433,6 @@ async function saveJob(){
   var desc=(el('j-desc').value||'').trim();
   var errEl=el('j-err');
   if(!title || !desc){ errEl.textContent=t('errJob'); errEl.classList.add('show'); return; }
-  var budgetRaw=(el('j-budget').value||'').trim();
   var btn=el('j-save'); btn.disabled=true; btn.textContent=t('saving');
   try{
     await dbInsert('jobs', {
@@ -447,7 +443,6 @@ async function saveJob(){
       description: desc,
       trade_needed: el('j-trade').value || null,
       city: prop.municipality || null,
-      budget: budgetRaw || null,
       status: 'open'
     });
     btn.disabled=false; btn.textContent=t('jPost');
