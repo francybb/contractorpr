@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ContractingPR · Mis Propiedades</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1F33;--ink-2:#3A4A5C;--muted:#6B7A8D;
+  --blue:#1A56DB;--blue-deep:#103FA8;--blue-soft:#EBF1FE;
+  --canvas:#F6F7F9;--card:#FFFFFF;--line:#E6E9EF;--line-2:#EFF1F5;
+  --ok:#0E9F6E;--ok-soft:#E3F5EE;--warn:#E08A00;--warn-soft:#FBF1DF;
+  --post:#64748B;--post-soft:#EEF1F5;--rose:#D6336C;--rose-soft:#FCE7EF;
+  --violet:#7C5BD6;--violet-soft:#F1ECFB;
+  --radius:16px;--shadow:0 1px 2px rgba(11,31,51,.04),0 8px 24px -12px rgba(11,31,51,.12);
+  --shadow-lg:0 4px 12px rgba(11,31,51,.06),0 24px 48px -16px rgba(11,31,51,.18);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--canvas);color:var(--ink);line-height:1.5}
+.serif{font-family:'Fraunces',Georgia,serif}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+a{color:inherit;text-decoration:none}
+
+.wrap{max-width:1180px;margin:0 auto;padding:36px 28px 80px}
+.lib-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:8px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);margin-bottom:10px}
+.lib-head h1{font-size:40px;font-weight:500;letter-spacing:-.02em;line-height:1.05}
+.lib-head h1 .accent{font-style:italic;color:var(--ink)}
+.lib-sub{color:var(--muted);font-size:15px;margin-top:10px;max-width:46ch}
+.btn-add{display:inline-flex;align-items:center;gap:8px;background:var(--blue);color:#fff;font-weight:600;font-size:14px;padding:12px 18px;border-radius:11px;box-shadow:0 6px 16px -6px rgba(26,86,219,.5);transition:.18s;white-space:nowrap}
+.btn-add:hover{background:var(--blue-deep);transform:translateY(-1px)}
+.btn-add svg{width:17px;height:17px}
+
+.attention{margin:28px 0 6px;display:none}
+.attention.show{display:block}
+.att-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.att-head h2{font-family:'Fraunces',serif;font-size:20px;font-weight:500;letter-spacing:-.01em}
+.att-count{background:var(--rose);color:#fff;font-size:12px;font-weight:700;min-width:22px;height:22px;border-radius:20px;display:grid;place-items:center;padding:0 7px}
+.att-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
+.att-card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);transition:.16s;cursor:pointer}
+.att-card:hover{border-color:#d6dce6;transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.att-icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
+.att-icon svg{width:19px;height:19px}
+.ai-prop{background:var(--blue-soft);color:var(--blue)}.ai-msg{background:var(--violet-soft);color:var(--violet)}.ai-pay{background:var(--ok-soft);color:var(--ok)}.ai-warn{background:var(--warn-soft);color:var(--warn)}
+.att-body{flex:1;min-width:0}
+.att-t{font-size:13.5px;font-weight:600;line-height:1.25}
+.att-s{font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.att-action{font-size:12.5px;font-weight:600;color:var(--blue);background:var(--blue-soft);padding:7px 13px;border-radius:8px;white-space:nowrap}
+
+.toolbar{display:flex;align-items:center;gap:14px;margin:30px 0 22px;flex-wrap:wrap}
+.search{flex:1;min-width:240px;display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:11px 14px;transition:.15s}
+.search:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+.search svg{width:17px;height:17px;color:var(--muted);flex-shrink:0}
+.search input{border:none;outline:none;font-family:inherit;font-size:14px;width:100%;color:var(--ink);background:none}
+.chips{display:flex;gap:7px;flex-wrap:wrap}
+.chip{font-size:13px;font-weight:600;color:var(--muted);padding:9px 15px;border-radius:9px;border:1px solid var(--line);background:var(--card);transition:.15s}
+.chip:hover{border-color:#cdd4df;color:var(--ink)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.ledger{display:flex;gap:0;margin:0 0 34px;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
+.ledger-item{flex:1;padding:18px 22px;border-right:1px solid var(--line-2)}
+.ledger-item:last-child{border-right:none}
+.ledger-num{font-family:'Fraunces',serif;font-size:30px;font-weight:500;letter-spacing:-.02em;line-height:1}
+.ledger-lbl{font-size:12.5px;color:var(--muted);margin-top:6px;font-weight:500}
+.ledger-num.money{color:var(--blue)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:22px}
+.prop-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);transition:.22s cubic-bezier(.2,.7,.2,1);cursor:pointer;display:flex;flex-direction:column;position:relative}
+.prop-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg);border-color:#d6dce6}
+.prop-card.is-complex::before,.prop-card.is-complex::after{content:"";position:absolute;left:8px;right:8px;border-radius:var(--radius);background:var(--card);border:1px solid var(--line);z-index:-1}
+.prop-card.is-complex::before{top:-6px;height:20px}
+.prop-card.is-complex::after{top:-12px;left:16px;right:16px;height:20px;opacity:.6}
+.cover{height:158px;position:relative;overflow:hidden}
+.cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,31,51,.05) 0%,transparent 30%,transparent 60%,rgba(11,31,51,.22) 100%)}
+.cover-img{position:absolute;inset:0;background-size:cover;background-position:center}
+.cv-0{background:linear-gradient(157deg,#F6CF9A,#EBA877 28%,#8BA6CB 62%,#3E5C82)}
+.cv-1{background:linear-gradient(157deg,#BFE3EC,#7FBFD3 38%,#3D8DA6 72%,#235E73)}
+.cv-2{background:linear-gradient(157deg,#C9E3D4,#84B79C 36%,#3E7D6A 72%,#23564A)}
+.cv-3{background:linear-gradient(157deg,#EBD2AC,#CC9F70 44%,#8A6E54 78%,#564636)}
+.cv-4{background:linear-gradient(157deg,#D8CCEC,#A88FD6 40%,#6E54B0 78%,#4A3A7A)}
+.cover .sheen{position:absolute;top:-40%;left:-20%;width:80%;height:120%;background:radial-gradient(ellipse,rgba(255,255,255,.28),transparent 60%);transform:rotate(-18deg)}
+.muni-chip{position:absolute;top:12px;left:12px;z-index:2;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);font-size:11.5px;font-weight:600;color:var(--ink-2);padding:4px 10px;border-radius:20px;display:flex;align-items:center;gap:5px}
+.muni-chip svg{width:11px;height:11px;color:var(--blue)}
+.type-chip{position:absolute;top:12px;right:12px;z-index:2;background:rgba(11,31,51,.82);backdrop-filter:blur(4px);color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;display:flex;align-items:center;gap:5px}
+.type-chip svg{width:11px;height:11px}
+.prop-body{padding:18px 18px 16px;flex:1;display:flex;flex-direction:column}
+.prop-name{font-family:'Fraunces',serif;font-size:21px;font-weight:500;letter-spacing:-.015em;line-height:1.15}
+.prop-addr{font-size:13px;color:var(--muted);margin-top:4px}
+.prop-divider{height:1px;background:var(--line-2);margin:15px 0 13px}
+.status-row{display:flex;gap:8px;margin-top:auto}
+.st{flex:1;text-align:center;border-radius:9px;padding:9px 4px}
+.st-n{font-size:17px;font-weight:700;line-height:1}
+.st-l{font-size:10.5px;font-weight:600;margin-top:4px;text-transform:uppercase;letter-spacing:.04em}
+.st.posted{background:var(--post-soft)}.st.posted .st-n,.st.posted .st-l{color:var(--post)}
+.st.active{background:var(--warn-soft)}.st.active .st-n,.st.active .st-l{color:var(--warn)}
+.st.done{background:var(--ok-soft)}.st.done .st-n,.st.done .st-l{color:var(--ok)}
+.complex-line{margin-top:auto;font-size:13px;color:var(--ink-2);display:flex;align-items:center;gap:8px;background:var(--blue-soft);border-radius:10px;padding:11px 13px;font-weight:500}
+.complex-line b{color:var(--blue)}
+.complex-line svg{width:16px;height:16px;color:var(--blue);flex-shrink:0}
+.add-tile{border:2px dashed var(--line);border-radius:var(--radius);background:transparent;display:grid;place-items:center;min-height:330px;transition:.18s;cursor:pointer}
+.add-tile:hover{border-color:var(--blue);background:var(--blue-soft)}
+.add-tile-inner{text-align:center;color:var(--muted)}
+.add-tile-inner .circ{width:52px;height:52px;border-radius:50%;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;margin:0 auto 12px;transition:.18s}
+.add-tile:hover .circ{background:var(--blue);color:#fff}
+.add-tile-inner b{display:block;color:var(--ink);font-size:15px;font-weight:600;margin-bottom:3px}
+.add-tile-inner span{font-size:13px}
+
+.welcome{display:none;text-align:center;padding:50px 24px 30px}
+.welcome.show{display:block}
+.welcome .wc-mark{width:84px;height:84px;border-radius:24px;background:linear-gradient(157deg,var(--blue),var(--blue-deep));color:#fff;display:grid;place-items:center;margin:0 auto 26px;box-shadow:0 16px 40px -12px rgba(26,86,219,.55)}
+.welcome .wc-mark svg{width:40px;height:40px}
+.welcome h1{font-family:'Fraunces',serif;font-size:32px;font-weight:500;letter-spacing:-.02em;margin-bottom:12px}
+.welcome p{color:var(--muted);font-size:15.5px;max-width:46ch;margin:0 auto 28px}
+.wc-feats{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:34px auto 0;max-width:760px}
+.wc-feat{flex:1;min-width:200px;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:20px;text-align:left;box-shadow:var(--shadow)}
+.wc-feat .wf-ic{width:38px;height:38px;border-radius:10px;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;margin-bottom:12px}
+.wc-feat .wf-ic svg{width:19px;height:19px}
+.wc-feat b{display:block;font-size:14.5px;margin-bottom:4px}
+.wc-feat span{font-size:13px;color:var(--muted)}
+
+.loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:60px;color:var(--muted);font-size:14px}
+.spinner{width:18px;height:18px;border:2px solid var(--line);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.modal-bg{position:fixed;inset:0;background:rgba(11,31,51,.42);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:90;padding:20px}
+.modal-bg.show{display:flex}
+.modal{background:var(--card);border-radius:18px;max-width:480px;width:100%;box-shadow:var(--shadow-lg);max-height:90vh;overflow:auto;position:relative;animation:rise .3s cubic-bezier(.2,.7,.2,1)}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.modal-head{padding:24px 26px 0}
+.modal-head h2{font-family:'Fraunces',serif;font-size:24px;font-weight:500;letter-spacing:-.01em}
+.modal-head p{color:var(--muted);font-size:13.5px;margin-top:6px}
+.modal-body{padding:22px 26px 26px}
+.type-pick{display:flex;gap:10px;margin-bottom:18px}
+.type-opt{flex:1;border:1px solid var(--line);border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;transition:.15s}
+.type-opt:hover{border-color:#cdd4df}
+.type-opt.on{border-color:var(--blue);background:var(--blue-soft)}
+.type-opt svg{width:22px;height:22px;color:var(--blue);margin-bottom:6px}
+.type-opt b{display:block;font-size:13px}
+.type-opt span{font-size:11px;color:var(--muted)}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
+.field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:14px;color:var(--ink);transition:.15s;background:var(--card)}
+.field input:focus,.field select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
+.field .hint{font-size:12px;color:var(--muted);margin-top:6px}
+.modal-err{color:var(--rose);font-size:13px;margin-bottom:12px;display:none}
+.modal-err.show{display:block}
+.modal-foot{display:flex;gap:10px;justify-content:flex-end;margin-top:6px}
+.btn-line{border:1px solid var(--line);background:var(--card);color:var(--ink-2);font-weight:600;font-size:13.5px;padding:11px 16px;border-radius:10px}
+.btn-line:hover{border-color:#cdd4df;color:var(--ink)}
+.btn-primary{background:var(--blue);color:#fff;font-weight:600;font-size:13.5px;padding:11px 18px;border-radius:10px}
+.btn-primary:hover{background:var(--blue-deep)}
+.btn-primary:disabled{opacity:.6;cursor:not-allowed}
+.modal-x{position:absolute;top:18px;right:18px;width:30px;height:30px;border-radius:8px;color:var(--muted);display:grid;place-items:center}
+.modal-x:hover{background:var(--line-2);color:var(--ink)}
+
+@media(max-width:560px){
+  .wrap{padding:24px 18px 60px}
+  .lib-head{flex-direction:column;align-items:stretch}
+  .lib-head h1{font-size:32px}
+  .ledger{flex-wrap:wrap}.ledger-item{min-width:50%}
+  .grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div id="cpr-nav-placeholder"></div>
+
+<div class="wrap">
+  <div id="boot" class="loading"><div class="spinner"></div><span>Cargando...</span></div>
+
+  <!-- WELCOME (first run) -->
+  <div class="welcome" id="welcome">
+    <div class="wc-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg></div>
+    <h1 class="serif" id="wc-title">Bienvenido a tu biblioteca</h1>
+    <p id="wc-sub">Añade tu primera propiedad para empezar a organizar trabajos, documentos e historial — todo en un solo lugar.</p>
+    <button class="btn-add" style="margin:0 auto" onclick="openAdd()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span id="wc-btn">Añadir primera propiedad</span></button>
+  </div>
+
+  <!-- LIBRARY -->
+  <div id="library" style="display:none">
+    <div class="lib-head">
+      <div>
+        <div class="eyebrow" id="lbl-eyebrow">Portal de Cliente</div>
+        <h1 id="lbl-title">Tu <span class="accent serif">biblioteca</span> de propiedades</h1>
+        <p class="lib-sub" id="lbl-sub">Cada propiedad guarda su propia historia de trabajos, documentos y contratistas.</p>
+      </div>
+      <button class="btn-add" onclick="openAdd()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span id="lbl-add">Añadir propiedad</span></button>
+    </div>
+
+    <div class="attention" id="attention">
+      <div class="att-head"><h2 class="serif" id="lbl-att">Necesita tu atención</h2><span class="att-count" id="att-count">0</span></div>
+      <div class="att-grid" id="att-grid"></div>
+    </div>
+
+    <div class="toolbar">
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="search" placeholder="Buscar propiedad, dirección o municipio" oninput="renderGrid()"></div>
+      <div class="chips" id="chips">
+        <button class="chip on" data-f="all" onclick="setFilter(this)">Todas</button>
+        <button class="chip" data-f="residential" onclick="setFilter(this)">Residencial</button>
+        <button class="chip" data-f="commercial" onclick="setFilter(this)">Comercial</button>
+        <button class="chip" data-f="complex" onclick="setFilter(this)">Complejos</button>
+      </div>
+    </div>
+
+    <div class="ledger" id="ledger"></div>
+    <div class="grid" id="grid"></div>
+  </div>
+</div>
+
+<!-- ADD MODAL -->
+<div class="modal-bg" id="add-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeAdd()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head"><h2 class="serif" id="m-title">Añadir propiedad</h2><p id="m-sub">Registra una propiedad o un complejo de varias unidades.</p></div>
+    <div class="modal-body">
+      <div class="type-pick">
+        <div class="type-opt on" data-type="single" onclick="pickType(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg><b id="m-t1">Propiedad</b><span id="m-t1s">Casa, apto, local</span></div>
+        <div class="type-opt" data-type="complex" onclick="pickType(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18"/><rect x="14" y="9" width="7" height="12"/></svg><b id="m-t2">Complejo</b><span id="m-t2s">Varias unidades</span></div>
+      </div>
+      <div class="type-pick">
+        <div class="type-opt on" data-cat="residential" onclick="pickCat(this)"><b id="m-c1">Residencial</b></div>
+        <div class="type-opt" data-cat="commercial" onclick="pickCat(this)"><b id="m-c2">Comercial</b></div>
+      </div>
+      <div class="modal-err" id="m-err"></div>
+      <div class="field"><label id="m-nick-l">Apodo (opcional)</label><input type="text" id="m-nick" placeholder="ej. Casa de playa"><div class="hint" id="m-nick-h">Si lo dejas vacío usaremos la dirección.</div></div>
+      <div class="field"><label id="m-addr-l">Dirección</label><input type="text" id="m-addr" placeholder="Calle, número, urbanización"></div>
+      <div class="field"><label id="m-muni-l">Municipio</label><select id="m-muni"></select></div>
+      <div class="modal-foot"><button class="btn-line" onclick="closeAdd()" id="m-cancel">Cancelar</button><button class="btn-primary" id="m-save" onclick="saveProperty()">Guardar propiedad</button></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
+<script>
+var lang = (window.CPR && CPR.lang) || 'es';
+var currentUser = null;
+var allProps = [], jobsByProp = {}, activeFilter = 'all';
+
+// page-specific strings
+var T = {
+  eyebrow:{es:'Portal de Cliente',en:'Client Portal'},
+  title:{es:'Tu <span class="accent serif">biblioteca</span> de propiedades',en:'Your property <span class="accent serif">library</span>'},
+  sub:{es:'Cada propiedad guarda su propia historia de trabajos, documentos y contratistas.',en:'Each property keeps its own history of jobs, documents and contractors.'},
+  addBtn:{es:'Añadir propiedad',en:'Add property'},
+  att:{es:'Necesita tu atención',en:'Needs your attention'},
+  wcTitle:{es:'Bienvenido a tu biblioteca',en:'Welcome to your library'},
+  wcSub:{es:'Añade tu primera propiedad para empezar a organizar trabajos, documentos e historial — todo en un solo lugar.',en:'Add your first property to start organizing jobs, documents and history — all in one place.'},
+  wcBtn:{es:'Añadir primera propiedad',en:'Add first property'},
+  lOpen:{es:'Abiertos',en:'Open'},lActive:{es:'En curso',en:'In progress'},lDone:{es:'Hechos',en:'Done'},
+  lProps:{es:'Propiedades',en:'Properties'},lProj:{es:'Proyectos activos',en:'Active projects'},lJobs:{es:'Trabajos en curso',en:'Jobs in progress'},lInv:{es:'Invertido en total',en:'Total invested'},
+  units:{es:'unidades',en:'units'},activeJobs:{es:'trabajos en curso',en:'jobs in progress'},
+  complexBadge:{es:'Complejo',en:'Complex'},
+  newProps:{es:'propuestas nuevas',en:'new proposals'},waiting:{es:'Esperando tu decisión',en:'Awaiting your decision'},review:{es:'Revisar',en:'Review'},
+  mTitle:{es:'Añadir propiedad',en:'Add property'},mSub:{es:'Registra una propiedad o un complejo de varias unidades.',en:'Register a property or a multi-unit complex.'},
+  t1:{es:'Propiedad',en:'Property'},t1s:{es:'Casa, apto, local',en:'House, apt, unit'},t2:{es:'Complejo',en:'Complex'},t2s:{es:'Varias unidades',en:'Multiple units'},
+  c1:{es:'Residencial',en:'Residential'},c2:{es:'Comercial',en:'Commercial'},
+  nickL:{es:'Apodo (opcional)',en:'Nickname (optional)'},nickH:{es:'Si lo dejas vacío usaremos la dirección.',en:'If left blank we use the address.'},
+  addrL:{es:'Dirección',en:'Address'},muniL:{es:'Municipio',en:'Municipality'},cancel:{es:'Cancelar',en:'Cancel'},save:{es:'Guardar propiedad',en:'Save property'},
+  errAddr:{es:'Escribe la dirección de la propiedad.',en:'Enter the property address.'},errSave:{es:'No se pudo guardar. Intenta de nuevo.',en:'Could not save. Try again.'},
+  saving:{es:'Guardando...',en:'Saving...'}
+};
+function t(k){ return (T[k] && T[k][lang]) || (T[k] && T[k].es) || ''; }
+
+var MUNIS = ["Adjuntas","Aguada","Aguadilla","Aguas Buenas","Aibonito","Añasco","Arecibo","Arroyo","Barceloneta","Barranquitas","Bayamón","Cabo Rojo","Caguas","Camuy","Canóvanas","Carolina","Cataño","Cayey","Ceiba","Ciales","Cidra","Coamo","Comerío","Corozal","Culebra","Dorado","Fajardo","Florida","Guánica","Guayama","Guayanilla","Guaynabo","Gurabo","Hatillo","Hormigueros","Humacao","Isabela","Jayuya","Juana Díaz","Juncos","Lajas","Lares","Las Marías","Las Piedras","Loíza","Luquillo","Manatí","Maricao","Maunabo","Mayagüez","Moca","Morovis","Naguabo","Naranjito","Orocovis","Patillas","Peñuelas","Ponce","Quebradillas","Rincón","Río Grande","Sabana Grande","Salinas","San Germán","San Juan","San Lorenzo","San Sebastián","Santa Isabel","Toa Alta","Toa Baja","Trujillo Alto","Utuado","Vega Alta","Vega Baja","Vieques","Villalba","Yabucoa","Yauco"];
+
+function el(id){ return document.getElementById(id); }
+
+// ── DB write through proxy (keeps anon key server-side) ──
+async function dbInsert(table, obj){
+  var url = '/.netlify/functions/supabase-proxy?table=' + encodeURIComponent(table) + '&prefer=' + encodeURIComponent('return=representation');
+  var res = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(obj) });
+  if(!res.ok){ throw new Error('insert ' + res.status); }
+  return res.json();
+}
+
+function money(n){ return '$' + Math.round(n).toLocaleString('en-US'); }
+function coverHtml(p, idx){
+  if(p.cover_url){ return '<div class="cover-img" style="background-image:url(\'' + p.cover_url + '\')"></div>'; }
+  return '<div class="cover-img cv-' + (idx % 5) + '"></div>';
+}
+var pinSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+
+function statusBucket(s){
+  if(s === 'open') return 'open';
+  if(s === 'accepted' || s === 'in_progress' || s === 'active') return 'active';
+  if(s === 'completed') return 'done';
+  return 'other';
+}
+
+function applyStaticLabels(){
+  el('lbl-eyebrow').textContent = t('eyebrow');
+  el('lbl-title').innerHTML = t('title');
+  el('lbl-sub').textContent = t('sub');
+  el('lbl-add').textContent = t('addBtn');
+  el('lbl-att').textContent = t('att');
+  el('wc-title').textContent = t('wcTitle');
+  el('wc-sub').textContent = t('wcSub');
+  el('wc-btn').textContent = t('wcBtn');
+  el('m-title').textContent = t('mTitle'); el('m-sub').textContent = t('mSub');
+  el('m-t1').textContent = t('t1'); el('m-t1s').textContent = t('t1s');
+  el('m-t2').textContent = t('t2'); el('m-t2s').textContent = t('t2s');
+  el('m-c1').textContent = t('c1'); el('m-c2').textContent = t('c2');
+  el('m-nick-l').textContent = t('nickL'); el('m-nick-h').textContent = t('nickH');
+  el('m-addr-l').textContent = t('addrL'); el('m-muni-l').textContent = t('muniL');
+  el('m-cancel').textContent = t('cancel'); el('m-save').textContent = t('save');
+  // chips
+  var chipLabels = {all:{es:'Todas',en:'All'},residential:t('c1'),commercial:t('c2'),complex:{es:'Complejos',en:'Complexes'}};
+  document.querySelectorAll('#chips .chip').forEach(function(c){
+    var f = c.getAttribute('data-f');
+    if(f==='all') c.textContent = lang==='en'?'All':'Todas';
+    else if(f==='residential') c.textContent = t('c1');
+    else if(f==='commercial') c.textContent = t('c2');
+    else if(f==='complex') c.textContent = lang==='en'?'Complexes':'Complejos';
+  });
+  // municipality dropdown
+  var sel = el('m-muni');
+  if(sel && !sel.options.length){
+    MUNIS.forEach(function(m){ var o=document.createElement('option'); o.value=m; o.textContent=m; sel.appendChild(o); });
+  }
+}
+
+function renderLedger(){
+  var topLevel = allProps.filter(function(p){ return p.type !== 'unit'; });
+  var inProgress = 0, invested = 0;
+  Object.keys(jobsByProp).forEach(function(pid){
+    jobsByProp[pid].forEach(function(j){
+      var b = statusBucket(j.status);
+      if(b === 'active') inProgress++;
+      if(b === 'done'){ var v = parseFloat(String(j.budget||'').replace(/[^0-9.]/g,'')); if(!isNaN(v)) invested += v; }
+    });
+  });
+  var rows = [
+    [topLevel.length, t('lProps')],
+    [window._activeProjects || 0, t('lProj')],
+    [inProgress, t('lJobs')],
+    [money(invested), t('lInv'), true]
+  ];
+  el('ledger').innerHTML = rows.map(function(r){
+    return '<div class="ledger-item"><div class="ledger-num serif' + (r[2]?' money':'') + '">' + r[0] + '</div><div class="ledger-lbl">' + r[1] + '</div></div>';
+  }).join('');
+}
+
+function countsFor(propId){
+  var c = {open:0, active:0, done:0};
+  (jobsByProp[propId]||[]).forEach(function(j){ var b=statusBucket(j.status); if(c[b]!==undefined) c[b]++; });
+  return c;
+}
+
+function renderGrid(){
+  var q = (el('search').value || '').toLowerCase().trim();
+  var topLevel = allProps.filter(function(p){ return p.type !== 'unit'; });
+  var list = topLevel.filter(function(p){
+    if(activeFilter === 'complex' && p.type !== 'complex') return false;
+    if(activeFilter === 'residential' && p.category !== 'residential') return false;
+    if(activeFilter === 'commercial' && p.category !== 'commercial') return false;
+    if(q){
+      var hay = ((p.nickname||'') + ' ' + (p.address||'') + ' ' + (p.municipality||'')).toLowerCase();
+      if(hay.indexOf(q) === -1) return false;
+    }
+    return true;
+  });
+  var html = list.map(function(p, idx){
+    var name = p.nickname || p.address || 'Propiedad';
+    var muni = p.municipality ? '<div class="muni-chip">' + pinSvg + p.municipality + '</div>' : '';
+    if(p.type === 'complex'){
+      var units = allProps.filter(function(x){ return x.parent_id === p.id; });
+      var activeCount = 0;
+      var ids = [p.id].concat(units.map(function(u){return u.id;}));
+      ids.forEach(function(id){ (jobsByProp[id]||[]).forEach(function(j){ if(statusBucket(j.status)==='active') activeCount++; }); });
+      return '<div class="prop-card is-complex" onclick="go(\'' + p.id + '\',\'complex\')">' +
+        '<div class="cover">' + coverHtml(p, idx) + '<div class="sheen"></div>' + muni +
+          '<div class="type-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18"/><rect x="14" y="9" width="7" height="12"/></svg>' + t('complexBadge') + '</div></div>' +
+        '<div class="prop-body"><div class="prop-name serif">' + name + '</div><div class="prop-addr">' + (p.address||'') + '</div><div class="prop-divider"></div>' +
+        '<div class="complex-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><b>' + units.length + ' ' + t('units') + '</b> · ' + activeCount + ' ' + t('activeJobs') + '</div></div></div>';
+    }
+    var c = countsFor(p.id);
+    return '<div class="prop-card" onclick="go(\'' + p.id + '\',\'property\')">' +
+      '<div class="cover">' + coverHtml(p, idx) + '<div class="sheen"></div>' + muni + '</div>' +
+      '<div class="prop-body"><div class="prop-name serif">' + name + '</div><div class="prop-addr">' + (p.address||'') + '</div><div class="prop-divider"></div>' +
+      '<div class="status-row">' +
+        '<div class="st posted"><div class="st-n">' + c.open + '</div><div class="st-l">' + t('lOpen') + '</div></div>' +
+        '<div class="st active"><div class="st-n">' + c.active + '</div><div class="st-l">' + t('lActive') + '</div></div>' +
+        '<div class="st done"><div class="st-n">' + c.done + '</div><div class="st-l">' + t('lDone') + '</div></div>' +
+      '</div></div></div>';
+  }).join('');
+  html += '<div class="add-tile" onclick="openAdd()"><div class="add-tile-inner"><div class="circ"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div><b>' + t('addBtn') + '</b><span>' + (lang==='en'?'House, apt, unit or complex':'Casa, apto, local o complejo') + '</span></div></div>';
+  el('grid').innerHTML = html;
+}
+
+function setFilter(btn){
+  activeFilter = btn.getAttribute('data-f');
+  document.querySelectorAll('#chips .chip').forEach(function(c){ c.classList.remove('on'); });
+  btn.classList.add('on');
+  renderGrid();
+}
+
+function go(id, kind){
+  location.href = (kind === 'complex' ? 'complex.html?id=' : 'property.html?id=') + id;
+}
+
+function renderAttention(pendingProposals){
+  if(!pendingProposals || pendingProposals < 1){ el('attention').classList.remove('show'); return; }
+  el('att-count').textContent = '1';
+  el('att-grid').innerHTML =
+    '<div class="att-card"><div class="att-icon ai-prop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div>' +
+    '<div class="att-body"><div class="att-t">' + pendingProposals + ' ' + t('newProps') + '</div><div class="att-s">' + t('waiting') + '</div></div>' +
+    '<button class="att-action">' + t('review') + '</button></div>';
+  el('attention').classList.add('show');
+}
+
+// ── Add modal ──
+var pendType = 'single', pendCat = 'residential';
+function pickType(elm){ pendType = elm.getAttribute('data-type'); document.querySelectorAll('.type-opt[data-type]').forEach(function(o){o.classList.remove('on');}); elm.classList.add('on'); }
+function pickCat(elm){ pendCat = elm.getAttribute('data-cat'); document.querySelectorAll('.type-opt[data-cat]').forEach(function(o){o.classList.remove('on');}); elm.classList.add('on'); }
+function openAdd(){ el('m-err').classList.remove('show'); el('add-modal').classList.add('show'); }
+function closeAdd(){ el('add-modal').classList.remove('show'); }
+
+async function saveProperty(){
+  var addr = (el('m-addr').value || '').trim();
+  var errEl = el('m-err');
+  if(!addr){ errEl.textContent = t('errAddr'); errEl.classList.add('show'); return; }
+  var btn = el('m-save'); btn.disabled = true; btn.textContent = t('saving');
+  try{
+    await dbInsert('properties', {
+      client_id: currentUser.id,
+      type: pendType,
+      category: pendCat,
+      nickname: (el('m-nick').value || '').trim() || null,
+      address: addr,
+      municipality: el('m-muni').value || null
+    });
+    closeAdd();
+    el('m-nick').value=''; el('m-addr').value='';
+    btn.disabled = false; btn.textContent = t('save');
+    await loadLibrary();
+  }catch(e){
+    errEl.textContent = t('errSave'); errEl.classList.add('show');
+    btn.disabled = false; btn.textContent = t('save');
+  }
+}
+
+// ── Load + boot ──
+async function loadLibrary(){
+  var props = await CPR.db('properties?client_id=eq.' + currentUser.id + '&order=created_at.desc&select=*');
+  allProps = Array.isArray(props) ? props : [];
+
+  var jobs = await CPR.db('jobs?homeowner_id=eq.' + currentUser.id + '&select=id,property_id,status,budget');
+  jobsByProp = {};
+  (Array.isArray(jobs)?jobs:[]).forEach(function(j){
+    if(!j.property_id) return;
+    (jobsByProp[j.property_id] = jobsByProp[j.property_id] || []).push(j);
+  });
+
+  var projects = await CPR.db('projects?client_id=eq.' + currentUser.id + '&select=id,status');
+  window._activeProjects = (Array.isArray(projects)?projects:[]).filter(function(p){ return p.status === 'active'; }).length;
+
+  // attention: pending proposals on this client's jobs
+  var pending = 0;
+  var jobIds = (Array.isArray(jobs)?jobs:[]).map(function(j){ return j.id; });
+  if(jobIds.length){
+    var proposals = await CPR.db('proposals?job_id=in.(' + jobIds.join(',') + ')&select=id,status');
+    pending = (Array.isArray(proposals)?proposals:[]).filter(function(p){ return p.status === 'pending'; }).length;
+  }
+
+  el('boot').style.display = 'none';
+  if(allProps.filter(function(p){return p.type!=='unit';}).length === 0){
+    el('welcome').classList.add('show');
+    el('library').style.display = 'none';
+  }else{
+    el('welcome').classList.remove('show');
+    el('library').style.display = 'block';
+    renderLedger();
+    renderGrid();
+    renderAttention(pending);
+  }
+}
+
+(function init(){
+  if(!window.CPR){ return; }
+  if(!window._sb && window.supabase){ var sbLib = supabase; window._sb = sbLib.createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK); }
+  applyStaticLabels();
+  CPR.injectNav('properties', null);
+  var label = lang === 'en' ? 'Log in to see your properties' : 'Inicia sesión para ver tus propiedades';
+  CPR.requireAuth(async function(user){
+    if(user.type === 'contractor'){ location.replace('dashboard-contractor.html'); return; }
+    currentUser = user;
+    CPR.injectNav('properties', user);
+    await loadLibrary();
+  }, label, 'homeowner');
+})();
+</script>
+</body>
+</html>
