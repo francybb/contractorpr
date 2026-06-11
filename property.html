@@ -505,7 +505,7 @@ function renderJobRow(j){
   var cn=contractorName(j.id);
   if(cn) sub+=' · '+esc(cn);
   else if(b==='open' && pendingByJob[j.id]) sub+=' · '+pendingByJob[j.id]+' '+t('proposalsCt');
-  return '<div class="job-row"><div class="job-dot '+dotCls+'"></div>'+
+  return '<div class="job-row" style="cursor:pointer" onclick="location.href=\'job.html?id='+j.id+'\'"><div class="job-dot '+dotCls+'"></div>'+
     '<div class="job-main"><div class="job-title">'+esc(j.title||'')+'</div><div class="job-sub">'+sub+'</div></div>'+
     (amtTxt?'<div class="job-amt serif">'+amtTxt+'</div>':'')+
     '<div class="job-status '+stCls+'">'+stTxt+'</div></div>';

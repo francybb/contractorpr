@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ContractingPR · Trabajo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0B1F33;--ink-2:#3A4A5C;--muted:#6B7A8D;--blue:#1A56DB;--blue-deep:#103FA8;--blue-soft:#EBF1FE;--canvas:#F6F7F9;--card:#FFFFFF;--line:#E6E9EF;--line-2:#EFF1F5;--ok:#0E9F6E;--ok-soft:#E3F5EE;--warn:#E08A00;--warn-soft:#FBF1DF;--post:#64748B;--post-soft:#EEF1F5;--rose:#D6336C;--rose-soft:#FCE7EF;--radius:16px;--shadow:0 1px 2px rgba(11,31,51,.04),0 8px 24px -12px rgba(11,31,51,.12);--shadow-lg:0 4px 12px rgba(11,31,51,.06),0 24px 48px -16px rgba(11,31,51,.18)}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--canvas);color:var(--ink);line-height:1.5}
+.serif{font-family:'Fraunces',Georgia,serif}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:840px;margin:0 auto;padding:34px 28px 80px}
+.loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:80px;color:var(--muted);font-size:14px}
+.spinner{width:18px;height:18px;border:2px solid var(--line);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.notfound{text-align:center;padding:80px 24px;color:var(--muted)}
+.notfound h2{font-family:'Fraunces',serif;font-size:24px;color:var(--ink);margin-bottom:10px}
+.notfound a{color:var(--blue);font-weight:600}
+.back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:22px}
+.back-btn:hover{color:var(--blue)}.back-btn svg{width:16px;height:16px}
+.job-head{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);margin-bottom:28px}
+.jh-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
+.jh-trade{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
+.jh-top h1{font-family:'Fraunces',serif;font-size:28px;font-weight:500;letter-spacing:-.02em;line-height:1.12}
+.jh-status{font-size:11.5px;font-weight:700;padding:6px 13px;border-radius:20px;white-space:nowrap;text-transform:uppercase;letter-spacing:.03em}
+.js-open{background:var(--post-soft);color:var(--post)}.js-active{background:var(--warn-soft);color:var(--warn)}.js-done{background:var(--ok-soft);color:var(--ok)}
+.jh-desc{font-size:14.5px;color:var(--ink-2);margin:8px 0 16px;white-space:pre-wrap}
+.jh-meta{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted);padding-top:16px;border-top:1px solid var(--line-2)}
+.jh-meta a{color:var(--blue);font-weight:600}
+.jh-meta .mi{display:flex;align-items:center;gap:6px}.jh-meta svg{width:14px;height:14px}
+.sec-title{font-family:'Fraunces',serif;font-size:20px;font-weight:500;margin-bottom:4px;display:flex;align-items:center;gap:10px}
+.sec-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+.count-badge{background:var(--blue-soft);color:var(--blue);font-size:12px;font-weight:700;padding:2px 9px;border-radius:20px}
+.prop-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:12px;box-shadow:var(--shadow);transition:.16s}
+.prop-card.accepted{border-color:#BFE6D4;background:linear-gradient(180deg,var(--ok-soft),#fff 60%)}
+.pc-top{display:flex;align-items:center;gap:13px;margin-bottom:12px}
+.pc-av{width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:600;font-size:16px;flex-shrink:0}
+.pc-name{font-size:15px;font-weight:700}
+.pc-rating{font-size:12.5px;color:var(--warn);font-weight:600;margin-top:1px}
+.pc-price{margin-left:auto;text-align:right}
+.pc-price .v{font-family:'Fraunces',serif;font-size:22px;font-weight:500;color:var(--blue);line-height:1}
+.pc-price .l{font-size:11px;color:var(--muted);margin-top:2px}
+.pc-msg{font-size:13.5px;color:var(--ink-2);background:var(--canvas);border-radius:10px;padding:12px 14px;margin-bottom:14px}
+.pc-actions{display:flex;gap:10px;align-items:center}
+.btn-accept{background:var(--ok);color:#fff;font-weight:600;font-size:13.5px;padding:10px 18px;border-radius:10px}
+.btn-accept:hover{filter:brightness(.95)}
+.btn-accept:disabled{opacity:.6;cursor:not-allowed}
+.btn-ghost{border:1px solid var(--line);background:var(--card);color:var(--ink-2);font-weight:600;font-size:13.5px;padding:10px 16px;border-radius:10px}
+.accepted-tag{display:inline-flex;align-items:center;gap:7px;background:var(--ok-soft);color:var(--ok);font-size:13px;font-weight:700;padding:8px 14px;border-radius:10px}
+.accepted-tag svg{width:15px;height:15px}
+.empty{text-align:center;padding:46px 20px;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:14px}
+.empty .ei{width:50px;height:50px;border-radius:13px;background:var(--line-2);display:grid;place-items:center;margin:0 auto 14px;color:var(--muted)}
+.empty .ei svg{width:24px;height:24px}
+.empty h3{font-size:15.5px;color:var(--ink);margin-bottom:6px}
+.empty p{font-size:13.5px;max-width:36ch;margin:0 auto}
+.complete-bar{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:14px;box-shadow:var(--shadow);flex-wrap:wrap}
+.complete-bar .ct{font-size:14px;font-weight:600}.complete-bar .cs{font-size:12.5px;color:var(--muted)}
+.btn-complete{background:var(--blue);color:#fff;font-weight:600;font-size:13.5px;padding:11px 18px;border-radius:10px}
+.btn-complete:hover{background:var(--blue-deep)}
+.soon-note{font-size:13px;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:14px 18px;margin-top:22px;display:flex;gap:9px;align-items:flex-start}
+.soon-note svg{width:16px;height:16px;flex-shrink:0;margin-top:1px;color:var(--muted)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13.5px;font-weight:500;padding:12px 20px;border-radius:11px;box-shadow:var(--shadow-lg);opacity:0;transition:.25s;z-index:200;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:560px){.wrap{padding:24px 18px 60px}}
+</style>
+</head>
+<body>
+<div id="cpr-nav-placeholder"></div>
+<div class="wrap">
+  <div id="boot" class="loading"><div class="spinner"></div><span>Cargando...</span></div>
+  <div id="notfound" class="notfound" style="display:none">
+    <h2 class="serif" id="nf-title">Trabajo no encontrado</h2>
+    <p style="margin-bottom:14px" id="nf-sub">No pudimos encontrar este trabajo.</p>
+    <a href="properties.html" id="nf-link">← Volver a mis propiedades</a>
+  </div>
+  <div id="detail" style="display:none"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
+<script>
+var lang=(window.CPR&&CPR.lang)||'es';
+var currentUser=null, job=null, prop=null, proposals=[], contractorsById={};
+
+var T={
+  nfTitle:{es:'Trabajo no encontrado',en:'Job not found'},nfSub:{es:'No pudimos encontrar este trabajo.',en:"We couldn't find this job."},nfLink:{es:'← Volver a mis propiedades',en:'← Back to my properties'},
+  back:{es:'Volver a la propiedad',en:'Back to property'},
+  stOpen:{es:'Abierto',en:'Open'},stActive:{es:'En progreso',en:'In progress'},stDone:{es:'Completado',en:'Completed'},
+  proposalsTitle:{es:'Propuestas',en:'Proposals'},
+  proposalsSub:{es:'Los contratistas que respondieron a este trabajo. Acepta una para empezar.',en:'Contractors who responded to this job. Accept one to begin.'},
+  emptyT:{es:'Aún no hay propuestas',en:'No proposals yet'},emptyP:{es:'Cuando un contratista responda a tu trabajo, su propuesta aparecerá aquí.',en:'When a contractor responds to your job, their proposal appears here.'},
+  perJob:{es:'por el trabajo',en:'for the job'},accept:{es:'Aceptar propuesta',en:'Accept proposal'},
+  accepted:{es:'Propuesta aceptada',en:'Proposal accepted'},accepting:{es:'Aceptando...',en:'Accepting...'},
+  noPrice:{es:'Precio por confirmar',en:'Price to confirm'},
+  inProgressT:{es:'Trabajo en progreso',en:'Job in progress'},inProgressS:{es:'Cuando el trabajo esté terminado, márcalo como completado.',en:'When the work is done, mark it as completed.'},
+  markComplete:{es:'Marcar como completado',en:'Mark as completed'},completing:{es:'Procesando...',en:'Processing...'},
+  doneT:{es:'Trabajo completado',en:'Job completed'},doneS:{es:'Este trabajo está cerrado y forma parte del historial de la propiedad.',en:'This job is closed and part of the property history.'},
+  msgSoon:{es:'El chat con el contratista y las reseñas llegan en el próximo módulo.',en:'Contractor chat and reviews arrive in the next module.'},
+  property:{es:'Propiedad',en:'Property'},type:{es:'Tipo',en:'Type'},
+  accErr:{es:'No se pudo aceptar. Intenta de nuevo.',en:'Could not accept. Try again.'},compErr:{es:'No se pudo completar. Intenta de nuevo.',en:'Could not complete. Try again.'}
+};
+function t(k){var v=T[k];return v?(v[lang]!==undefined?v[lang]:v.es):'';}
+function el(id){return document.getElementById(id);}
+function getParam(n){return new URLSearchParams(location.search).get(n);}
+function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function money(n){return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function statusBucket(s){if(s==='open')return 'open';if(s==='accepted'||s==='in_progress'||s==='active')return 'active';if(s==='completed')return 'done';return 'other';}
+function toast(m){var x=el('toast');x.textContent=m;x.classList.add('show');setTimeout(function(){x.classList.remove('show');},1800);}
+function initials(name){if(!name)return '?';var p=name.trim().split(/\s+/);return ((p[0]||'')[0]||'').toUpperCase()+((p[1]||'')[0]||'').toUpperCase();}
+
+async function dbPatch(table,query,obj){
+  var url='/.netlify/functions/supabase-proxy?table='+encodeURIComponent(table)+'&query='+encodeURIComponent(query)+'&prefer='+encodeURIComponent('return=minimal');
+  var res=await fetch(url,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)});
+  if(!res.ok) throw new Error('patch '+res.status);
+}
+async function sendEmail(type,data){
+  try{ await fetch('/.netlify/functions/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:type,data:data})}); }catch(e){}
+}
+
+function renderProposal(p){
+  var c=contractorsById[p.contractor_id]||{};
+  var name=c.name||'Contratista';
+  var rating=c.rating?('★ '+Number(c.rating).toFixed(1)):'';
+  var price=p.price?money(p.price):t('noPrice');
+  var isAccepted=(p.status==='accepted'||p.status==='completed');
+  var jobOpen=statusBucket(job.status)==='open';
+  var action='';
+  if(isAccepted){
+    action='<span class="accepted-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'+t('accepted')+'</span>';
+  }else if(jobOpen){
+    action='<button class="btn-accept" onclick="acceptProposal(\''+p.id+'\')">'+t('accept')+'</button>';
+  }
+  return '<div class="prop-card'+(isAccepted?' accepted':'')+'">'+
+    '<div class="pc-top"><div class="pc-av">'+esc(initials(name))+'</div>'+
+      '<div><div class="pc-name">'+esc(name)+'</div>'+(rating?'<div class="pc-rating">'+rating+'</div>':'')+'</div>'+
+      '<div class="pc-price"><div class="v">'+price+'</div><div class="l">'+t('perJob')+'</div></div></div>'+
+    (p.message?'<div class="pc-msg">'+esc(p.message)+'</div>':'')+
+    (action?'<div class="pc-actions">'+action+'</div>':'')+'</div>';
+}
+
+function render(){
+  var bucket=statusBucket(job.status);
+  var stCls=bucket==='done'?'js-done':(bucket==='active'?'js-active':'js-open');
+  var stTxt=bucket==='done'?t('stDone'):(bucket==='active'?t('stActive'):t('stOpen'));
+  var pendingOrAll=proposals;
+  var propName=prop?(prop.nickname||prop.address||t('property')):'';
+  var html=''+
+    '<button class="back-btn" onclick="location.href=\'property.html?id='+(prop?prop.id:'')+'\'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>'+t('back')+'</button>'+
+    '<div class="job-head"><div class="jh-top"><div><div class="jh-trade">'+esc(job.trade_needed||'')+'</div><h1>'+esc(job.title||'')+'</h1></div>'+
+      '<span class="jh-status '+stCls+'">'+stTxt+'</span></div>'+
+      (job.description?'<div class="jh-desc">'+esc(job.description)+'</div>':'')+
+      '<div class="jh-meta">'+
+        (prop?'<span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg><a href="property.html?id='+prop.id+'">'+esc(propName)+'</a></span>':'')+
+        (job.city?'<span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>'+esc(job.city)+'</span>':'')+
+      '</div></div>';
+
+  if(bucket==='active'){
+    html+='<div class="complete-bar"><div><div class="ct">'+t('inProgressT')+'</div><div class="cs">'+t('inProgressS')+'</div></div>'+
+      '<button class="btn-complete" id="complete-btn" onclick="markComplete()">'+t('markComplete')+'</button></div>';
+  }else if(bucket==='done'){
+    html+='<div class="complete-bar"><div><div class="ct">'+t('doneT')+'</div><div class="cs">'+t('doneS')+'</div></div>'+
+      '<span class="accepted-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'+t('stDone')+'</span></div>';
+  }
+
+  html+='<div class="sec-title serif">'+t('proposalsTitle')+' <span class="count-badge">'+proposals.length+'</span></div>'+
+    '<div class="sec-sub">'+t('proposalsSub')+'</div>';
+  if(proposals.length===0){
+    html+='<div class="empty"><div class="ei"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><h3>'+t('emptyT')+'</h3><p>'+t('emptyP')+'</p></div>';
+  }else{
+    // accepted first, then pending
+    var ordered=proposals.slice().sort(function(a,b){var aa=(a.status==='accepted'||a.status==='completed')?0:1;var bb=(b.status==='accepted'||b.status==='completed')?0:1;return aa-bb;});
+    html+=ordered.map(renderProposal).join('');
+  }
+  html+='<div class="soon-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>'+t('msgSoon')+'</div>';
+  el('detail').innerHTML=html;
+  el('detail').style.display='block';
+}
+
+async function acceptProposal(propId){
+  var btn=event&&event.target?event.target:null;
+  if(btn){ btn.disabled=true; btn.textContent=t('accepting'); }
+  try{
+    await dbPatch('proposals','id=eq.'+encodeURIComponent(propId),{status:'accepted'});
+    await dbPatch('jobs','id=eq.'+encodeURIComponent(job.id),{status:'accepted'});
+    // notify contractor
+    var p=proposals.filter(function(x){return x.id===propId;})[0];
+    var c=p?contractorsById[p.contractor_id]:null;
+    if(p&&c){ sendEmail('proposal_accepted',{contractor_email:c.email,job_title:job.title,amount:p.price,contractor_name:c.name}); }
+    await reload();
+    toast(t('accepted'));
+  }catch(e){
+    toast(t('accErr'));
+    if(btn){ btn.disabled=false; btn.textContent=t('accept'); }
+  }
+}
+
+async function markComplete(){
+  var btn=el('complete-btn'); if(btn){ btn.disabled=true; btn.textContent=t('completing'); }
+  try{
+    await dbPatch('jobs','id=eq.'+encodeURIComponent(job.id),{status:'completed'});
+    var accepted=proposals.filter(function(p){return p.status==='accepted';})[0];
+    if(accepted){ await dbPatch('proposals','id=eq.'+encodeURIComponent(accepted.id),{status:'completed'}); }
+    await reload();
+    toast(t('doneT'));
+  }catch(e){
+    toast(t('compErr'));
+    if(btn){ btn.disabled=false; btn.textContent=t('markComplete'); }
+  }
+}
+
+async function reload(){
+  var res=await CPR.db('jobs?id=eq.'+encodeURIComponent(job.id)+'&select=*');
+  job=Array.isArray(res)?res[0]:job;
+  await loadProposals();
+  render();
+}
+
+async function loadProposals(){
+  proposals=await CPR.db('proposals?job_id=eq.'+encodeURIComponent(job.id)+'&order=created_at.desc&select=*');
+  proposals=Array.isArray(proposals)?proposals:[];
+  var cids=proposals.map(function(p){return p.contractor_id;}).filter(Boolean);
+  contractorsById={};
+  if(cids.length){
+    var cs=await CPR.db('contractors?id=in.('+cids.join(',')+')&select=id,name,email,rating');
+    (Array.isArray(cs)?cs:[]).forEach(function(c){contractorsById[c.id]=c;});
+  }
+}
+
+async function loadData(){
+  var id=getParam('id');
+  if(!id){ showNotFound(); return; }
+  var res=await CPR.db('jobs?id=eq.'+encodeURIComponent(id)+'&select=*');
+  var j=Array.isArray(res)?res[0]:null;
+  if(!j || j.homeowner_id!==currentUser.id){ showNotFound(); return; }
+  job=j;
+  if(j.property_id){
+    var pr=await CPR.db('properties?id=eq.'+encodeURIComponent(j.property_id)+'&select=id,nickname,address,type');
+    prop=Array.isArray(pr)?pr[0]:null;
+  }
+  await loadProposals();
+  el('boot').style.display='none';
+  render();
+}
+
+function showNotFound(){
+  el('boot').style.display='none';
+  el('nf-title').textContent=t('nfTitle'); el('nf-sub').textContent=t('nfSub'); el('nf-link').textContent=t('nfLink');
+  el('notfound').style.display='block';
+}
+
+(function init(){
+  if(!window.CPR){ return; }
+  if(!window._sb && window.supabase){ window._sb=supabase.createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK); }
+  CPR.injectNav('properties', null);
+  CPR.requireAuth(async function(user){
+    if(user.type==='contractor'){ location.replace('dashboard-contractor.html'); return; }
+    currentUser=user;
+    CPR.injectNav('properties', user);
+    await loadData();
+  }, (lang==='en'?'Log in to view this job':'Inicia sesión para ver este trabajo'), 'homeowner');
+})();
+</script>
+</body>
+</html>
