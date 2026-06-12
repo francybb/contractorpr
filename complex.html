@@ -23,7 +23,14 @@ a{color:inherit;text-decoration:none}
 .notfound h2{font-family:'Fraunces',serif;font-size:24px;color:var(--ink);margin-bottom:10px}.notfound a{color:var(--blue);font-weight:600}
 .back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:22px}
 .back-btn:hover{color:var(--blue)}.back-btn svg{width:16px;height:16px}
-.detail-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;margin-bottom:28px}
+.danger-zone{margin-top:18px;padding-top:16px;border-top:1px solid var(--line-2);display:flex;gap:10px;flex-wrap:wrap}
+.btn-archive{flex:1;min-width:140px;padding:11px 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink-2);font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit;transition:.15s}
+.btn-archive:hover{background:var(--line-2)}
+.btn-danger{padding:11px 16px;border-radius:10px;border:1px solid #fca5a5;background:#fff;color:#dc2626;font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit;transition:.15s}
+.btn-danger:hover{background:#fef2f2}
+.arch-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#fef9ec;border:1px solid #f5e2a8;color:#8a6d1a;padding:12px 16px;border-radius:12px;margin-bottom:16px;font-size:14px;font-weight:500}
+.arch-banner button{background:var(--blue);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit}
+.detail-hero{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin-bottom:18px;align-items:stretch}
 @media(max-width:820px){.detail-hero{grid-template-columns:1fr}}
 .hero-cover{border-radius:var(--radius);min-height:260px;position:relative;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
 .hero-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(11,31,51,.28))}
@@ -31,8 +38,56 @@ a{color:inherit;text-decoration:none}
 .cv-complex{background:linear-gradient(157deg,#C9E3D4,#84B79C 36%,#3E7D6A 72%,#23564A)}
 .change-cover{position:absolute;top:14px;right:14px;z-index:3;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);font-size:12px;font-weight:600;color:var(--ink-2);padding:7px 12px;border-radius:9px;display:flex;align-items:center;gap:6px}
 .change-cover svg{width:14px;height:14px}
-.map-inset{position:absolute;bottom:14px;left:14px;z-index:3;width:104px;height:78px;border-radius:11px;overflow:hidden;border:2px solid #fff;box-shadow:0 6px 16px -4px rgba(11,31,51,.4);background:repeating-linear-gradient(0deg,transparent,transparent 18px,rgba(26,86,219,.07) 19px),repeating-linear-gradient(90deg,transparent,transparent 18px,rgba(26,86,219,.07) 19px),linear-gradient(135deg,#E8EEF7,#D8E3F2)}
-.map-inset .pm{position:absolute;left:50%;top:48%;transform:translate(-50%,-100%)}.map-inset .pm svg{width:20px;height:20px}
+.detail-map{position:relative;width:100%;height:200px;margin-top:18px;border-radius:13px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:linear-gradient(135deg,#E8EEF7,#D8E3F2)}
+.detail-map .pm{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%)}.detail-map .pm svg{width:26px;height:26px;filter:drop-shadow(0 2px 3px rgba(11,31,51,.4))}
+.cal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.cal-head h3{font-family:'Fraunces',serif;font-size:19px;font-weight:500}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-dow{font-size:11px;font-weight:600;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.05em;padding-bottom:6px}
+.cal-day{aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-2);position:relative;border:1px solid transparent}
+.cal-day.empty{visibility:hidden}
+.cal-day.has{border-color:var(--line)}
+.cal-day.ev{background:var(--warn-soft);border-color:var(--warn-soft);color:var(--warn);font-weight:700}
+.cal-day.today{background:var(--blue);color:#fff;font-weight:700}
+.agenda{margin-top:28px}
+.agenda-title{font-family:'Fraunces',serif;font-size:18px;font-weight:500;margin-bottom:6px}
+.agenda-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+.ag-divider{display:flex;align-items:center;gap:12px;margin:8px 0 14px;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+.ag-divider::before,.ag-divider::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--blue-soft),transparent)}
+.ag-divider.muted{color:var(--muted)}.ag-divider.muted::before,.ag-divider.muted::after{background:var(--line-2)}
+.ag-row{display:flex;align-items:center;gap:16px;padding:14px 6px;border-radius:11px}
+.ag-date{width:52px;flex-shrink:0;text-align:center}
+.ag-date .d{font-family:'Fraunces',serif;font-size:23px;font-weight:500;line-height:1}
+.ag-date .m{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-top:3px}
+.ag-date.tbd .d{font-size:18px;color:var(--muted)}
+.ag-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.ag-dot.active{background:var(--warn)}.ag-dot.post{background:var(--post)}.ag-dot.sched{background:var(--blue)}
+.ag-main{flex:1;min-width:0}.ag-t{font-size:14.5px;font-weight:600}.ag-s{font-size:12.5px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}.ag-s .trade{color:var(--blue);font-weight:600}
+.ag-s .cal-unit{background:var(--line-2);color:var(--ink-2);padding:1px 8px;border-radius:10px;font-weight:600;font-size:11px}
+.ag-pill{font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em;display:inline-block}
+.ag-pill.active{background:var(--warn-soft);color:var(--warn)}.ag-pill.post{background:var(--post-soft);color:var(--post)}.ag-pill.sched{background:var(--blue-soft);color:var(--blue)}
+.ag-amt{font-family:'Fraunces',serif;font-size:14px;font-weight:500;margin-top:5px;color:var(--ink-2)}
+.detail-strips{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin-bottom:30px}
+@media(max-width:820px){.detail-strips{grid-template-columns:1fr}}
+.strip{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow)}
+.strip-h{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:6px}
+.strip-h .dot-rose{width:8px;height:8px;border-radius:50%;background:var(--rose);display:inline-block}
+.pulse-row{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--line-2);cursor:pointer}
+.pulse-row:last-child{border-bottom:none;padding-bottom:0}
+.pulse-row:hover .pulse-go{text-decoration:underline}
+.pulse-ic{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;flex-shrink:0;background:var(--blue-soft);color:var(--blue)}
+.pulse-ic svg{width:16px;height:16px}
+.pulse-t{flex:1;font-size:13.5px;font-weight:500}.pulse-t span{display:block;font-size:12px;color:var(--muted);font-weight:400}
+.pulse-go{font-size:12.5px;font-weight:600;color:var(--blue);white-space:nowrap}
+.pulse-empty{font-size:13px;color:var(--muted);padding:4px 0}
+.spend-total{font-family:'Fraunces',serif;font-size:28px;font-weight:500;color:var(--blue);line-height:1}
+.spend-sub{font-size:12px;color:var(--muted);margin:4px 0 16px}
+.spark{display:flex;align-items:flex-end;gap:6px;height:60px}
+.spark .bar{flex:1;background:var(--blue-soft);border-radius:4px 4px 2px 2px;position:relative;min-height:4px}
+.spark .bar i{position:absolute;bottom:0;left:0;right:0;background:var(--blue);border-radius:4px 4px 2px 2px}
+.spark-x{display:flex;gap:6px;margin-top:7px}
+.spark-x span{flex:1;text-align:center;font-size:10px;color:var(--muted);font-weight:500}
 .hero-info{display:flex;flex-direction:column}
 .hero-eyebrow{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;display:flex;align-items:center;gap:7px}.hero-eyebrow svg{width:13px;height:13px}
 .hero-info h1{font-family:'Fraunces',serif;font-size:34px;font-weight:500;letter-spacing:-.02em;line-height:1.08}
@@ -78,6 +133,25 @@ a{color:inherit;text-decoration:none}
 .empty-tab{text-align:center;padding:50px 20px;color:var(--muted)}
 .empty-tab .ei{width:54px;height:54px;border-radius:14px;background:var(--line-2);display:grid;place-items:center;margin:0 auto 14px;color:var(--muted)}.empty-tab .ei svg{width:26px;height:26px}
 .empty-tab h3{font-size:16px;color:var(--ink);margin-bottom:6px}.empty-tab p{font-size:13.5px;max-width:38ch;margin:0 auto}
+.docs-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.docs-head .docs-h{font-family:'Fraunces',serif;font-size:19px;font-weight:500;color:var(--ink)}
+.docs-head .docs-p{color:var(--muted);font-size:13px;margin-top:3px;max-width:46ch}
+.docs-head .btn-primary{flex-shrink:0}
+.doc-list{display:flex;flex-direction:column;gap:10px}
+.doc-row{display:flex;align-items:center;gap:14px;padding:13px 15px;border:1px solid var(--line);border-radius:13px;background:var(--card);transition:.15s}
+.doc-row:hover{border-color:var(--line-2);box-shadow:0 4px 14px rgba(11,31,51,.06)}
+.doc-ic{width:40px;height:40px;border-radius:10px;background:var(--line-2);display:grid;place-items:center;color:var(--muted);flex-shrink:0}
+.doc-ic svg{width:20px;height:20px}
+.doc-main{flex:1;min-width:0}
+.doc-name{font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-top:3px;font-size:12px;color:var(--muted)}
+.doc-chip{background:var(--line-2);color:var(--ink);padding:2px 9px;border-radius:20px;font-weight:600;font-size:11.5px}
+.doc-act{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.doc-view{font-size:13px;font-weight:600;color:#2563eb;text-decoration:none;padding:7px 12px;border:1px solid var(--line);border-radius:9px;transition:.15s}
+.doc-view:hover{border-color:var(--line-2);background:var(--line-2)}
+.doc-del{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--muted);display:grid;place-items:center;cursor:pointer;transition:.15s}
+.doc-del:hover{color:#dc2626;border-color:#fca5a5;background:#fef2f2}
+.doc-del svg{width:16px;height:16px}
 .timeline{position:relative;padding-left:30px}.timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)}
 .tl-item{position:relative;padding-bottom:26px}.tl-item:last-child{padding-bottom:0}
 .tl-dot{position:absolute;left:-30px;top:2px;width:16px;height:16px;border-radius:50%;background:var(--card);border:3px solid var(--ok);box-shadow:0 0 0 3px var(--card)}.tl-dot.blue{border-color:var(--blue)}
@@ -118,6 +192,9 @@ a{color:inherit;text-decoration:none}
     <div class="modal-head"><h2 class="serif" id="u-title">Añadir unidad</h2><p id="u-sub">Una unidad dentro de este complejo.</p></div>
     <div class="modal-body">
       <div class="modal-err" id="u-err"></div>
+      <div class="field"><label id="u-search-l">Buscar dirección</label><input type="text" id="u-search" placeholder="Busca tu dirección..." autocomplete="off"></div>
+      <div class="map-pick"><div id="u-map" class="modal-map"></div><div class="map-pin"><svg viewBox="0 0 24 24" fill="#1A56DB" stroke="#fff" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg></div></div>
+      <div class="map-hint" id="u-map-hint">Mueve el mapa para ubicar la unidad dentro del edificio.</div>
       <div class="field"><label id="u-name-l">Nombre / etiqueta</label><input type="text" id="u-name" placeholder="ej. Apt 101"></div>
       <div class="field"><label id="u-num-l">Número de unidad (opcional)</label><input type="text" id="u-num" placeholder="101"></div>
       <div class="field"><label id="u-tenant-l">Inquilino (opcional)</label><input type="text" id="u-tenant" placeholder="ej. María Colón"></div>
@@ -157,18 +234,44 @@ a{color:inherit;text-decoration:none}
 </div>
 
 <!-- EDIT COMPLEX MODAL -->
+<style>
+.map-pick{position:relative}
+.modal-map{width:100%;height:240px;border-radius:12px;border:1px solid var(--line,#e5e7eb);background:var(--line-2,#eef2f7)}
+.map-pin{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%);z-index:5;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(11,31,51,.4))}
+.map-pin svg{width:34px;height:34px}
+.map-hint{font-size:12px;color:var(--muted,#6b7280);margin:7px 0 15px}
+.pac-container{z-index:10000}
+</style>
 <div class="modal-bg" id="edit-modal">
   <div class="modal">
     <button class="modal-x" onclick="closeEdit()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     <div class="modal-head"><h2 class="serif" id="e-title">Editar complejo</h2><p id="e-sub">Actualiza la información del complejo.</p></div>
     <div class="modal-body">
       <div class="modal-err" id="e-err"></div>
+      <div class="field"><label id="e-search-l">Buscar dirección</label><input type="text" id="e-search" placeholder="Busca tu dirección..." autocomplete="off"></div>
+      <div class="map-pick"><div id="e-map" class="modal-map"></div><div class="map-pin"><svg viewBox="0 0 24 24" fill="#1A56DB" stroke="#fff" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg></div></div>
+      <div class="map-hint" id="e-map-hint">Mueve el mapa para centrar el pin en la ubicación exacta.</div>
       <div class="field"><label id="e-nick-l">Apodo</label><input type="text" id="e-nick"></div>
       <div class="field"><label id="e-muni-l">Municipio</label><select id="e-muni"></select></div>
       <div class="field"><label id="e-street-l">Calle</label><input type="text" id="e-street"></div>
       <div class="field"><label id="e-urb-l">Urbanización / sector (opcional)</label><input type="text" id="e-urb"></div>
       <div class="field"><label id="e-zip-l">Código postal</label><input type="text" id="e-zip" inputmode="numeric" maxlength="5"></div>
       <div class="modal-foot"><button class="btn-line" onclick="closeEdit()" id="e-cancel">Cancelar</button><button class="btn-primary" id="e-save" onclick="saveEdit()">Guardar cambios</button></div>
+      <div class="danger-zone"><button class="btn-archive" id="e-archive" onclick="archiveComplex()">Archivar</button><button class="btn-danger" id="e-delete" onclick="deleteComplex()" style="display:none">Eliminar</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="doc-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeDoc()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head"><h2 class="serif" id="d-title">Subir documento</h2><p id="d-sub"></p></div>
+    <div class="modal-body">
+      <div class="modal-err" id="d-err"></div>
+      <div class="field"><label id="d-cat-l">Categoría</label><select id="d-cat"></select></div>
+      <div class="field"><label id="d-label-l">Nombre (opcional)</label><input type="text" id="d-label"></div>
+      <div class="field"><label id="d-file-l">Archivo</label><input type="file" id="d-file" accept=".pdf,.png,.jpg,.jpeg,.gif,.webp,.heic,.doc,.docx,.xls,.xlsx,.txt"></div>
+      <div class="modal-foot"><button class="btn-line" onclick="closeDoc()" id="d-cancel">Cancelar</button><button class="btn-primary" id="d-save" onclick="saveDoc()">Subir</button></div>
     </div>
   </div>
 </div>
@@ -180,27 +283,49 @@ a{color:inherit;text-decoration:none}
 <script src="/lang.js"></script>
 <script>
 var lang=(window.CPR&&CPR.lang)||'es';
-var currentUser=null, complex=null, units=[], bJobs=[], bProjects=[];
-var jobsByProp={}, investedByProp={}, pendingByJob={}, contractorByJob={};
+var currentUser=null, complex=null, units=[], bJobs=[], bProjects=[], docs=[];
+var jobsByProp={}, investedByProp={}, pendingByJob={}, contractorByJob={}, calJobs=[], paidByJob={};
 
 var T={
   nfTitle:{es:'Complejo no encontrado',en:'Complex not found'},nfSub:{es:'No pudimos encontrar este complejo en tu biblioteca.',en:"We couldn't find this complex in your library."},nfLink:{es:'← Volver a mis propiedades',en:'← Back to my properties'},
   back:{es:'Mis propiedades',en:'My properties'},complexEyebrow:{es:'Complejo',en:'Complex'},
   units:{es:'Unidades',en:'Units'},activeJobs:{es:'Trabajos activos',en:'Active jobs'},invested:{es:'Invertido',en:'Invested'},
   addUnit:{es:'Añadir unidad',en:'Add unit'},buildingJob:{es:'Trabajo del edificio',en:'Building job'},buildingProject:{es:'Nuevo proyecto',en:'New project'},edit:{es:'Editar',en:'Edit'},transfer:{es:'Transferir',en:'Transfer'},changeCover:{es:'Cambiar foto',en:'Change photo'},
-  tabUnits:{es:'Unidades',en:'Units'},tabBldg:{es:'Actividad del edificio',en:'Building activity'},tabDocs:{es:'Documentos',en:'Documents'},tabHist:{es:'Historial',en:'History'},
+  tabUnits:{es:'Unidades',en:'Units'},tabBldg:{es:'Actividad del edificio',en:'Building activity'},tabCal:{es:'Calendario',en:'Calendar'},tabDocs:{es:'Documentos',en:'Documents'},tabHist:{es:'Historial',en:'History'},
+  agendaTitle:{es:'Actividad próxima del edificio',en:'Upcoming building activity'},agendaSub:{es:'Trabajos de todas las unidades y áreas comunes, lo más cercano primero.',en:'Jobs across all units and common areas, soonest first.'},
+  scheduled:{es:'Programado',en:'Scheduled'},toSchedule:{es:'Por agendar',en:'To schedule'},agEmpty:{es:'Nada programado por ahora.',en:'Nothing scheduled for now.'},
+  monthName:{es:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],en:['January','February','March','April','May','June','July','August','September','October','November','December']},
+  monAbbr:{es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']},
+  dow:{es:['D','L','M','M','J','V','S'],en:['S','M','T','W','T','F','S']},
+  attN:{es:'Necesita tu atención',en:'Needs your attention'},attEmpty:{es:'Todo al día. Nada pendiente.',en:'All caught up. Nothing pending.'},
+  newProps:{es:'propuestas nuevas en',en:'new proposals on'},awaiting:{es:'Esperando tu decisión',en:'Awaiting your decision'},review:{es:'Revisar →',en:'Review →'},
+  spendTitle:{es:'Inversión en este complejo',en:'Investment in this complex'},accumulated:{es:'Acumulado',en:'Accumulated'},
   unitsEmptyT:{es:'Sin unidades todavía',en:'No units yet'},unitsEmptyP:{es:'Añade la primera unidad de este complejo.',en:'Add the first unit of this complex.'},
   tenant:{es:'Inquilino',en:'Tenant'},vacant:{es:'Vacante',en:'Vacant'},jobsWord:{es:'trabajos',en:'jobs'},activeWord:{es:'activos',en:'active'},upToDate:{es:'Al día',en:'Up to date'},
   bldgEmptyT:{es:'Sin trabajos del edificio',en:'No building jobs'},bldgEmptyP:{es:'Crea un trabajo de áreas comunes para el complejo.',en:'Create a common-area job for the complex.'},
   standalone:{es:'Trabajos sueltos del edificio',en:'Standalone building jobs'},
-  docsEmptyT:{es:'Documentos próximamente',en:'Documents coming soon'},docsEmptyP:{es:'Planos, pólizas e inspecciones del edificio vivirán aquí cuando activemos el almacenamiento.',en:'Building plans, policies and inspections will live here once storage is enabled.'},
+  docsTitle:{es:'Documentos',en:'Documents'},docsSub:{es:'Planos, pólizas, inspecciones y permisos del edificio.',en:'Building plans, policies, inspections and permits.'},
+  docUpload:{es:'Subir documento',en:'Upload document'},
+  docEmptyT:{es:'Aún no hay documentos',en:'No documents yet'},docEmptyP:{es:'Sube planos, pólizas, inspecciones y permisos para tenerlos siempre a mano.',en:'Upload plans, policies, inspections and permits to keep them in one place.'},
+  docView:{es:'Ver',en:'View'},docDelete:{es:'Eliminar',en:'Delete'},docDelConfirm:{es:'¿Eliminar este documento?',en:'Delete this document?'},
+  docUploaded:{es:'Documento subido',en:'Document uploaded'},docDeleted:{es:'Documento eliminado',en:'Document deleted'},uploading:{es:'Subiendo...',en:'Uploading...'},
+  dTitle:{es:'Subir documento',en:'Upload document'},dSub:{es:'Adjunta un archivo (PDF, imagen o documento, hasta 15MB).',en:'Attach a file (PDF, image or document, up to 15MB).'},
+  dCatL:{es:'Categoría',en:'Category'},dLabelL:{es:'Nombre (opcional)',en:'Name (optional)'},dLabelPh:{es:'Ej. Plano del edificio',en:'e.g. Building plan'},dFileL:{es:'Archivo',en:'File'},dUpload:{es:'Subir',en:'Upload'},
+  errDocFile:{es:'Elige un archivo',en:'Choose a file'},errDocSize:{es:'El archivo debe ser menor de 15MB',en:'File must be under 15MB'},
+  catPermit:{es:'Permiso',en:'Permit'},catWarranty:{es:'Garantía',en:'Warranty'},catReceipt:{es:'Recibo',en:'Receipt'},catPhoto:{es:'Foto',en:'Photo'},catPlan:{es:'Plano',en:'Plan'},catOther:{es:'Otro',en:'Other'},
   histEmptyT:{es:'Aún no hay historial',en:'No history yet'},histEmptyP:{es:'El trabajo completado del edificio aparecerá aquí.',en:'Completed building work will appear here.'},
   complexAdded:{es:'Complejo añadido a tu biblioteca',en:'Complex added to your library'},
   stPost:{es:'Abierto',en:'Open'},stActive:{es:'En curso',en:'In progress'},stDone:{es:'Completado',en:'Completed'},proposalsCt:{es:'propuestas',en:'proposals'},paid:{es:'pagado',en:'paid'},
-  uTitle:{es:'Añadir unidad',en:'Add unit'},uSub:{es:'Una unidad dentro de este complejo.',en:'A unit inside this complex.'},uNameL:{es:'Nombre / etiqueta',en:'Name / label'},uNumL:{es:'Número de unidad (opcional)',en:'Unit number (optional)'},uTenantL:{es:'Inquilino (opcional)',en:'Tenant (optional)'},uSave:{es:'Añadir unidad',en:'Add unit'},errUnit:{es:'Escribe un nombre o etiqueta para la unidad.',en:'Enter a name or label for the unit.'},unitAdded:{es:'Unidad añadida',en:'Unit added'},
+  uTitle:{es:'Añadir unidad',en:'Add unit'},uSub:{es:'Una unidad dentro de este complejo.',en:'A unit inside this complex.'},uMapHint:{es:'Mueve el mapa para ubicar la unidad dentro del edificio.',en:'Move the map to place the unit within the building.'},uNameL:{es:'Nombre / etiqueta',en:'Name / label'},uNumL:{es:'Número de unidad (opcional)',en:'Unit number (optional)'},uTenantL:{es:'Inquilino (opcional)',en:'Tenant (optional)'},uSave:{es:'Añadir unidad',en:'Add unit'},errUnit:{es:'Escribe un nombre o etiqueta para la unidad.',en:'Enter a name or label for the unit.'},unitAdded:{es:'Unidad añadida',en:'Unit added'},
   jTitle:{es:'Trabajo del edificio',en:'Building job'},jSub:{es:'Un trabajo de áreas comunes para todo el complejo.',en:'A common-area job for the whole complex.'},jTitleL:{es:'Título del trabajo',en:'Job title'},jDescL:{es:'Descripción',en:'Description'},jTradeL:{es:'Tipo de trabajo',en:'Type of work'},jProjL:{es:'Proyecto del edificio (opcional)',en:'Building project (optional)'},jNoProj:{es:'Ninguno — trabajo suelto',en:'None — standalone job'},jPost:{es:'Publicar trabajo',en:'Post job'},errJob:{es:'Escribe un título y una descripción.',en:'Enter a title and description.'},jobCreated:{es:'Trabajo publicado',en:'Job posted'},
   pTitle:{es:'Nuevo proyecto del edificio',en:'New building project'},pSub:{es:'Agrupa trabajos de áreas comunes.',en:'Group common-area jobs.'},pNameL:{es:'Nombre del proyecto',en:'Project name'},pDescL:{es:'Descripción (opcional)',en:'Description (optional)'},pCreate:{es:'Crear proyecto',en:'Create project'},errProj:{es:'Escribe un nombre para el proyecto.',en:'Enter a project name.'},projCreated:{es:'Proyecto creado',en:'Project created'},
-  eTitle:{es:'Editar complejo',en:'Edit complex'},eSub:{es:'Actualiza la información del complejo.',en:'Update the complex information.'},nickL:{es:'Apodo',en:'Nickname'},muniL:{es:'Municipio',en:'Municipality'},streetL:{es:'Calle',en:'Street'},urbL:{es:'Urbanización / sector (opcional)',en:'Subdivision / area (optional)'},zipL:{es:'Código postal',en:'Zip code'},cancel:{es:'Cancelar',en:'Cancel'},saveChanges:{es:'Guardar cambios',en:'Save changes'},saving:{es:'Guardando...',en:'Saving...'},errStreet:{es:'Escribe al menos la calle.',en:'Enter at least the street.'},errSave:{es:'No se pudo guardar. Intenta de nuevo.',en:'Could not save. Try again.'},
+  eTitle:{es:'Editar complejo',en:'Edit complex'},eSub:{es:'Actualiza la información del complejo.',en:'Update the complex information.'},nickL:{es:'Apodo',en:'Nickname'},mSearchL:{es:'Buscar dirección o mueve el pin',en:'Search address or move the pin'},mSearchPh:{es:'Escribe tu dirección...',en:'Type your address...'},mMapHint:{es:'Mueve el mapa para centrar el pin en la ubicación exacta.',en:'Move the map to center the pin on the exact location.'},muniL:{es:'Municipio',en:'Municipality'},streetL:{es:'Calle',en:'Street'},urbL:{es:'Urbanización / sector (opcional)',en:'Subdivision / area (optional)'},zipL:{es:'Código postal',en:'Zip code'},cancel:{es:'Cancelar',en:'Cancel'},saveChanges:{es:'Guardar cambios',en:'Save changes'},saving:{es:'Guardando...',en:'Saving...'},errStreet:{es:'Escribe al menos la calle.',en:'Enter at least the street.'},errSave:{es:'No se pudo guardar. Intenta de nuevo.',en:'Could not save. Try again.'},
+  archiveProp:{es:'Archivar',en:'Archive'},deleteProp:{es:'Eliminar',en:'Delete'},
+  archiveConfirm:{es:'¿Archivar este complejo? Se ocultará de tu biblioteca pero conservará todo su historial. Podrás restaurarlo cuando quieras.',en:'Archive this complex? It will be hidden from your library but keep all its history. You can restore it anytime.'},
+  archived:{es:'Complejo archivado',en:'Complex archived'},restored:{es:'Complejo restaurado',en:'Complex restored'},
+  restore:{es:'Restaurar',en:'Restore'},archBannerMsg:{es:'Este complejo está archivado.',en:'This complex is archived.'},
+  deletePrompt:{es:'Esto eliminará el complejo permanentemente. Para confirmar, escribe el nombre exacto:\n\n{name}',en:'This will permanently delete the complex. To confirm, type its exact name:\n\n{name}'},
+  deleteMismatch:{es:'El nombre no coincide. No se eliminó nada.',en:'Name did not match. Nothing was deleted.'},deleted:{es:'Complejo eliminado',en:'Complex deleted'},
   building:{es:'Edificio',en:'Building'},project:{es:'Proyecto',en:'Project'}
 };
 function t(k){var v=T[k];return v?(v[lang]!==undefined?v[lang]:v.es):'';}
@@ -208,6 +333,8 @@ function el(id){return document.getElementById(id);}
 function getParam(n){return new URLSearchParams(location.search).get(n);}
 function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function money(n){return '$'+Math.round(n).toLocaleString('en-US');}
+function numBudget(b){ var v=parseFloat(String(b||'').replace(/[^0-9.]/g,'')); return isNaN(v)?0:v; }
+function fmtDay(dateStr){ var d=new Date(dateStr+'T00:00:00'); return {d:d.getDate(),m:t('monAbbr')[d.getMonth()]}; }
 function statusBucket(s){if(s==='open')return 'open';if(s==='accepted'||s==='in_progress'||s==='active')return 'active';if(s==='completed')return 'done';return 'other';}
 function toast(m){var x=el('toast');x.textContent=m;x.classList.add('show');setTimeout(function(){x.classList.remove('show');},1800);}
 
@@ -244,6 +371,91 @@ async function dbPatch(table,query,obj){
   var url='/.netlify/functions/supabase-proxy?table='+encodeURIComponent(table)+'&query='+encodeURIComponent(query)+'&prefer='+encodeURIComponent('return=representation');
   var res=await fetch(url,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)});
   if(!res.ok) throw new Error('patch '+res.status); return res.json();
+}
+async function dbDelete(table,query){
+  var url='/.netlify/functions/supabase-proxy?table='+encodeURIComponent(table)+'&query='+encodeURIComponent(query)+'&prefer='+encodeURIComponent('return=minimal');
+  var res=await fetch(url,{method:'DELETE'});
+  if(!res.ok) throw new Error('delete '+res.status); return true;
+}
+
+// ── Documents vault ──
+var DOC_CATS=['permit','warranty','receipt','photo','plan','other'];
+var docFileSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+var docImgSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+var docUploadSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>';
+var docTrashSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>';
+
+function catLabel(type){ var m={permit:'catPermit',warranty:'catWarranty',receipt:'catReceipt',photo:'catPhoto',plan:'catPlan',other:'catOther'}; return t(m[type]||'catOther'); }
+function docIsImage(d){ var u=(d.file_url||'').toLowerCase(); return d.type==='photo' || /\.(png|jpe?g|gif|webp|heic)(\?|$)/.test(u); }
+function fmtDocDate(ts){ try{ var d=new Date(ts); return d.toLocaleDateString(lang==='en'?'en-US':'es-ES',{year:'numeric',month:'short',day:'numeric'}); }catch(e){ return ''; } }
+
+function renderDocs(){
+  var head='<div class="docs-head"><div><div class="docs-h">'+t('docsTitle')+'</div><div class="docs-p">'+t('docsSub')+'</div></div>'+
+    '<button class="btn-primary" onclick="openDoc()">'+docUploadSvg+t('docUpload')+'</button></div>';
+  if(!docs.length){
+    return head+'<div class="empty-tab"><div class="ei">'+docFileSvg+'</div><h3>'+t('docEmptyT')+'</h3><p>'+t('docEmptyP')+'</p></div>';
+  }
+  var rows=docs.map(function(d){
+    return '<div class="doc-row">'+
+      '<div class="doc-ic">'+(docIsImage(d)?docImgSvg:docFileSvg)+'</div>'+
+      '<div class="doc-main"><div class="doc-name">'+esc(d.label)+'</div>'+
+        '<div class="doc-meta"><span class="doc-chip">'+esc(catLabel(d.type))+'</span><span>'+esc(fmtDocDate(d.uploaded_at))+'</span></div></div>'+
+      '<div class="doc-act"><a class="doc-view" href="'+esc(d.file_url)+'" target="_blank" rel="noopener">'+t('docView')+'</a>'+
+        '<button class="doc-del" onclick="deleteDoc(\''+d.id+'\')" title="'+esc(t('docDelete'))+'">'+docTrashSvg+'</button></div></div>';
+  }).join('');
+  return head+'<div class="doc-list">'+rows+'</div>';
+}
+
+async function loadDocs(){
+  try{ var r=await CPR.db('property_documents?property_id=eq.'+encodeURIComponent(complex.id)+'&order=uploaded_at.desc&select=*'); docs=Array.isArray(r)?r:[]; }
+  catch(e){ docs=[]; }
+}
+async function refreshDocs(){ await loadDocs(); var panel=el('tp-docs'); if(panel){ panel.innerHTML=renderDocs(); } }
+
+function openDoc(){
+  el('d-title').textContent=t('dTitle'); el('d-sub').textContent=t('dSub');
+  el('d-cat-l').textContent=t('dCatL'); el('d-label-l').textContent=t('dLabelL');
+  el('d-label').placeholder=t('dLabelPh'); el('d-file-l').textContent=t('dFileL');
+  el('d-cancel').textContent=t('cancel'); el('d-save').textContent=t('dUpload');
+  var sel=el('d-cat'); sel.innerHTML=''; DOC_CATS.forEach(function(c){ var o=document.createElement('option'); o.value=c; o.textContent=catLabel(c); sel.appendChild(o); });
+  el('d-label').value=''; el('d-file').value=''; el('d-err').classList.remove('show');
+  el('doc-modal').classList.add('show');
+}
+function closeDoc(){ el('doc-modal').classList.remove('show'); }
+
+async function saveDoc(){
+  var fileEl=el('d-file'); var file=fileEl.files&&fileEl.files[0]; var errEl=el('d-err');
+  if(!file){ errEl.textContent=t('errDocFile'); errEl.classList.add('show'); return; }
+  if(file.size>15*1024*1024){ errEl.textContent=t('errDocSize'); errEl.classList.add('show'); return; }
+  var cat=el('d-cat').value||'other';
+  var label=(el('d-label').value||'').trim() || file.name;
+  var btn=el('d-save'); btn.disabled=true; btn.textContent=t('uploading');
+  try{
+    var ext=(file.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'');
+    var path=currentUser.id+'/'+complex.id+'/docs/'+Date.now()+'-'+Math.random().toString(36).slice(2,7)+'.'+ext;
+    var up=await window._sb.storage.from('property-media').upload(path, file, {upsert:false, cacheControl:'3600'});
+    if(up.error){ throw up.error; }
+    var pub=window._sb.storage.from('property-media').getPublicUrl(path).data.publicUrl;
+    await dbInsert('property_documents', { property_id: complex.id, type: cat, label: label, file_url: pub });
+    btn.disabled=false; btn.textContent=t('dUpload');
+    closeDoc();
+    await refreshDocs();
+    toast(t('docUploaded'));
+  }catch(e){
+    errEl.textContent=t('errSave'); errEl.classList.add('show');
+    btn.disabled=false; btn.textContent=t('dUpload');
+  }
+}
+
+async function deleteDoc(id){
+  if(!window.confirm(t('docDelConfirm'))){ return; }
+  var d=null; for(var i=0;i<docs.length;i++){ if(docs[i].id===id){ d=docs[i]; break; } }
+  try{
+    if(d && d.file_url){ var parts=d.file_url.split('/property-media/'); if(parts[1]){ try{ await window._sb.storage.from('property-media').remove([decodeURIComponent(parts[1])]); }catch(_e){} } }
+    await dbDelete('property_documents','id=eq.'+encodeURIComponent(id));
+    await refreshDocs();
+    toast(t('docDeleted'));
+  }catch(e){ toast(t('errSave')); }
 }
 
 function renderJobRow(j){
@@ -282,6 +494,83 @@ function renderUnits(){
   return html;
 }
 
+function spendStrip(){
+  var total=0, byMonth={};
+  calJobs.forEach(function(j){
+    if(statusBucket(j.status)!=='done') return;
+    var v=(paidByJob[j.id]!=null?paidByJob[j.id]:numBudget(j.budget));
+    if(!v) return;
+    total+=v;
+    var d=j.created_at?new Date(j.created_at):null; if(d){ var key=d.getFullYear()+'-'+d.getMonth(); byMonth[key]=(byMonth[key]||0)+v; }
+  });
+  var now=new Date(); var bars=[], labels=[], max=1;
+  for(var i=5;i>=0;i--){ var dt=new Date(now.getFullYear(),now.getMonth()-i,1); var key=dt.getFullYear()+'-'+dt.getMonth(); var v=byMonth[key]||0; bars.push(v); labels.push(t('monAbbr')[dt.getMonth()]); if(v>max)max=v; }
+  var barsHtml=bars.map(function(v){ var h=Math.max(4,Math.round(v/max*100)); return '<div class="bar" style="height:'+h+'%"><i style="height:100%"></i></div>'; }).join('');
+  var labHtml=labels.map(function(l){return '<span>'+l+'</span>';}).join('');
+  return '<div class="strip"><div class="strip-h">'+t('spendTitle')+'</div>'+
+    '<div class="spend-total serif">'+money(total)+'</div><div class="spend-sub">'+t('accumulated')+'</div>'+
+    '<div class="spark">'+barsHtml+'</div><div class="spark-x">'+labHtml+'</div></div>';
+}
+function goAttention(pid){
+  if(pid===complex.id){ var b=document.querySelector('.tab[data-p="bldg"]'); if(b) switchTab(b); }
+  else { location.href='property.html?id='+encodeURIComponent(pid); }
+}
+function attentionStrip(){
+  var items='';
+  calJobs.filter(function(j){ return pendingByJob[j.id]; }).forEach(function(j){
+    items+='<div class="pulse-row" onclick="goAttention(\''+j.property_id+'\')"><div class="pulse-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div>'+
+      '<div class="pulse-t">'+pendingByJob[j.id]+' '+t('newProps')+' "'+esc(j.title||'')+'"<span>'+esc(propLabel(j.property_id))+' · '+t('awaiting')+'</span></div><div class="pulse-go">'+t('review')+'</div></div>';
+  });
+  if(!items) items='<div class="pulse-empty">'+t('attEmpty')+'</div>';
+  return '<div class="strip"><div class="strip-h"><span class="dot-rose"></span>'+t('attN')+'</div>'+items+'</div>';
+}
+function propLabel(pid){
+  if(pid===complex.id) return (lang==='en'?'Building':'Edificio');
+  for(var i=0;i<units.length;i++){ if(units[i].id===pid) return units[i].nickname||units[i].unit_label||units[i].unit_number||(lang==='en'?'Unit':'Unidad'); }
+  return '';
+}
+function renderMasterCalendar(){
+  var now=new Date(); var y=now.getFullYear(), mo=now.getMonth(), today=now.getDate();
+  var first=new Date(y,mo,1).getDay(); var days=new Date(y,mo+1,0).getDate();
+  var evDays={};
+  calJobs.forEach(function(j){ if(j.scheduled_date){ var d=new Date(j.scheduled_date+'T00:00:00'); if(d.getFullYear()===y&&d.getMonth()===mo) evDays[d.getDate()]=true; } });
+  var cells='';
+  t('dow').forEach(function(d){ cells+='<div class="cal-dow">'+d+'</div>'; });
+  for(var i=0;i<first;i++) cells+='<div class="cal-day empty"></div>';
+  for(var dnum=1;dnum<=days;dnum++){ var cls='cal-day has'; if(evDays[dnum])cls+=' ev'; if(dnum===today)cls='cal-day today'; cells+='<div class="'+cls+'">'+dnum+'</div>'; }
+  var scheduledCount=Object.keys(evDays).length;
+  var calHtml='<div class="cal"><div class="cal-head"><h3 class="serif">'+t('monthName')[mo]+' '+y+'</h3><span style="font-size:12.5px;color:var(--muted);font-weight:500">'+scheduledCount+' '+(lang==='en'?'scheduled':'programados')+'</span></div><div class="cal-grid">'+cells+'</div></div>';
+  var todayISO=now.toISOString().slice(0,10);
+  var upcoming=calJobs.filter(function(j){ var b=statusBucket(j.status); return b==='active' || (j.scheduled_date && j.scheduled_date>=todayISO && b!=='done'); }).sort(function(a,b){ return (a.scheduled_date||'9999')<(b.scheduled_date||'9999')?-1:1; });
+  var toSched=calJobs.filter(function(j){ return statusBucket(j.status)==='open' && !j.scheduled_date; });
+  var ag='<div class="agenda"><div class="agenda-title serif">'+t('agendaTitle')+'</div><div class="agenda-sub">'+t('agendaSub')+'</div>';
+  if(upcoming.length){
+    ag+='<div class="ag-divider">'+t('scheduled')+'</div>';
+    ag+=upcoming.map(function(j){
+      var dd=j.scheduled_date?fmtDay(j.scheduled_date):null;
+      var b=statusBucket(j.status);
+      var dotc=b==='active'?'active':'sched'; var pillc=b==='active'?'active':'sched';
+      var pillt=b==='active'?t('stActive'):t('scheduled');
+      var amt=numBudget(j.budget); var who=contractorByJob[j.id]||'';
+      return '<div class="ag-row">'+(dd?'<div class="ag-date"><div class="d">'+dd.d+'</div><div class="m">'+dd.m+'</div></div>':'<div class="ag-date tbd"><div class="d">—</div></div>')+
+        '<div class="ag-dot '+dotc+'"></div>'+
+        '<div class="ag-main"><div class="ag-t">'+esc(j.title||'')+'</div><div class="ag-s"><span class="cal-unit">'+esc(propLabel(j.property_id))+'</span>'+(j.trade_needed?'<span class="trade">'+esc(j.trade_needed)+'</span>':'')+(who?'<span>'+esc(who)+'</span>':'')+'</div></div>'+
+        '<div class="ag-right"><span class="ag-pill '+pillc+'">'+pillt+'</span>'+(amt?'<div class="ag-amt">'+money(amt)+'</div>':'')+'</div></div>';
+    }).join('');
+  }
+  if(toSched.length){
+    ag+='<div class="ag-divider muted">'+t('toSchedule')+'</div>';
+    ag+=toSched.map(function(j){
+      var amt=numBudget(j.budget);
+      return '<div class="ag-row"><div class="ag-date tbd"><div class="d">—</div></div><div class="ag-dot post"></div>'+
+        '<div class="ag-main"><div class="ag-t">'+esc(j.title||'')+'</div><div class="ag-s"><span class="cal-unit">'+esc(propLabel(j.property_id))+'</span>'+(pendingByJob[j.id]?'<span>'+pendingByJob[j.id]+' '+t('proposalsCt')+'</span>':'')+'</div></div>'+
+        '<div class="ag-right"><span class="ag-pill post">'+t('stPost')+'</span>'+(amt?'<div class="ag-amt">'+money(amt)+'</div>':'')+'</div></div>';
+    }).join('');
+  }
+  if(!upcoming.length && !toSched.length){ ag+='<p style="padding:10px 6px;color:var(--muted);font-size:13.5px">'+t('agEmpty')+'</p>'; }
+  ag+='</div>';
+  return calHtml+ag;
+}
 function renderBldg(){
   if(bJobs.length===0){
     return '<div class="empty-tab"><div class="ei"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><h3>'+t('bldgEmptyT')+'</h3><p>'+t('bldgEmptyP')+'</p></div>';
@@ -325,9 +614,10 @@ function render(){
 
   var html=''+
     '<button class="back-btn" onclick="location.href=\'properties.html\'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>'+t('back')+'</button>'+
+    (complex.archived?'<div class="arch-banner"><span>'+t('archBannerMsg')+'</span><button onclick="restoreComplex()">'+t('restore')+'</button></div>':'')+
     '<div class="detail-hero"><div class="hero-cover">'+cover+
       '<button class="change-cover" onclick="pickCover()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>'+t('changeCover')+'</button>'+
-      '<div class="map-inset"><div class="pm"><svg viewBox="0 0 24 24" fill="#1A56DB" stroke="#fff" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg></div></div></div>'+
+      '</div>'+
       '<div class="hero-info"><div class="hero-eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18"/><rect x="14" y="9" width="7" height="12"/></svg> '+t('complexEyebrow')+(complex.municipality?' · '+esc(complex.municipality)+', PR':'')+'</div>'+
       '<h1>'+esc(name)+'</h1>'+
       '<div class="hero-addr">'+pinSvg+'<span>'+esc(complex.address||'')+'</span></div>'+
@@ -336,17 +626,47 @@ function render(){
         '<div><div class="v serif money">'+money(invested)+'</div><div class="k">'+t('invested')+'</div></div></div>'+
       '<div class="hero-cta"><button class="btn-primary" onclick="openUnit()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'+t('addUnit')+'</button>'+
         '<button class="btn-line" onclick="openEdit()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>'+t('edit')+'</button>'+
-        '<button class="btn-line" onclick="openJob()">'+t('buildingJob')+'</button></div></div></div>'+
+        '<button class="btn-line" onclick="openJob()">'+t('buildingJob')+'</button></div>'+
+      '<div class="detail-map" id="map-inset"><div class="pm"><svg viewBox="0 0 24 24" fill="#1A56DB" stroke="#fff" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg></div></div>'+
+      '</div></div>'+
+    '<div class="detail-strips">'+attentionStrip()+spendStrip()+'</div>'+
     '<div class="tabs"><button class="tab on" data-p="units" onclick="switchTab(this)">'+t('tabUnits')+' <span class="badge">'+units.length+'</span></button>'+
       '<button class="tab" data-p="bldg" onclick="switchTab(this)">'+t('tabBldg')+'</button>'+
+      '<button class="tab" data-p="cal" onclick="switchTab(this)">'+t('tabCal')+'</button>'+
       '<button class="tab" data-p="docs" onclick="switchTab(this)">'+t('tabDocs')+'</button>'+
       '<button class="tab" data-p="hist" onclick="switchTab(this)">'+t('tabHist')+'</button></div>'+
     '<div class="tab-panel on" id="tp-units">'+renderUnits()+'</div>'+
     '<div class="tab-panel" id="tp-bldg"><div style="margin-bottom:18px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn-primary" onclick="openJob()" style="display:inline-flex"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'+t('buildingJob')+'</button><button class="btn-line" onclick="openProj()" style="display:inline-flex">'+t('buildingProject')+'</button></div>'+renderBldg()+'</div>'+
-    '<div class="tab-panel" id="tp-docs"><div class="empty-tab"><div class="ei"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><h3>'+t('docsEmptyT')+'</h3><p>'+t('docsEmptyP')+'</p></div></div>'+
+    '<div class="tab-panel" id="tp-cal">'+renderMasterCalendar()+'</div>'+
+    '<div class="tab-panel" id="tp-docs">'+renderDocs()+'</div>'+
     '<div class="tab-panel" id="tp-hist">'+renderHist()+'</div>';
   el('detail').innerHTML=html;
   el('detail').style.display='block';
+  initHeroMap();
+}
+
+// ── Hero location map (Google Maps display) ──
+async function initHeroMap(){
+  var box=el('map-inset'); if(!box || !complex) return;
+  try{
+    var maps=await CPR.loadMaps();
+    var loc=null;
+    if(complex.lat!=null && complex.lng!=null){ loc={lat:parseFloat(complex.lat), lng:parseFloat(complex.lng)}; }
+    else if(complex.address){
+      var g=await new maps.Geocoder().geocode({address: complex.address+', Puerto Rico'}).catch(function(){return null;});
+      if(g && g.results && g.results[0]){
+        loc=g.results[0].geometry.location.toJSON();
+        try{ await dbPatch('properties','id=eq.'+encodeURIComponent(complex.id), {lat:loc.lat, lng:loc.lng}); complex.lat=loc.lat; complex.lng=loc.lng; }catch(_e){}
+      }
+    }
+    if(!loc) return;
+    box.innerHTML='';
+    var map=new maps.Map(box, {center:loc, zoom:15, disableDefaultUI:true, gestureHandling:'none', clickableIcons:false, keyboardShortcuts:false});
+    new maps.Marker({position:loc, map:map});
+    box.style.cursor='pointer';
+    box.title=(lang==='en'?'Open in Google Maps':'Abrir en Google Maps');
+    box.onclick=function(){ window.open('https://www.google.com/maps/search/?api=1&query='+loc.lat+','+loc.lng, '_blank', 'noopener'); };
+  }catch(e){ /* leave placeholder */ }
 }
 
 function switchTab(btn){
@@ -360,10 +680,32 @@ function openUnit(){
   el('u-title').textContent=t('uTitle'); el('u-sub').textContent=t('uSub');
   el('u-name-l').textContent=t('uNameL'); el('u-num-l').textContent=t('uNumL'); el('u-tenant-l').textContent=t('uTenantL');
   el('u-cancel').textContent=t('cancel'); el('u-save').textContent=t('uSave');
-  el('u-name').value=''; el('u-num').value=''; el('u-tenant').value=''; el('u-err').classList.remove('show');
+  if(el('u-search-l')){ el('u-search-l').textContent=t('mSearchL'); el('u-search').placeholder=t('mSearchPh'); el('u-map-hint').textContent=t('uMapHint'); }
+  el('u-name').value=''; el('u-num').value=''; el('u-tenant').value=''; if(el('u-search')) el('u-search').value=''; el('u-err').classList.remove('show');
   el('unit-modal').classList.add('show');
+  initUnitMap();
 }
 function closeUnit(){ el('unit-modal').classList.remove('show'); }
+
+// ── Add-unit location picker (defaults to the complex's location) ──
+var uPicker=null, uLatLng=null;
+async function initUnitMap(){
+  try{
+    if(!uPicker){
+      uPicker = await CPR.mapPicker(el('u-map'), { search: el('u-search'), onChange: function(ll){ uLatLng=ll; } });
+    }
+    var maps=window.google && window.google.maps;
+    if(complex.lat!=null && complex.lng!=null){
+      var c={lat:parseFloat(complex.lat), lng:parseFloat(complex.lng)}; uLatLng=c; uPicker.setCenter(c, 18);
+    } else if(complex.address && maps){
+      uLatLng=null;
+      new maps.Geocoder().geocode({address:complex.address+', Puerto Rico'}, function(res,st){
+        if(st==='OK'&&res&&res[0]){ var ll=res[0].geometry.location; var cc={lat:ll.lat(),lng:ll.lng()}; uLatLng=cc; uPicker.setCenter(cc, 18); }
+      });
+    } else { uLatLng=null; uPicker.setCenter({lat:18.2208,lng:-66.4}, 9); }
+    setTimeout(function(){ uPicker.resize(); }, 80);
+  }catch(e){ /* map unavailable — unit still saves */ }
+}
 async function saveUnit(){
   var name=(el('u-name').value||'').trim();
   var errEl=el('u-err');
@@ -378,7 +720,9 @@ async function saveUnit(){
       nickname:name, unit_label:name, unit_number:num||null,
       tenant_name:(el('u-tenant').value||'').trim()||null,
       address:addr, municipality:complex.municipality||null,
-      street:complex.street||null, zip_code:complex.zip_code||null, urbanization:complex.urbanization||null
+      street:complex.street||null, zip_code:complex.zip_code||null, urbanization:complex.urbanization||null,
+      lat: uLatLng?uLatLng.lat:(complex.lat!=null?complex.lat:null),
+      lng: uLatLng?uLatLng.lng:(complex.lng!=null?complex.lng:null)
     });
     btn.disabled=false; btn.textContent=t('uSave'); closeUnit();
     await reload(); toast(t('unitAdded'));
@@ -432,12 +776,80 @@ function openEdit(){
   el('e-title').textContent=t('eTitle'); el('e-sub').textContent=t('eSub');
   el('e-nick-l').textContent=t('nickL'); el('e-muni-l').textContent=t('muniL'); el('e-street-l').textContent=t('streetL'); el('e-urb-l').textContent=t('urbL'); el('e-zip-l').textContent=t('zipL');
   el('e-cancel').textContent=t('cancel'); el('e-save').textContent=t('saveChanges');
+  if(el('e-search-l')) el('e-search-l').textContent=t('mSearchL');
+  if(el('e-search')) el('e-search').placeholder=t('mSearchPh');
+  if(el('e-map-hint')) el('e-map-hint').textContent=t('mMapHint');
   var sel=el('e-muni'); if(!sel.options.length){ MUNIS.forEach(function(m){var o=document.createElement('option');o.value=m;o.textContent=m;sel.appendChild(o);}); }
   el('e-nick').value=complex.nickname||''; el('e-street').value=complex.street||''; el('e-urb').value=complex.urbanization||''; el('e-zip').value=complex.zip_code||'';
   if(complex.municipality) sel.value=complex.municipality;
-  el('e-err').classList.remove('show'); el('edit-modal').classList.add('show');
+  if(el('e-archive')){ el('e-archive').textContent=t('archiveProp'); el('e-delete').textContent=t('deleteProp'); el('e-delete').style.display=((units.length===0)&&(bJobs.length===0)&&(docs.length===0))?'':'none'; }
+  el('e-err').classList.remove('show'); if(el('e-search')) el('e-search').value=''; el('edit-modal').classList.add('show');
+  initEditMap();
 }
 function closeEdit(){ el('edit-modal').classList.remove('show'); }
+
+// ── Archive / restore / guarded delete (complex) ──
+async function archiveComplex(){
+  if(!window.confirm(t('archiveConfirm'))) return;
+  try{ await dbPatch('properties','id=eq.'+encodeURIComponent(complex.id), {archived:true}); toast(t('archived')); setTimeout(function(){ location.href='properties.html'; }, 700); }
+  catch(e){ toast(t('errSave')); }
+}
+async function restoreComplex(){
+  try{ await dbPatch('properties','id=eq.'+encodeURIComponent(complex.id), {archived:false}); complex.archived=false; render(); toast(t('restored')); }
+  catch(e){ toast(t('errSave')); }
+}
+async function deleteComplex(){
+  var name=complex.nickname||complex.address||'';
+  var typed=window.prompt(t('deletePrompt').replace('{name}', name));
+  if(typed==null) return;
+  if(_norm(typed)!==_norm(name)){ toast(t('deleteMismatch')); return; }
+  try{ await dbDelete('properties','id=eq.'+encodeURIComponent(complex.id)); toast(t('deleted')); setTimeout(function(){ location.href='properties.html'; }, 700); }
+  catch(e){ toast(t('errSave')); }
+}
+
+// ── Edit-modal location picker (CPR.mapPicker) + reverse-geocode helpers ──
+var ePicker=null, eLatLng=null;
+function _comp(components, type){ for(var i=0;i<components.length;i++){ if(components[i].types.indexOf(type)>=0) return components[i].long_name; } return ''; }
+function _norm(s){ s=(s||'').toLowerCase().trim(); return s.replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n'); }
+function setMuniSel(sel, name){
+  if(!sel||!name) return false; var target=_norm(name);
+  for(var i=0;i<sel.options.length;i++){ if(_norm(sel.options[i].value)===target){ sel.selectedIndex=i; return true; } }
+  for(var j=0;j<sel.options.length;j++){ var ov=_norm(sel.options[j].value); if(ov && (ov.indexOf(target)>=0||target.indexOf(ov)>=0)){ sel.selectedIndex=j; return true; } }
+  return false;
+}
+function fillEditFromComponents(components){
+  if(!components) return;
+  var route=_comp(components,'route'), zip=_comp(components,'postal_code');
+  var neighborhood=_comp(components,'neighborhood')||_comp(components,'sublocality_level_1')||_comp(components,'sublocality');
+  if(route) el('e-street').value=route;
+  if(zip) el('e-zip').value=zip;
+  if(neighborhood) el('e-urb').value=neighborhood;
+  var cands=[_comp(components,'locality'),_comp(components,'administrative_area_level_1'),_comp(components,'administrative_area_level_2'),_comp(components,'sublocality')];
+  for(var k=0;k<cands.length;k++){ if(cands[k] && _norm(cands[k])!=='puerto rico' && setMuniSel(el('e-muni'), cands[k])) break; }
+}
+async function initEditMap(){
+  try{
+    if(!ePicker){
+      ePicker = await CPR.mapPicker(el('e-map'), {
+        search: el('e-search'),
+        onChange: function(ll, comps){ eLatLng=ll; if(comps) fillEditFromComponents(comps); }
+      });
+    }
+    var maps = window.google && window.google.maps;
+    if(complex.lat!=null && complex.lng!=null){
+      eLatLng={lat:parseFloat(complex.lat), lng:parseFloat(complex.lng)};
+      ePicker.setCenter(eLatLng, 17);
+    } else if(complex.address && maps){
+      eLatLng=null;
+      new maps.Geocoder().geocode({address:complex.address+', Puerto Rico'}, function(res,st){
+        if(st==='OK'&&res&&res[0]){ var ll=res[0].geometry.location; var c={lat:ll.lat(),lng:ll.lng()}; eLatLng=c; ePicker.setCenter(c, 16); }
+      });
+    } else {
+      eLatLng=null; ePicker.setCenter({lat:18.2208,lng:-66.4}, 9);
+    }
+    setTimeout(function(){ ePicker.resize(); }, 80);
+  }catch(e){ /* map unavailable — fields still work */ }
+}
 async function saveEdit(){
   var street=(el('e-street').value||'').trim(); var zip=(el('e-zip').value||'').trim(); var urb=(el('e-urb').value||'').trim(); var muni=el('e-muni').value||'';
   var errEl=el('e-err');
@@ -446,8 +858,8 @@ async function saveEdit(){
   var fullAddr=parts.join(', ');
   var btn=el('e-save'); btn.disabled=true; btn.textContent=t('saving');
   try{
-    var up=await dbPatch('properties','id=eq.'+encodeURIComponent(complex.id),{ nickname:(el('e-nick').value||'').trim()||null, address:fullAddr, street:street||null, zip_code:zip||null, urbanization:urb||null, municipality:muni||null });
-    if(Array.isArray(up)&&up[0]) complex=up[0];
+    var up=await dbPatch('properties','id=eq.'+encodeURIComponent(complex.id),{ nickname:(el('e-nick').value||'').trim()||null, address:fullAddr, street:street||null, zip_code:zip||null, urbanization:urb||null, municipality:muni||null, lat: eLatLng?eLatLng.lat:(complex.lat!=null?complex.lat:null), lng: eLatLng?eLatLng.lng:(complex.lng!=null?complex.lng:null) });
+    if(Array.isArray(up)&&up[0]) complex=up[0]; else { complex.lat=eLatLng?eLatLng.lat:complex.lat; complex.lng=eLatLng?eLatLng.lng:complex.lng; }
     btn.disabled=false; btn.textContent=t('saveChanges'); closeEdit(); render(); toast(lang==='en'?'Saved':'Guardado');
   }catch(e){ errEl.textContent=t('errSave'); errEl.classList.add('show'); btn.disabled=false; btn.textContent=t('saveChanges'); }
 }
@@ -461,12 +873,13 @@ async function loadAggregates(){
   bProjects=Array.isArray(bProjects)?bProjects:[];
 
   var allIds=[complex.id].concat(units.map(function(u){return u.id;}));
-  var allJobs=await CPR.db('jobs?property_id=in.('+allIds.join(',')+')&select=id,property_id,status');
+  var allJobs=await CPR.db('jobs?property_id=in.('+allIds.join(',')+')&select=id,property_id,status,scheduled_date,scheduled_time,title,trade_needed,budget,created_at');
   allJobs=Array.isArray(allJobs)?allJobs:[];
+  calJobs=allJobs;
   jobsByProp={}; var jobToProp={};
   allJobs.forEach(function(j){ (jobsByProp[j.property_id]=jobsByProp[j.property_id]||[]).push(j); jobToProp[j.id]=j.property_id; });
 
-  investedByProp={}; pendingByJob={}; contractorByJob={};
+  investedByProp={}; pendingByJob={}; contractorByJob={}; paidByJob={};
   var allJobIds=allJobs.map(function(j){return j.id;});
   if(allJobIds.length){
     var props=await CPR.db('proposals?job_id=in.('+allJobIds.join(',')+')&select=job_id,status,price,contractor_id');
@@ -474,7 +887,7 @@ async function loadAggregates(){
     var acceptedCids=[];
     props.forEach(function(pr){
       if(pr.status==='pending') pendingByJob[pr.job_id]=(pendingByJob[pr.job_id]||0)+1;
-      if(pr.status==='completed'){ var pid=jobToProp[pr.job_id]; var v=parseFloat(pr.price); if(!isNaN(v)&&pid) investedByProp[pid]=(investedByProp[pid]||0)+v; }
+      if(pr.status==='completed'){ var pid=jobToProp[pr.job_id]; var v=parseFloat(pr.price); if(!isNaN(v)){ if(pid) investedByProp[pid]=(investedByProp[pid]||0)+v; paidByJob[pr.job_id]=(paidByJob[pr.job_id]||0)+v; } }
       if(pr.status==='accepted'||pr.status==='completed'){ contractorByJob[pr.job_id]=pr.contractor_id; if(pr.contractor_id) acceptedCids.push(pr.contractor_id); }
     });
     if(acceptedCids.length){
@@ -496,6 +909,7 @@ async function loadData(){
   if(p.type!=='complex'){ location.replace('property.html?id='+id); return; }
   complex=p;
   await loadAggregates();
+  await loadDocs();
   el('boot').style.display='none';
   render();
 }

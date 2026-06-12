@@ -112,7 +112,7 @@ footer a{color:var(--blue);font-weight:500}
     <div class="success-circle">✓</div>
     <h2 data-es="¡Pago en custodia!" data-en="Payment in escrow!">¡Pago en custodia!</h2>
     <p data-es="Tu pago está protegido en custodia. El contratista ha sido notificado y coordinará contigo para comenzar el trabajo. El pago se liberará cuando confirmes que el trabajo está completo." data-en="Your payment is safely held in escrow. The contractor has been notified and will coordinate with you to start the work. Payment will be released when you confirm the job is complete.">Tu pago está protegido en custodia. El contratista ha sido notificado y coordinará contigo para comenzar el trabajo. El pago se liberará cuando confirmes que el trabajo está completo.</p>
-    <a href="dashboard-homeowner.html" class="btn-dashboard" data-es="Ir a mi panel →" data-en="Go to my dashboard →">Ir a mi panel →</a>
+    <a href="properties.html" class="btn-dashboard" data-es="Ir a mi panel →" data-en="Go to my dashboard →">Ir a mi panel →</a>
   </div>
 
   <!-- Payment layout -->
@@ -241,7 +241,7 @@ async function dbPatch(table, id, data) {
 
 async function loadPaymentInfo() {
   if (!proposalId || !jobId) {
-    window.location.href = 'dashboard-homeowner.html';
+    window.location.href = 'properties.html';
     return;
   }
 
@@ -251,7 +251,7 @@ async function loadPaymentInfo() {
   ]);
 
   if (!proposals.length || !jobs.length) {
-    window.location.href = 'dashboard-homeowner.html';
+    window.location.href = 'properties.html';
     return;
   }
 

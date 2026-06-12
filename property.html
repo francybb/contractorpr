@@ -36,14 +36,14 @@ a{color:inherit;text-decoration:none}
 .back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:22px;transition:.15s}
 .back-btn:hover{color:var(--blue)}.back-btn svg{width:16px;height:16px}
 
-.detail-hero{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;margin-bottom:28px}
+.detail-hero{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin-bottom:18px;align-items:stretch}
 @media(max-width:820px){.detail-hero{grid-template-columns:1fr}}
 .hero-cover{border-radius:var(--radius);min-height:260px;position:relative;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
 .hero-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(11,31,51,.28))}
 .cover-img{position:absolute;inset:0;background-size:cover;background-position:center}
 .cv-0{background:linear-gradient(157deg,#F6CF9A,#EBA877 28%,#8BA6CB 62%,#3E5C82)}
-.map-inset{position:absolute;bottom:14px;left:14px;z-index:3;width:104px;height:78px;border-radius:11px;overflow:hidden;border:2px solid #fff;box-shadow:0 6px 16px -4px rgba(11,31,51,.4);background:repeating-linear-gradient(0deg,transparent,transparent 18px,rgba(26,86,219,.07) 19px),repeating-linear-gradient(90deg,transparent,transparent 18px,rgba(26,86,219,.07) 19px),linear-gradient(135deg,#E8EEF7,#D8E3F2)}
-.map-inset .pm{position:absolute;left:50%;top:48%;transform:translate(-50%,-100%)}.map-inset .pm svg{width:20px;height:20px;filter:drop-shadow(0 2px 3px rgba(11,31,51,.4))}
+.detail-map{position:relative;width:100%;height:200px;margin-top:18px;border-radius:13px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:linear-gradient(135deg,#E8EEF7,#D8E3F2)}
+.detail-map .pm{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%)}.detail-map .pm svg{width:26px;height:26px;filter:drop-shadow(0 2px 3px rgba(11,31,51,.4))}
 .change-cover{position:absolute;top:14px;right:14px;z-index:3;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);font-size:12px;font-weight:600;color:var(--ink-2);padding:7px 12px;border-radius:9px;display:flex;align-items:center;gap:6px}
 .change-cover svg{width:14px;height:14px}
 .hero-info{display:flex;flex-direction:column}
@@ -114,6 +114,25 @@ a{color:inherit;text-decoration:none}
 .empty-tab .ei svg{width:26px;height:26px}
 .empty-tab h3{font-size:16px;color:var(--ink);margin-bottom:6px}
 .empty-tab p{font-size:13.5px;max-width:38ch;margin:0 auto}
+.docs-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.docs-head .docs-h{font-family:'Fraunces',serif;font-size:19px;font-weight:500;color:var(--ink)}
+.docs-head .docs-p{color:var(--muted);font-size:13px;margin-top:3px;max-width:46ch}
+.docs-head .btn-primary{flex-shrink:0}
+.doc-list{display:flex;flex-direction:column;gap:10px}
+.doc-row{display:flex;align-items:center;gap:14px;padding:13px 15px;border:1px solid var(--line);border-radius:13px;background:var(--card);transition:.15s}
+.doc-row:hover{border-color:var(--line-2);box-shadow:0 4px 14px rgba(11,31,51,.06)}
+.doc-ic{width:40px;height:40px;border-radius:10px;background:var(--line-2);display:grid;place-items:center;color:var(--muted);flex-shrink:0}
+.doc-ic svg{width:20px;height:20px}
+.doc-main{flex:1;min-width:0}
+.doc-name{font-size:14px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.doc-meta{display:flex;align-items:center;gap:10px;margin-top:3px;font-size:12px;color:var(--muted)}
+.doc-chip{background:var(--line-2);color:var(--ink);padding:2px 9px;border-radius:20px;font-weight:600;font-size:11.5px}
+.doc-act{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.doc-view{font-size:13px;font-weight:600;color:#2563eb;text-decoration:none;padding:7px 12px;border:1px solid var(--line);border-radius:9px;transition:.15s}
+.doc-view:hover{border-color:var(--line-2);background:var(--line-2)}
+.doc-del{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--muted);display:grid;place-items:center;cursor:pointer;transition:.15s}
+.doc-del:hover{color:#dc2626;border-color:#fca5a5;background:#fef2f2}
+.doc-del svg{width:16px;height:16px}
 
 .timeline{position:relative;padding-left:30px}
 .timeline::before{content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;background:var(--line)}
@@ -135,6 +154,7 @@ a{color:inherit;text-decoration:none}
 .cal-day.has{border-color:var(--line)}
 .cal-day.ev{background:var(--warn-soft);border-color:var(--warn-soft);color:var(--warn);font-weight:700}
 .cal-day.today{background:var(--blue);color:#fff;font-weight:700}
+.cal-day.mev{background:var(--violet-soft);border-color:var(--violet-soft);color:var(--violet);font-weight:700}
 .agenda{margin-top:28px}
 .agenda-title{font-family:'Fraunces',serif;font-size:18px;font-weight:500;margin-bottom:6px}
 .agenda-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
@@ -156,6 +176,37 @@ a{color:inherit;text-decoration:none}
 .ag-amt{font-family:'Fraunces',serif;font-size:14px;font-weight:500;margin-top:5px;color:var(--ink-2)}
 .recur-note{background:var(--violet-soft);border:1px solid #E4DAF7;border-radius:11px;padding:13px 16px;font-size:13px;color:#5B43A8;margin-top:8px;display:flex;gap:9px;align-items:flex-start}
 .recur-note svg{width:16px;height:16px;flex-shrink:0;margin-top:1px}
+.mt-head{display:flex;align-items:center;gap:14px;margin:18px 0 10px}
+.mt-add{flex-shrink:0;background:var(--violet-soft);color:var(--violet);border:none;padding:7px 13px;border-radius:9px;font-weight:600;font-size:12.5px;cursor:pointer;font-family:inherit;white-space:nowrap}
+.mt-add:hover{background:#E4DAF7}
+.mt-list{display:flex;flex-direction:column;gap:9px}
+.mt-row{display:flex;align-items:center;gap:13px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.mt-ic{width:34px;height:34px;border-radius:9px;background:var(--violet-soft);color:var(--violet);display:grid;place-items:center;flex-shrink:0}
+.mt-ic svg{width:17px;height:17px}
+.mt-main{flex:1;min-width:0}.mt-t{font-size:14px;font-weight:600}.mt-meta{font-size:12px;color:var(--muted);margin-top:2px}
+.mt-nv{text-align:center;flex-shrink:0;min-width:42px}.mt-nv .d{font-family:'Fraunces',serif;font-size:18px;font-weight:500;line-height:1;color:var(--violet)}.mt-nv .m{font-size:10px;text-transform:uppercase;color:var(--muted);font-weight:600;margin-top:2px}.mt-nv.tbd{color:var(--muted);font-size:18px}
+.mt-act{display:flex;align-items:center;gap:7px;flex-shrink:0}
+.mt-btn{background:var(--blue);color:#fff;border:none;padding:7px 11px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.mt-btn:hover{background:var(--blue-deep)}
+.mt-x{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--muted);display:grid;place-items:center;cursor:pointer}
+.mt-x:hover{color:#dc2626;border-color:#fca5a5}.mt-x svg{width:15px;height:15px}
+.create-opt{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:15px 16px;margin-bottom:11px;cursor:pointer;font-family:inherit;transition:.15s}
+.create-opt:hover{border-color:var(--blue);box-shadow:0 4px 14px rgba(26,86,219,.08)}
+.create-opt:last-child{margin-bottom:0}
+.co-ic{width:42px;height:42px;border-radius:11px;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;flex-shrink:0}
+.co-ic.violet{background:var(--violet-soft);color:var(--violet)}
+.co-ic svg{width:21px;height:21px}
+.co-main{flex:1;min-width:0}.co-t{font-size:14.5px;font-weight:600;color:var(--ink)}.co-s{font-size:12.5px;color:var(--muted);margin-top:2px}
+.co-chev{color:var(--muted);flex-shrink:0;display:grid;place-items:center}.co-chev svg{width:18px;height:18px}
+.cmp-sep{height:1px;background:var(--line-2);margin:22px 0 26px}
+.cmp-list{display:flex;flex-direction:column;gap:9px}
+.cmp-row{display:flex;align-items:center;gap:13px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.cmp-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;background:var(--ok)}
+.cmp-dot.expiring{background:var(--warn)}.cmp-dot.expired{background:var(--rose)}
+.cmp-main{flex:1;min-width:0}.cmp-t{font-size:14px;font-weight:600}.cmp-s{font-size:12px;color:var(--muted);margin-top:2px}
+.cmp-pill{font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em;flex-shrink:0}
+.cmp-pill.ok{background:var(--ok-soft);color:var(--ok)}.cmp-pill.expiring{background:var(--warn-soft);color:var(--warn)}.cmp-pill.expired{background:#FEE2E2;color:#dc2626}
+.cmp-act{display:flex;align-items:center;gap:7px;flex-shrink:0}
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13.5px;font-weight:500;padding:12px 20px;border-radius:11px;box-shadow:var(--shadow-lg);opacity:0;transition:.25s;z-index:200;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 /* edit modal */
@@ -200,6 +251,23 @@ a{color:inherit;text-decoration:none}
 </div>
 
 <!-- EDIT MODAL -->
+<style>
+.map-pick{position:relative}
+.modal-map{width:100%;height:240px;border-radius:12px;border:1px solid var(--line,#e5e7eb);background:var(--line-2,#eef2f7)}
+.map-pin{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%);z-index:5;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(11,31,51,.4))}
+.map-pin svg{width:34px;height:34px}
+.map-hint{font-size:12px;color:var(--muted,#6b7280);margin:7px 0 15px}
+.pac-container{z-index:10000}
+.danger-zone{margin-top:18px;padding-top:16px;border-top:1px solid var(--line-2);display:flex;gap:10px;flex-wrap:wrap}
+.btn-archive{flex:1;min-width:140px;padding:11px 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink-2);font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit;transition:.15s}
+.btn-archive:hover{background:var(--line-2)}
+.btn-danger{padding:11px 16px;border-radius:10px;border:1px solid #fca5a5;background:#fff;color:#dc2626;font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit;transition:.15s}
+.btn-danger:hover{background:#fef2f2}
+.arch-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#fef9ec;border:1px solid #f5e2a8;color:#8a6d1a;padding:12px 16px;border-radius:12px;margin-bottom:16px;font-size:14px;font-weight:500}
+.arch-banner button{background:#1A56DB;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit}
+.xfer-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:var(--blue-soft);border:1px solid #C7D9F8;color:var(--blue-deep);padding:12px 16px;border-radius:12px;margin-bottom:16px;font-size:14px;font-weight:500}
+.xfer-banner button{background:var(--card);color:var(--blue);border:1px solid #C7D9F8;padding:8px 16px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit}
+</style>
 <div class="modal-bg" id="edit-modal">
   <div class="modal">
     <button class="modal-x" onclick="closeEdit()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
@@ -210,6 +278,9 @@ a{color:inherit;text-decoration:none}
         <div class="type-opt" data-cat="commercial" onclick="ePickCat(this)"><b id="e-c2">Comercial</b></div>
       </div>
       <div class="modal-err" id="e-err"></div>
+      <div class="field"><label id="e-search-l">Buscar dirección</label><input type="text" id="e-search" placeholder="Busca tu dirección..." autocomplete="off"></div>
+      <div class="map-pick"><div id="e-map" class="modal-map"></div><div class="map-pin"><svg viewBox="0 0 24 24" fill="#1A56DB" stroke="#fff" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg></div></div>
+      <div class="map-hint" id="e-map-hint">Mueve el mapa para centrar el pin en la ubicación exacta.</div>
       <div class="field"><label id="e-nick-l">Apodo (opcional)</label><input type="text" id="e-nick" placeholder="ej. Casa de playa"></div>
       <div class="field"><label id="e-muni-l">Municipio</label><select id="e-muni"></select></div>
       <div class="field"><label id="e-street-l">Calle</label><input type="text" id="e-street"></div>
@@ -219,6 +290,7 @@ a{color:inherit;text-decoration:none}
         <div style="flex:1"><label id="e-zip-l">Código postal</label><input type="text" id="e-zip" inputmode="numeric" maxlength="5"></div>
       </div>
       <div class="modal-foot"><button class="btn-line" onclick="closeEdit()" id="e-cancel">Cancelar</button><button class="btn-primary" id="e-save" onclick="saveEdit()">Guardar cambios</button></div>
+      <div class="danger-zone"><button class="btn-archive" id="e-archive" onclick="archiveProp()">Archivar</button><button class="btn-danger" id="e-delete" onclick="deleteProp()" style="display:none">Eliminar</button></div>
     </div>
   </div>
 </div>
@@ -252,6 +324,79 @@ a{color:inherit;text-decoration:none}
   </div>
 </div>
 
+<div class="modal-bg" id="doc-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeDoc()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head"><h2 class="serif" id="d-title">Subir documento</h2><p id="d-sub"></p></div>
+    <div class="modal-body">
+      <div class="modal-err" id="d-err"></div>
+      <div class="field"><label id="d-cat-l">Categoría</label><select id="d-cat"></select></div>
+      <div class="field"><label id="d-label-l">Nombre (opcional)</label><input type="text" id="d-label"></div>
+      <div class="field"><label id="d-file-l">Archivo</label><input type="file" id="d-file" accept=".pdf,.png,.jpg,.jpeg,.gif,.webp,.heic,.doc,.docx,.xls,.xlsx,.txt"></div>
+      <div class="modal-foot"><button class="btn-line" onclick="closeDoc()" id="d-cancel">Cancelar</button><button class="btn-primary" id="d-save" onclick="saveDoc()">Subir</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="compliance-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeComp()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head"><h2 class="serif" id="cm-head">Nueva obligación</h2><p id="cm-sub">Algo con fecha de vencimiento que debes mantener al día.</p></div>
+    <div class="modal-body">
+      <div class="modal-err" id="cm-err"></div>
+      <div class="field"><label id="cm-title-l">Obligación</label><input type="text" id="cm-title" placeholder="ej. Inspección de bomberos"></div>
+      <div class="field" style="display:flex;gap:12px">
+        <div style="flex:1"><label id="cm-exp-l">Vence el</label><input type="date" id="cm-exp"></div>
+        <div style="flex:1"><label id="cm-int-l">Renueva cada (meses)</label><input type="number" id="cm-int" min="1" placeholder=""></div>
+      </div>
+      <div class="modal-foot"><button class="btn-line" onclick="closeComp()" id="cm-cancel">Cancelar</button><button class="btn-primary" id="cm-save" onclick="saveComp()">Crear</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="create-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeCreate()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head"><h2 class="serif" id="cr-head">¿Qué quieres crear?</h2><p id="cr-sub">Elige una acción para esta propiedad.</p></div>
+    <div class="modal-body">
+      <button class="create-opt" onclick="chooseCreate('job')"><div class="co-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 012-2h4a2 2 0 012 2v2"/></svg></div><div class="co-main"><div class="co-t" id="co-job">Crear trabajo</div><div class="co-s" id="co-job-s">Publica un trabajo puntual al marketplace.</div></div><div class="co-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></button>
+      <button class="create-opt" onclick="chooseCreate('project')"><div class="co-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7a2 2 0 012-2h4l2 3h8a2 2 0 012 2v7a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg></div><div class="co-main"><div class="co-t" id="co-proj">Nuevo proyecto</div><div class="co-s" id="co-proj-s">Agrupa varios trabajos relacionados.</div></div><div class="co-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></button>
+      <button class="create-opt" onclick="chooseCreate('plan')"><div class="co-ic violet"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg></div><div class="co-main"><div class="co-t" id="co-plan">Plan de mantenimiento</div><div class="co-s" id="co-plan-s">Programa un servicio recurrente.</div></div><div class="co-chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div></button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="transfer-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closeTransfer()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head"><h2 class="serif" id="tr-head">Transferir propiedad</h2><p id="tr-sub">Transfiere la titularidad a otro usuario registrado.</p></div>
+    <div class="modal-body">
+      <div class="modal-err" id="tr-err"></div>
+      <div class="field"><label id="tr-email-l">Correo del nuevo dueño</label><input type="email" id="tr-email" placeholder="correo@ejemplo.com" autocomplete="off"></div>
+      <div class="recur-note" style="background:var(--blue-soft);border-color:#C7D9F8;color:var(--blue-deep)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span id="tr-note"></span></div>
+      <div class="modal-foot"><button class="btn-line" onclick="closeTransfer()" id="tr-cancel">Cancelar</button><button class="btn-primary" id="tr-save" onclick="saveTransfer()">Enviar transferencia</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="plan-modal">
+  <div class="modal">
+    <button class="modal-x" onclick="closePlan()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="modal-head"><h2 class="serif" id="pl-head">Nuevo plan de mantenimiento</h2><p id="pl-sub">Servicio recurrente para esta propiedad.</p></div>
+    <div class="modal-body">
+      <div class="modal-err" id="pl-err"></div>
+      <div class="field"><label id="pl-title-l">Título</label><input type="text" id="pl-title" placeholder="ej. Servicio de A/C"></div>
+      <div class="field"><label id="pl-trade-l">Tipo de trabajo</label><select id="pl-trade"></select></div>
+      <div class="field" style="display:flex;gap:12px">
+        <div style="flex:1"><label id="pl-interval-l">Cada (meses)</label><input type="number" id="pl-interval" min="1" value="3"></div>
+        <div style="flex:1"><label id="pl-price-l">Precio/visita (opcional)</label><input type="number" id="pl-price" min="0" placeholder="0"></div>
+      </div>
+      <div class="field"><label id="pl-first-l">Primera visita</label><input type="date" id="pl-first"></div>
+      <div class="modal-foot"><button class="btn-line" onclick="closePlan()" id="pl-cancel">Cancelar</button><button class="btn-primary" id="pl-save" onclick="savePlan()">Crear plan</button></div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 <input type="file" id="cover-input" accept="image/*" style="display:none" onchange="handleCover(event)">
 
@@ -259,7 +404,7 @@ a{color:inherit;text-decoration:none}
 <script src="/lang.js"></script>
 <script>
 var lang = (window.CPR && CPR.lang) || 'es';
-var currentUser = null, prop = null, jobs = [], projects = [];
+var currentUser = null, prop = null, jobs = [], projects = [], docs = [], plans = [], outTransfer = null, compliance = [];
 var pendingByJob = {}, contractorByJob = {};
 
 var T = {
@@ -269,11 +414,27 @@ var T = {
   nfLink:{es:'← Volver a mis propiedades',en:'← Back to my properties'},
   totalJobs:{es:'Trabajos totales',en:'Total jobs'},projects:{es:'Proyectos',en:'Projects'},invested:{es:'Invertido',en:'Invested'},
   createJob:{es:'Crear trabajo',en:'Create job'},newProject:{es:'Nuevo proyecto',en:'New project'},transfer:{es:'Transferir',en:'Transfer'},changeCover:{es:'Cambiar foto',en:'Change photo'},
+  createCta:{es:'Crear',en:'Create'},crHead:{es:'¿Qué quieres crear?',en:'What would you like to create?'},crSub:{es:'Elige una acción para esta propiedad.',en:'Choose an action for this property.'},
+  coJob:{es:'Crear trabajo',en:'Create job'},coJobS:{es:'Publica un trabajo puntual al marketplace.',en:'Post a one-off job to the marketplace.'},
+  coProj:{es:'Nuevo proyecto',en:'New project'},coProjS:{es:'Agrupa varios trabajos relacionados.',en:'Group several related jobs together.'},
+  coPlan:{es:'Plan de mantenimiento',en:'Maintenance plan'},coPlanS:{es:'Programa un servicio recurrente.',en:'Schedule a recurring service.'},
   edit:{es:'Editar',en:'Edit'},
   eTitle:{es:'Editar propiedad',en:'Edit property'},eSub:{es:'Actualiza la información de esta propiedad.',en:'Update this property\u2019s information.'},
   c1:{es:'Residencial',en:'Residential'},c2:{es:'Comercial',en:'Commercial'},
   nickL:{es:'Apodo (opcional)',en:'Nickname (optional)'},streetL:{es:'Calle',en:'Street'},numL:{es:'Número / Apt',en:'Number / Apt'},zipL:{es:'Código postal',en:'Zip code'},urbL:{es:'Urbanización / sector (opcional)',en:'Subdivision / area (optional)'},
+  mSearchL:{es:'Buscar dirección o mueve el pin',en:'Search address or move the pin'},mSearchPh:{es:'Escribe tu dirección...',en:'Type your address...'},mMapHint:{es:'Mueve el mapa para centrar el pin en la ubicación exacta.',en:'Move the map to center the pin on the exact location.'},
   cancel:{es:'Cancelar',en:'Cancel'},saveChanges:{es:'Guardar cambios',en:'Save changes'},saving:{es:'Guardando...',en:'Saving...'},
+  archiveProp:{es:'Archivar',en:'Archive'},deleteProp:{es:'Eliminar',en:'Delete'},
+  archiveConfirm:{es:'¿Archivar esta propiedad? Se ocultará de tu biblioteca pero conservará todo su historial. Podrás restaurarla cuando quieras.',en:'Archive this property? It will be hidden from your library but keep all its history. You can restore it anytime.'},
+  archived:{es:'Propiedad archivada',en:'Property archived'},restored:{es:'Propiedad restaurada',en:'Property restored'},
+  restore:{es:'Restaurar',en:'Restore'},archBannerMsg:{es:'Esta propiedad está archivada.',en:'This property is archived.'},
+  deletePrompt:{es:'Esto eliminará la propiedad permanentemente. Para confirmar, escribe el nombre exacto:\n\n{name}',en:'This will permanently delete the property. To confirm, type its exact name:\n\n{name}'},
+  deleteMismatch:{es:'El nombre no coincide. No se eliminó nada.',en:'Name did not match. Nothing was deleted.'},deleted:{es:'Propiedad eliminada',en:'Property deleted'},
+  trTitle:{es:'Transferir propiedad',en:'Transfer property'},trSub:{es:'Transfiere la titularidad a otro usuario registrado.',en:'Transfer ownership to another registered user.'},
+  trEmailL:{es:'Correo del nuevo dueño',en:'New owner’s email'},trNote:{es:'El destinatario debe tener una cuenta. Recibirá una invitación y, al aceptar, la propiedad y todo su historial pasan a su cuenta y tú pierdes el acceso.',en:'The recipient must have an account. They’ll get an invite, and on accepting, the property and all its history move to them and you lose access.'},
+  trSend:{es:'Enviar transferencia',en:'Send transfer'},trSent:{es:'Transferencia enviada',en:'Transfer sent'},
+  trPending:{es:'Transferencia pendiente a {email}',en:'Transfer pending to {email}'},trCancel:{es:'Cancelar',en:'Cancel'},trCancelConfirm:{es:'¿Cancelar esta transferencia?',en:'Cancel this transfer?'},trCancelled:{es:'Transferencia cancelada',en:'Transfer cancelled'},
+  trErrEmail:{es:'Escribe un correo válido.',en:'Enter a valid email.'},trErrSelf:{es:'No puedes transferirte a ti mismo.',en:'You can’t transfer to yourself.'},trErrNotUser:{es:'Ese correo no pertenece a un usuario registrado.',en:'That email isn’t a registered user.'},
   errStreet:{es:'Escribe al menos la calle.',en:'Enter at least the street.'},errSave:{es:'No se pudo guardar. Intenta de nuevo.',en:'Could not save. Try again.'},
   jTitle:{es:'Crear trabajo',en:'Create job'},jSub:{es:'Publica un trabajo para esta propiedad. Los contratistas podrán enviarte propuestas.',en:'Post a job for this property. Contractors can send you proposals.'},
   jTitleL:{es:'Título del trabajo',en:'Job title'},jTitlePh:{es:'ej. Cambiar inodoro del baño',en:'ej. Replace bathroom toilet'},
@@ -297,7 +458,29 @@ var T = {
   agEmpty:{es:'Nada programado por ahora.',en:'Nothing scheduled for now.'},
   recurTitle:{es:'Mantenimiento recurrente',en:'Recurring maintenance'},
   recurSoon:{es:'Los planes de mantenimiento recurrente llegan con el módulo de mantenimiento.',en:'Recurring maintenance plans arrive with the maintenance module.'},
-  docsEmptyT:{es:'Documentos próximamente',en:'Documents coming soon'},docsEmptyP:{es:'Permisos, garantías, recibos y fotos vivirán aquí cuando activemos el almacenamiento.',en:'Permits, warranties, receipts and photos will live here once storage is enabled.'},
+  mtNew:{es:'Nuevo plan',en:'New plan'},mtEmpty:{es:'Sin planes de mantenimiento. Crea uno para programar servicios recurrentes.',en:'No maintenance plans yet. Create one to schedule recurring service.'},
+  mtEvery:{es:'cada {n} meses',en:'every {n} mo'},mtVisit:{es:'visita',en:'visit'},mtConfirm:{es:'Visita hecha',en:'Visit done'},mtDelete:{es:'Eliminar plan',en:'Delete plan'},
+  mNewTitle:{es:'Nuevo plan de mantenimiento',en:'New maintenance plan'},mNewSub:{es:'Servicio recurrente para esta propiedad.',en:'Recurring service for this property.'},
+  mTitleL:{es:'Título',en:'Title'},mTradeL:{es:'Tipo de trabajo',en:'Type of work'},mIntervalL:{es:'Cada (meses)',en:'Every (months)'},mPriceL:{es:'Precio/visita (opcional)',en:'Price/visit (optional)'},mFirstL:{es:'Primera visita',en:'First visit'},mCreate:{es:'Crear plan',en:'Create plan'},
+  errPlanTitle:{es:'Escribe un título.',en:'Enter a title.'},errInterval:{es:'Indica cada cuántos meses.',en:'Set the interval in months.'},
+  planCreated:{es:'Plan creado',en:'Plan created'},visitConfirmed:{es:'Visita registrada',en:'Visit logged'},planDeleted:{es:'Plan eliminado',en:'Plan deleted'},confirmDelPlan:{es:'¿Eliminar este plan de mantenimiento?',en:'Delete this maintenance plan?'},
+  cmpTitle:{es:'Cumplimiento',en:'Compliance'},cmpSub:{es:'Permisos, inspecciones y pólizas con fecha de vencimiento.',en:'Permits, inspections and policies with expiry dates.'},cmpAdd:{es:'Añadir obligación',en:'Add item'},
+  cmpEmpty:{es:'Sin obligaciones de cumplimiento. Añade permisos o inspecciones con su fecha de vencimiento.',en:'No compliance items. Add permits or inspections with their expiry date.'},
+  cmpExpires:{es:'Vence',en:'Expires'},cmpRenew:{es:'Renovar',en:'Renew'},cmpDelete:{es:'Eliminar',en:'Delete'},
+  cmpSt_ok:{es:'Vigente',en:'Valid'},cmpSt_expiring:{es:'Por vencer',en:'Expiring'},cmpSt_expired:{es:'Vencido',en:'Expired'},
+  cmpNewTitle:{es:'Nueva obligación',en:'New compliance item'},cmpNewSub:{es:'Algo con fecha de vencimiento que debes mantener al día.',en:'Something with an expiry date you must keep current.'},
+  cmpTitleL:{es:'Obligación',en:'Item'},cmpExpL:{es:'Vence el',en:'Expires on'},cmpIntL:{es:'Renueva cada (meses)',en:'Renews every (months)'},cmpCreate:{es:'Crear',en:'Create'},
+  cmpErrTitle:{es:'Escribe un título.',en:'Enter a title.'},cmpCreated:{es:'Obligación añadida',en:'Item added'},cmpRenewed:{es:'Vencimiento actualizado',en:'Expiry updated'},cmpDeleted:{es:'Obligación eliminada',en:'Item deleted'},cmpDelConfirm:{es:'¿Eliminar esta obligación?',en:'Delete this item?'},
+  cmpExpiredMsg:{es:'Vencido — requiere atención',en:'Expired — needs attention'},cmpExpiringMsg:{es:'Vence el {d}',en:'Expires {d}'},
+  docsTitle:{es:'Documentos',en:'Documents'},docsSub:{es:'Permisos, garantías, recibos, planos y fotos de la propiedad.',en:'Permits, warranties, receipts, plans and property photos.'},
+  docUpload:{es:'Subir documento',en:'Upload document'},
+  docEmptyT:{es:'Aún no hay documentos',en:'No documents yet'},docEmptyP:{es:'Sube permisos, garantías, recibos y fotos para tenerlos siempre a mano.',en:'Upload permits, warranties, receipts and photos to keep them in one place.'},
+  docView:{es:'Ver',en:'View'},docDelete:{es:'Eliminar',en:'Delete'},docDelConfirm:{es:'¿Eliminar este documento?',en:'Delete this document?'},
+  docUploaded:{es:'Documento subido',en:'Document uploaded'},docDeleted:{es:'Documento eliminado',en:'Document deleted'},uploading:{es:'Subiendo...',en:'Uploading...'},
+  dTitle:{es:'Subir documento',en:'Upload document'},dSub:{es:'Adjunta un archivo (PDF, imagen o documento, hasta 15MB).',en:'Attach a file (PDF, image or document, up to 15MB).'},
+  dCatL:{es:'Categoría',en:'Category'},dLabelL:{es:'Nombre (opcional)',en:'Name (optional)'},dLabelPh:{es:'Ej. Permiso de construcción',en:'e.g. Building permit'},dFileL:{es:'Archivo',en:'File'},dUpload:{es:'Subir',en:'Upload'},
+  errDocFile:{es:'Elige un archivo',en:'Choose a file'},errDocSize:{es:'El archivo debe ser menor de 15MB',en:'File must be under 15MB'},
+  catPermit:{es:'Permiso',en:'Permit'},catWarranty:{es:'Garantía',en:'Warranty'},catReceipt:{es:'Recibo',en:'Receipt'},catPhoto:{es:'Foto',en:'Photo'},catPlan:{es:'Plano',en:'Plan'},catOther:{es:'Otro',en:'Other'},
   histEmptyT:{es:'Aún no hay historial',en:'No history yet'},histEmptyP:{es:'El trabajo completado aparecerá aquí como la biografía de la propiedad.',en:'Completed work will appear here as the property biography.'},
   propAdded:{es:'Propiedad añadida a tu biblioteca',en:'Property added to your library'},
   yourReview:{es:'Completado',en:'Completed'},paid:{es:'pagado',en:'paid'},
@@ -362,6 +545,9 @@ function openEdit(){
   el('e-nick-l').textContent=t('nickL'); el('e-street-l').textContent=t('streetL');
   el('e-num-l').textContent=t('numL'); el('e-zip-l').textContent=t('zipL');
   el('e-muni-l').textContent=t('muniL'); el('e-urb-l').textContent=t('urbL');
+  if(el('e-search-l')) el('e-search-l').textContent=t('mSearchL');
+  if(el('e-search')) el('e-search').placeholder=t('mSearchPh');
+  if(el('e-map-hint')) el('e-map-hint').textContent=t('mMapHint');
   el('e-cancel').textContent=t('cancel'); el('e-save').textContent=t('saveChanges');
   // municipality options
   var sel=el('e-muni');
@@ -376,9 +562,76 @@ function openEdit(){
   el('e-urb').value=prop.urbanization||'';
   if(prop.municipality) sel.value=prop.municipality;
   el('e-err').classList.remove('show');
+  if(el('e-search')) el('e-search').value='';
+  if(el('e-archive')){ el('e-archive').textContent=t('archiveProp'); el('e-delete').textContent=t('deleteProp'); el('e-delete').style.display=((jobs.length===0)&&(docs.length===0))?'':'none'; }
   el('edit-modal').classList.add('show');
+  initEditMap();
 }
 function closeEdit(){ el('edit-modal').classList.remove('show'); }
+
+// ── Archive / restore / guarded delete ──
+async function archiveProp(){
+  if(!window.confirm(t('archiveConfirm'))) return;
+  try{ await dbPatch('properties','id=eq.'+encodeURIComponent(prop.id), {archived:true}); toast(t('archived')); setTimeout(function(){ location.href='properties.html'; }, 700); }
+  catch(e){ toast(t('errSave')); }
+}
+async function restoreProp(){
+  try{ await dbPatch('properties','id=eq.'+encodeURIComponent(prop.id), {archived:false}); prop.archived=false; render(); toast(t('restored')); }
+  catch(e){ toast(t('errSave')); }
+}
+async function deleteProp(){
+  var name=prop.nickname||prop.address||'';
+  var typed=window.prompt(t('deletePrompt').replace('{name}', name));
+  if(typed==null) return;
+  if(_norm(typed)!==_norm(name)){ toast(t('deleteMismatch')); return; }
+  try{ await dbDelete('properties','id=eq.'+encodeURIComponent(prop.id)); toast(t('deleted')); setTimeout(function(){ location.href='properties.html'; }, 700); }
+  catch(e){ toast(t('errSave')); }
+}
+
+// ── Edit-modal location picker (CPR.mapPicker) + reverse-geocode helpers ──
+var ePicker=null, eLatLng=null;
+function _comp(components, type){ for(var i=0;i<components.length;i++){ if(components[i].types.indexOf(type)>=0) return components[i].long_name; } return ''; }
+function _norm(s){ s=(s||'').toLowerCase().trim(); return s.replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n'); }
+function setMuniSel(sel, name){
+  if(!sel||!name) return false; var target=_norm(name);
+  for(var i=0;i<sel.options.length;i++){ if(_norm(sel.options[i].value)===target){ sel.selectedIndex=i; return true; } }
+  for(var j=0;j<sel.options.length;j++){ var ov=_norm(sel.options[j].value); if(ov && (ov.indexOf(target)>=0||target.indexOf(ov)>=0)){ sel.selectedIndex=j; return true; } }
+  return false;
+}
+function fillEditFromComponents(components){
+  if(!components) return;
+  var route=_comp(components,'route'), number=_comp(components,'street_number'), zip=_comp(components,'postal_code');
+  var neighborhood=_comp(components,'neighborhood')||_comp(components,'sublocality_level_1')||_comp(components,'sublocality');
+  if(route) el('e-street').value=route;
+  if(number) el('e-num').value=number;
+  if(zip) el('e-zip').value=zip;
+  if(neighborhood) el('e-urb').value=neighborhood;
+  var cands=[_comp(components,'locality'),_comp(components,'administrative_area_level_1'),_comp(components,'administrative_area_level_2'),_comp(components,'sublocality')];
+  for(var k=0;k<cands.length;k++){ if(cands[k] && _norm(cands[k])!=='puerto rico' && setMuniSel(el('e-muni'), cands[k])) break; }
+}
+async function initEditMap(){
+  try{
+    if(!ePicker){
+      ePicker = await CPR.mapPicker(el('e-map'), {
+        search: el('e-search'),
+        onChange: function(ll, comps){ eLatLng=ll; if(comps) fillEditFromComponents(comps); }
+      });
+    }
+    var maps = window.google && window.google.maps;
+    if(prop.lat!=null && prop.lng!=null){
+      eLatLng={lat:parseFloat(prop.lat), lng:parseFloat(prop.lng)};
+      ePicker.setCenter(eLatLng, 17);
+    } else if(prop.address && maps){
+      eLatLng=null;
+      new maps.Geocoder().geocode({address:prop.address+', Puerto Rico'}, function(res,st){
+        if(st==='OK'&&res&&res[0]){ var ll=res[0].geometry.location; var c={lat:ll.lat(),lng:ll.lng()}; eLatLng=c; ePicker.setCenter(c, 16); }
+      });
+    } else {
+      eLatLng=null; ePicker.setCenter({lat:18.2208,lng:-66.4}, 9);
+    }
+    setTimeout(function(){ ePicker.resize(); }, 80);
+  }catch(e){ /* map unavailable — fields still work */ }
+}
 async function saveEdit(){
   var street=(el('e-street').value||'').trim();
   var num=(el('e-num').value||'').trim();
@@ -403,11 +656,13 @@ async function saveEdit(){
       unit_number:num||null,
       zip_code:zip||null,
       urbanization:urb||null,
-      municipality:muni||null
+      municipality:muni||null,
+      lat: eLatLng ? eLatLng.lat : (prop.lat!=null?prop.lat:null),
+      lng: eLatLng ? eLatLng.lng : (prop.lng!=null?prop.lng:null)
     });
     // update local prop and re-render
     if(Array.isArray(updated)&&updated[0]) prop=updated[0];
-    else { prop.category=eCat; prop.nickname=(el('e-nick').value||'').trim()||null; prop.address=fullAddr; prop.street=street; prop.unit_number=num; prop.zip_code=zip; prop.municipality=muni; }
+    else { prop.category=eCat; prop.nickname=(el('e-nick').value||'').trim()||null; prop.address=fullAddr; prop.street=street; prop.unit_number=num; prop.zip_code=zip; prop.municipality=muni; prop.lat=eLatLng?eLatLng.lat:prop.lat; prop.lng=eLatLng?eLatLng.lng:prop.lng; }
     btn.disabled=false; btn.textContent=t('saveChanges');
     closeEdit();
     render();
@@ -562,13 +817,14 @@ function fmtDay(dateStr){ var d=new Date(dateStr+'T00:00:00'); return {d:d.getDa
 function renderCalendar(){
   var now=new Date(); var y=now.getFullYear(), mo=now.getMonth(), today=now.getDate();
   var first=new Date(y,mo,1).getDay(); var days=new Date(y,mo+1,0).getDate();
-  var evDays={};
+  var evDays={}, mDays={};
   jobs.forEach(function(j){ if(j.scheduled_date){ var d=new Date(j.scheduled_date+'T00:00:00'); if(d.getFullYear()===y&&d.getMonth()===mo) evDays[d.getDate()]=true; } });
+  plans.forEach(function(p){ if(p.status==='active' && p.next_visit_date){ var d=new Date(p.next_visit_date+'T00:00:00'); if(d.getFullYear()===y&&d.getMonth()===mo) mDays[d.getDate()]=true; } });
   var cells='';
   t('dow').forEach(function(d){ cells+='<div class="cal-dow">'+d+'</div>'; });
   for(var i=0;i<first;i++) cells+='<div class="cal-day empty"></div>';
   for(var dnum=1;dnum<=days;dnum++){
-    var cls='cal-day has'; if(evDays[dnum])cls+=' ev'; if(dnum===today)cls='cal-day today';
+    var cls='cal-day has'; if(mDays[dnum])cls='cal-day mev'; if(evDays[dnum])cls='cal-day ev'; if(dnum===today)cls='cal-day today';
     cells+='<div class="'+cls+'">'+dnum+'</div>';
   }
   var scheduledCount=Object.keys(evDays).length;
@@ -609,9 +865,65 @@ function renderCalendar(){
     }).join('');
   }
   if(!upcoming.length && !toSched.length){ ag+='<p class="pulse-empty" style="padding:10px 6px">'+t('agEmpty')+'</p>'; }
-  ag+='<div class="ag-divider recur">'+t('recurTitle')+'</div><div class="recur-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>'+t('recurSoon')+'</div>';
+  ag+=renderPlans();
   ag+='</div>';
   return calHtml+ag;
+}
+
+// ── Maintenance plans ──
+var recurSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0115-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 01-15 6.7L3 16"/></svg>';
+function renderPlans(){
+  var active=plans.filter(function(p){return p.status!=='cancelled';});
+  var head='<div class="mt-head"><div class="ag-divider recur" style="flex:1;margin:0">'+t('recurTitle')+'</div><button class="mt-add" onclick="openPlan()">+ '+t('mtNew')+'</button></div>';
+  if(!active.length) return head+'<div class="recur-note">'+recurSvg+'<span>'+t('mtEmpty')+'</span></div>';
+  var rows=active.map(function(p){
+    var nv=p.next_visit_date?fmtDay(p.next_visit_date):null;
+    var meta=(p.trade?esc(p.trade)+' · ':'')+t('mtEvery').replace('{n}',p.interval_months)+(p.price_per_visit?' · '+money(p.price_per_visit)+'/'+t('mtVisit'):'');
+    return '<div class="mt-row"><div class="mt-ic">'+recurSvg+'</div>'+
+      '<div class="mt-main"><div class="mt-t">'+esc(p.title)+'</div><div class="mt-meta">'+meta+'</div></div>'+
+      (nv?'<div class="mt-nv"><div class="d">'+nv.d+'</div><div class="m">'+nv.m+'</div></div>':'<div class="mt-nv tbd">—</div>')+
+      '<div class="mt-act"><button class="mt-btn" onclick="confirmVisit(\''+p.id+'\')">'+t('mtConfirm')+'</button><button class="mt-x" onclick="deletePlan(\''+p.id+'\')" title="'+esc(t('mtDelete'))+'">'+docTrashSvg+'</button></div></div>';
+  }).join('');
+  return head+'<div class="mt-list">'+rows+'</div>';
+}
+function openPlan(){
+  el('pl-head').textContent=t('mNewTitle'); el('pl-sub').textContent=t('mNewSub');
+  el('pl-title-l').textContent=t('mTitleL'); el('pl-trade-l').textContent=t('mTradeL'); el('pl-interval-l').textContent=t('mIntervalL'); el('pl-price-l').textContent=t('mPriceL'); el('pl-first-l').textContent=t('mFirstL');
+  el('pl-cancel').textContent=t('cancel'); el('pl-save').textContent=t('mCreate');
+  var sel=el('pl-trade'); if(!sel.options.length){ TRADES.forEach(function(tr){ var o=document.createElement('option'); o.value=tr.v; o.textContent=(lang==='en'?tr.en:tr.es); sel.appendChild(o); }); }
+  el('pl-title').value=''; el('pl-interval').value='3'; el('pl-price').value='';
+  var d=new Date(); d.setMonth(d.getMonth()+1); el('pl-first').value=d.toISOString().slice(0,10);
+  el('pl-err').classList.remove('show');
+  el('plan-modal').classList.add('show');
+}
+function closePlan(){ el('plan-modal').classList.remove('show'); }
+function addMonths(dateStr, n){ var d=new Date(dateStr+'T00:00:00'); d.setMonth(d.getMonth()+n); return d.toISOString().slice(0,10); }
+async function savePlan(){
+  var title=(el('pl-title').value||'').trim(); var errEl=el('pl-err');
+  if(!title){ errEl.textContent=t('errPlanTitle'); errEl.classList.add('show'); return; }
+  var interval=parseInt(el('pl-interval').value,10); if(!interval||interval<1){ errEl.textContent=t('errInterval'); errEl.classList.add('show'); return; }
+  var price=parseFloat(el('pl-price').value); if(isNaN(price)) price=null;
+  var btn=el('pl-save'); btn.disabled=true; btn.textContent=t('saving');
+  try{
+    await dbInsert('maintenance_plans',{ property_id:prop.id, client_id:currentUser.id, title:title, trade:el('pl-trade').value||null, interval_months:interval, price_per_visit:price, status:'active', proposed_by:'client', next_visit_date:(el('pl-first').value||null) });
+    btn.disabled=false; btn.textContent=t('mCreate'); closePlan();
+    await refreshCal(); toast(t('planCreated'));
+  }catch(e){ errEl.textContent=t('errSave'); errEl.classList.add('show'); btn.disabled=false; btn.textContent=t('mCreate'); }
+}
+async function confirmVisit(planId){
+  var p=null; for(var i=0;i<plans.length;i++){ if(plans[i].id===planId){ p=plans[i]; break; } }
+  if(!p) return;
+  try{
+    if(p.next_visit_date){ await dbInsert('maintenance_visits',{ plan_id:p.id, proposed_date:p.next_visit_date, status:'confirmed', confirmed_by_client:true }); }
+    var next=p.next_visit_date?addMonths(p.next_visit_date, p.interval_months):null;
+    await dbPatch('maintenance_plans','id=eq.'+encodeURIComponent(p.id), {next_visit_date:next});
+    await refreshCal(); toast(t('visitConfirmed'));
+  }catch(e){ toast(t('errSave')); }
+}
+async function deletePlan(planId){
+  if(!window.confirm(t('confirmDelPlan'))) return;
+  try{ await dbDelete('maintenance_plans','id=eq.'+encodeURIComponent(planId)); await refreshCal(); toast(t('planDeleted')); }
+  catch(e){ toast(t('errSave')); }
 }
 
 function renderHistory(){
@@ -640,8 +952,121 @@ function renderHistory(){
   return html;
 }
 
+var DOC_CATS=['permit','warranty','receipt','photo','plan','other'];
+var docFileSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+var docImgSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>';
+var docUploadSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>';
+var docTrashSvg='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2"/></svg>';
+
+function catLabel(type){ var m={permit:'catPermit',warranty:'catWarranty',receipt:'catReceipt',photo:'catPhoto',plan:'catPlan',other:'catOther'}; return t(m[type]||'catOther'); }
+function docIsImage(d){ var u=(d.file_url||'').toLowerCase(); return d.type==='photo' || /\.(png|jpe?g|gif|webp|heic)(\?|$)/.test(u); }
+function fmtDocDate(ts){ try{ var d=new Date(ts); return d.toLocaleDateString(lang==='en'?'en-US':'es-ES',{year:'numeric',month:'short',day:'numeric'}); }catch(e){ return ''; } }
+
 function renderDocs(){
-  return '<div class="empty-tab"><div class="ei"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><h3>'+t('docsEmptyT')+'</h3><p>'+t('docsEmptyP')+'</p></div>';
+  var head='<div class="docs-head"><div><div class="docs-h">'+t('docsTitle')+'</div><div class="docs-p">'+t('docsSub')+'</div></div>'+
+    '<button class="btn-primary" onclick="openDoc()">'+docUploadSvg+t('docUpload')+'</button></div>';
+  if(!docs.length){
+    return renderCompliance()+head+'<div class="empty-tab"><div class="ei">'+docFileSvg+'</div><h3>'+t('docEmptyT')+'</h3><p>'+t('docEmptyP')+'</p></div>';
+  }
+  var rows=docs.map(function(d){
+    return '<div class="doc-row">'+
+      '<div class="doc-ic">'+(docIsImage(d)?docImgSvg:docFileSvg)+'</div>'+
+      '<div class="doc-main"><div class="doc-name">'+esc(d.label)+'</div>'+
+        '<div class="doc-meta"><span class="doc-chip">'+esc(catLabel(d.type))+'</span><span>'+esc(fmtDocDate(d.uploaded_at))+'</span></div></div>'+
+      '<div class="doc-act"><a class="doc-view" href="'+esc(d.file_url)+'" target="_blank" rel="noopener">'+t('docView')+'</a>'+
+        '<button class="doc-del" onclick="deleteDoc(\''+d.id+'\')" title="'+esc(t('docDelete'))+'">'+docTrashSvg+'</button></div></div>';
+  }).join('');
+  return renderCompliance()+head+'<div class="doc-list">'+rows+'</div>';
+}
+
+async function loadDocs(){
+  try{ var r=await CPR.db('property_documents?property_id=eq.'+encodeURIComponent(prop.id)+'&order=uploaded_at.desc&select=*'); docs=Array.isArray(r)?r:[]; }
+  catch(e){ docs=[]; }
+}
+async function refreshDocs(){ await loadDocs(); await loadCompliance(); var panel=el('tp-docs'); if(panel){ panel.innerHTML=renderDocs(); } refreshAtt(); }
+async function loadCompliance(){
+  if(!prop || prop.category!=='commercial'){ compliance=[]; return; }
+  try{ var r=await CPR.db('compliance_items?property_id=eq.'+encodeURIComponent(prop.id)+'&order=expires_on.asc&select=*'); compliance=Array.isArray(r)?r:[]; }
+  catch(e){ compliance=[]; }
+}
+function refreshAtt(){ var s=el('att-strip'); if(s) s.outerHTML=attentionStrip(); }
+function goDocs(){ var b=document.querySelector('.tab[data-p="docs"]'); if(b) switchTab(b); }
+function complianceStatus(c){
+  if(!c.expires_on) return 'ok';
+  var today=new Date(); today.setHours(0,0,0,0);
+  var exp=new Date(c.expires_on+'T00:00:00');
+  var days=Math.round((exp-today)/86400000);
+  if(days<0) return 'expired'; if(days<=30) return 'expiring'; return 'ok';
+}
+function renderCompliance(){
+  if(!prop || prop.category!=='commercial') return '';
+  var head='<div class="docs-head"><div><div class="docs-h">'+t('cmpTitle')+'</div><div class="docs-p">'+t('cmpSub')+'</div></div><button class="btn-primary" onclick="openComp()">'+docUploadSvg+t('cmpAdd')+'</button></div>';
+  var body;
+  if(!compliance.length){ body='<div class="recur-note" style="background:var(--line-2);border-color:var(--line);color:var(--muted)">'+t('cmpEmpty')+'</div>'; }
+  else { body='<div class="cmp-list">'+compliance.map(function(c){
+      var st=complianceStatus(c); var exp=c.expires_on?fmtDocDate(c.expires_on):'—';
+      return '<div class="cmp-row"><div class="cmp-dot '+st+'"></div><div class="cmp-main"><div class="cmp-t">'+esc(c.title)+'</div><div class="cmp-s">'+t('cmpExpires')+' '+esc(exp)+(c.interval_months?' · '+t('mtEvery').replace('{n}',c.interval_months):'')+'</div></div>'+
+        '<span class="cmp-pill '+st+'">'+t('cmpSt_'+st)+'</span>'+
+        '<div class="cmp-act">'+(c.interval_months?'<button class="mt-btn" onclick="renewComp(\''+c.id+'\')">'+t('cmpRenew')+'</button>':'')+'<button class="mt-x" onclick="deleteComp(\''+c.id+'\')" title="'+esc(t('cmpDelete'))+'">'+docTrashSvg+'</button></div></div>';
+    }).join('')+'</div>'; }
+  return '<div class="cmp-section">'+head+body+'</div><div class="cmp-sep"></div>';
+}
+async function loadPlans(){
+  try{ var r=await CPR.db('maintenance_plans?property_id=eq.'+encodeURIComponent(prop.id)+'&order=next_visit_date.asc&select=*'); plans=Array.isArray(r)?r:[]; }
+  catch(e){ plans=[]; }
+}
+async function refreshCal(){ await loadPlans(); var panel=el('tp-cal'); if(panel){ panel.innerHTML=renderCalendar(); } }
+
+function openDoc(){
+  el('d-title').textContent=t('dTitle'); el('d-sub').textContent=t('dSub');
+  el('d-cat-l').textContent=t('dCatL'); el('d-label-l').textContent=t('dLabelL');
+  el('d-label').placeholder=t('dLabelPh'); el('d-file-l').textContent=t('dFileL');
+  el('d-cancel').textContent=t('cancel'); el('d-save').textContent=t('dUpload');
+  var sel=el('d-cat'); sel.innerHTML=''; DOC_CATS.forEach(function(c){ var o=document.createElement('option'); o.value=c; o.textContent=catLabel(c); sel.appendChild(o); });
+  el('d-label').value=''; el('d-file').value=''; el('d-err').classList.remove('show');
+  el('doc-modal').classList.add('show');
+}
+function closeDoc(){ el('doc-modal').classList.remove('show'); }
+
+async function saveDoc(){
+  var fileEl=el('d-file'); var file=fileEl.files&&fileEl.files[0]; var errEl=el('d-err');
+  if(!file){ errEl.textContent=t('errDocFile'); errEl.classList.add('show'); return; }
+  if(file.size>15*1024*1024){ errEl.textContent=t('errDocSize'); errEl.classList.add('show'); return; }
+  var cat=el('d-cat').value||'other';
+  var label=(el('d-label').value||'').trim() || file.name;
+  var btn=el('d-save'); btn.disabled=true; btn.textContent=t('uploading');
+  try{
+    var ext=(file.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'');
+    var path=currentUser.id+'/'+prop.id+'/docs/'+Date.now()+'-'+Math.random().toString(36).slice(2,7)+'.'+ext;
+    var up=await window._sb.storage.from('property-media').upload(path, file, {upsert:false, cacheControl:'3600'});
+    if(up.error){ throw up.error; }
+    var pub=window._sb.storage.from('property-media').getPublicUrl(path).data.publicUrl;
+    await dbInsert('property_documents', { property_id: prop.id, type: cat, label: label, file_url: pub });
+    btn.disabled=false; btn.textContent=t('dUpload');
+    closeDoc();
+    await refreshDocs();
+    toast(t('docUploaded'));
+  }catch(e){
+    errEl.textContent=t('errSave'); errEl.classList.add('show');
+    btn.disabled=false; btn.textContent=t('dUpload');
+  }
+}
+
+async function dbDelete(table, query){
+  var url='/.netlify/functions/supabase-proxy?table='+encodeURIComponent(table)+'&query='+encodeURIComponent(query)+'&prefer='+encodeURIComponent('return=minimal');
+  var res=await fetch(url,{method:'DELETE'});
+  if(!res.ok){ throw new Error('delete '+res.status); }
+  return true;
+}
+async function deleteDoc(id){
+  if(!window.confirm(t('docDelConfirm'))){ return; }
+  var d=null; for(var i=0;i<docs.length;i++){ if(docs[i].id===id){ d=docs[i]; break; } }
+  try{
+    if(d && d.file_url){ var parts=d.file_url.split('/property-media/'); if(parts[1]){ try{ await window._sb.storage.from('property-media').remove([decodeURIComponent(parts[1])]); }catch(_e){} } }
+    await dbDelete('property_documents','id=eq.'+encodeURIComponent(id));
+    await refreshDocs();
+    toast(t('docDeleted'));
+  }catch(e){ toast(t('errSave')); }
 }
 
 function spendStrip(){
@@ -665,8 +1090,48 @@ function attentionStrip(){
     items+='<div class="pulse-row"><div class="pulse-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div>'+
       '<div class="pulse-t">'+pendingByJob[j.id]+' '+t('newProps')+' "'+esc(j.title||'')+'"<span>'+t('awaiting')+'</span></div><div class="pulse-go">'+t('review')+'</div></div>';
   });
+  compliance.forEach(function(c){
+    var st=complianceStatus(c);
+    if(st!=='expired' && st!=='expiring') return;
+    items+='<div class="pulse-row" onclick="goDocs()" style="cursor:pointer"><div class="pulse-ic" style="background:'+(st==='expired'?'#FEE2E2':'var(--warn-soft)')+';color:'+(st==='expired'?'#dc2626':'var(--warn)')+'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>'+
+      '<div class="pulse-t">'+esc(c.title)+'<span>'+(st==='expired'?t('cmpExpiredMsg'):t('cmpExpiringMsg').replace('{d}',esc(fmtDocDate(c.expires_on))))+'</span></div><div class="pulse-go">'+t('review')+'</div></div>';
+  });
   if(!items) items='<div class="pulse-empty">'+t('attEmpty')+'</div>';
-  return '<div class="strip"><div class="strip-h"><span class="dot-rose"></span>'+t('attN')+'</div>'+items+'</div>';
+  return '<div class="strip" id="att-strip"><div class="strip-h"><span class="dot-rose"></span>'+t('attN')+'</div>'+items+'</div>';
+}
+function openComp(){
+  el('cm-head').textContent=t('cmpNewTitle'); el('cm-sub').textContent=t('cmpNewSub');
+  el('cm-title-l').textContent=t('cmpTitleL'); el('cm-exp-l').textContent=t('cmpExpL'); el('cm-int-l').textContent=t('cmpIntL');
+  el('cm-cancel').textContent=t('cancel'); el('cm-save').textContent=t('cmpCreate');
+  el('cm-title').value=''; el('cm-exp').value=''; el('cm-int').value=''; el('cm-err').classList.remove('show');
+  el('compliance-modal').classList.add('show');
+}
+function closeComp(){ el('compliance-modal').classList.remove('show'); }
+async function saveComp(){
+  var title=(el('cm-title').value||'').trim(); var errEl=el('cm-err');
+  if(!title){ errEl.textContent=t('cmpErrTitle'); errEl.classList.add('show'); return; }
+  var exp=el('cm-exp').value||null;
+  var intv=parseInt(el('cm-int').value,10); if(!intv||intv<1) intv=null;
+  var btn=el('cm-save'); btn.disabled=true; btn.textContent=t('saving');
+  try{
+    await dbInsert('compliance_items',{ property_id:prop.id, title:title, expires_on:exp, interval_months:intv });
+    btn.disabled=false; btn.textContent=t('cmpCreate'); closeComp();
+    await refreshDocs(); toast(t('cmpCreated'));
+  }catch(e){ errEl.textContent=t('errSave'); errEl.classList.add('show'); btn.disabled=false; btn.textContent=t('cmpCreate'); }
+}
+async function renewComp(id){
+  var c=null; for(var i=0;i<compliance.length;i++){ if(compliance[i].id===id){ c=compliance[i]; break; } }
+  if(!c) return;
+  var base=c.expires_on?new Date(c.expires_on+'T00:00:00'):new Date();
+  if(c.interval_months){ base.setMonth(base.getMonth()+c.interval_months); }
+  var next=base.toISOString().slice(0,10);
+  try{ await dbPatch('compliance_items','id=eq.'+encodeURIComponent(id), {expires_on:next}); await refreshDocs(); toast(t('cmpRenewed')); }
+  catch(e){ toast(t('errSave')); }
+}
+async function deleteComp(id){
+  if(!window.confirm(t('cmpDelConfirm'))) return;
+  try{ await dbDelete('compliance_items','id=eq.'+encodeURIComponent(id)); await refreshDocs(); toast(t('cmpDeleted')); }
+  catch(e){ toast(t('errSave')); }
 }
 
 function render(){
@@ -678,19 +1143,22 @@ function render(){
 
   var html=''+
   '<button class="back-btn" onclick="location.href=\'properties.html\'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>'+t('back')+'</button>'+
+  (prop.archived?'<div class="arch-banner"><span>'+t('archBannerMsg')+'</span><button onclick="restoreProp()">'+t('restore')+'</button></div>':'')+
+  (outTransfer?'<div class="xfer-banner"><span>'+t('trPending').replace('{email}', esc(outTransfer.to_client_email))+'</span><button onclick="cancelTransfer()">'+t('trCancel')+'</button></div>':'')+
   '<div class="detail-hero"><div class="hero-cover">'+cover+
     '<button class="change-cover" onclick="pickCover()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>'+t('changeCover')+'</button>'+
-    '<div class="map-inset"><div class="pm"><svg viewBox="0 0 24 24" fill="#1A56DB" stroke="#fff" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg></div></div></div>'+
+    '</div>'+
     '<div class="hero-info"><div class="hero-eyebrow">'+pinSvg+' '+typeLabel+(prop.municipality?' · '+esc(prop.municipality)+', PR':'')+'</div>'+
     '<h1>'+esc(name)+'</h1>'+
     '<div class="hero-addr">'+pinSvg+'<span>'+esc(prop.address||'')+'</span></div>'+
     '<div class="hero-meta"><div><div class="v serif">'+totalJobs+'</div><div class="k">'+t('totalJobs')+'</div></div>'+
       '<div><div class="v serif">'+projects.length+'</div><div class="k">'+t('projects')+'</div></div>'+
       '<div><div class="v serif money">'+money(invested)+'</div><div class="k">'+t('invested')+'</div></div></div>'+
-    '<div class="hero-cta"><button class="btn-primary" onclick="openCreateJob()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'+t('createJob')+'</button>'+
+    '<div class="hero-cta"><button class="btn-primary" onclick="openCreate()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'+t('createCta')+'</button>'+
       '<button class="btn-line" onclick="openEdit()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>'+t('edit')+'</button>'+
-      '<button class="btn-line" onclick="openCreateProject()">'+t('newProject')+'</button>'+
-      '<button class="btn-line" onclick="soon()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>'+t('transfer')+'</button></div></div></div>'+
+      '<button class="btn-line" onclick="openTransfer()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>'+t('transfer')+'</button></div>'+
+    '<div class="detail-map" id="map-inset"><div class="pm"><svg viewBox="0 0 24 24" fill="#1A56DB" stroke="#fff" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg></div></div>'+
+    '</div></div>'+
   '<div class="detail-strips">'+attentionStrip()+spendStrip()+'</div>'+
   '<div class="tabs">'+
     '<button class="tab on" data-p="work" onclick="switchTab(this)">'+t('tabWork')+'</button>'+
@@ -703,6 +1171,7 @@ function render(){
   '<div class="tab-panel" id="tp-hist">'+renderHistory()+'</div>';
   el('detail').innerHTML=html;
   el('detail').style.display='block';
+  initHeroMap();
 }
 
 function switchTab(btn){
@@ -712,6 +1181,76 @@ function switchTab(btn){
   btn.classList.add('on');
 }
 function soon(){ toast(t('soon')); }
+
+// ── Transfer property (sender side) ──
+async function loadTransfer(){
+  try{ var r=await CPR.db('property_transfers?property_id=eq.'+encodeURIComponent(prop.id)+'&status=eq.pending&select=*'); outTransfer=(Array.isArray(r)&&r[0])?r[0]:null; }
+  catch(e){ outTransfer=null; }
+}
+function openTransfer(){
+  el('tr-head').textContent=t('trTitle'); el('tr-sub').textContent=t('trSub');
+  el('tr-email-l').textContent=t('trEmailL'); el('tr-note').textContent=t('trNote');
+  el('tr-cancel').textContent=t('cancel'); el('tr-save').textContent=t('trSend');
+  el('tr-email').value=''; el('tr-err').classList.remove('show');
+  el('transfer-modal').classList.add('show');
+}
+function closeTransfer(){ el('transfer-modal').classList.remove('show'); }
+
+// ── Create chooser ──
+function openCreate(){
+  el('cr-head').textContent=t('crHead'); el('cr-sub').textContent=t('crSub');
+  el('co-job').textContent=t('coJob'); el('co-job-s').textContent=t('coJobS');
+  el('co-proj').textContent=t('coProj'); el('co-proj-s').textContent=t('coProjS');
+  el('co-plan').textContent=t('coPlan'); el('co-plan-s').textContent=t('coPlanS');
+  el('create-modal').classList.add('show');
+}
+function closeCreate(){ el('create-modal').classList.remove('show'); }
+function chooseCreate(w){ closeCreate(); if(w==='job') openCreateJob(); else if(w==='project') openCreateProject(); else if(w==='plan') openPlan(); }
+async function saveTransfer(){
+  var email=(el('tr-email').value||'').trim().toLowerCase(); var errEl=el('tr-err');
+  if(!email || email.indexOf('@')<1){ errEl.textContent=t('trErrEmail'); errEl.classList.add('show'); return; }
+  if(email===(currentUser.email||'').toLowerCase()){ errEl.textContent=t('trErrSelf'); errEl.classList.add('show'); return; }
+  var btn=el('tr-save'); btn.disabled=true; btn.textContent=t('saving');
+  try{
+    var ho=await CPR.db('homeowners?email=eq.'+encodeURIComponent(email)+'&select=id,name,first_name');
+    if(!Array.isArray(ho)||!ho.length){ errEl.textContent=t('trErrNotUser'); errEl.classList.add('show'); btn.disabled=false; btn.textContent=t('trSend'); return; }
+    var rows=await dbInsert('property_transfers',{ property_id:prop.id, from_client_id:currentUser.id, to_client_email:email, status:'pending' });
+    if(Array.isArray(rows)&&rows[0]) outTransfer=rows[0];
+    try{ fetch('/.netlify/functions/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'property_transfer', data:{ to:email, recipient_name:(ho[0].first_name||ho[0].name||''), sender_name:(currentUser.first_name||currentUser.name||''), property_name:(prop.nickname||prop.address||'') }})}); }catch(_e){}
+    btn.disabled=false; btn.textContent=t('trSend'); closeTransfer(); render(); toast(t('trSent'));
+  }catch(e){ errEl.textContent=t('errSave'); errEl.classList.add('show'); btn.disabled=false; btn.textContent=t('trSend'); }
+}
+async function cancelTransfer(){
+  if(!outTransfer) return;
+  if(!window.confirm(t('trCancelConfirm'))) return;
+  try{ await dbPatch('property_transfers','id=eq.'+encodeURIComponent(outTransfer.id), {status:'cancelled'}); outTransfer=null; render(); toast(t('trCancelled')); }
+  catch(e){ toast(t('errSave')); }
+}
+
+// ── Hero location map (Google Maps) ──
+async function initHeroMap(){
+  var box=el('map-inset'); if(!box || !prop) return;
+  try{
+    var maps=await CPR.loadMaps();
+    var loc=null;
+    if(prop.lat!=null && prop.lng!=null){ loc={lat:parseFloat(prop.lat), lng:parseFloat(prop.lng)}; }
+    else if(prop.address){
+      var g=await new maps.Geocoder().geocode({address: prop.address+', Puerto Rico'}).catch(function(){return null;});
+      if(g && g.results && g.results[0]){
+        loc=g.results[0].geometry.location.toJSON();
+        // persist so next load is instant and the column gets populated
+        try{ await dbPatch('properties','id=eq.'+encodeURIComponent(prop.id), {lat:loc.lat, lng:loc.lng}); prop.lat=loc.lat; prop.lng=loc.lng; }catch(_e){}
+      }
+    }
+    if(!loc) return; // leave the styled placeholder
+    box.innerHTML='';
+    var map=new maps.Map(box, {center:loc, zoom:15, disableDefaultUI:true, gestureHandling:'none', clickableIcons:false, keyboardShortcuts:false});
+    new maps.Marker({position:loc, map:map});
+    box.style.cursor='pointer';
+    box.title=(lang==='en'?'Open in Google Maps':'Abrir en Google Maps');
+    box.onclick=function(){ window.open('https://www.google.com/maps/search/?api=1&query='+loc.lat+','+loc.lng, '_blank', 'noopener'); };
+  }catch(e){ /* leave placeholder on any failure */ }
+}
 
 async function refreshJobs(){
   var id=prop.id;
@@ -747,6 +1286,10 @@ async function loadData(){
   prop=p;
   if(p.type==='complex'){ location.replace('complex.html?id='+id); return; }
   await refreshJobs();
+  await loadDocs();
+  await loadPlans();
+  await loadTransfer();
+  await loadCompliance();
   el('boot').style.display='none';
   render();
 }

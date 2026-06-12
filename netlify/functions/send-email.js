@@ -27,7 +27,7 @@ exports.handler = async (event) => {
               <p style="margin:0;font-weight:600;color:#111">${data.job_title}</p>
               <p style="margin:8px 0 0;color:#2563eb;font-size:20px;font-weight:700">$${data.amount}</p>
             </div>
-            <a href="https://contractingpr.com/dashboard-homeowner.html" 
+            <a href="https://contractingpr.com/properties.html" 
                style="display:inline-block;background:#2563eb;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;margin-top:8px">
               Ver Propuesta
             </a>
@@ -80,7 +80,7 @@ exports.handler = async (event) => {
               <p style="margin:8px 0 0;color:#555;font-size:14px">Contratista: ${data.contractor_name}</p>
             </div>
             <p style="color:#555">El pago de <strong>$${data.amount}</strong> será liberado al contratista. Por favor deja una reseña sobre tu experiencia.</p>
-            <a href="https://contractingpr.com/dashboard-homeowner.html" 
+            <a href="https://contractingpr.com/properties.html" 
                style="display:inline-block;background:#7c3aed;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;margin-top:8px">
               Dejar Reseña
             </a>
@@ -132,6 +132,32 @@ exports.handler = async (event) => {
             <a href="https://contractingpr.com/dashboard-contractor.html"
                style="display:inline-block;background:#f59e0b;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;margin-top:8px">
               Ver mi perfil
+            </a>
+          </div>
+          <div style="background:#f9fafb;padding:16px;text-align:center;color:#9ca3af;font-size:12px">
+            ContractingPR · Puerto Rico · <a href="https://contractingpr.com" style="color:#9ca3af">contractingpr.com</a>
+          </div>
+        </div>
+      `
+    },
+    property_transfer: {
+      to: data.to,
+      subject: `${data.sender_name || 'Alguien'} quiere transferirte una propiedad en ContractingPR`,
+      html: `
+        <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
+          <div style="background:#1a1a2e;padding:24px;text-align:center">
+            <h1 style="color:#fff;margin:0;font-size:22px">ContractingPR</h1>
+          </div>
+          <div style="padding:32px">
+            <h2 style="color:#111;margin-top:0">Transferencia de propiedad</h2>
+            <p style="color:#555"><strong>${data.sender_name || 'Un usuario'}</strong> quiere transferirte la titularidad de:</p>
+            <div style="background:#eff6ff;border-left:4px solid #2563eb;padding:16px;border-radius:4px;margin:20px 0">
+              <p style="margin:0;font-weight:600;color:#111">${data.property_name || 'una propiedad'}</p>
+            </div>
+            <p style="color:#555">Inicia sesión y acéptala desde tu biblioteca. Recibirás la propiedad y todo su historial.</p>
+            <a href="https://contractingpr.com/properties.html"
+               style="display:inline-block;background:#2563eb;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:600;margin-top:8px">
+              Ver mi biblioteca
             </a>
           </div>
           <div style="background:#f9fafb;padding:16px;text-align:center;color:#9ca3af;font-size:12px">

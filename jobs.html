@@ -96,7 +96,7 @@ footer a{color:var(--blue);font-weight:500}
       <h3 data-i18n="ctaTitle">¿Eres propietario? Publica tu trabajo gratis</h3>
       <p data-i18n="ctaSub">Recibe propuestas de contratistas verificados en horas</p>
     </div>
-    <button onclick="CPR.requireAuth(function(user){ if(user.type==='homeowner'){window.location.href='dashboard-homeowner.html';}else{alert(CPR.lang==='en'?'Post a job from your client dashboard.':'Publica un trabajo desde tu panel de cliente.');} }, CPR.lang==='en'?'Post a job':'Publicar un trabajo', 'client')" class="cta-bar-btn" data-i18n="ctaBtn">Publicar ahora →</button>
+    <button onclick="CPR.requireAuth(function(user){ if(user.type==='homeowner'){window.location.href='properties.html';}else{alert(CPR.lang==='en'?'Post a job from your client dashboard.':'Publica un trabajo desde tu panel de cliente.');} }, CPR.lang==='en'?'Post a job':'Publicar un trabajo', 'client')" class="cta-bar-btn" data-i18n="ctaBtn">Publicar ahora →</button>
   </div>
 
   <!-- Filters -->
@@ -224,7 +224,7 @@ function renderJobs(jobs) {
         <div class="empty-icon">🔍</div>
         <h3 data-i18n="emptyTitle">No hay trabajos disponibles</h3>
         <p data-i18n="emptySub">Sé el primero en publicar un trabajo en ContractingPR.</p>
-        <button onclick="CPR.requireAuth(function(user){ window.location.href='dashboard-homeowner.html'; }, CPR.lang==='en'?'Post a job':'Publicar un trabajo', 'client')" class="btn-post" data-i18n="emptyBtn" style="cursor:pointer;border:none">Publicar trabajo →</button>
+        <button onclick="CPR.requireAuth(function(user){ window.location.href='properties.html'; }, CPR.lang==='en'?'Post a job':'Publicar un trabajo', 'client')" class="btn-post" data-i18n="emptyBtn" style="cursor:pointer;border:none">Publicar trabajo →</button>
       </div>`;
     return;
   }
@@ -267,7 +267,7 @@ async function loadJobs() {
 applyLang();
 function goBack() {
   const t = localStorage.getItem('cpr_user_type');
-  window.location.href = t === 'contractor' ? 'dashboard-contractor.html' : 'dashboard-homeowner.html';
+  window.location.href = t === 'contractor' ? 'dashboard-contractor.html' : 'properties.html';
 }
 loadJobs();
 if(window.CPR) CPR.injectNav("jobs");

@@ -378,7 +378,7 @@ async function login() {
   if (selectedUserType === 'client') {
     sessionStorage.setItem('pending_login_email', email);
     sessionStorage.setItem('pending_login_password', password);
-    window.location.href = 'dashboard-homeowner.html';
+    window.location.href = 'properties.html';
     return;
   }
   if (!email || !password) { errorEl.textContent = lang === 'en' ? 'Enter your email and password.' : 'Ingresa tu correo y contraseña.'; errorEl.classList.add('show'); return; }
@@ -645,7 +645,7 @@ async function checkSession() {
       // Not a contractor - check if homeowner and redirect
       let hRes = await db(`homeowners?email=eq.${encodeURIComponent(email)}&select=id`);
       if (hRes?.[0]) {
-        window.location.href = 'dashboard-homeowner.html';
+        window.location.href = 'properties.html';
         return;
       }
     }

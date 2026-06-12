@@ -17,6 +17,7 @@ CPR.translations = {
   nav_login:          { es: 'Iniciar sesión',      en: 'Log in' },
   nav_dashboard:      { es: 'Panel',              en: 'Dashboard' },
   nav_logout:         { es: 'Cerrar sesión',       en: 'Log out' },
+  nav_account:        { es: 'Mi cuenta',           en: 'My account' },
   nav_back_home:      { es: '← Volver al inicio',  en: '← Back to home' },
   nav_post_job:       { es: 'Publicar trabajo',    en: 'Post a job' },
 
@@ -325,6 +326,83 @@ var SUPABASE_PK = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIs
 CPR.SUPABASE_URL = SUPABASE_URL;
 CPR.SUPABASE_PK = SUPABASE_PK;
 
+// Google Maps loader — fetches the referrer-restricted key from the
+// maps-config function, then loads the JS SDK (+ places lib) once.
+// Returns a promise that resolves to window.google.maps.
+CPR._mapsPromise = null;
+CPR.loadMaps = function() {
+  if (window.google && window.google.maps) return Promise.resolve(window.google.maps);
+  if (CPR._mapsPromise) return CPR._mapsPromise;
+  CPR._mapsPromise = fetch('/.netlify/functions/maps-config')
+    .then(function(r) { return r.json(); })
+    .then(function(cfg) {
+      if (!cfg || !cfg.key) throw new Error('Maps key unavailable');
+      return new Promise(function(resolve, reject) {
+        window.__cprMapsReady = function() { resolve(window.google.maps); };
+        var s = document.createElement('script');
+        s.src = 'https://maps.googleapis.com/maps/api/js?key=' + encodeURIComponent(cfg.key) + '&libraries=places&loading=async&callback=__cprMapsReady';
+        s.async = true;
+        s.onerror = function() { reject(new Error('Maps SDK failed to load')); };
+        document.head.appendChild(s);
+      });
+    });
+  return CPR._mapsPromise;
+};
+
+// Reusable "Uber-style" location picker: a map with a fixed center pin.
+// You drag the map; the pin (a CSS overlay supplied by the caller) marks the
+// map's center. Includes a roadmap/satellite (hybrid) toggle and optional
+// Places search box. Reverse-geocodes after each drag.
+// opts: { center:{lat,lng}|null, search:<input>|null, onChange:fn(latlng, addressComponents|null) }
+// returns { map, getLatLng(), setCenter({lat,lng}, zoom), resize() }
+CPR.mapPicker = async function(mapEl, opts) {
+  opts = opts || {};
+  var maps = await CPR.loadMaps();
+  var hasCenter = !!opts.center;
+  var map = new maps.Map(mapEl, {
+    center: opts.center || { lat: 18.2208, lng: -66.4 },
+    zoom: hasCenter ? 17 : 9,
+    mapTypeControl: true,
+    mapTypeControlOptions: { mapTypeIds: ['roadmap', 'hybrid'] },
+    streetViewControl: false,
+    fullscreenControl: false,
+    clickableIcons: false,
+    gestureHandling: 'greedy'
+  });
+  var geocoder = new maps.Geocoder();
+  var current = opts.center || null;
+  var dragging = false;
+  function reverse() {
+    var c = map.getCenter();
+    current = { lat: c.lat(), lng: c.lng() };
+    if (opts.onChange) {
+      geocoder.geocode({ location: current }, function(res, st) {
+        opts.onChange(current, (st === 'OK' && res && res[0]) ? res[0].address_components : null);
+      });
+    }
+  }
+  map.addListener('dragstart', function() { dragging = true; });
+  map.addListener('idle', function() { if (dragging) { dragging = false; reverse(); } });
+  if (opts.search) {
+    var auto = new maps.places.Autocomplete(opts.search, { fields: ['geometry', 'address_components'], componentRestrictions: { country: 'pr' } });
+    auto.addListener('place_changed', function() {
+      var place = auto.getPlace();
+      if (place && place.geometry && place.geometry.location) {
+        var ll = place.geometry.location;
+        map.setCenter(ll); map.setZoom(18);
+        current = { lat: ll.lat(), lng: ll.lng() };
+        if (opts.onChange) opts.onChange(current, place.address_components || null);
+      }
+    });
+  }
+  return {
+    map: map,
+    getLatLng: function() { return current; },
+    setCenter: function(ll, z) { map.setCenter(ll); if (z) map.setZoom(z); current = ll; },
+    resize: function() { maps.event.trigger(map, 'resize'); if (current) map.setCenter(current); }
+  };
+};
+
 // Get current Supabase session
 CPR.getSession = async function() {
   try {
@@ -418,21 +496,32 @@ CPR.buildNav = async function(activePage, knownUser) {
   const storedType = localStorage.getItem('cpr_user_type');
   const isLoggedIn = !!(user || storedType);
   const dashUrl = user
-    ? (user.type === 'homeowner' ? 'dashboard-homeowner.html' : 'dashboard-contractor.html')
+    ? (user.type === 'homeowner' ? 'properties.html' : 'dashboard-contractor.html')
     : storedType === 'contractor' ? 'dashboard-contractor.html'
-    : storedType === 'homeowner' ? 'dashboard-homeowner.html'
-    : 'dashboard-homeowner.html';
+    : storedType === 'homeowner' ? 'properties.html'
+    : 'properties.html';
 
   const langDropdown = '<select id="lang-dropdown" class="cpr-lang-select" onchange="CPR.setLang(this.value)"><option value="es">Español</option><option value="en">English</option></select>';
 
   // Use storedType as fallback so nav shows correct state even if DB query is slow/fails
   const authLink = isLoggedIn
     ? '<button onclick="CPR.logout()" class="cpr-nav-btn-ghost">' + CPR.t('nav_logout') + '</button>'
-    : '<a href="dashboard-homeowner.html" class="cpr-nav-btn">' + CPR.t('nav_login') + '</a>';
+    : '<a href="properties.html" class="cpr-nav-btn">' + CPR.t('nav_login') + '</a>';
+
+  const facelessAv = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5z"/></svg>';
+  let acctLink = '';
+  if (user) {
+    const avInner = user.avatar_url ? '<img src="' + user.avatar_url + '" alt="">' : facelessAv;
+    const acctName = user.first_name || user.name || CPR.t('nav_account');
+    acctLink = '<a href="profile.html" class="cpr-acct"><span class="cpr-av">' + avInner + '</span><span class="cpr-acct-name">' + acctName + '</span></a>';
+  } else if (isLoggedIn) {
+    acctLink = '<a href="profile.html" class="cpr-nav-link">' + CPR.t('nav_account') + '</a>';
+  }
 
   const navHtml = '<nav class="cpr-nav"><div class="cpr-nav-inner">' +
     logoHtml +
     '<div class="cpr-nav-right">' +
+      acctLink +
       authLink +
       langDropdown +
     '</div>' +
@@ -447,6 +536,12 @@ CPR.buildNav = async function(activePage, knownUser) {
     .cpr-logo-box{width:34px;height:34px;background:#0066CC;border-radius:8px;display:grid;place-items:center;color:white;font-weight:800;font-size:16px;flex-shrink:0}
     .cpr-nav-link{font-size:14px;font-weight:500;color:#475569;text-decoration:none;transition:color 0.2s}
     .cpr-nav-link:hover{color:#0066CC}
+    .cpr-acct{display:flex;align-items:center;gap:9px;text-decoration:none;color:#0B1F33;font-weight:600;font-size:14px}
+    .cpr-acct:hover .cpr-acct-name{color:#0066CC}
+    .cpr-av{width:32px;height:32px;border-radius:50%;overflow:hidden;background:#EFF1F5;display:grid;place-items:center;flex-shrink:0;color:#B6C0CC;border:1px solid #E2E8F0}
+    .cpr-av img{width:100%;height:100%;object-fit:cover}.cpr-av svg{width:20px;height:20px}
+    .cpr-acct-name{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    @media(max-width:640px){.cpr-acct-name{display:none}}
     .cpr-nav-btn{background:#0066CC;color:white;padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:background 0.2s}
     .cpr-nav-btn:hover{background:#004C99}
     .cpr-nav-btn-ghost{background:#0066CC;border:none;padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;color:white;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s}

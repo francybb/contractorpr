@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ContractingPR · Mi cuenta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1F33;--ink-2:#3A4A5C;--muted:#6B7A8D;
+  --blue:#1A56DB;--blue-deep:#103FA8;--blue-soft:#EBF1FE;
+  --canvas:#F6F7F9;--card:#FFFFFF;--line:#E6E9EF;--line-2:#EFF1F5;
+  --rose:#D6336C;--ok:#0E9F6E;
+  --radius:16px;--shadow:0 1px 2px rgba(11,31,51,.04),0 8px 24px -12px rgba(11,31,51,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--canvas);color:var(--ink);line-height:1.5}
+.wrap{max-width:620px;margin:0 auto;padding:40px 22px 80px}
+.serif{font-family:'Fraunces',serif}
+.back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:22px;background:none;border:none;cursor:pointer;font-family:inherit}
+.back-btn:hover{color:var(--blue)}.back-btn svg{width:16px;height:16px}
+.loading{display:flex;align-items:center;justify-content:center;gap:12px;padding:80px 0;color:var(--muted)}
+.spinner{width:22px;height:22px;border:3px solid var(--line);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px;box-shadow:var(--shadow)}
+.card h1{font-family:'Fraunces',serif;font-size:26px;font-weight:500;margin-bottom:4px}
+.card .sub{color:var(--muted);font-size:14px;margin-bottom:24px}
+.avatar-wrap{display:flex;align-items:center;gap:18px;margin-bottom:26px;padding-bottom:24px;border-bottom:1px solid var(--line-2)}
+.avatar{width:96px;height:96px;border-radius:50%;overflow:hidden;background:var(--line-2);display:grid;place-items:center;flex-shrink:0;border:1px solid var(--line)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar svg{width:54px;height:54px;color:#B6C0CC}
+.avatar-meta{flex:1;min-width:0}
+.avatar-name{font-family:'Fraunces',serif;font-size:20px;font-weight:500;line-height:1.15}
+.avatar-btn{margin-top:9px;background:var(--card);border:1px solid var(--line);color:var(--ink-2);padding:8px 15px;border-radius:9px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;transition:.15s}
+.avatar-btn:hover{background:var(--line-2)}
+.member{font-size:12.5px;color:var(--muted);margin-top:7px}
+.field{margin-bottom:18px}
+.row2{display:flex;gap:12px}.row2 .field{flex:1}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
+.field input,.field select{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:14px;color:var(--ink);background:var(--card);transition:.15s}
+.field textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:14px;color:var(--ink);background:var(--card);resize:vertical;min-height:78px;line-height:1.5}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue)}
+.field input:disabled{background:var(--line-2);color:var(--muted);cursor:not-allowed}
+.field .hint{font-size:12px;color:var(--muted);margin-top:6px}
+.btn-primary{background:var(--blue);color:#fff;border:none;padding:12px 22px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;transition:.15s}
+.btn-primary:hover{background:var(--blue-deep)}
+.btn-primary:disabled{opacity:.6;cursor:default}
+.msg{font-size:13.5px;margin-top:14px;display:none;font-weight:500}
+.msg.err{color:var(--rose);display:block}
+.msg.ok{color:var(--ok);display:block}
+</style>
+</head>
+<body>
+<div id="cpr-nav-placeholder"></div>
+<div class="wrap">
+  <div id="boot" class="loading"><div class="spinner"></div><span id="boot-msg">Cargando...</span></div>
+  <script>(function(){try{var l=localStorage.getItem("cpr_lang")||"es";document.getElementById("boot-msg").textContent=(l==="en"?"Loading...":"Cargando...");}catch(e){}})();</script>
+  <div id="page" style="display:none">
+    <button class="back-btn" onclick="location.href='properties.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg><span id="back-lbl">Volver a mis propiedades</span></button>
+    <div class="card">
+      <h1 id="p-title" class="serif">Mi cuenta</h1>
+      <p class="sub" id="p-sub">Tu perfil es tu carta de presentación en la plataforma.</p>
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatar"></div>
+        <div class="avatar-meta">
+          <div class="avatar-name" id="av-name"></div>
+          <button class="avatar-btn" id="av-btn" onclick="pickAvatar()">Subir foto</button>
+          <div class="member" id="av-member"></div>
+        </div>
+        <input type="file" id="av-input" accept="image/*" style="display:none" onchange="handleAvatar(event)">
+      </div>
+      <div class="row2">
+        <div class="field"><label id="l-first">Nombre</label><input type="text" id="f-first"></div>
+        <div class="field"><label id="l-last">Apellido</label><input type="text" id="f-last"></div>
+      </div>
+      <div class="field"><label id="l-email">Correo electrónico</label><input type="email" id="f-email" disabled><div class="hint" id="h-email"></div></div>
+      <div class="row2">
+        <div class="field"><label id="l-phone">Teléfono</label><input type="tel" id="f-phone" placeholder="(787) 000-0000"></div>
+        <div class="field"><label id="l-company">Empresa (opcional)</label><input type="text" id="f-company" placeholder=""></div>
+      </div>
+      <div class="field"><label id="l-city">Municipio</label><select id="f-city"></select></div>
+      <div class="field"><label id="l-bio">Sobre ti (opcional)</label><textarea id="f-bio" rows="3"></textarea></div>
+      <button class="btn-primary" id="f-save" onclick="saveProfile()">Guardar cambios</button>
+      <div class="msg" id="p-msg"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
+<script>
+var lang = (window.CPR && CPR.lang) || 'es';
+var currentUser = null;
+var FACELESS='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5z"/></svg>';
+var MUNIS=["Adjuntas","Aguada","Aguadilla","Aguas Buenas","Aibonito","Añasco","Arecibo","Arroyo","Barceloneta","Barranquitas","Bayamón","Cabo Rojo","Caguas","Camuy","Canóvanas","Carolina","Cataño","Cayey","Ceiba","Ciales","Cidra","Coamo","Comerío","Corozal","Culebra","Dorado","Fajardo","Florida","Guánica","Guayama","Guayanilla","Guaynabo","Gurabo","Hatillo","Hormigueros","Humacao","Isabela","Jayuya","Juana Díaz","Juncos","Lajas","Lares","Las Marías","Las Piedras","Loíza","Luquillo","Manatí","Maricao","Maunabo","Mayagüez","Moca","Morovis","Naguabo","Naranjito","Orocovis","Patillas","Peñuelas","Ponce","Quebradillas","Rincón","Río Grande","Sabana Grande","Salinas","San Germán","San Juan","San Lorenzo","San Sebastián","Santa Isabel","Toa Alta","Toa Baja","Trujillo Alto","Utuado","Vega Alta","Vega Baja","Vieques","Villalba","Yabucoa","Yauco"];
+var T={
+  title:{es:'Mi cuenta',en:'My account'},
+  sub:{es:'Tu perfil es tu carta de presentación en la plataforma.',en:'Your profile is how you introduce yourself on the platform.'},
+  firstL:{es:'Nombre',en:'First name'},lastL:{es:'Apellido',en:'Last name'},
+  emailL:{es:'Correo electrónico',en:'Email'},emailH:{es:'Tu correo es tu inicio de sesión y no se puede cambiar aquí.',en:'Your email is your login and can’t be changed here.'},
+  phoneL:{es:'Teléfono',en:'Phone'},companyL:{es:'Empresa (opcional)',en:'Company (optional)'},cityL:{es:'Municipio',en:'Municipality'},cityNone:{es:'— Selecciona —',en:'— Select —'},
+  bioL:{es:'Sobre ti (opcional)',en:'About you (optional)'},bioPh:{es:'Cuéntale a los contratistas un poco sobre ti.',en:'Tell contractors a little about yourself.'},
+  avUpload:{es:'Subir foto',en:'Upload photo'},avChange:{es:'Cambiar foto',en:'Change photo'},
+  memberSince:{es:'Miembro desde {d}',en:'Member since {d}'},
+  save:{es:'Guardar cambios',en:'Save changes'},saving:{es:'Guardando...',en:'Saving...'},uploading:{es:'Subiendo...',en:'Uploading...'},
+  back:{es:'Volver a mis propiedades',en:'Back to my properties'},
+  errFirst:{es:'Escribe tu nombre.',en:'Enter your first name.'},
+  saved:{es:'Cambios guardados',en:'Changes saved'},errSave:{es:'No se pudo guardar. Intenta de nuevo.',en:'Could not save. Try again.'},
+  avErrType:{es:'Elige un archivo de imagen.',en:'Choose an image file.'},avErrSize:{es:'La imagen debe ser menor de 5MB.',en:'Image must be under 5MB.'},avSaved:{es:'Foto actualizada',en:'Photo updated'}
+};
+function el(id){return document.getElementById(id);}
+function t(k){var e=T[k];return e?(e[lang]||e.es):k;}
+async function dbPatch(table,query,obj){
+  var url='/.netlify/functions/supabase-proxy?table='+encodeURIComponent(table)+'&query='+encodeURIComponent(query)+'&prefer='+encodeURIComponent('return=representation');
+  var res=await fetch(url,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)});
+  if(!res.ok) throw new Error('patch '+res.status); return res.json();
+}
+function fullName(){ return ((currentUser.first_name||'')+' '+(currentUser.last_name||'')).trim()||currentUser.name||(lang==='en'?'My account':'Mi cuenta'); }
+function renderAvatar(){
+  el('avatar').innerHTML = currentUser.avatar_url ? '<img src="'+currentUser.avatar_url+'" alt="">' : FACELESS;
+  el('av-btn').textContent = currentUser.avatar_url ? t('avChange') : t('avUpload');
+  el('av-name').textContent = fullName();
+}
+function render(){
+  el('p-title').textContent=t('title'); el('p-sub').textContent=t('sub');
+  el('l-first').textContent=t('firstL'); el('l-last').textContent=t('lastL');
+  el('l-email').textContent=t('emailL'); el('h-email').textContent=t('emailH');
+  el('l-phone').textContent=t('phoneL'); el('l-company').textContent=t('companyL'); el('l-city').textContent=t('cityL');
+  el('l-bio').textContent=t('bioL'); el('f-bio').placeholder=t('bioPh');
+  el('f-save').textContent=t('save'); el('back-lbl').textContent=t('back');
+  el('f-first').value=currentUser.first_name||'';
+  el('f-last').value=currentUser.last_name||'';
+  el('f-email').value=currentUser.email||'';
+  el('f-phone').value=currentUser.phone||'';
+  el('f-company').value=currentUser.company||'';
+  el('f-bio').value=currentUser.bio||'';
+  var sel=el('f-city'); sel.innerHTML='';
+  var o0=document.createElement('option'); o0.value=''; o0.textContent=t('cityNone'); sel.appendChild(o0);
+  MUNIS.forEach(function(m){ var o=document.createElement('option'); o.value=m; o.textContent=m; sel.appendChild(o); });
+  if(currentUser.city) sel.value=currentUser.city;
+  if(currentUser.created_at){ try{ var d=new Date(currentUser.created_at); el('av-member').textContent=t('memberSince').replace('{d}', d.toLocaleDateString(lang==='en'?'en-US':'es-ES',{month:'long',year:'numeric'})); }catch(e){ el('av-member').textContent=''; } }
+  renderAvatar();
+}
+function pickAvatar(){ el('av-input').click(); }
+async function handleAvatar(e){
+  var file=e.target.files&&e.target.files[0]; if(!file){ return; }
+  var msg=el('p-msg'); msg.className='msg';
+  if(!file.type || file.type.indexOf('image/')!==0){ msg.textContent=t('avErrType'); msg.className='msg err'; e.target.value=''; return; }
+  if(file.size>5*1024*1024){ msg.textContent=t('avErrSize'); msg.className='msg err'; e.target.value=''; return; }
+  var btn=el('av-btn'); btn.disabled=true; btn.textContent=t('uploading');
+  try{
+    var ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'');
+    var path='avatars/'+currentUser.id+'-'+Date.now()+'.'+ext;
+    var up=await window._sb.storage.from('property-media').upload(path, file, {upsert:true, cacheControl:'3600'});
+    if(up.error){ throw up.error; }
+    var pub=window._sb.storage.from('property-media').getPublicUrl(path).data.publicUrl;
+    await dbPatch('homeowners','id=eq.'+encodeURIComponent(currentUser.id), {avatar_url: pub});
+    currentUser.avatar_url=pub;
+    btn.disabled=false; renderAvatar();
+    msg.textContent=t('avSaved'); msg.className='msg ok';
+  }catch(err){ msg.textContent=t('errSave'); msg.className='msg err'; btn.disabled=false; renderAvatar(); }
+  finally{ e.target.value=''; }
+}
+async function saveProfile(){
+  var first=(el('f-first').value||'').trim(); var last=(el('f-last').value||'').trim();
+  var msg=el('p-msg'); msg.className='msg';
+  if(!first){ msg.textContent=t('errFirst'); msg.className='msg err'; return; }
+  var btn=el('f-save'); btn.disabled=true; btn.textContent=t('saving');
+  try{
+    var combined=(first+' '+last).trim();
+    var updated=await dbPatch('homeowners','id=eq.'+encodeURIComponent(currentUser.id), { first_name:first, last_name:last||null, name:combined, phone:(el('f-phone').value||'').trim()||null, company:(el('f-company').value||'').trim()||null, city:el('f-city').value||null, bio:(el('f-bio').value||'').trim()||null });
+    if(!Array.isArray(updated)||!updated[0]){ throw new Error('no rows updated'); }
+    currentUser=Object.assign(currentUser, updated[0]);
+    renderAvatar();
+    msg.textContent=t('saved'); msg.className='msg ok';
+    btn.disabled=false; btn.textContent=t('save');
+  }catch(e){ msg.textContent=t('errSave'); msg.className='msg err'; btn.disabled=false; btn.textContent=t('save'); }
+}
+(function init(){
+  if(!window.CPR){ return; }
+  if(!window._sb && window.supabase){ window._sb=supabase.createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK); }
+  CPR.injectNav('profile', null);
+  CPR.requireAuth(async function(user){
+    if(user.type==='contractor'){ location.replace('dashboard-contractor.html'); return; }
+    currentUser=user;
+    CPR.injectNav('profile', user);
+    el('boot').style.display='none';
+    el('page').style.display='block';
+    render();
+  }, (lang==='en'?'Log in to view your account':'Inicia sesión para ver tu cuenta'), 'homeowner');
+})();
+</script>
+</body>
+</html>

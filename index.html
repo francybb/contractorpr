@@ -529,12 +529,12 @@ window.addEventListener('scroll',()=>{
 (async function() {
   const storedType = localStorage.getItem('cpr_user_type');
   if (storedType === 'contractor') { window.location.replace('dashboard-contractor.html'); return; }
-  if (storedType === 'homeowner')  { window.location.replace('dashboard-homeowner.html');  return; }
+  if (storedType === 'homeowner')  { window.location.replace('properties.html');  return; }
   // fallback: check live session
   if (window.CPR) {
     const user = await CPR.getCurrentUser();
     if (user) {
-      window.location.replace(user.type === 'contractor' ? 'dashboard-contractor.html' : 'dashboard-homeowner.html');
+      window.location.replace(user.type === 'contractor' ? 'dashboard-contractor.html' : 'properties.html');
     }
   }
 })();

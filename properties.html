@@ -52,6 +52,37 @@ a{color:inherit;text-decoration:none}
 .att-action{font-size:12.5px;font-weight:600;color:var(--blue);background:var(--blue-soft);padding:7px 13px;border-radius:8px;white-space:nowrap}
 
 .toolbar{display:flex;align-items:center;gap:14px;margin:30px 0 22px;flex-wrap:wrap}
+.view-toggle{display:inline-flex;background:var(--line-2);border-radius:11px;padding:4px;gap:3px;margin:28px 0 2px}
+.vt{padding:8px 18px;border-radius:8px;border:none;background:transparent;color:var(--muted);font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit;transition:.15s}
+.vt.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(11,31,51,.1)}
+.cal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.cal-head h3{font-family:'Fraunces',serif;font-size:19px;font-weight:500}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-dow{font-size:11px;font-weight:600;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.05em;padding-bottom:6px}
+.cal-day{aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-2);position:relative;border:1px solid transparent}
+.cal-day.empty{visibility:hidden}.cal-day.has{border-color:var(--line)}
+.cal-day.ev{background:var(--warn-soft);border-color:var(--warn-soft);color:var(--warn);font-weight:700}
+.cal-day.today{background:var(--blue);color:#fff;font-weight:700}
+.agenda{margin-top:28px}
+.agenda-title{font-family:'Fraunces',serif;font-size:18px;font-weight:500;margin-bottom:6px}
+.agenda-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+.ag-divider{display:flex;align-items:center;gap:12px;margin:8px 0 14px;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--blue)}
+.ag-divider::before,.ag-divider::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--blue-soft),transparent)}
+.ag-divider.muted{color:var(--muted)}.ag-divider.muted::before,.ag-divider.muted::after{background:var(--line-2)}
+.ag-row{display:flex;align-items:center;gap:16px;padding:14px 6px;border-radius:11px;cursor:pointer}
+.ag-row:hover{background:var(--line-2)}
+.ag-date{width:52px;flex-shrink:0;text-align:center}
+.ag-date .d{font-family:'Fraunces',serif;font-size:23px;font-weight:500;line-height:1}
+.ag-date .m{font-size:10.5px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-top:3px}
+.ag-date.tbd .d{font-size:18px;color:var(--muted)}
+.ag-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.ag-dot.active{background:var(--warn)}.ag-dot.post{background:var(--post)}.ag-dot.sched{background:var(--blue)}
+.ag-main{flex:1;min-width:0}.ag-t{font-size:14.5px;font-weight:600}.ag-s{font-size:12.5px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}.ag-s .trade{color:var(--blue);font-weight:600}
+.ag-s .cal-prop{background:var(--line-2);color:var(--ink-2);padding:1px 8px;border-radius:10px;font-weight:600;font-size:11px}
+.ag-pill{font-size:10.5px;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em;display:inline-block}
+.ag-pill.active{background:var(--warn-soft);color:var(--warn)}.ag-pill.post{background:var(--post-soft);color:var(--post)}.ag-pill.sched{background:var(--blue-soft);color:var(--blue)}
+.ag-amt{font-family:'Fraunces',serif;font-size:14px;font-weight:500;margin-top:5px;color:var(--ink-2)}
 .search{flex:1;min-width:240px;display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);border-radius:11px;padding:11px 14px;transition:.15s}
 .search:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-soft)}
 .search svg{width:17px;height:17px;color:var(--muted);flex-shrink:0}
@@ -173,6 +204,9 @@ a{color:inherit;text-decoration:none}
   <div id="boot" class="loading"><div class="spinner"></div><span id="boot-msg">Cargando...</span></div>
   <script>(function(){try{var l=localStorage.getItem("cpr_lang")||"es";document.getElementById("boot-msg").textContent=(l==="en"?"Loading...":"Cargando...");}catch(e){}})();</script>
 
+  <div id="incoming"></div>
+  <div class="toast" id="toast"></div>
+
   <!-- WELCOME (first run) -->
   <div class="welcome" id="welcome">
     <div class="wc-mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><path d="M9 22V12h6v10"/></svg></div>
@@ -197,22 +231,45 @@ a{color:inherit;text-decoration:none}
       <div class="att-grid" id="att-grid"></div>
     </div>
 
-    <div class="toolbar">
+    <div class="view-toggle"><button class="vt on" data-v="grid" onclick="setView('grid')" id="vt-grid">Biblioteca</button><button class="vt" data-v="cal" onclick="setView('cal')" id="vt-cal">Calendario</button></div>
+    <div class="toolbar" id="toolbar">
       <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="search" placeholder="Buscar propiedad, dirección o municipio" oninput="renderGrid()"></div>
       <div class="chips" id="chips">
         <button class="chip on" data-f="all" onclick="setFilter(this)">Todas</button>
         <button class="chip" data-f="residential" onclick="setFilter(this)">Residencial</button>
         <button class="chip" data-f="commercial" onclick="setFilter(this)">Comercial</button>
         <button class="chip" data-f="complex" onclick="setFilter(this)">Complejos</button>
+        <button class="chip" data-f="archived" onclick="setFilter(this)">Archivadas</button>
       </div>
     </div>
 
     <div class="ledger" id="ledger"></div>
     <div class="grid" id="grid"></div>
+    <div id="cal-wrap" style="display:none"></div>
   </div>
 </div>
 
 <!-- ADD MODAL -->
+<style>
+.map-pick{position:relative}
+.modal-map{width:100%;height:240px;border-radius:12px;border:1px solid var(--line,#e5e7eb);background:var(--line-2,#eef2f7)}
+.map-pin{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%);z-index:5;pointer-events:none;filter:drop-shadow(0 3px 4px rgba(11,31,51,.4))}
+.map-pin svg{width:34px;height:34px}
+.map-hint{font-size:12px;color:var(--muted,#6b7280);margin:7px 0 15px}
+.pac-container{z-index:10000}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13.5px;font-weight:500;padding:12px 20px;border-radius:11px;box-shadow:var(--shadow-lg);opacity:0;transition:.25s;z-index:300;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.incoming-card{display:flex;align-items:center;gap:14px;background:var(--blue-soft);border:1px solid #C7D9F8;border-radius:14px;padding:16px 18px;margin-bottom:14px}
+.incoming-card .ic-ic{width:40px;height:40px;border-radius:10px;background:var(--card);color:var(--blue);display:grid;place-items:center;flex-shrink:0}
+.incoming-card .ic-ic svg{width:20px;height:20px}
+.ic-main{flex:1;min-width:0}.ic-t{font-size:14.5px;font-weight:600;color:var(--ink)}.ic-s{font-size:12.5px;color:var(--ink-2);margin-top:2px}
+.ic-act{display:flex;gap:8px;flex-shrink:0}
+.ic-accept{background:var(--blue);color:#fff;border:none;padding:9px 16px;border-radius:9px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit}
+.ic-decline{background:var(--card);color:var(--ink-2);border:1px solid var(--line);padding:9px 16px;border-radius:9px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit}
+.prop-card[draggable]{cursor:grab}
+.prop-card.dragging{opacity:.4}
+.prop-card.dragover{outline:2px dashed var(--blue);outline-offset:3px}
+</style>
 <div class="modal-bg" id="add-modal">
   <div class="modal">
     <button class="modal-x" onclick="closeAdd()"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
@@ -227,6 +284,9 @@ a{color:inherit;text-decoration:none}
         <div class="type-opt" data-cat="commercial" onclick="pickCat(this)"><b id="m-c2">Comercial</b></div>
       </div>
       <div class="modal-err" id="m-err"></div>
+      <div class="field"><label id="m-search-l">Buscar dirección</label><input type="text" id="m-search" placeholder="Busca tu dirección..." autocomplete="off"></div>
+      <div class="map-pick"><div id="m-map" class="modal-map"></div><div class="map-pin"><svg viewBox="0 0 24 24" fill="#1A56DB" stroke="#fff" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg></div></div>
+      <div class="map-hint" id="m-map-hint">Mueve el mapa para centrar el pin en la ubicación exacta.</div>
       <div class="field"><label id="m-nick-l">Apodo (opcional)</label><input type="text" id="m-nick" placeholder="ej. Casa de playa"><div class="hint" id="m-nick-h">Si lo dejas vacío usaremos la dirección.</div></div>
       <div class="field"><label id="m-muni-l">Municipio</label><select id="m-muni"></select></div>
       <div class="field"><label id="m-street-l">Calle</label><input type="text" id="m-street" placeholder="ej. Calle Begonia"></div>
@@ -245,7 +305,7 @@ a{color:inherit;text-decoration:none}
 <script>
 var lang = (window.CPR && CPR.lang) || 'es';
 var currentUser = null;
-var allProps = [], jobsByProp = {}, activeFilter = 'all';
+var allProps = [], jobsByProp = {}, activeFilter = 'all', allJobs = [], viewMode = 'grid', incoming = [];
 
 // page-specific strings
 var T = {
@@ -268,6 +328,17 @@ var T = {
   nickL:{es:'Apodo (opcional)',en:'Nickname (optional)'},nickH:{es:'Si lo dejas vacío usaremos la dirección.',en:'If left blank we use the address.'},
   streetL:{es:'Calle',en:'Street'},numL:{es:'Número / Apt',en:'Number / Apt'},zipL:{es:'Código postal',en:'Zip code'},urbL:{es:'Urbanización / sector (opcional)',en:'Subdivision / area (optional)'},
   addrL:{es:'Dirección',en:'Address'},muniL:{es:'Municipio',en:'Municipality'},cancel:{es:'Cancelar',en:'Cancel'},save:{es:'Guardar propiedad',en:'Save property'},
+  mSearchL:{es:'Buscar dirección o mueve el pin',en:'Search address or move the pin'},mSearchPh:{es:'Escribe tu dirección...',en:'Type your address...'},mMapHint:{es:'Mueve el mapa para centrar el pin en la ubicación exacta.',en:'Move the map to center the pin on the exact location.'},
+  vtGrid:{es:'Biblioteca',en:'Library'},vtCal:{es:'Calendario',en:'Calendar'},
+  agendaTitle:{es:'Actividad próxima',en:'Upcoming activity'},agendaSub:{es:'Trabajos programados y en curso de todas tus propiedades, lo más cercano primero.',en:'Scheduled and in-progress work across all your properties, soonest first.'},
+  scheduled:{es:'Programado',en:'Scheduled'},toSchedule:{es:'Por agendar',en:'To schedule'},agEmpty:{es:'Nada programado por ahora.',en:'Nothing scheduled for now.'},
+  stActive:{es:'En curso',en:'In progress'},stPost:{es:'Abierto',en:'Open'},
+  monthName:{es:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],en:['January','February','March','April','May','June','July','August','September','October','November','December']},
+  monAbbr:{es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']},
+  dow:{es:['D','L','M','M','J','V','S'],en:['S','M','T','W','T','F','S']},
+  inTitle:{es:'{name} quiere transferirte "{prop}"',en:'{name} wants to transfer "{prop}" to you'},inSub:{es:'Recibirás la propiedad y todo su historial.',en:'You’ll receive the property and all its history.'},
+  inAccept:{es:'Aceptar',en:'Accept'},inDecline:{es:'Rechazar',en:'Decline'},inAcceptConfirm:{es:'¿Aceptar esta transferencia? La propiedad pasará a tu cuenta.',en:'Accept this transfer? The property will move to your account.'},
+  inAccepted:{es:'Transferencia aceptada',en:'Transfer accepted'},inDeclined:{es:'Transferencia rechazada',en:'Transfer declined'},
   errAddr:{es:'Escribe al menos la calle de la propiedad.',en:'Enter at least the property street.'},errSave:{es:'No se pudo guardar. Intenta de nuevo.',en:'Could not save. Try again.'},
   saving:{es:'Guardando...',en:'Saving...'}
 };
@@ -284,8 +355,60 @@ async function dbInsert(table, obj){
   if(!res.ok){ throw new Error('insert ' + res.status); }
   return res.json();
 }
+async function dbPatch(table, query, obj){
+  var url = '/.netlify/functions/supabase-proxy?table=' + encodeURIComponent(table) + '&query=' + encodeURIComponent(query) + '&prefer=' + encodeURIComponent('return=minimal');
+  var res = await fetch(url, { method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(obj) });
+  if(!res.ok){ throw new Error('patch ' + res.status); } return true;
+}
+function toast(msg){ var x=el('toast'); if(!x) return; x.textContent=msg; x.classList.add('show'); setTimeout(function(){x.classList.remove('show');},1900); }
+
+// ── Incoming property transfers (recipient side) ──
+async function loadIncoming(){
+  incoming=[];
+  if(!currentUser || !currentUser.email) return;
+  var r=await CPR.db('property_transfers?to_client_email=eq.'+encodeURIComponent(currentUser.email)+'&status=eq.pending&select=*');
+  r=Array.isArray(r)?r:[];
+  if(!r.length) return;
+  var propIds=r.map(function(x){return x.property_id;});
+  var senderIds=r.map(function(x){return x.from_client_id;}).filter(Boolean);
+  var pmap={}, smap={};
+  var props=await CPR.db('properties?id=in.('+propIds.join(',')+')&select=id,nickname,address,type'); (Array.isArray(props)?props:[]).forEach(function(p){pmap[p.id]=p;});
+  if(senderIds.length){ var sn=await CPR.db('homeowners?id=in.('+senderIds.join(',')+')&select=id,name,first_name'); (Array.isArray(sn)?sn:[]).forEach(function(s){smap[s.id]=s;}); }
+  incoming=r.map(function(x){ var p=pmap[x.property_id]||{}, s=smap[x.from_client_id]||{}; return { id:x.id, property_id:x.property_id, propName:(p.nickname||p.address||'Propiedad'), senderName:(s.first_name||s.name||'') }; });
+}
+function renderIncoming(){
+  var box=el('incoming'); if(!box) return;
+  if(!incoming.length){ box.innerHTML=''; return; }
+  box.innerHTML=incoming.map(function(x){
+    return '<div class="incoming-card"><div class="ic-ic">'+pinSvg+'</div>'+
+      '<div class="ic-main"><div class="ic-t">'+t('inTitle').replace('{name}', esc(x.senderName||'—')).replace('{prop}', esc(x.propName))+'</div><div class="ic-s">'+t('inSub')+'</div></div>'+
+      '<div class="ic-act"><button class="ic-accept" onclick="acceptTransfer(\''+x.id+'\',\''+x.property_id+'\')">'+t('inAccept')+'</button><button class="ic-decline" onclick="declineTransfer(\''+x.id+'\')">'+t('inDecline')+'</button></div></div>';
+  }).join('');
+}
+async function acceptTransfer(transferId, propertyId){
+  if(!window.confirm(t('inAcceptConfirm'))) return;
+  try{
+    var units=await CPR.db('properties?parent_id=eq.'+encodeURIComponent(propertyId)+'&select=id');
+    var ids=[propertyId].concat((Array.isArray(units)?units:[]).map(function(u){return u.id;}));
+    var inq=ids.map(encodeURIComponent).join(',');
+    await dbPatch('properties','id=in.('+inq+')', {client_id:currentUser.id});
+    try{ await dbPatch('jobs','property_id=in.('+inq+')', {homeowner_id:currentUser.id}); }catch(_e){}
+    try{ await dbPatch('projects','property_id=in.('+inq+')', {client_id:currentUser.id}); }catch(_e){}
+    try{ await dbPatch('maintenance_plans','property_id=in.('+inq+')', {client_id:currentUser.id}); }catch(_e){}
+    await dbPatch('property_transfers','id=eq.'+encodeURIComponent(transferId), {status:'completed', completed_at:new Date().toISOString()});
+    toast(t('inAccepted'));
+    await loadLibrary();
+  }catch(e){ toast(t('errSave')); }
+}
+async function declineTransfer(transferId){
+  try{ await dbPatch('property_transfers','id=eq.'+encodeURIComponent(transferId), {status:'declined'}); await loadLibrary(); toast(t('inDeclined')); }
+  catch(e){ toast(t('errSave')); }
+}
 
 function money(n){ return '$' + Math.round(n).toLocaleString('en-US'); }
+function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function numBudget(b){ var v=parseFloat(String(b||'').replace(/[^0-9.]/g,'')); return isNaN(v)?0:v; }
+function fmtDay(dateStr){ var d=new Date(dateStr+'T00:00:00'); return {d:d.getDate(),m:t('monAbbr')[d.getMonth()]}; }
 function coverHtml(p, idx){
   if(p.cover_url){ return '<div class="cover-img" style="background-image:url(\'' + p.cover_url + '\')"></div>'; }
   return '<div class="cover-img cv-' + (idx % 5) + '"></div>';
@@ -316,6 +439,11 @@ function applyStaticLabels(){
   el('m-street-l').textContent = t('streetL'); el('m-num-l').textContent = t('numL');
   el('m-zip-l').textContent = t('zipL'); el('m-urb-l').textContent = t('urbL');
   el('m-muni-l').textContent = t('muniL');
+  if(el('m-search-l')) el('m-search-l').textContent = t('mSearchL');
+  if(el('m-search')) el('m-search').placeholder = t('mSearchPh');
+  if(el('vt-grid')) el('vt-grid').textContent = t('vtGrid');
+  if(el('vt-cal')) el('vt-cal').textContent = t('vtCal');
+  if(el('m-map-hint')) el('m-map-hint').textContent = t('mMapHint');
   el('m-cancel').textContent = t('cancel'); el('m-save').textContent = t('save');
   // chips
   var chipLabels = {all:{es:'Todas',en:'All'},residential:t('c1'),commercial:t('c2'),complex:{es:'Complejos',en:'Complexes'}};
@@ -325,6 +453,7 @@ function applyStaticLabels(){
     else if(f==='residential') c.textContent = t('c1');
     else if(f==='commercial') c.textContent = t('c2');
     else if(f==='complex') c.textContent = lang==='en'?'Complexes':'Complejos';
+    else if(f==='archived') c.textContent = lang==='en'?'Archived':'Archivadas';
   });
   // municipality dropdown
   var sel = el('m-muni');
@@ -362,8 +491,10 @@ function countsFor(propId){
 
 function renderGrid(){
   var q = (el('search').value || '').toLowerCase().trim();
-  var topLevel = allProps.filter(function(p){ return p.type !== 'unit'; });
+  var topLevel = allProps.filter(function(p){ return p.type !== 'unit'; }).sort(function(a,b){ var ao=(a.sort_order==null?1e9:a.sort_order), bo=(b.sort_order==null?1e9:b.sort_order); if(ao!==bo) return ao-bo; return (b.created_at||'')<(a.created_at||'')?-1:1; });
   var list = topLevel.filter(function(p){
+    if(activeFilter === 'archived'){ if(!p.archived) return false; }
+    else if(p.archived){ return false; }
     if(activeFilter === 'complex' && p.type !== 'complex') return false;
     if(activeFilter === 'residential' && p.category !== 'residential') return false;
     if(activeFilter === 'commercial' && p.category !== 'commercial') return false;
@@ -373,22 +504,24 @@ function renderGrid(){
     }
     return true;
   });
+  var canDrag = !q && activeFilter !== 'archived';
   var html = list.map(function(p, idx){
     var name = p.nickname || p.address || 'Propiedad';
     var muni = p.municipality ? '<div class="muni-chip">' + pinSvg + p.municipality + '</div>' : '';
+    var dragAttrs = canDrag ? ' draggable="true" data-id="'+p.id+'" ondragstart="dragStart(event,\''+p.id+'\')" ondragover="dragOver(event)" ondragleave="dragLeave(event)" ondrop="dropOn(event,\''+p.id+'\')" ondragend="dragEnd(event)"' : '';
     if(p.type === 'complex'){
       var units = allProps.filter(function(x){ return x.parent_id === p.id; });
       var activeCount = 0;
       var ids = [p.id].concat(units.map(function(u){return u.id;}));
       ids.forEach(function(id){ (jobsByProp[id]||[]).forEach(function(j){ if(statusBucket(j.status)==='active') activeCount++; }); });
-      return '<div class="prop-card is-complex" onclick="go(\'' + p.id + '\',\'complex\')">' +
+      return '<div class="prop-card is-complex"'+dragAttrs+' onclick="go(\'' + p.id + '\',\'complex\')">' +
         '<div class="cover">' + coverHtml(p, idx) + '<div class="sheen"></div>' + muni +
           '<div class="type-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18"/><rect x="14" y="9" width="7" height="12"/></svg>' + t('complexBadge') + '</div></div>' +
         '<div class="prop-body"><div class="prop-name serif">' + name + '</div><div class="prop-addr">' + (p.address||'') + '</div><div class="prop-divider"></div>' +
         '<div class="complex-line"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg><b>' + units.length + ' ' + t('units') + '</b> · ' + activeCount + ' ' + t('activeJobs') + '</div></div></div>';
     }
     var c = countsFor(p.id);
-    return '<div class="prop-card" onclick="go(\'' + p.id + '\',\'property\')">' +
+    return '<div class="prop-card"'+dragAttrs+' onclick="go(\'' + p.id + '\',\'property\')">' +
       '<div class="cover">' + coverHtml(p, idx) + '<div class="sheen"></div>' + muni + '</div>' +
       '<div class="prop-body"><div class="prop-name serif">' + name + '</div><div class="prop-addr">' + (p.address||'') + '</div><div class="prop-divider"></div>' +
       '<div class="status-row">' +
@@ -401,6 +534,79 @@ function renderGrid(){
   el('grid').innerHTML = html;
 }
 
+// ── Drag-and-drop reorder of property cards ──
+var dragId=null;
+function dragStart(e,id){ dragId=id; e.dataTransfer.effectAllowed='move'; try{ e.dataTransfer.setData('text/plain', id); }catch(_e){} if(e.currentTarget) e.currentTarget.classList.add('dragging'); }
+function dragEnd(e){ if(e.currentTarget) e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.prop-card.dragover').forEach(function(x){x.classList.remove('dragover');}); }
+function dragOver(e){ e.preventDefault(); e.dataTransfer.dropEffect='move'; if(e.currentTarget && !e.currentTarget.classList.contains('dragging')) e.currentTarget.classList.add('dragover'); }
+function dragLeave(e){ if(e.currentTarget) e.currentTarget.classList.remove('dragover'); }
+async function dropOn(e,targetId){
+  e.preventDefault(); e.stopPropagation();
+  document.querySelectorAll('.prop-card.dragover').forEach(function(x){x.classList.remove('dragover');});
+  if(!dragId || dragId===targetId){ dragId=null; return; }
+  var top=allProps.filter(function(p){return p.type!=='unit';}).sort(function(a,b){ var ao=(a.sort_order==null?1e9:a.sort_order), bo=(b.sort_order==null?1e9:b.sort_order); if(ao!==bo) return ao-bo; return (b.created_at||'')<(a.created_at||'')?-1:1; });
+  var fromIdx=-1, toIdx=-1;
+  for(var i=0;i<top.length;i++){ if(top[i].id===dragId)fromIdx=i; if(top[i].id===targetId)toIdx=i; }
+  if(fromIdx<0||toIdx<0){ dragId=null; return; }
+  var moved=top.splice(fromIdx,1)[0]; top.splice(toIdx,0,moved);
+  for(var k=0;k<top.length;k++){ top[k].sort_order=k; }
+  dragId=null;
+  renderGrid();
+  for(var j=0;j<top.length;j++){ (function(p){ dbPatch('properties','id=eq.'+encodeURIComponent(p.id), {sort_order:p.sort_order}).catch(function(){}); })(top[j]); }
+}
+
+// ── Library master calendar (across all properties) ──
+function setView(mode){
+  viewMode = mode;
+  var isCal = mode === 'cal';
+  document.querySelectorAll('.vt').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-v') === mode); });
+  if(el('toolbar')) el('toolbar').style.display = isCal ? 'none' : '';
+  el('grid').style.display = isCal ? 'none' : '';
+  el('cal-wrap').style.display = isCal ? 'block' : 'none';
+  if(isCal) el('cal-wrap').innerHTML = renderLibraryCalendar();
+}
+function propLabel(pid){ for(var i=0;i<allProps.length;i++){ if(allProps[i].id===pid){ var p=allProps[i]; return p.nickname||p.address||(lang==='en'?'Property':'Propiedad'); } } return ''; }
+function goProp(pid){ for(var i=0;i<allProps.length;i++){ if(allProps[i].id===pid){ location.href=(allProps[i].type==='complex'?'complex.html':'property.html')+'?id='+encodeURIComponent(pid); return; } } }
+function renderLibraryCalendar(){
+  var now=new Date(); var y=now.getFullYear(), mo=now.getMonth(), today=now.getDate();
+  var first=new Date(y,mo,1).getDay(); var days=new Date(y,mo+1,0).getDate();
+  var evDays={};
+  allJobs.forEach(function(j){ if(j.scheduled_date){ var d=new Date(j.scheduled_date+'T00:00:00'); if(d.getFullYear()===y&&d.getMonth()===mo) evDays[d.getDate()]=true; } });
+  var cells='';
+  t('dow').forEach(function(d){ cells+='<div class="cal-dow">'+d+'</div>'; });
+  for(var i=0;i<first;i++) cells+='<div class="cal-day empty"></div>';
+  for(var dn=1;dn<=days;dn++){ var cls='cal-day has'; if(evDays[dn])cls+=' ev'; if(dn===today)cls='cal-day today'; cells+='<div class="'+cls+'">'+dn+'</div>'; }
+  var scheduledCount=Object.keys(evDays).length;
+  var calHtml='<div class="cal"><div class="cal-head"><h3 class="serif">'+t('monthName')[mo]+' '+y+'</h3><span style="font-size:12.5px;color:var(--muted);font-weight:500">'+scheduledCount+' '+(lang==='en'?'scheduled':'programados')+'</span></div><div class="cal-grid">'+cells+'</div></div>';
+  var todayISO=now.toISOString().slice(0,10);
+  var upcoming=allJobs.filter(function(j){ var b=statusBucket(j.status); return b==='active'||(j.scheduled_date&&j.scheduled_date>=todayISO&&b!=='done'); }).sort(function(a,b){ return (a.scheduled_date||'9999')<(b.scheduled_date||'9999')?-1:1; });
+  var toSched=allJobs.filter(function(j){ return statusBucket(j.status)==='open' && !j.scheduled_date; });
+  var ag='<div class="agenda"><div class="agenda-title serif">'+t('agendaTitle')+'</div><div class="agenda-sub">'+t('agendaSub')+'</div>';
+  if(upcoming.length){
+    ag+='<div class="ag-divider">'+t('scheduled')+'</div>';
+    ag+=upcoming.map(function(j){
+      var dd=j.scheduled_date?fmtDay(j.scheduled_date):null; var b=statusBucket(j.status);
+      var dotc=b==='active'?'active':'sched'; var pillt=b==='active'?t('stActive'):t('scheduled');
+      var amt=numBudget(j.budget);
+      return '<div class="ag-row" onclick="goProp(\''+j.property_id+'\')">'+(dd?'<div class="ag-date"><div class="d">'+dd.d+'</div><div class="m">'+dd.m+'</div></div>':'<div class="ag-date tbd"><div class="d">—</div></div>')+
+        '<div class="ag-dot '+dotc+'"></div>'+
+        '<div class="ag-main"><div class="ag-t">'+esc(j.title||'')+'</div><div class="ag-s"><span class="cal-prop">'+esc(propLabel(j.property_id))+'</span>'+(j.trade_needed?'<span class="trade">'+esc(j.trade_needed)+'</span>':'')+'</div></div>'+
+        '<div class="ag-right"><span class="ag-pill '+dotc+'">'+pillt+'</span>'+(amt?'<div class="ag-amt">'+money(amt)+'</div>':'')+'</div></div>';
+    }).join('');
+  }
+  if(toSched.length){
+    ag+='<div class="ag-divider muted">'+t('toSchedule')+'</div>';
+    ag+=toSched.map(function(j){
+      var amt=numBudget(j.budget);
+      return '<div class="ag-row" onclick="goProp(\''+j.property_id+'\')"><div class="ag-date tbd"><div class="d">—</div></div><div class="ag-dot post"></div>'+
+        '<div class="ag-main"><div class="ag-t">'+esc(j.title||'')+'</div><div class="ag-s"><span class="cal-prop">'+esc(propLabel(j.property_id))+'</span></div></div>'+
+        '<div class="ag-right"><span class="ag-pill post">'+t('stPost')+'</span>'+(amt?'<div class="ag-amt">'+money(amt)+'</div>':'')+'</div></div>';
+    }).join('');
+  }
+  if(!upcoming.length && !toSched.length){ ag+='<p style="padding:10px 6px;color:var(--muted);font-size:13.5px">'+t('agEmpty')+'</p>'; }
+  ag+='</div>';
+  return calHtml+ag;
+}
 function setFilter(btn){
   activeFilter = btn.getAttribute('data-f');
   document.querySelectorAll('#chips .chip').forEach(function(c){ c.classList.remove('on'); });
@@ -426,8 +632,48 @@ function renderAttention(pendingProposals){
 var pendType = 'single', pendCat = 'residential';
 function pickType(elm){ pendType = elm.getAttribute('data-type'); document.querySelectorAll('.type-opt[data-type]').forEach(function(o){o.classList.remove('on');}); elm.classList.add('on'); }
 function pickCat(elm){ pendCat = elm.getAttribute('data-cat'); document.querySelectorAll('.type-opt[data-cat]').forEach(function(o){o.classList.remove('on');}); elm.classList.add('on'); }
-function openAdd(){ el('m-err').classList.remove('show'); el('add-modal').classList.add('show'); }
+async function openAdd(){
+  el('m-err').classList.remove('show');
+  el('add-modal').classList.add('show');
+  try{
+    await initAddMap();
+    if(el('m-search')) el('m-search').value = '';
+    picker.setCenter({lat:18.2208, lng:-66.4}, 9);
+    pLatLng = null;
+    setTimeout(function(){ picker.resize(); }, 80);
+  }catch(e){ /* map unavailable — address fields still work */ }
+}
 function closeAdd(){ el('add-modal').classList.remove('show'); }
+
+// ── Add-property location picker (Uber-style center pin via CPR.mapPicker) ──
+var picker=null, pLatLng=null;
+function _comp(components, type){ for(var i=0;i<components.length;i++){ if(components[i].types.indexOf(type)>=0) return components[i].long_name; } return ''; }
+function _norm(s){ s=(s||'').toLowerCase().trim(); return s.replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n'); }
+function setMuni(name){
+  var sel=el('m-muni'); if(!sel||!name) return false; var target=_norm(name);
+  for(var i=0;i<sel.options.length;i++){ if(_norm(sel.options[i].value)===target){ sel.selectedIndex=i; return true; } }
+  for(var j=0;j<sel.options.length;j++){ var ov=_norm(sel.options[j].value); if(ov && (ov.indexOf(target)>=0 || target.indexOf(ov)>=0)){ sel.selectedIndex=j; return true; } }
+  return false;
+}
+function fillFromComponents(components){
+  if(!components) return;
+  var route=_comp(components,'route'), number=_comp(components,'street_number'), zip=_comp(components,'postal_code');
+  var neighborhood=_comp(components,'neighborhood')||_comp(components,'sublocality_level_1')||_comp(components,'sublocality');
+  if(route) el('m-street').value=route;
+  if(number) el('m-num').value=number;
+  if(zip) el('m-zip').value=zip;
+  if(neighborhood) el('m-urb').value=neighborhood;
+  var cands=[_comp(components,'locality'),_comp(components,'administrative_area_level_1'),_comp(components,'administrative_area_level_2'),_comp(components,'sublocality')];
+  for(var k=0;k<cands.length;k++){ if(cands[k] && _norm(cands[k])!=='puerto rico' && setMuni(cands[k])) break; }
+}
+async function initAddMap(){
+  if(picker) return picker;
+  picker = await CPR.mapPicker(el('m-map'), {
+    search: el('m-search'),
+    onChange: function(ll, comps){ pLatLng=ll; if(comps) fillFromComponents(comps); }
+  });
+  return picker;
+}
 
 async function saveProperty(){
   var street = (el('m-street').value || '').trim();
@@ -456,10 +702,13 @@ async function saveProperty(){
       unit_number: num || null,
       zip_code: zip || null,
       urbanization: urb || null,
-      municipality: muni || null
+      municipality: muni || null,
+      lat: pLatLng ? pLatLng.lat : null,
+      lng: pLatLng ? pLatLng.lng : null
     });
     closeAdd();
     el('m-nick').value=''; el('m-street').value=''; el('m-num').value=''; el('m-zip').value=''; el('m-urb').value='';
+    pLatLng=null; if(el('m-search')) el('m-search').value='';
     btn.disabled = false; btn.textContent = t('save');
     await loadLibrary();
   }catch(e){
@@ -473,7 +722,8 @@ async function loadLibrary(){
   var props = await CPR.db('properties?client_id=eq.' + currentUser.id + '&order=created_at.desc&select=*');
   allProps = Array.isArray(props) ? props : [];
 
-  var jobs = await CPR.db('jobs?homeowner_id=eq.' + currentUser.id + '&select=id,property_id,status,budget');
+  var jobs = await CPR.db('jobs?homeowner_id=eq.' + currentUser.id + '&select=id,property_id,status,budget,scheduled_date,scheduled_time,title,trade_needed,created_at');
+  allJobs = Array.isArray(jobs) ? jobs : [];
   jobsByProp = {};
   (Array.isArray(jobs)?jobs:[]).forEach(function(j){
     if(!j.property_id) return;
@@ -492,6 +742,7 @@ async function loadLibrary(){
   }
 
   el('boot').style.display = 'none';
+  await loadIncoming(); renderIncoming();
   if(allProps.filter(function(p){return p.type!=='unit';}).length === 0){
     el('welcome').classList.add('show');
     el('library').style.display = 'none';

@@ -8,3 +8,5 @@ SUPABASE_URL*
 .netlify
 # Local context file for Claude (internal notes, keep out of public repo)
 CLAUDE.md
+# Local SQL migration records (applied directly to Supabase)
+[0-9][0-9][0-9]_*.sql
