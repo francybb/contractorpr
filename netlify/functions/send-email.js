@@ -90,7 +90,7 @@ exports.handler = async (event) => {
           </div>
         </div>
       `
-    }
+    },
     contractor_approved: {
       to: data.contractor_email,
       subject: '¡Tu cuenta en ContractingPR ha sido aprobada!',

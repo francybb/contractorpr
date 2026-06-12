@@ -4,3 +4,7 @@ SUPABASE_SECRET_KEY*
 SUPABASE_PUBLISHABLE_KEY*
 SUPABASE_URL*
 .env
+# Local Netlify folder
+.netlify
+# Local context file for Claude (internal notes, keep out of public repo)
+CLAUDE.md
