@@ -361,7 +361,7 @@ CPR.db = async function(path) {
     const qIdx = path.indexOf('?');
     let table = qIdx === -1 ? path : path.substring(0, qIdx);
     const query = qIdx === -1 ? '' : path.substring(qIdx + 1);
-    const proxyUrl = '/.netlify/functions/supabase-proxy?table=' + encodeURIComponent(table) + (query ? '&' + query : '');
+    const proxyUrl = '/.netlify/functions/supabase-proxy?table=' + encodeURIComponent(table) + (query ? '&query=' + encodeURIComponent(query) : '');
     const res = await fetch(proxyUrl);
     return res.json();
   } catch(e) {
