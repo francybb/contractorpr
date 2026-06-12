@@ -101,7 +101,8 @@ a{color:inherit;text-decoration:none}
 <body>
 <div id="cpr-nav-placeholder"></div>
 <div class="wrap">
-  <div id="boot" class="loading"><div class="spinner"></div><span>Cargando...</span></div>
+  <div id="boot" class="loading"><div class="spinner"></div><span id="boot-msg">Cargando...</span></div>
+  <script>(function(){try{var l=localStorage.getItem("cpr_lang")||"es";document.getElementById("boot-msg").textContent=(l==="en"?"Loading...":"Cargando...");}catch(e){}})();</script>
   <div id="notfound" class="notfound" style="display:none">
     <h2 class="serif" id="nf-title">Complejo no encontrado</h2>
     <p style="margin-bottom:14px" id="nf-sub">No pudimos encontrar este complejo en tu biblioteca.</p>
