@@ -110,8 +110,8 @@ footer a{color:var(--blue);font-weight:500}
   <!-- Success -->
   <div id="success-screen" class="success-screen">
     <div class="success-circle">✓</div>
-    <h2 data-es="¡Pago en custodia!" data-en="Payment in escrow!">¡Pago en custodia!</h2>
-    <p data-es="Tu pago está protegido en custodia. El contratista ha sido notificado y coordinará contigo para comenzar el trabajo. El pago se liberará cuando confirmes que el trabajo está completo." data-en="Your payment is safely held in escrow. The contractor has been notified and will coordinate with you to start the work. Payment will be released when you confirm the job is complete.">Tu pago está protegido en custodia. El contratista ha sido notificado y coordinará contigo para comenzar el trabajo. El pago se liberará cuando confirmes que el trabajo está completo.</p>
+    <h2 data-es="¡Pago protegido!" data-en="Payment protected!">¡Pago protegido!</h2>
+    <p data-es="Tu pago está protegido. El contratista ha sido notificado y coordinará contigo para comenzar el trabajo. El pago se liberará cuando confirmes que el trabajo está completo." data-en="Your payment is held safely. The contractor has been notified and will coordinate with you to start the work. Payment will be released when you confirm the job is complete.">Tu pago está protegido. El contratista ha sido notificado y coordinará contigo para comenzar el trabajo. El pago se liberará cuando confirmes que el trabajo está completo.</p>
     <a href="properties.html" class="btn-dashboard" data-es="Ir a mi panel →" data-en="Go to my dashboard →">Ir a mi panel →</a>
   </div>
 
@@ -121,7 +121,7 @@ footer a{color:var(--blue);font-weight:500}
     <!-- Left: Form -->
     <div>
       <div class="pay-card">
-        <div class="pay-title" data-es="Pago seguro en custodia" data-en="Secure escrow payment">Pago seguro en custodia</div>
+        <div class="pay-title" data-es="Pago protegido" data-en="Protected payment">Pago protegido</div>
         <div class="pay-sub" data-es="Tu dinero está protegido hasta que confirmes el trabajo" data-en="Your money is protected until you confirm the job">Tu dinero está protegido hasta que confirmes el trabajo</div>
 
         <div class="escrow-notice">
@@ -142,7 +142,7 @@ footer a{color:var(--blue);font-weight:500}
         </div>
 
         <button class="btn-pay" id="pay-btn" onclick="handlePayment()">
-          🔒 <span id="pay-btn-text">Pagar en custodia</span>
+          🔒 <span id="pay-btn-text">Pagar de forma segura</span>
         </button>
 
         <div class="secure-note">
@@ -280,7 +280,7 @@ async function loadPaymentInfo() {
     document.getElementById('price-job').textContent = '$' + jobPrice.toLocaleString();
     document.getElementById('price-fee').textContent = '— (del contratista)';
     document.getElementById('price-total').textContent = '$' + jobPrice.toLocaleString();
-    document.getElementById('pay-btn-text').textContent = `Pagar $${jobPrice.toLocaleString()} en custodia`;
+    document.getElementById('pay-btn-text').textContent = `Pagar $${jobPrice.toLocaleString()} de forma segura`;
     // Show contractor breakdown
     const feeRow = document.querySelector('.summary-row:nth-child(2) span:first-child');
     if (feeRow) feeRow.textContent = 'Tarifa plataforma (del contratista)';
@@ -322,11 +322,11 @@ async function handlePayment() {
     errorEl.textContent = error.message;
     errorEl.classList.add('show');
     btn.disabled = false;
-    btn.innerHTML = '🔒 <span id="pay-btn-text">Pagar $' + totalAmount.toLocaleString() + ' en custodia</span>';
+    btn.innerHTML = '🔒 <span id="pay-btn-text">Pagar $' + totalAmount.toLocaleString() + ' de forma segura</span>';
     return;
   }
 
-  // In test mode — simulate successful escrow payment
+  // In test mode — simulate successful protected payment
   // In production, this would call your backend to create a PaymentIntent
   // For now, record the payment in Supabase and update job status
   try {
@@ -340,7 +340,7 @@ async function handlePayment() {
     errorEl.textContent = lang === 'es' ? 'Error al procesar. Intenta de nuevo.' : 'Processing error. Please try again.';
     errorEl.classList.add('show');
     btn.disabled = false;
-    btn.innerHTML = '🔒 <span>Pagar $' + totalAmount.toLocaleString() + ' en custodia</span>';
+    btn.innerHTML = '🔒 <span>Pagar $' + totalAmount.toLocaleString() + ' de forma segura</span>';
   }
 }
 

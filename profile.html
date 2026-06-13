@@ -85,6 +85,7 @@ body{font-family:'Inter',system-ui,sans-serif;background:var(--canvas);color:var
       <button class="btn-primary" id="f-save" onclick="saveProfile()">Guardar cambios</button>
       <div class="msg" id="p-msg"></div>
     </div>
+    <div class="card" id="verify-card" style="margin-top:18px"></div>
   </div>
 </div>
 
@@ -142,6 +143,33 @@ function render(){
   if(currentUser.city) sel.value=currentUser.city;
   if(currentUser.created_at){ try{ var d=new Date(currentUser.created_at); el('av-member').textContent=t('memberSince').replace('{d}', d.toLocaleDateString(lang==='en'?'en-US':'es-ES',{month:'long',year:'numeric'})); }catch(e){ el('av-member').textContent=''; } }
   renderAvatar();
+  renderVerify();
+}
+function renderVerify(){
+  var box=el('verify-card'); if(!box) return;
+  var en=lang==='en';
+  var title=en?'Identity verification':'Verificación de identidad';
+  var shield='<svg viewBox="0 0 24 24" fill="none" stroke="#1A56DB" stroke-width="2" style="width:20px;height:20px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
+  if(currentUser.verified){
+    var when=''; if(currentUser.verified_at){ try{ when=new Date(currentUser.verified_at).toLocaleDateString(en?'en-US':'es-ES',{month:'long',day:'numeric',year:'numeric'}); }catch(e){} }
+    box.innerHTML='<div style="display:flex;align-items:center;gap:10px"><h2 class="serif" style="font-size:18px;margin:0">'+title+'</h2>'+CPR.verifiedBadge(true,18)+'</div>'+
+      '<p style="color:#0E9F6E;font-weight:600;font-size:14px;margin-top:10px">'+(en?'Your identity is verified.':'Tu identidad está verificada.')+(when?' · '+when:'')+'</p>';
+    return;
+  }
+  box.innerHTML='<div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">'+shield+'<h2 class="serif" style="font-size:18px;margin:0">'+title+'</h2></div>'+
+    '<p class="sub" style="margin-bottom:14px">'+(en?'Verify your identity to earn contractors’ trust — a badge appears next to your name across the platform.':'Verifica tu identidad para ganar la confianza de los contratistas — una insignia aparecerá junto a tu nombre en toda la plataforma.')+'</p>'+
+    '<button class="btn-primary" id="verify-btn" onclick="verifyIdentity()">'+(en?'Verify my identity':'Verificar mi identidad')+'</button>'+
+    '<div class="hint" style="margin-top:9px">'+(en?'Powered by identity verification (Veriff — coming soon).':'Con verificación de identidad (Veriff — próximamente).')+'</div>';
+}
+async function verifyIdentity(){
+  var en=lang==='en';
+  if(!confirm(en?'Demo: this will mark your identity as verified. The real Veriff flow lands later. Continue?':'Demo: esto marcará tu identidad como verificada. El flujo real de Veriff llegará más adelante. ¿Continuar?')) return;
+  var btn=el('verify-btn'); if(btn){ btn.disabled=true; btn.textContent=en?'Verifying…':'Verificando…'; }
+  try{
+    var nowIso=new Date().toISOString();
+    await dbPatch('homeowners','id=eq.'+encodeURIComponent(currentUser.id), {verified:true, verified_at:nowIso});
+    currentUser.verified=true; currentUser.verified_at=nowIso; renderVerify();
+  }catch(e){ if(btn){ btn.disabled=false; btn.textContent=en?'Verify my identity':'Verificar mi identidad'; } }
 }
 function pickAvatar(){ el('av-input').click(); }
 async function handleAvatar(e){
@@ -183,7 +211,7 @@ async function saveProfile(){
   if(!window._sb && window.supabase){ window._sb=supabase.createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK); }
   CPR.injectNav('profile', null);
   CPR.requireAuth(async function(user){
-    if(user.type==='contractor'){ location.replace('dashboard-contractor.html'); return; }
+    if(user.type==='contractor'){ location.replace('contractor-home.html'); return; }
     currentUser=user;
     CPR.injectNav('profile', user);
     el('boot').style.display='none';

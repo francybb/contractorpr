@@ -6,8 +6,30 @@ exports.handler = async function(event) {
   const body = JSON.parse(event.body);
   const targetLang = body.targetLang;
 
-  // Batch mode: array of {id, title, message}
-  // Single mode: {title, message, targetLang}
+  // Plain mode: { text, targetLang, plain:true } → { translated } — clean single-string translation (used by chat)
+  if (body.plain && typeof body.text === 'string') {
+    const langName = targetLang === 'en' ? 'English' : 'Spanish';
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+        body: JSON.stringify({
+          model: 'claude-haiku-4-5-20251001',
+          max_tokens: 600,
+          messages: [{ role: 'user', content: 'Translate the message below into ' + langName + '. If it is already in ' + langName + ', return it unchanged. Output ONLY the translation — no quotes, no notes, no preamble.\n\n' + body.text }]
+        })
+      });
+      const data = await response.json();
+      const out = ((data.content && data.content[0] && data.content[0].text) || '').trim();
+      return { statusCode: 200, headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' }, body: JSON.stringify({ translated: out }) };
+    } catch (e) {
+      return { statusCode: 500, body: JSON.stringify({ error: e.message }) };
+    }
+  }
+
+  // Batch mode: array of {id, title, message} → returns {results}
+  // Single mode: {title, message, targetLang} → returns {text}
+  const isBatch = Array.isArray(body.items);
   const items = body.items || [{ id: 'single', title: body.title, message: body.message }];
 
   const prompt = items.map((item, i) =>
@@ -59,7 +81,7 @@ ${prompt}`
     return {
       statusCode: 200,
       headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
-      body: JSON.stringify(items.length === 1 ? { text: text } : { results })
+      body: JSON.stringify(isBatch ? { results } : { text: text })
     };
   } catch(e) {
     return {

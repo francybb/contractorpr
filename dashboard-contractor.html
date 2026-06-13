@@ -689,7 +689,7 @@ window.addEventListener('langchange', function(e) {
 
 async function loadRating(contractorId) {
   try {
-    let reviews = await db(`reviews?contractor_id=eq.${contractorId}&select=rating`);
+    let reviews = await db(`reviews?contractor_id=eq.${contractorId}&direction=eq.client_to_contractor&select=rating`);
     let el = document.getElementById('contractor-rating');
     if (!el) return;
     if (!reviews || reviews.length === 0) { el.textContent = lang === 'en' ? 'No reviews yet' : 'Sin reseñas aún'; el.style.color = 'var(--gray-3)'; return; }

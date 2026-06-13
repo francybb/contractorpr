@@ -40,21 +40,47 @@ a{color:inherit;text-decoration:none}
 .att-head{display:flex;align-items:center;gap:10px;margin-bottom:14px}
 .att-head h2{font-family:'Fraunces',serif;font-size:20px;font-weight:500;letter-spacing:-.01em}
 .att-count{background:var(--rose);color:#fff;font-size:12px;font-weight:700;min-width:22px;height:22px;border-radius:20px;display:grid;place-items:center;padding:0 7px}
-.att-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
-.att-card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);transition:.16s;cursor:pointer}
+.att-grid{display:grid;grid-template-columns:1fr;gap:10px}
+.att-card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:16px 18px;display:flex;align-items:center;gap:14px;box-shadow:var(--shadow);transition:.16s;cursor:pointer}
 .att-card:hover{border-color:#d6dce6;transform:translateY(-2px);box-shadow:var(--shadow-lg)}
 .att-icon{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
 .att-icon svg{width:19px;height:19px}
 .ai-prop{background:var(--blue-soft);color:var(--blue)}.ai-msg{background:var(--violet-soft);color:var(--violet)}.ai-pay{background:var(--ok-soft);color:var(--ok)}.ai-warn{background:var(--warn-soft);color:var(--warn)}
 .att-body{flex:1;min-width:0}
-.att-t{font-size:13.5px;font-weight:600;line-height:1.25}
-.att-s{font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.att-action{font-size:12.5px;font-weight:600;color:var(--blue);background:var(--blue-soft);padding:7px 13px;border-radius:8px;white-space:nowrap}
+.att-t{font-size:15px;font-weight:600;line-height:1.25}
+.att-s{font-size:13px;color:var(--muted);margin-top:3px}
+.att-action{font-size:13px;font-weight:600;color:#fff;background:var(--blue);padding:9px 18px;border-radius:9px;white-space:nowrap;border:none;cursor:pointer;font-family:inherit;transition:.15s}
+.att-action:hover{background:var(--blue-deep)}
+/* active jobs at-a-glance */
+.aj-wrap{margin:26px 0 6px;display:none}.aj-wrap.show{display:block}
+.aj-head{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+.aj-head h2{font-family:'Fraunces',serif;font-size:20px;font-weight:500;letter-spacing:-.01em}
+.aj-head .aj-count{font-size:13px;color:var(--muted);font-weight:600}
+.aj-sub{font-size:12.5px;color:var(--muted);margin-bottom:14px}
+.aj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:11px}
+.aj-card{background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--shadow);cursor:pointer;transition:.15s;text-decoration:none;color:inherit}
+.aj-card:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.aj-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}.aj-dot.acc{background:var(--warn)}.aj-dot.prog{background:var(--blue)}
+.aj-info{flex:1;min-width:0}.aj-t{font-size:14px;font-weight:600;line-height:1.2}.aj-s{font-size:12px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.aj-go{font-size:12.5px;font-weight:600;color:var(--blue);white-space:nowrap}
 
 .toolbar{display:flex;align-items:center;gap:14px;margin:30px 0 22px;flex-wrap:wrap}
 .view-toggle{display:inline-flex;background:var(--line-2);border-radius:11px;padding:4px;gap:3px;margin:28px 0 2px}
 .vt{padding:8px 18px;border-radius:8px;border:none;background:transparent;color:var(--muted);font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit;transition:.15s}
 .vt.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(11,31,51,.1)}
+#jobs-wrap{margin-top:20px}
+.jl-sec{font-family:'Fraunces',serif;font-size:16px;font-weight:500;color:var(--ink);margin:22px 0 10px;display:flex;align-items:center;gap:8px}
+.jl-sec span{font-family:'Inter',sans-serif;font-size:12px;font-weight:700;color:var(--muted);background:var(--line-2);padding:2px 9px;border-radius:20px}
+.jl-sec:first-child{margin-top:0}
+.jl-row{display:flex;align-items:center;gap:13px;background:var(--card);border:1px solid var(--line);border-radius:13px;padding:14px 16px;margin-bottom:10px;text-decoration:none;color:inherit;transition:.15s;box-shadow:var(--shadow)}
+.jl-row:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+.jl-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}.jl-dot.active{background:var(--warn)}.jl-dot.open{background:var(--post)}.jl-dot.done{background:var(--ok)}
+.jl-main{flex:1;min-width:0}.jl-t{font-size:14.5px;font-weight:600}.jl-s{font-size:12.5px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.jl-right{display:flex;align-items:center;gap:12px;flex-shrink:0}
+.jl-amt{font-family:'Fraunces',serif;font-weight:500;color:var(--ink-2);font-size:14px}
+.jl-pill{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:.03em}
+.jl-pill.active{background:var(--warn-soft);color:var(--warn)}.jl-pill.open{background:var(--post-soft);color:var(--post)}.jl-pill.done{background:var(--ok-soft);color:var(--ok)}
+.jl-empty{text-align:center;padding:60px 20px;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:14px;margin-top:20px}
 .cal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
 .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
 .cal-head h3{font-family:'Fraunces',serif;font-size:19px;font-weight:500}
@@ -231,7 +257,13 @@ a{color:inherit;text-decoration:none}
       <div class="att-grid" id="att-grid"></div>
     </div>
 
-    <div class="view-toggle"><button class="vt on" data-v="grid" onclick="setView('grid')" id="vt-grid">Biblioteca</button><button class="vt" data-v="cal" onclick="setView('cal')" id="vt-cal">Calendario</button></div>
+    <div class="aj-wrap" id="aj-wrap">
+      <div class="aj-head"><h2 class="serif" id="lbl-aj">Trabajos activos</h2><span class="aj-count" id="aj-count"></span></div>
+      <div class="aj-sub" id="lbl-aj-sub">Trabajos aceptados y en progreso en todas tus propiedades.</div>
+      <div class="aj-grid" id="aj-grid"></div>
+    </div>
+
+    <div class="view-toggle"><button class="vt on" data-v="grid" onclick="setView('grid')" id="vt-grid">Biblioteca</button><button class="vt" data-v="jobs" onclick="setView('jobs')" id="vt-jobs">Trabajos</button><button class="vt" data-v="cal" onclick="setView('cal')" id="vt-cal">Calendario</button></div>
     <div class="toolbar" id="toolbar">
       <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input id="search" placeholder="Buscar propiedad, dirección o municipio" oninput="renderGrid()"></div>
       <div class="chips" id="chips">
@@ -246,6 +278,7 @@ a{color:inherit;text-decoration:none}
     <div class="ledger" id="ledger"></div>
     <div class="grid" id="grid"></div>
     <div id="cal-wrap" style="display:none"></div>
+    <div id="jobs-wrap" style="display:none"></div>
   </div>
 </div>
 
@@ -321,7 +354,11 @@ var T = {
   lProps:{es:'Propiedades',en:'Properties'},lProj:{es:'Proyectos activos',en:'Active projects'},lJobs:{es:'Trabajos en curso',en:'Jobs in progress'},lInv:{es:'Invertido en total',en:'Total invested'},
   units:{es:'unidades',en:'units'},activeJobs:{es:'trabajos en curso',en:'jobs in progress'},
   complexBadge:{es:'Complejo',en:'Complex'},
-  newProps:{es:'propuestas nuevas',en:'new proposals'},waiting:{es:'Esperando tu decisión',en:'Awaiting your decision'},review:{es:'Revisar',en:'Review'},
+  newProps:{es:'propuestas nuevas',en:'new proposals'},newProp1:{es:'propuesta nueva',en:'new proposal'},waiting:{es:'Esperando tu decisión',en:'Awaiting your decision'},review:{es:'Revisar propuestas',en:'Review proposals'},
+  atnReviewT:{es:'Deja una reseña',en:'Leave a review'},atnReviewS:{es:'Trabajo completado — califica al contratista',en:'Job completed — rate the contractor'},atnReviewBtn:{es:'Reseñar',en:'Review'},
+  atnInquiryT:{es:'Un contratista te escribió',en:'A contractor messaged you'},atnInquiryS:{es:'Tiene preguntas sobre este trabajo',en:'Has questions about this job'},atnInquiryBtn:{es:'Responder',en:'Reply'},
+  activeT:{es:'Trabajos activos',en:'Active jobs'},activeSub:{es:'Trabajos aceptados y en progreso en todas tus propiedades.',en:'Accepted and in-progress jobs across all your properties.'},
+  stAccepted:{es:'Aceptado',en:'Accepted'},stInProgress:{es:'En progreso',en:'In progress'},schedFor:{es:'Programado',en:'Scheduled'},noDateYet:{es:'Sin fecha aún',en:'No date yet'},viewJob:{es:'Ver',en:'View'},
   mTitle:{es:'Añadir propiedad',en:'Add property'},mSub:{es:'Registra una propiedad o un complejo de varias unidades.',en:'Register a property or a multi-unit complex.'},
   t1:{es:'Propiedad',en:'Property'},t1s:{es:'Casa, apto, local',en:'House, apt, unit'},t2:{es:'Complejo',en:'Complex'},t2s:{es:'Varias unidades',en:'Multiple units'},
   c1:{es:'Residencial',en:'Residential'},c2:{es:'Comercial',en:'Commercial'},
@@ -329,7 +366,9 @@ var T = {
   streetL:{es:'Calle',en:'Street'},numL:{es:'Número / Apt',en:'Number / Apt'},zipL:{es:'Código postal',en:'Zip code'},urbL:{es:'Urbanización / sector (opcional)',en:'Subdivision / area (optional)'},
   addrL:{es:'Dirección',en:'Address'},muniL:{es:'Municipio',en:'Municipality'},cancel:{es:'Cancelar',en:'Cancel'},save:{es:'Guardar propiedad',en:'Save property'},
   mSearchL:{es:'Buscar dirección o mueve el pin',en:'Search address or move the pin'},mSearchPh:{es:'Escribe tu dirección...',en:'Type your address...'},mMapHint:{es:'Mueve el mapa para centrar el pin en la ubicación exacta.',en:'Move the map to center the pin on the exact location.'},
-  vtGrid:{es:'Biblioteca',en:'Library'},vtCal:{es:'Calendario',en:'Calendar'},
+  vtGrid:{es:'Biblioteca',en:'Library'},vtCal:{es:'Calendario',en:'Calendar'},vtJobs:{es:'Trabajos',en:'Jobs'},
+  jlActive:{es:'En curso',en:'In progress'},jlOpen:{es:'Abiertos',en:'Open'},jlDone:{es:'Completados',en:'Completed'},jlEmpty:{es:'Aún no has publicado trabajos. Crea uno desde cualquier propiedad.',en:'No jobs yet. Create one from any property.'},
+  stOpen:{es:'Abierto',en:'Open'},stDone:{es:'Completado',en:'Completed'},
   agendaTitle:{es:'Actividad próxima',en:'Upcoming activity'},agendaSub:{es:'Trabajos programados y en curso de todas tus propiedades, lo más cercano primero.',en:'Scheduled and in-progress work across all your properties, soonest first.'},
   scheduled:{es:'Programado',en:'Scheduled'},toSchedule:{es:'Por agendar',en:'To schedule'},agEmpty:{es:'Nada programado por ahora.',en:'Nothing scheduled for now.'},
   stActive:{es:'En curso',en:'In progress'},stPost:{es:'Abierto',en:'Open'},
@@ -409,9 +448,10 @@ function money(n){ return '$' + Math.round(n).toLocaleString('en-US'); }
 function esc(s){ return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function numBudget(b){ var v=parseFloat(String(b||'').replace(/[^0-9.]/g,'')); return isNaN(v)?0:v; }
 function fmtDay(dateStr){ var d=new Date(dateStr+'T00:00:00'); return {d:d.getDate(),m:t('monAbbr')[d.getMonth()]}; }
+function schedWhen(j){ if(!j||!j.scheduled_date) return ''; try{ var d=new Date(j.scheduled_date+'T00:00:00'); return d.toLocaleDateString(lang==='en'?'en-US':'es-ES',{month:'short',day:'numeric'})+(j.scheduled_time?' · '+j.scheduled_time:''); }catch(e){ return ''; } }
 function coverHtml(p, idx){
   if(p.cover_url){ return '<div class="cover-img" style="background-image:url(\'' + p.cover_url + '\')"></div>'; }
-  return '<div class="cover-img cv-' + (idx % 5) + '"></div>';
+  return '<div class="cover-img">' + CPR.coverArt(p.type, p.category) + '</div>';
 }
 var pinSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>';
 
@@ -428,6 +468,7 @@ function applyStaticLabels(){
   el('lbl-sub').textContent = t('sub');
   el('lbl-add').textContent = t('addBtn');
   el('lbl-att').textContent = t('att');
+  el('lbl-aj').textContent = t('activeT'); el('lbl-aj-sub').textContent = t('activeSub');
   el('wc-title').textContent = t('wcTitle');
   el('wc-sub').textContent = t('wcSub');
   el('wc-btn').textContent = t('wcBtn');
@@ -442,6 +483,7 @@ function applyStaticLabels(){
   if(el('m-search-l')) el('m-search-l').textContent = t('mSearchL');
   if(el('m-search')) el('m-search').placeholder = t('mSearchPh');
   if(el('vt-grid')) el('vt-grid').textContent = t('vtGrid');
+  if(el('vt-jobs')) el('vt-jobs').textContent = t('vtJobs');
   if(el('vt-cal')) el('vt-cal').textContent = t('vtCal');
   if(el('m-map-hint')) el('m-map-hint').textContent = t('mMapHint');
   el('m-cancel').textContent = t('cancel'); el('m-save').textContent = t('save');
@@ -469,7 +511,7 @@ function renderLedger(){
     jobsByProp[pid].forEach(function(j){
       var b = statusBucket(j.status);
       if(b === 'active') inProgress++;
-      if(b === 'done'){ var v = parseFloat(String(j.budget||'').replace(/[^0-9.]/g,'')); if(!isNaN(v)) invested += v; }
+      if(b === 'done'){ invested += (window._completedByJob && window._completedByJob[j.id]) || 0; }
     });
   });
   var rows = [
@@ -558,12 +600,38 @@ async function dropOn(e,targetId){
 // ── Library master calendar (across all properties) ──
 function setView(mode){
   viewMode = mode;
-  var isCal = mode === 'cal';
+  var isCal = mode === 'cal', isJobs = mode === 'jobs', isGrid = mode === 'grid';
   document.querySelectorAll('.vt').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-v') === mode); });
-  if(el('toolbar')) el('toolbar').style.display = isCal ? 'none' : '';
-  el('grid').style.display = isCal ? 'none' : '';
+  if(el('toolbar')) el('toolbar').style.display = isGrid ? '' : 'none';
+  el('grid').style.display = isGrid ? '' : 'none';
   el('cal-wrap').style.display = isCal ? 'block' : 'none';
+  el('jobs-wrap').style.display = isJobs ? 'block' : 'none';
   if(isCal) el('cal-wrap').innerHTML = renderLibraryCalendar();
+  if(isJobs) renderJobsList();
+}
+function renderJobsList(){
+  var box=el('jobs-wrap'); if(!box) return;
+  var all=(allJobs||[]).slice();
+  if(!all.length){ box.innerHTML='<div class="jl-empty">'+t('jlEmpty')+'</div>'; return; }
+  var groups={active:[],open:[],done:[]};
+  all.forEach(function(j){ var b=statusBucket(j.status); (groups[b]||groups.open).push(j); });
+  function byDate(a,b){ return (b.created_at||'')<(a.created_at||'')?-1:1; }
+  var order=[['active',t('jlActive')],['open',t('jlOpen')],['done',t('jlDone')]];
+  var html='';
+  order.forEach(function(g){ var arr=(groups[g[0]]||[]).sort(byDate); if(!arr.length) return; html+='<div class="jl-sec">'+g[1]+' <span>'+arr.length+'</span></div>'+arr.map(jobListRow).join(''); });
+  box.innerHTML=html;
+}
+function jobListRow(j){
+  var b=statusBucket(j.status);
+  var cls=b==='done'?'done':b==='active'?'active':'open';
+  var pillTxt=b==='done'?t('stDone'):b==='active'?t('stActive'):t('stOpen');
+  var nm=propLabel(j.property_id);
+  var bits=[CPR.tradeLabel(j.trade_needed), nm]; if(j.scheduled_date) bits.push(schedWhen(j));
+  var amt=(window._completedByJob&&window._completedByJob[j.id])||0;
+  var pend=(window._pendingByJob&&window._pendingByJob[j.id])||0;
+  return '<a class="jl-row" href="job.html?id='+j.id+'"><span class="jl-dot '+cls+'"></span>'+
+    '<div class="jl-main"><div class="jl-t">'+esc(j.title||'')+'</div><div class="jl-s">'+esc(bits.filter(Boolean).join(' · '))+(pend?' · <b style="color:var(--blue)">'+pend+' '+t('newProps')+'</b>':'')+'</div></div>'+
+    '<div class="jl-right">'+(amt?'<div class="jl-amt">'+money(amt)+'</div>':'')+'<span class="jl-pill '+cls+'">'+pillTxt+'</span></div></a>';
 }
 function propLabel(pid){ for(var i=0;i<allProps.length;i++){ if(allProps[i].id===pid){ var p=allProps[i]; return p.nickname||p.address||(lang==='en'?'Property':'Propiedad'); } } return ''; }
 function goProp(pid){ for(var i=0;i<allProps.length;i++){ if(allProps[i].id===pid){ location.href=(allProps[i].type==='complex'?'complex.html':'property.html')+'?id='+encodeURIComponent(pid); return; } } }
@@ -588,9 +656,9 @@ function renderLibraryCalendar(){
       var dd=j.scheduled_date?fmtDay(j.scheduled_date):null; var b=statusBucket(j.status);
       var dotc=b==='active'?'active':'sched'; var pillt=b==='active'?t('stActive'):t('scheduled');
       var amt=numBudget(j.budget);
-      return '<div class="ag-row" onclick="goProp(\''+j.property_id+'\')">'+(dd?'<div class="ag-date"><div class="d">'+dd.d+'</div><div class="m">'+dd.m+'</div></div>':'<div class="ag-date tbd"><div class="d">—</div></div>')+
+      return '<div class="ag-row" style="cursor:pointer" onclick="location.href=\'job.html?id='+encodeURIComponent(j.id)+'\'">'+(dd?'<div class="ag-date"><div class="d">'+dd.d+'</div><div class="m">'+dd.m+'</div></div>':'<div class="ag-date tbd"><div class="d">—</div></div>')+
         '<div class="ag-dot '+dotc+'"></div>'+
-        '<div class="ag-main"><div class="ag-t">'+esc(j.title||'')+'</div><div class="ag-s"><span class="cal-prop">'+esc(propLabel(j.property_id))+'</span>'+(j.trade_needed?'<span class="trade">'+esc(j.trade_needed)+'</span>':'')+'</div></div>'+
+        '<div class="ag-main"><div class="ag-t">'+esc(j.title||'')+'</div><div class="ag-s"><span class="cal-prop">'+esc(propLabel(j.property_id))+'</span>'+(j.trade_needed?'<span class="trade">'+esc(CPR.tradeLabel(j.trade_needed))+'</span>':'')+(j.scheduled_date?'<span>'+esc(schedWhen(j))+'</span>':'')+'</div></div>'+
         '<div class="ag-right"><span class="ag-pill '+dotc+'">'+pillt+'</span>'+(amt?'<div class="ag-amt">'+money(amt)+'</div>':'')+'</div></div>';
     }).join('');
   }
@@ -605,7 +673,8 @@ function renderLibraryCalendar(){
   }
   if(!upcoming.length && !toSched.length){ ag+='<p style="padding:10px 6px;color:var(--muted);font-size:13.5px">'+t('agEmpty')+'</p>'; }
   ag+='</div>';
-  return calHtml+ag;
+  // upcoming activity / maintenance first, calendar grid below
+  return ag+'<div style="margin-top:24px"></div>'+calHtml;
 }
 function setFilter(btn){
   activeFilter = btn.getAttribute('data-f');
@@ -618,14 +687,65 @@ function go(id, kind){
   location.href = (kind === 'complex' ? 'complex.html?id=' : 'property.html?id=') + id;
 }
 
-function renderAttention(pendingProposals){
-  if(!pendingProposals || pendingProposals < 1){ el('attention').classList.remove('show'); return; }
-  el('att-count').textContent = '1';
-  el('att-grid').innerHTML =
-    '<div class="att-card"><div class="att-icon ai-prop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg></div>' +
-    '<div class="att-body"><div class="att-t">' + pendingProposals + ' ' + t('newProps') + '</div><div class="att-s">' + t('waiting') + '</div></div>' +
-    '<button class="att-action">' + t('review') + '</button></div>';
+function propById(pid){ return allProps.filter(function(x){ return x.id===pid; })[0]; }
+function jobById(jid){ return allJobs.filter(function(x){ return x.id===jid; })[0]; }
+function propName(p){ return p ? (p.nickname||p.address||(lang==='en'?'Property':'Propiedad')) : ''; }
+function fmtSched(j){
+  if(!j.scheduled_date) return t('noDateYet');
+  try{ var d=new Date(j.scheduled_date+'T00:00:00'); return t('schedFor')+' '+d.toLocaleDateString(lang==='en'?'en-US':'es-ES',{month:'short',day:'numeric'})+(j.scheduled_time?' · '+j.scheduled_time:''); }catch(e){ return ''; }
+}
+function renderAttention(){
+  var jids = Object.keys(window._pendingByJob||{});
+  var inqIds = Object.keys(window._inquiryByJob||{});
+  var reviewNeeded = window._reviewNeeded || [];
+  var total = jids.reduce(function(s,k){ return s+window._pendingByJob[k]; }, 0) + reviewNeeded.length + inqIds.length;
+  if(!total){ el('attention').classList.remove('show'); return; }
+  el('att-count').textContent = total;
+  var inbox='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>';
+  var star='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.8 5.9 21.4l1.4-6.8L2.2 9.9l6.9-.8z"/></svg>';
+  var html = jids.map(function(jid){
+    var j=jobById(jid)||{}, p=propById(j.property_id), nm=propName(p), n=window._pendingByJob[jid];
+    var label = n+' '+(n===1?t('newProp1'):t('newProps'));
+    return '<div class="att-card" onclick="location.href=\'job.html?id='+jid+'\'">'+
+      '<div class="att-icon ai-prop">'+inbox+'</div>'+
+      '<div class="att-body"><div class="att-t">'+esc(j.title||t('review'))+' — '+label+'</div>'+
+      '<div class="att-s">'+(nm?esc(nm)+' · ':'')+t('waiting')+'</div></div>'+
+      '<button class="att-action" onclick="event.stopPropagation();location.href=\'job.html?id='+jid+'\'">'+t('review')+'</button></div>';
+  }).join('');
+  html += reviewNeeded.map(function(j){
+    var p=propById(j.property_id), nm=propName(p);
+    return '<div class="att-card" onclick="location.href=\'job.html?id='+j.id+'\'">'+
+      '<div class="att-icon" style="background:#FEF3D7;color:#F5A623">'+star+'</div>'+
+      '<div class="att-body"><div class="att-t">'+esc(j.title||'')+' — '+t('atnReviewT')+'</div>'+
+      '<div class="att-s">'+(nm?esc(nm)+' · ':'')+t('atnReviewS')+'</div></div>'+
+      '<button class="att-action" onclick="event.stopPropagation();location.href=\'job.html?id='+j.id+'\'">'+t('atnReviewBtn')+'</button></div>';
+  }).join('');
+  var chatIc='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>';
+  html += inqIds.map(function(jid){
+    var j=jobById(jid)||{}, p=propById(j.property_id), nm=propName(p), n=window._inquiryByJob[jid];
+    return '<div class="att-card" onclick="location.href=\'job.html?id='+jid+'\'">'+
+      '<div class="att-icon" style="background:var(--blue-soft);color:var(--blue)">'+chatIc+'</div>'+
+      '<div class="att-body"><div class="att-t">'+esc(j.title||'')+' — '+t('atnInquiryT')+'</div>'+
+      '<div class="att-s">'+(nm?esc(nm)+' · ':'')+t('atnInquiryS').replace('{n}',n)+'</div></div>'+
+      '<button class="att-action" onclick="event.stopPropagation();location.href=\'job.html?id='+jid+'\'">'+t('atnInquiryBtn')+'</button></div>';
+  }).join('');
+  el('att-grid').innerHTML = html;
   el('attention').classList.add('show');
+}
+function renderActiveJobs(){
+  var active = (allJobs||[]).filter(function(j){ var b=statusBucket(j.status); return b==='active' && j.property_id; })
+    .sort(function(a,b){ return (a.scheduled_date||'9999')<(b.scheduled_date||'9999')?-1:1; });
+  if(!active.length){ el('aj-wrap').classList.remove('show'); return; }
+  el('aj-count').textContent='('+active.length+')';
+  el('aj-grid').innerHTML = active.map(function(j){
+    var p=propById(j.property_id), nm=propName(p);
+    var prog = (j.status==='in_progress');
+    var st = prog?t('stInProgress'):t('stAccepted');
+    return '<a class="aj-card" href="job.html?id='+j.id+'"><span class="aj-dot '+(prog?'prog':'acc')+'"></span>'+
+      '<div class="aj-info"><div class="aj-t">'+esc(j.title||'')+'</div><div class="aj-s">'+esc(nm)+' · '+st+' · '+esc(fmtSched(j))+'</div></div>'+
+      '<span class="aj-go">'+t('viewJob')+' →</span></a>';
+  }).join('');
+  el('aj-wrap').classList.add('show');
 }
 
 // ── Add modal ──
@@ -733,12 +853,37 @@ async function loadLibrary(){
   var projects = await CPR.db('projects?client_id=eq.' + currentUser.id + '&select=id,status');
   window._activeProjects = (Array.isArray(projects)?projects:[]).filter(function(p){ return p.status === 'active'; }).length;
 
-  // attention: pending proposals on this client's jobs
+  // proposals on this client's jobs → pending (attention) + completed amount (invested)
   var pending = 0;
+  window._completedByJob = {};
+  window._pendingByJob = {};
+  window._inquiryByJob = {};
   var jobIds = (Array.isArray(jobs)?jobs:[]).map(function(j){ return j.id; });
   if(jobIds.length){
-    var proposals = await CPR.db('proposals?job_id=in.(' + jobIds.join(',') + ')&select=id,status');
-    pending = (Array.isArray(proposals)?proposals:[]).filter(function(p){ return p.status === 'pending'; }).length;
+    var openSet = {}; (Array.isArray(jobs)?jobs:[]).forEach(function(j){ if(j.status==='open') openSet[j.id]=1; });
+    var proposals = await CPR.db('proposals?job_id=in.(' + jobIds.join(',') + ')&select=id,status,price,job_id');
+    var inquiryProps = [];
+    (Array.isArray(proposals)?proposals:[]).forEach(function(p){
+      if(p.status === 'completed'){ var v=parseFloat(String(p.price||'').replace(/[^0-9.]/g,'')); if(!isNaN(v)) window._completedByJob[p.job_id]=(window._completedByJob[p.job_id]||0)+v; }
+      if((p.status === 'pending' || p.status === 'quoted' || p.status === 'visit_requested') && openSet[p.job_id]){ window._pendingByJob[p.job_id]=(window._pendingByJob[p.job_id]||0)+1; }
+      if(p.status === 'inquiry' && openSet[p.job_id]){ inquiryProps.push({id:p.id, job:p.job_id}); }
+    });
+    pending = Object.keys(window._pendingByJob).reduce(function(s,k){ return s+window._pendingByJob[k]; }, 0);
+    // only flag an inquiry when the contractor's message is the latest (i.e. awaiting the client's reply)
+    if(inquiryProps.length){
+      var ipIds = inquiryProps.map(function(x){ return x.id; });
+      var imsgs = await CPR.db('messages?proposal_id=in.(' + ipIds.join(',') + ')&order=created_at.desc&select=proposal_id,sender_type');
+      var lastSender = {}; (Array.isArray(imsgs)?imsgs:[]).forEach(function(m){ if(!(m.proposal_id in lastSender)) lastSender[m.proposal_id]=m.sender_type; });
+      inquiryProps.forEach(function(ip){ if(lastSender[ip.id]==='contractor'){ window._inquiryByJob[ip.job]=(window._inquiryByJob[ip.job]||0)+1; } });
+    }
+  }
+  // completed jobs the client hasn't reviewed yet (pending review)
+  window._reviewNeeded = [];
+  var doneJobs = (Array.isArray(jobs)?jobs:[]).filter(function(j){ return j.status==='completed'; });
+  if(doneJobs.length){
+    var rv = await CPR.db('reviews?homeowner_id=eq.' + currentUser.id + '&direction=eq.client_to_contractor&select=job_id');
+    var reviewed = {}; (Array.isArray(rv)?rv:[]).forEach(function(r){ reviewed[r.job_id]=1; });
+    window._reviewNeeded = doneJobs.filter(function(j){ return !reviewed[j.id]; });
   }
 
   el('boot').style.display = 'none';
@@ -751,7 +896,8 @@ async function loadLibrary(){
     el('library').style.display = 'block';
     renderLedger();
     renderGrid();
-    renderAttention(pending);
+    renderAttention();
+    renderActiveJobs();
   }
 }
 
@@ -762,7 +908,7 @@ async function loadLibrary(){
   CPR.injectNav('properties', null);
   var label = lang === 'en' ? 'Log in to see your properties' : 'Inicia sesión para ver tus propiedades';
   CPR.requireAuth(async function(user){
-    if(user.type === 'contractor'){ location.replace('dashboard-contractor.html'); return; }
+    if(user.type === 'contractor'){ location.replace('contractor-home.html'); return; }
     currentUser = user;
     CPR.injectNav('properties', user);
     await loadLibrary();

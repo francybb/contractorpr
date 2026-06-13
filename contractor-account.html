@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ContractingPR · Mi perfil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1F33;--ink-2:#3A4A5C;--muted:#6B7A8D;
+  --blue:#1A56DB;--blue-deep:#103FA8;--blue-soft:#EBF1FE;
+  --canvas:#F6F7F9;--card:#FFFFFF;--line:#E6E9EF;--line-2:#EFF1F5;
+  --rose:#D6336C;--ok:#0E9F6E;--ok-soft:#E3F5EE;--warn:#E08A00;--warn-soft:#FBF1DF;
+  --radius:16px;--shadow:0 1px 2px rgba(11,31,51,.04),0 8px 24px -12px rgba(11,31,51,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--canvas);color:var(--ink);line-height:1.5}
+.wrap{max-width:660px;margin:0 auto;padding:40px 22px 80px}
+.serif{font-family:'Fraunces',serif}
+.back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:22px;background:none;border:none;cursor:pointer;font-family:inherit}
+.back-btn:hover{color:var(--blue)}.back-btn svg{width:16px;height:16px}
+.loading{display:flex;align-items:center;justify-content:center;gap:12px;padding:80px 0;color:var(--muted)}
+.spinner{width:22px;height:22px;border:3px solid var(--line);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px;box-shadow:var(--shadow)}
+.card h1{font-family:'Fraunces',serif;font-size:26px;font-weight:500;margin-bottom:4px}
+.card .sub{color:var(--muted);font-size:14px;margin-bottom:24px}
+.avatar-wrap{display:flex;align-items:center;gap:18px;margin-bottom:26px;padding-bottom:24px;border-bottom:1px solid var(--line-2)}
+.avatar{width:96px;height:96px;border-radius:50%;overflow:hidden;background:var(--line-2);display:grid;place-items:center;flex-shrink:0;border:1px solid var(--line)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar svg{width:54px;height:54px;color:#B6C0CC}
+.avatar-meta{flex:1;min-width:0}
+.avatar-name{font-family:'Fraunces',serif;font-size:20px;font-weight:500;line-height:1.15}
+.avatar-btn{margin-top:9px;background:var(--card);border:1px solid var(--line);color:var(--ink-2);padding:8px 15px;border-radius:9px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;transition:.15s}
+.avatar-btn:hover{background:var(--line-2)}
+.member{font-size:12.5px;color:var(--muted);margin-top:7px}
+.status-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:4px 11px;border-radius:20px;margin-top:9px}
+.status-badge.pending{background:var(--warn-soft);color:var(--warn)}
+.status-badge.active{background:var(--ok-soft);color:var(--ok)}
+.status-badge svg{width:13px;height:13px}
+.field{margin-bottom:18px}
+.row2{display:flex;gap:12px}.row2 .field{flex:1}
+.field label{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-family:inherit;font-size:14px;color:var(--ink);background:var(--card);transition:.15s}
+.field textarea{resize:vertical;min-height:84px;line-height:1.5}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--blue)}
+.field input:disabled{background:var(--line-2);color:var(--muted);cursor:not-allowed}
+.field .hint{font-size:12px;color:var(--muted);margin-top:6px}
+.dyn-row{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.dyn-row select,.dyn-row input{flex:1;min-width:0}
+.dyn-row .yrs{max-width:120px;flex:none}
+.dyn-row .num{max-width:160px;flex:none}
+.dyn-row .rm{width:38px;height:42px;flex:none;border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:9px;cursor:pointer;font-size:18px;line-height:1;font-family:inherit}
+.dyn-row .rm:hover{color:#dc2626;border-color:#fca5a5}
+.add-row{background:var(--blue-soft);color:var(--blue);border:none;padding:8px 14px;border-radius:9px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;margin-top:2px}
+.add-row:hover{background:#dce8fd}
+.area-chips{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:9px;min-height:4px}
+.chip2{display:inline-flex;align-items:center;gap:5px;background:var(--blue-soft);color:var(--blue-deep);font-size:12.5px;font-weight:600;padding:5px 8px 5px 11px;border-radius:20px}
+.chip2 button{background:none;border:none;color:var(--blue);font-size:15px;line-height:1;cursor:pointer;font-family:inherit;padding:0}
+.area-empty{font-size:12.5px;color:var(--muted)}
+.btn-primary{background:var(--blue);color:#fff;border:none;padding:12px 22px;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;transition:.15s}
+.btn-primary:hover{background:var(--blue-deep)}.btn-primary:disabled{opacity:.6;cursor:default}
+.msg{font-size:13.5px;margin-top:14px;display:none;font-weight:500}
+.msg.err{color:var(--rose);display:block}.msg.ok{color:var(--ok);display:block}
+</style>
+</head>
+<body>
+<div id="cpr-nav-placeholder"></div>
+<div class="wrap">
+  <div id="boot" class="loading"><div class="spinner"></div><span id="boot-msg">Cargando...</span></div>
+  <script>(function(){try{var l=localStorage.getItem("cpr_lang")||"es";document.getElementById("boot-msg").textContent=(l==="en"?"Loading...":"Cargando...");}catch(e){}})();</script>
+  <div id="page" style="display:none">
+    <button class="back-btn" onclick="location.href='contractor-home.html'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg><span id="back-lbl">Volver</span></button>
+    <div class="card">
+      <h1 id="p-title" class="serif">Mi perfil</h1>
+      <p class="sub" id="p-sub">Tu perfil es tu carta de presentación ante los clientes.</p>
+      <div class="avatar-wrap">
+        <div class="avatar" id="avatar"></div>
+        <div class="avatar-meta">
+          <div class="avatar-name" id="av-name"></div>
+          <div><span class="status-badge" id="av-status"></span></div>
+          <button class="avatar-btn" id="av-btn" onclick="pickAvatar()">Subir foto</button>
+          <div class="member" id="av-member"></div>
+        </div>
+        <input type="file" id="av-input" accept="image/*" style="display:none" onchange="handleAvatar(event)">
+      </div>
+      <div class="row2">
+        <div class="field"><label id="l-first">Nombre</label><input type="text" id="f-first"></div>
+        <div class="field"><label id="l-last">Apellido</label><input type="text" id="f-last"></div>
+      </div>
+      <div class="field"><label id="l-email">Correo electrónico</label><input type="email" id="f-email" disabled><div class="hint" id="h-email"></div></div>
+      <div class="row2">
+        <div class="field"><label id="l-phone">Teléfono</label><input type="tel" id="f-phone" placeholder="(787) 000-0000"></div>
+        <div class="field"><label id="l-company">Empresa (opcional)</label><input type="text" id="f-company"></div>
+      </div>
+      <div class="field">
+        <label id="l-trades">Especialidades y experiencia</label>
+        <div id="trades-rows"></div>
+        <button type="button" class="add-row" onclick="addTrade()" id="add-trade-btn">+ Añadir especialidad</button>
+      </div>
+      <div class="field">
+        <label id="l-licenses">Licencias (opcional)</label>
+        <div id="lic-rows"></div>
+        <button type="button" class="add-row" onclick="addLicense()" id="add-lic-btn">+ Añadir licencia</button>
+      </div>
+      <div class="field"><label id="l-city">Municipio base</label><select id="f-city"></select></div>
+      <div class="field">
+        <label id="l-area">Áreas que atiendes</label>
+        <div class="area-chips" id="f-area-chips"></div>
+        <select id="f-area-add" onchange="addArea()"></select>
+      </div>
+      <div class="field"><label id="l-bio">Sobre tu trabajo</label><textarea id="f-bio"></textarea></div>
+      <button class="btn-primary" id="f-save" onclick="saveProfile()">Guardar cambios</button>
+      <div class="msg" id="p-msg"></div>
+    </div>
+    <div class="card" id="verify-card" style="margin-top:18px"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
+<script>
+var lang = (window.CPR && CPR.lang) || 'es';
+var currentUser = null, serviceSet = [], tradeRows = [], licRows = [];
+var FACELESS='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-4.42 0-8 2.24-8 5v1h16v-1c0-2.76-3.58-5-8-5z"/></svg>';
+var MUNIS=["Adjuntas","Aguada","Aguadilla","Aguas Buenas","Aibonito","Añasco","Arecibo","Arroyo","Barceloneta","Barranquitas","Bayamón","Cabo Rojo","Caguas","Camuy","Canóvanas","Carolina","Cataño","Cayey","Ceiba","Ciales","Cidra","Coamo","Comerío","Corozal","Culebra","Dorado","Fajardo","Florida","Guánica","Guayama","Guayanilla","Guaynabo","Gurabo","Hatillo","Hormigueros","Humacao","Isabela","Jayuya","Juana Díaz","Juncos","Lajas","Lares","Las Marías","Las Piedras","Loíza","Luquillo","Manatí","Maricao","Maunabo","Mayagüez","Moca","Morovis","Naguabo","Naranjito","Orocovis","Patillas","Peñuelas","Ponce","Quebradillas","Rincón","Río Grande","Sabana Grande","Salinas","San Germán","San Juan","San Lorenzo","San Sebastián","Santa Isabel","Toa Alta","Toa Baja","Trujillo Alto","Utuado","Vega Alta","Vega Baja","Vieques","Villalba","Yabucoa","Yauco"];
+var TRADES=[['Plomería','Plumbing'],['Electricidad','Electrical'],['Carpintería','Carpentry'],['Pintura','Painting'],['Techado','Roofing'],['Albañilería','Masonry'],['Aire acondicionado','HVAC'],['Demolición','Demolition'],['Soldadura','Welding'],['Jardinería','Landscaping'],['Limpieza','Cleaning'],['Mudanza','Moving']];
+var T={
+  title:{es:'Mi perfil',en:'My profile'},
+  sub:{es:'Tu perfil es tu carta de presentación ante los clientes.',en:'Your profile is how clients get to know you.'},
+  firstL:{es:'Nombre',en:'First name'},lastL:{es:'Apellido',en:'Last name'},
+  emailL:{es:'Correo electrónico',en:'Email'},emailH:{es:'Tu correo es tu inicio de sesión y no se puede cambiar aquí.',en:'Your email is your login and can’t be changed here.'},
+  phoneL:{es:'Teléfono',en:'Phone'},companyL:{es:'Empresa (opcional)',en:'Company (optional)'},
+  tradesL:{es:'Especialidades y experiencia',en:'Trades & experience'},addTrade:{es:'+ Añadir especialidad',en:'+ Add trade'},
+  licensesL:{es:'Licencias (opcional)',en:'Licenses (optional)'},addLicense:{es:'+ Añadir licencia',en:'+ Add license'},
+  tradePh:{es:'Especialidad',en:'Trade'},otherTrade:{es:'Otro…',en:'Other…'},professionPh:{es:'Profesión',en:'Profession'},yrsPh:{es:'Años',en:'Yrs'},
+  licTypePh:{es:'Tipo (ej. CIAPR, Electricista)',en:'Type (e.g. CIAPR, Electrician)'},licNumPh:{es:'Número',en:'Number'},
+  cityL:{es:'Municipio base',en:'Home municipality'},
+  areaL:{es:'Áreas que atiendes',en:'Areas you serve'},areaAdd:{es:'+ Añadir municipio',en:'+ Add municipality'},areaEmpty:{es:'Añade los municipios donde trabajas.',en:'Add the municipalities where you work.'},
+  bioL:{es:'Sobre tu trabajo',en:'About your work'},bioPh:{es:'Cuéntales a los clientes sobre tu experiencia y especialidades.',en:'Tell clients about your experience and specialties.'},
+  avUpload:{es:'Subir foto',en:'Upload photo'},avChange:{es:'Cambiar foto',en:'Change photo'},memberSince:{es:'Miembro desde {d}',en:'Member since {d}'},
+  stPending:{es:'En revisión',en:'Under review'},stActive:{es:'Verificado',en:'Verified'},
+  save:{es:'Guardar cambios',en:'Save changes'},saving:{es:'Guardando...',en:'Saving...'},uploading:{es:'Subiendo...',en:'Uploading...'},back:{es:'Volver',en:'Back'},
+  errFirst:{es:'Escribe tu nombre.',en:'Enter your first name.'},errTrade:{es:'Añade al menos una especialidad.',en:'Add at least one trade.'},
+  saved:{es:'Cambios guardados',en:'Changes saved'},errSave:{es:'No se pudo guardar. Intenta de nuevo.',en:'Could not save. Try again.'},
+  avErrType:{es:'Elige un archivo de imagen.',en:'Choose an image file.'},avErrSize:{es:'La imagen debe ser menor de 5MB.',en:'Image must be under 5MB.'},avSaved:{es:'Foto actualizada',en:'Photo updated'}
+};
+function el(id){return document.getElementById(id);}
+function t(k){var e=T[k];return e?(e[lang]||e.es):k;}
+function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function tradeVal(tr){return tr[0]+' / '+tr[1];}
+function isStdTrade(v){ for(var i=0;i<TRADES.length;i++){ if(tradeVal(TRADES[i])===v) return true; } return false; }
+async function dbPatch(table,query,obj){
+  var url='/.netlify/functions/supabase-proxy?table='+encodeURIComponent(table)+'&query='+encodeURIComponent(query)+'&prefer='+encodeURIComponent('return=representation');
+  var res=await fetch(url,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)});
+  if(!res.ok) throw new Error('patch '+res.status); return res.json();
+}
+function fullName(){ return ((currentUser.first_name||'')+' '+(currentUser.last_name||'')).trim()||currentUser.name||''; }
+function renderAvatar(){
+  el('avatar').innerHTML = currentUser.avatar_url ? '<img src="'+esc(currentUser.avatar_url)+'" alt="">' : FACELESS;
+  el('av-btn').textContent = currentUser.avatar_url ? t('avChange') : t('avUpload');
+  el('av-name').textContent = fullName();
+}
+function renderStatus(){
+  var s=el('av-status'); var active=(currentUser.status==='active');
+  s.className='status-badge '+(active?'active':'pending');
+  s.innerHTML=(active?'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>':'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l2 2"/></svg>')+(active?t('stActive'):t('stPending'));
+}
+// ── Trades (multi, per-trade years, custom "other") ──
+function tradeOptionsHtml(sel){
+  var h='';
+  TRADES.forEach(function(tr){ var v=tradeVal(tr); h+='<option value="'+esc(v)+'"'+(v===sel?' selected':'')+'>'+esc(lang==='en'?tr[1]:tr[0])+'</option>'; });
+  h+='<option value="__other__"'+(sel==='__other__'?' selected':'')+'>'+esc(t('otherTrade'))+'</option>';
+  return h;
+}
+function syncTrades(){
+  tradeRows=[];
+  document.querySelectorAll('#trades-rows .dyn-row').forEach(function(r){
+    var selV=r.querySelector('select').value;
+    var customEl=r.querySelector('.custom'); var custom=customEl?customEl.value:'';
+    tradeRows.push({ sel:selV, custom:custom, years:r.querySelector('.yrs').value });
+  });
+}
+function renderTrades(){
+  el('trades-rows').innerHTML = tradeRows.map(function(row,i){
+    var sel=row.sel||'';
+    return '<div class="dyn-row"><select onchange="onTradeSel('+i+')">'+tradeOptionsHtml(sel)+'</select>'+
+      (sel==='__other__'?'<input class="custom" type="text" placeholder="'+esc(t('professionPh'))+'" value="'+esc(row.custom||'')+'">':'')+
+      '<input class="yrs" type="number" min="0" placeholder="'+esc(t('yrsPh'))+'" value="'+esc(row.years!=null?row.years:'')+'">'+
+      '<button type="button" class="rm" onclick="removeTrade('+i+')">×</button></div>';
+  }).join('');
+}
+function onTradeSel(i){ syncTrades(); renderTrades(); }
+function addTrade(){ syncTrades(); tradeRows.push({sel:'',custom:'',years:''}); renderTrades(); }
+function removeTrade(i){ syncTrades(); tradeRows.splice(i,1); if(!tradeRows.length) tradeRows.push({sel:'',custom:'',years:''}); renderTrades(); }
+// ── Licenses (multi, optional) ──
+function syncLics(){
+  licRows=[];
+  document.querySelectorAll('#lic-rows .dyn-row').forEach(function(r){ licRows.push({type:r.querySelector('.ltype').value, number:r.querySelector('.num').value}); });
+}
+function renderLics(){
+  el('lic-rows').innerHTML = licRows.map(function(row,i){
+    return '<div class="dyn-row"><input class="ltype" type="text" placeholder="'+esc(t('licTypePh'))+'" value="'+esc(row.type||'')+'"><input class="num" type="text" placeholder="'+esc(t('licNumPh'))+'" value="'+esc(row.number||'')+'"><button type="button" class="rm" onclick="removeLicense('+i+')">×</button></div>';
+  }).join('');
+}
+function addLicense(){ syncLics(); licRows.push({type:'',number:''}); renderLics(); }
+function removeLicense(i){ syncLics(); licRows.splice(i,1); renderLics(); }
+// ── Service area chips ──
+function renderAreaChips(){
+  el('f-area-chips').innerHTML = serviceSet.length ? serviceSet.map(function(m,i){ return '<span class="chip2">'+esc(m)+'<button onclick="removeArea('+i+')">×</button></span>'; }).join('') : '<span class="area-empty">'+t('areaEmpty')+'</span>';
+}
+function addArea(){ var v=el('f-area-add').value; if(v && serviceSet.indexOf(v)<0){ serviceSet.push(v); renderAreaChips(); } el('f-area-add').value=''; }
+function removeArea(i){ serviceSet.splice(i,1); renderAreaChips(); }
+function renderVerify(){
+  var box=el('verify-card'); if(!box) return;
+  var en=lang==='en';
+  var title=en?'Identity verification':'Verificación de identidad';
+  var shield='<svg viewBox="0 0 24 24" fill="none" stroke="#1A56DB" stroke-width="2" style="width:20px;height:20px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
+  if(currentUser.verified){
+    var when=''; if(currentUser.verified_at){ try{ when=new Date(currentUser.verified_at).toLocaleDateString(en?'en-US':'es-ES',{month:'long',day:'numeric',year:'numeric'}); }catch(e){} }
+    box.innerHTML='<div style="display:flex;align-items:center;gap:10px"><h2 class="serif" style="font-size:18px;margin:0">'+title+'</h2>'+CPR.verifiedBadge(true,18)+'</div>'+
+      '<p style="color:#0E9F6E;font-weight:600;font-size:14px;margin-top:10px">'+(en?'Your identity is verified.':'Tu identidad está verificada.')+(when?' · '+when:'')+'</p>';
+    return;
+  }
+  box.innerHTML='<div style="display:flex;align-items:center;gap:9px;margin-bottom:8px">'+shield+'<h2 class="serif" style="font-size:18px;margin:0">'+title+'</h2></div>'+
+    '<p class="sub" style="margin-bottom:14px">'+(en?'Verify your identity to win more jobs — a trust badge appears next to your name for every client.':'Verifica tu identidad para ganar más trabajos — una insignia de confianza aparece junto a tu nombre para cada cliente.')+'</p>'+
+    '<button class="btn-primary" id="verify-btn" onclick="verifyIdentity()">'+(en?'Verify my identity':'Verificar mi identidad')+'</button>'+
+    '<div class="hint" style="margin-top:9px">'+(en?'Powered by identity verification (Veriff — coming soon).':'Con verificación de identidad (Veriff — próximamente).')+'</div>';
+}
+async function verifyIdentity(){
+  var en=lang==='en';
+  if(!confirm(en?'Demo: this will mark your identity as verified. The real Veriff flow lands later. Continue?':'Demo: esto marcará tu identidad como verificada. El flujo real de Veriff llegará más adelante. ¿Continuar?')) return;
+  var btn=el('verify-btn'); if(btn){ btn.disabled=true; btn.textContent=en?'Verifying…':'Verificando…'; }
+  try{
+    var nowIso=new Date().toISOString();
+    await dbPatch('contractors','id=eq.'+encodeURIComponent(currentUser.id), {verified:true, verified_at:nowIso});
+    currentUser.verified=true; currentUser.verified_at=nowIso; renderVerify();
+  }catch(e){ if(btn){ btn.disabled=false; btn.textContent=en?'Verify my identity':'Verificar mi identidad'; } }
+}
+function render(){
+  el('p-title').textContent=t('title'); el('p-sub').textContent=t('sub');
+  el('l-first').textContent=t('firstL'); el('l-last').textContent=t('lastL');
+  el('l-email').textContent=t('emailL'); el('h-email').textContent=t('emailH');
+  el('l-phone').textContent=t('phoneL'); el('l-company').textContent=t('companyL');
+  el('l-trades').textContent=t('tradesL'); el('add-trade-btn').textContent=t('addTrade');
+  el('l-licenses').textContent=t('licensesL'); el('add-lic-btn').textContent=t('addLicense');
+  el('l-city').textContent=t('cityL'); el('l-area').textContent=t('areaL'); el('l-bio').textContent=t('bioL'); el('f-bio').placeholder=t('bioPh');
+  el('f-save').textContent=t('save'); el('back-lbl').textContent=t('back');
+  el('f-first').value=currentUser.first_name||''; el('f-last').value=currentUser.last_name||'';
+  el('f-email').value=currentUser.email||''; el('f-phone').value=currentUser.phone||''; el('f-company').value=currentUser.company||'';
+  el('f-bio').value=currentUser.description||'';
+  // trades
+  tradeRows=[];
+  if(Array.isArray(currentUser.trades) && currentUser.trades.length){
+    currentUser.trades.forEach(function(x){ var std=isStdTrade(x.trade); tradeRows.push({sel:std?x.trade:'__other__', custom:std?'':(x.trade||''), years:(x.years!=null?x.years:'')}); });
+  } else if(currentUser.trade){ var std=isStdTrade(currentUser.trade); tradeRows.push({sel:std?currentUser.trade:'__other__', custom:std?'':currentUser.trade, years:(currentUser.years_experience!=null?currentUser.years_experience:'')}); }
+  if(!tradeRows.length) tradeRows.push({sel:'',custom:'',years:''});
+  renderTrades();
+  // licenses
+  licRows=[];
+  if(Array.isArray(currentUser.licenses) && currentUser.licenses.length){ currentUser.licenses.forEach(function(x){ licRows.push({type:x.type||'',number:x.number||''}); }); }
+  else if(currentUser.license_number){ licRows.push({type:'CIAPR', number:currentUser.license_number}); }
+  renderLics();
+  // city
+  var cs=el('f-city'); cs.innerHTML=''; var oc=document.createElement('option'); oc.value=''; oc.textContent='—'; cs.appendChild(oc);
+  MUNIS.forEach(function(m){ var o=document.createElement('option'); o.value=m; o.textContent=m; cs.appendChild(o); });
+  if(currentUser.city) cs.value=currentUser.city;
+  // service area add-dropdown
+  var as=el('f-area-add'); as.innerHTML=''; var o0=document.createElement('option'); o0.value=''; o0.textContent=t('areaAdd'); as.appendChild(o0);
+  MUNIS.forEach(function(m){ var o=document.createElement('option'); o.value=m; o.textContent=m; as.appendChild(o); });
+  serviceSet=(currentUser.service_municipios||'').split(',').map(function(s){return s.trim();}).filter(Boolean);
+  renderAreaChips();
+  if(currentUser.created_at){ try{ var d=new Date(currentUser.created_at); el('av-member').textContent=t('memberSince').replace('{d}', d.toLocaleDateString(lang==='en'?'en-US':'es-ES',{month:'long',year:'numeric'})); }catch(e){} }
+  renderAvatar(); renderStatus(); renderVerify();
+}
+function pickAvatar(){ el('av-input').click(); }
+async function handleAvatar(e){
+  var file=e.target.files&&e.target.files[0]; if(!file){ return; }
+  var msg=el('p-msg'); msg.className='msg';
+  if(!file.type || file.type.indexOf('image/')!==0){ msg.textContent=t('avErrType'); msg.className='msg err'; e.target.value=''; return; }
+  if(file.size>5*1024*1024){ msg.textContent=t('avErrSize'); msg.className='msg err'; e.target.value=''; return; }
+  var btn=el('av-btn'); btn.disabled=true; btn.textContent=t('uploading');
+  try{
+    var ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'');
+    var path='avatars/contractor-'+currentUser.id+'-'+Date.now()+'.'+ext;
+    var up=await window._sb.storage.from('property-media').upload(path, file, {upsert:true, cacheControl:'3600'});
+    if(up.error){ throw up.error; }
+    var pub=window._sb.storage.from('property-media').getPublicUrl(path).data.publicUrl;
+    await dbPatch('contractors','id=eq.'+encodeURIComponent(currentUser.id), {avatar_url: pub});
+    currentUser.avatar_url=pub; btn.disabled=false; renderAvatar();
+    msg.textContent=t('avSaved'); msg.className='msg ok';
+  }catch(err){ msg.textContent=t('errSave'); msg.className='msg err'; btn.disabled=false; renderAvatar(); }
+  finally{ e.target.value=''; }
+}
+function collectTrades(){
+  syncTrades();
+  return tradeRows.map(function(r){
+    var trade = r.sel==='__other__' ? (r.custom||'').trim() : r.sel;
+    if(!trade) return null;
+    var years = (r.years!==''&&r.years!=null) ? parseInt(r.years,10) : null;
+    if(isNaN(years)) years=null;
+    return {trade:trade, years:years};
+  }).filter(Boolean);
+}
+function collectLics(){
+  syncLics();
+  return licRows.map(function(r){ var ty=(r.type||'').trim(), nu=(r.number||'').trim(); return (ty||nu)?{type:ty,number:nu}:null; }).filter(Boolean);
+}
+async function saveProfile(){
+  var first=(el('f-first').value||'').trim(); var last=(el('f-last').value||'').trim();
+  var msg=el('p-msg'); msg.className='msg';
+  if(!first){ msg.textContent=t('errFirst'); msg.className='msg err'; return; }
+  var tradesArr=collectTrades();
+  if(!tradesArr.length){ msg.textContent=t('errTrade'); msg.className='msg err'; return; }
+  var licsArr=collectLics();
+  var btn=el('f-save'); btn.disabled=true; btn.textContent=t('saving');
+  try{
+    var combined=(first+' '+last).trim();
+    var updated=await dbPatch('contractors','id=eq.'+encodeURIComponent(currentUser.id), {
+      first_name:first, last_name:last||null, name:combined,
+      phone:(el('f-phone').value||'').trim()||null, company:(el('f-company').value||'').trim()||null,
+      trade:tradesArr[0].trade, years_experience:tradesArr[0].years,
+      license_number:(licsArr.length?licsArr[0].number:null),
+      trades:tradesArr, licenses:licsArr,
+      city:el('f-city').value||null, service_municipios:serviceSet.join(', ')||null,
+      description:(el('f-bio').value||'').trim()||null
+    });
+    if(!Array.isArray(updated)||!updated[0]){ throw new Error('no rows updated'); }
+    currentUser=Object.assign(currentUser, updated[0]);
+    renderAvatar();
+    msg.textContent=t('saved'); msg.className='msg ok'; btn.disabled=false; btn.textContent=t('save');
+  }catch(e){ msg.textContent=t('errSave'); msg.className='msg err'; btn.disabled=false; btn.textContent=t('save'); }
+}
+(function init(){
+  if(!window.CPR){ return; }
+  if(!window._sb && window.supabase){ window._sb=supabase.createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK); }
+  CPR.injectNav('contractor-account', null);
+  CPR.requireAuth(async function(user){
+    if(user.type==='homeowner'){ location.replace('properties.html'); return; }
+    currentUser=user;
+    CPR.injectNav('contractor-account', user);
+    el('boot').style.display='none';
+    el('page').style.display='block';
+    render();
+  }, (lang==='en'?'Log in to view your profile':'Inicia sesión para ver tu perfil'), 'contractor');
+})();
+</script>
+</body>
+</html>

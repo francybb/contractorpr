@@ -23,6 +23,9 @@ a{color:inherit;text-decoration:none}
 .notfound h2{font-family:'Fraunces',serif;font-size:24px;color:var(--ink);margin-bottom:10px}.notfound a{color:var(--blue);font-weight:600}
 .back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:22px}
 .back-btn:hover{color:var(--blue)}.back-btn svg{width:16px;height:16px}
+.crumbs{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:13.5px;font-weight:600;margin-bottom:22px}
+.crumbs a{color:var(--muted);text-decoration:none;transition:.15s}.crumbs a:hover{color:var(--blue)}
+.crumbs .sep{color:var(--line);font-weight:400}.crumbs .cur{color:var(--ink)}
 .danger-zone{margin-top:18px;padding-top:16px;border-top:1px solid var(--line-2);display:flex;gap:10px;flex-wrap:wrap}
 .btn-archive{flex:1;min-width:140px;padding:11px 16px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--ink-2);font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit;transition:.15s}
 .btn-archive:hover{background:var(--line-2)}
@@ -30,15 +33,17 @@ a{color:inherit;text-decoration:none}
 .btn-danger:hover{background:#fef2f2}
 .arch-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#fef9ec;border:1px solid #f5e2a8;color:#8a6d1a;padding:12px 16px;border-radius:12px;margin-bottom:16px;font-size:14px;font-weight:500}
 .arch-banner button{background:var(--blue);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit}
-.detail-hero{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin-bottom:18px;align-items:stretch}
+.detail-hero{display:grid;grid-template-columns:0.9fr 1fr;gap:14px 18px;margin-bottom:18px;align-items:stretch}
+.hero-invest{display:flex}.hero-invest>.strip{flex:1}
+.attn-full{margin:0 0 30px}
 @media(max-width:820px){.detail-hero{grid-template-columns:1fr}}
-.hero-cover{border-radius:var(--radius);min-height:260px;position:relative;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
+.hero-cover{border-radius:var(--radius);min-height:160px;position:relative;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
 .hero-cover::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(11,31,51,.28))}
 .cover-img{position:absolute;inset:0;background-size:cover;background-position:center}
 .cv-complex{background:linear-gradient(157deg,#C9E3D4,#84B79C 36%,#3E7D6A 72%,#23564A)}
 .change-cover{position:absolute;top:14px;right:14px;z-index:3;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);font-size:12px;font-weight:600;color:var(--ink-2);padding:7px 12px;border-radius:9px;display:flex;align-items:center;gap:6px}
 .change-cover svg{width:14px;height:14px}
-.detail-map{position:relative;width:100%;height:200px;margin-top:18px;border-radius:13px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:linear-gradient(135deg,#E8EEF7,#D8E3F2)}
+.detail-map{position:relative;width:100%;min-height:120px;margin-top:0;border-radius:13px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow);background:linear-gradient(135deg,#E8EEF7,#D8E3F2)}
 .detail-map .pm{position:absolute;left:50%;top:50%;transform:translate(-50%,-100%)}.detail-map .pm svg{width:26px;height:26px;filter:drop-shadow(0 2px 3px rgba(11,31,51,.4))}
 .cal{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
 .cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
@@ -88,7 +93,7 @@ a{color:inherit;text-decoration:none}
 .spark .bar i{position:absolute;bottom:0;left:0;right:0;background:var(--blue);border-radius:4px 4px 2px 2px}
 .spark-x{display:flex;gap:6px;margin-top:7px}
 .spark-x span{flex:1;text-align:center;font-size:10px;color:var(--muted);font-weight:500}
-.hero-info{display:flex;flex-direction:column}
+.hero-info{display:flex;flex-direction:column;padding:0 20px}
 .hero-eyebrow{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:12px;display:flex;align-items:center;gap:7px}.hero-eyebrow svg{width:13px;height:13px}
 .hero-info h1{font-family:'Fraunces',serif;font-size:34px;font-weight:500;letter-spacing:-.02em;line-height:1.08}
 .hero-addr{color:var(--ink-2);font-size:15px;margin-top:10px;display:flex;align-items:flex-start;gap:8px}.hero-addr svg{width:16px;height:16px;color:var(--blue);flex-shrink:0;margin-top:2px}
@@ -288,7 +293,7 @@ var jobsByProp={}, investedByProp={}, pendingByJob={}, contractorByJob={}, calJo
 
 var T={
   nfTitle:{es:'Complejo no encontrado',en:'Complex not found'},nfSub:{es:'No pudimos encontrar este complejo en tu biblioteca.',en:"We couldn't find this complex in your library."},nfLink:{es:'← Volver a mis propiedades',en:'← Back to my properties'},
-  back:{es:'Mis propiedades',en:'My properties'},complexEyebrow:{es:'Complejo',en:'Complex'},
+  back:{es:'Mis propiedades',en:'My properties'},complexEyebrow:{es:'Complejo',en:'Complex'},crumbLib:{es:'Biblioteca',en:'Library'},
   units:{es:'Unidades',en:'Units'},activeJobs:{es:'Trabajos activos',en:'Active jobs'},invested:{es:'Invertido',en:'Invested'},
   addUnit:{es:'Añadir unidad',en:'Add unit'},buildingJob:{es:'Trabajo del edificio',en:'Building job'},buildingProject:{es:'Nuevo proyecto',en:'New project'},edit:{es:'Editar',en:'Edit'},transfer:{es:'Transferir',en:'Transfer'},changeCover:{es:'Cambiar foto',en:'Change photo'},
   tabUnits:{es:'Unidades',en:'Units'},tabBldg:{es:'Actividad del edificio',en:'Building activity'},tabCal:{es:'Calendario',en:'Calendar'},tabDocs:{es:'Documentos',en:'Documents'},tabHist:{es:'Historial',en:'History'},
@@ -335,6 +340,7 @@ function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g
 function money(n){return '$'+Math.round(n).toLocaleString('en-US');}
 function numBudget(b){ var v=parseFloat(String(b||'').replace(/[^0-9.]/g,'')); return isNaN(v)?0:v; }
 function fmtDay(dateStr){ var d=new Date(dateStr+'T00:00:00'); return {d:d.getDate(),m:t('monAbbr')[d.getMonth()]}; }
+function schedWhen(j){ if(!j||!j.scheduled_date) return ''; try{ var d=new Date(j.scheduled_date+'T00:00:00'); return d.toLocaleDateString(lang==='en'?'en-US':'es-ES',{month:'short',day:'numeric'})+(j.scheduled_time?' · '+j.scheduled_time:''); }catch(e){ return ''; } }
 function statusBucket(s){if(s==='open')return 'open';if(s==='accepted'||s==='in_progress'||s==='active')return 'active';if(s==='completed')return 'done';return 'other';}
 function toast(m){var x=el('toast');x.textContent=m;x.classList.add('show');setTimeout(function(){x.classList.remove('show');},1800);}
 
@@ -551,25 +557,26 @@ function renderMasterCalendar(){
       var b=statusBucket(j.status);
       var dotc=b==='active'?'active':'sched'; var pillc=b==='active'?'active':'sched';
       var pillt=b==='active'?t('stActive'):t('scheduled');
-      var amt=numBudget(j.budget); var who=contractorByJob[j.id]||'';
-      return '<div class="ag-row">'+(dd?'<div class="ag-date"><div class="d">'+dd.d+'</div><div class="m">'+dd.m+'</div></div>':'<div class="ag-date tbd"><div class="d">—</div></div>')+
+      var amt=(paidByJob[j.id]||0); var who=contractorByJob[j.id]||'';
+      return '<div class="ag-row" style="cursor:pointer" onclick="location.href=\'job.html?id='+encodeURIComponent(j.id)+'\'">'+(dd?'<div class="ag-date"><div class="d">'+dd.d+'</div><div class="m">'+dd.m+'</div></div>':'<div class="ag-date tbd"><div class="d">—</div></div>')+
         '<div class="ag-dot '+dotc+'"></div>'+
-        '<div class="ag-main"><div class="ag-t">'+esc(j.title||'')+'</div><div class="ag-s"><span class="cal-unit">'+esc(propLabel(j.property_id))+'</span>'+(j.trade_needed?'<span class="trade">'+esc(j.trade_needed)+'</span>':'')+(who?'<span>'+esc(who)+'</span>':'')+'</div></div>'+
+        '<div class="ag-main"><div class="ag-t">'+esc(j.title||'')+'</div><div class="ag-s"><span class="cal-unit">'+esc(propLabel(j.property_id))+'</span>'+(j.trade_needed?'<span class="trade">'+esc(CPR.tradeLabel(j.trade_needed))+'</span>':'')+(who?'<span>'+esc(who)+'</span>':'')+(j.scheduled_date?'<span>'+esc(schedWhen(j))+'</span>':'')+'</div></div>'+
         '<div class="ag-right"><span class="ag-pill '+pillc+'">'+pillt+'</span>'+(amt?'<div class="ag-amt">'+money(amt)+'</div>':'')+'</div></div>';
     }).join('');
   }
   if(toSched.length){
     ag+='<div class="ag-divider muted">'+t('toSchedule')+'</div>';
     ag+=toSched.map(function(j){
-      var amt=numBudget(j.budget);
-      return '<div class="ag-row"><div class="ag-date tbd"><div class="d">—</div></div><div class="ag-dot post"></div>'+
+      var amt=(paidByJob[j.id]||0);
+      return '<div class="ag-row" style="cursor:pointer" onclick="location.href=\'job.html?id='+encodeURIComponent(j.id)+'\'"><div class="ag-date tbd"><div class="d">—</div></div><div class="ag-dot post"></div>'+
         '<div class="ag-main"><div class="ag-t">'+esc(j.title||'')+'</div><div class="ag-s"><span class="cal-unit">'+esc(propLabel(j.property_id))+'</span>'+(pendingByJob[j.id]?'<span>'+pendingByJob[j.id]+' '+t('proposalsCt')+'</span>':'')+'</div></div>'+
         '<div class="ag-right"><span class="ag-pill post">'+t('stPost')+'</span>'+(amt?'<div class="ag-amt">'+money(amt)+'</div>':'')+'</div></div>';
     }).join('');
   }
   if(!upcoming.length && !toSched.length){ ag+='<p style="padding:10px 6px;color:var(--muted);font-size:13.5px">'+t('agEmpty')+'</p>'; }
   ag+='</div>';
-  return calHtml+ag;
+  // upcoming activity first, calendar grid below
+  return ag+'<div style="margin-top:24px"></div>'+calHtml;
 }
 function renderBldg(){
   if(bJobs.length===0){
@@ -610,13 +617,14 @@ function render(){
   var activeCount=0, invested=0;
   Object.keys(jobsByProp).forEach(function(pid){ jobsByProp[pid].forEach(function(j){ if(statusBucket(j.status)==='active') activeCount++; }); });
   Object.keys(investedByProp).forEach(function(pid){ invested+=investedByProp[pid]; });
-  var cover=complex.cover_url?'<div class="cover-img" style="background-image:url(\''+esc(complex.cover_url)+'\')"></div>':'<div class="cover-img cv-complex"></div>';
+  var cover=complex.cover_url?'<div class="cover-img" style="background-image:url(\''+esc(complex.cover_url)+'\')"></div>':'<div class="cover-img">'+CPR.coverArt('complex', complex.category)+'</div>';
 
   var html=''+
-    '<button class="back-btn" onclick="location.href=\'properties.html\'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>'+t('back')+'</button>'+
+    '<div class="crumbs"><a href="properties.html">'+t('crumbLib')+'</a><span class="sep">/</span><span class="cur">'+esc(complex.nickname||complex.address||t('complexEyebrow'))+'</span></div>'+
     (complex.archived?'<div class="arch-banner"><span>'+t('archBannerMsg')+'</span><button onclick="restoreComplex()">'+t('restore')+'</button></div>':'')+
-    '<div class="detail-hero"><div class="hero-cover">'+cover+
-      '<button class="change-cover" onclick="pickCover()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>'+t('changeCover')+'</button>'+
+    '<div class="detail-hero">'+
+      '<div class="hero-cover">'+cover+
+        '<button class="change-cover" onclick="pickCover()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>'+t('changeCover')+'</button>'+
       '</div>'+
       '<div class="hero-info"><div class="hero-eyebrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="18"/><rect x="14" y="9" width="7" height="12"/></svg> '+t('complexEyebrow')+(complex.municipality?' · '+esc(complex.municipality)+', PR':'')+'</div>'+
       '<h1>'+esc(name)+'</h1>'+
@@ -627,9 +635,11 @@ function render(){
       '<div class="hero-cta"><button class="btn-primary" onclick="openUnit()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>'+t('addUnit')+'</button>'+
         '<button class="btn-line" onclick="openEdit()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg>'+t('edit')+'</button>'+
         '<button class="btn-line" onclick="openJob()">'+t('buildingJob')+'</button></div>'+
+      '</div>'+
       '<div class="detail-map" id="map-inset"><div class="pm"><svg viewBox="0 0 24 24" fill="#1A56DB" stroke="#fff" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3" fill="#fff"/></svg></div></div>'+
-      '</div></div>'+
-    '<div class="detail-strips">'+attentionStrip()+spendStrip()+'</div>'+
+      '<div class="hero-invest">'+spendStrip()+'</div>'+
+    '</div>'+
+    '<div class="attn-full">'+attentionStrip()+'</div>'+
     '<div class="tabs"><button class="tab on" data-p="units" onclick="switchTab(this)">'+t('tabUnits')+' <span class="badge">'+units.length+'</span></button>'+
       '<button class="tab" data-p="bldg" onclick="switchTab(this)">'+t('tabBldg')+'</button>'+
       '<button class="tab" data-p="cal" onclick="switchTab(this)">'+t('tabCal')+'</button>'+
@@ -721,6 +731,7 @@ async function saveUnit(){
       tenant_name:(el('u-tenant').value||'').trim()||null,
       address:addr, municipality:complex.municipality||null,
       street:complex.street||null, zip_code:complex.zip_code||null, urbanization:complex.urbanization||null,
+      cover_url: complex.cover_url||null,
       lat: uLatLng?uLatLng.lat:(complex.lat!=null?complex.lat:null),
       lng: uLatLng?uLatLng.lng:(complex.lng!=null?complex.lng:null)
     });
@@ -887,7 +898,7 @@ async function loadAggregates(){
     var acceptedCids=[];
     props.forEach(function(pr){
       if(pr.status==='pending') pendingByJob[pr.job_id]=(pendingByJob[pr.job_id]||0)+1;
-      if(pr.status==='completed'){ var pid=jobToProp[pr.job_id]; var v=parseFloat(pr.price); if(!isNaN(v)){ if(pid) investedByProp[pid]=(investedByProp[pid]||0)+v; paidByJob[pr.job_id]=(paidByJob[pr.job_id]||0)+v; } }
+      if(pr.status==='completed'||pr.status==='accepted'){ var v=parseFloat(pr.price); if(!isNaN(v)){ paidByJob[pr.job_id]=v; if(pr.status==='completed'){ var pid=jobToProp[pr.job_id]; if(pid) investedByProp[pid]=(investedByProp[pid]||0)+v; } } }
       if(pr.status==='accepted'||pr.status==='completed'){ contractorByJob[pr.job_id]=pr.contractor_id; if(pr.contractor_id) acceptedCids.push(pr.contractor_id); }
     });
     if(acceptedCids.length){
@@ -920,7 +931,7 @@ function showNotFound(){ el('boot').style.display='none'; el('nf-title').textCon
   if(!window._sb && window.supabase){ window._sb=supabase.createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK); }
   CPR.injectNav('properties', null);
   CPR.requireAuth(async function(user){
-    if(user.type==='contractor'){ location.replace('dashboard-contractor.html'); return; }
+    if(user.type==='contractor'){ location.replace('contractor-home.html'); return; }
     currentUser=user; CPR.injectNav('properties', user);
     await loadData();
   }, (lang==='en'?'Log in to view this complex':'Inicia sesión para ver este complejo'), 'homeowner');

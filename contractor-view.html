@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ContractingPR · Contratista</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1F33;--ink-2:#3A4A5C;--muted:#6B7A8D;
+  --blue:#1A56DB;--blue-deep:#103FA8;--blue-soft:#EBF1FE;
+  --canvas:#F6F7F9;--card:#FFFFFF;--line:#E6E9EF;--line-2:#EFF1F5;
+  --ok:#0E9F6E;--ok-soft:#E3F5EE;--warn:#E08A00;--warn-soft:#FBF1DF;--gold:#F5A623;
+  --radius:16px;--shadow:0 1px 2px rgba(11,31,51,.04),0 8px 24px -12px rgba(11,31,51,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--canvas);color:var(--ink);line-height:1.5}
+.wrap{max-width:720px;margin:0 auto;padding:34px 22px 80px}
+.serif{font-family:'Fraunces',serif}
+.loading{display:flex;align-items:center;justify-content:center;gap:12px;padding:90px 0;color:var(--muted)}
+.spinner{width:22px;height:22px;border:3px solid var(--line);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:18px;background:none;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
+.back-btn:hover{color:var(--blue)}.back-btn svg{width:16px;height:16px}
+.hero{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:var(--shadow);margin-bottom:18px}
+.hero-top{display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.av{width:84px;height:84px;border-radius:50%;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;font-size:30px;font-weight:700;flex-shrink:0;overflow:hidden;border:1px solid var(--line)}
+.av img{width:100%;height:100%;object-fit:cover}
+.h-main{flex:1;min-width:200px}
+.h-name{font-family:'Fraunces',serif;font-size:26px;font-weight:500;letter-spacing:-.01em;display:flex;align-items:center;flex-wrap:wrap}
+.h-trade{font-size:14px;color:var(--muted);margin-top:3px}
+.h-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:11px;font-size:13px;color:var(--ink-2)}
+.h-rating{display:inline-flex;align-items:center;gap:6px;font-weight:600}.h-rating .stars{color:var(--gold);letter-spacing:1px}
+.h-chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:4px 11px;border-radius:20px}
+.h-chip.active{background:var(--ok-soft);color:var(--ok)}.h-chip svg{width:13px;height:13px}
+.h-loc{display:inline-flex;align-items:center;gap:6px;color:var(--muted)}.h-loc svg{width:14px;height:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow);margin-bottom:18px}
+.card h2{font-family:'Fraunces',serif;font-size:18px;font-weight:500;margin-bottom:14px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}
+.tchip{background:var(--blue-soft);color:var(--blue);font-weight:600;font-size:12.5px;padding:6px 13px;border-radius:20px}
+.tchip .yr{color:var(--blue-deep);opacity:.7;font-weight:500;margin-left:4px}
+.lic{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line-2);font-size:14px}
+.lic:last-child{border-bottom:none}.lic svg{width:16px;height:16px;color:var(--ok);flex-shrink:0}.lic b{font-weight:600}.lic .num{color:var(--muted);font-size:13px}
+.bio{font-size:14.5px;color:var(--ink-2);white-space:pre-wrap;line-height:1.6}
+.area{display:flex;gap:7px;flex-wrap:wrap}.area span{background:var(--canvas);border:1px solid var(--line);color:var(--ink-2);font-size:12.5px;font-weight:500;padding:5px 11px;border-radius:16px}
+.rev{padding:15px 0;border-bottom:1px solid var(--line-2)}.rev:last-child{border-bottom:none;padding-bottom:0}
+.rev-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px}
+.rev-who{font-size:13.5px;font-weight:600}.rev-stars{color:var(--gold);font-size:14px;letter-spacing:1px}
+.rev-date{font-size:12px;color:var(--muted)}
+.rev-c{font-size:14px;color:var(--ink-2);font-style:italic;line-height:1.5}
+.rev-empty{font-size:14px;color:var(--muted);text-align:center;padding:14px}
+.notfound{text-align:center;padding:70px 20px}.notfound h2{font-family:'Fraunces',serif;font-size:22px;margin-bottom:8px}.notfound a{color:var(--blue);font-weight:600;text-decoration:none}
+</style>
+</head>
+<body>
+<div id="cpr-nav-placeholder"></div>
+<div class="wrap">
+  <div id="boot" class="loading"><div class="spinner"></div><span id="boot-msg">Cargando...</span></div>
+  <script>(function(){try{var l=localStorage.getItem("cpr_lang")||"es";document.getElementById("boot-msg").textContent=(l==="en"?"Loading...":"Cargando...");}catch(e){}})();</script>
+  <div id="notfound" class="notfound" style="display:none"><h2 id="nf-t">Contratista no encontrado</h2><a href="javascript:history.back()" id="nf-l">← Volver</a></div>
+  <div id="page" style="display:none"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
+<script>
+var lang=(window.CPR&&CPR.lang)||'es';
+var c=null, reviews=[], reviewerById={};
+var T={
+  back:{es:'Volver',en:'Back'},
+  active:{es:'Activo',en:'Active'},
+  memberSince:{es:'Miembro desde {d}',en:'Member since {d}'},
+  noRating:{es:'Sin reseñas aún',en:'No reviews yet'},
+  reviewsT:{es:'Reseñas',en:'Reviews'},
+  tradesT:{es:'Oficios',en:'Trades'},licT:{es:'Licencias',en:'Licenses'},
+  areaT:{es:'Zona de servicio',en:'Service area'},bioT:{es:'Sobre el contratista',en:'About the contractor'},
+  yrs:{es:'años',en:'yrs'},yr1:{es:'año',en:'yr'},
+  revEmpty:{es:'Este contratista aún no tiene reseñas.',en:'This contractor has no reviews yet.'},
+  client:{es:'Cliente',en:'Client'}
+};
+function el(id){return document.getElementById(id);}
+function t(k){var e=T[k];return e?(e[lang]||e.es):k;}
+function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function getParam(n){return new URLSearchParams(location.search).get(n);}
+function cName(){ return c.company||((c.first_name||'')+' '+(c.last_name||'')).trim()||c.name||'Contratista'; }
+function initials(n){ if(!n) return '?'; var p=n.trim().split(/\s+/); return ((p[0]||'')[0]||'').toUpperCase()+((p[1]||'')[0]||'').toUpperCase(); }
+function fmtDate(ts,withDay){ try{ return new Date(ts).toLocaleDateString(lang==='en'?'en-US':'es-ES', withDay?{month:'short',day:'numeric',year:'numeric'}:{month:'long',year:'numeric'}); }catch(e){ return ''; } }
+function starStr(n){ var s=''; for(var i=1;i<=5;i++){ s+= i<=Math.round(n)?'★':'☆'; } return s; }
+
+function tradesList(){
+  var arr=[];
+  if(Array.isArray(c.trades)&&c.trades.length){ c.trades.forEach(function(x){ arr.push({trade:(typeof x==='string'?x:(x&&x.trade)), years:(x&&x.years)}); }); }
+  else if(c.trade){ arr.push({trade:c.trade, years:c.years_experience}); }
+  return arr.filter(function(x){return x.trade;});
+}
+function licList(){
+  var arr=[];
+  if(Array.isArray(c.licenses)&&c.licenses.length){ c.licenses.forEach(function(x){ if(x&&(x.type||x.number)) arr.push({type:x.type||'', number:x.number||''}); }); }
+  else if(c.license_number){ arr.push({type:'CIAPR', number:c.license_number}); }
+  return arr;
+}
+function render(){
+  var avInner = c.avatar_url ? '<img src="'+esc(c.avatar_url)+'" alt="">' : esc(initials(cName()));
+  var ratingHtml = (c.rating!=null) ? '<span class="h-rating"><span class="stars">'+starStr(c.rating)+'</span>'+Number(c.rating).toFixed(1)+(reviews.length?' ('+reviews.length+')':'')+'</span>' : '<span style="color:var(--muted)">'+t('noRating')+'</span>';
+  var trades=tradesList();
+  var primary = trades.length ? trades.map(function(x){return CPR.tradeLabel(x.trade);}).join(' · ') : '';
+  var lics=licList();
+  var areas=(c.service_municipios||'').split(',').map(function(s){return s.trim();}).filter(Boolean);
+  var html=''+
+    '<button class="back-btn" onclick="history.length>1?history.back():location.href=\'properties.html\'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>'+t('back')+'</button>'+
+    '<div class="hero"><div class="hero-top"><div class="av">'+avInner+'</div>'+
+      '<div class="h-main"><div class="h-name">'+esc(cName())+CPR.verifiedBadge(c.verified,18)+'</div>'+
+        (primary?'<div class="h-trade">'+esc(primary)+'</div>':'')+
+        '<div class="h-meta">'+ratingHtml+
+          (c.status==='active'?'<span class="h-chip active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'+t('active')+'</span>':'')+
+          (c.city?'<span class="h-loc"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>'+esc(c.city)+'</span>':'')+
+        '</div>'+
+        (c.created_at?'<div style="font-size:12.5px;color:var(--muted);margin-top:8px">'+t('memberSince').replace('{d}',esc(fmtDate(c.created_at)))+'</div>':'')+
+      '</div></div></div>';
+  if(trades.length){
+    html+='<div class="card"><h2>'+t('tradesT')+'</h2><div class="chips">'+trades.map(function(x){ var yr=(x.years!=null&&x.years!=='')?(' <span class="yr">· '+x.years+' '+(String(x.years)==='1'?t('yr1'):t('yrs'))+'</span>'):''; return '<span class="tchip">'+esc(CPR.tradeLabel(x.trade))+yr+'</span>'; }).join('')+'</div></div>';
+  }
+  if(lics.length){
+    html+='<div class="card"><h2>'+t('licT')+'</h2>'+lics.map(function(l){ return '<div class="lic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg><b>'+esc(l.type||'Licencia')+'</b>'+(l.number?'<span class="num">'+esc(l.number)+'</span>':'')+'</div>'; }).join('')+'</div>';
+  }
+  if(areas.length){
+    html+='<div class="card"><h2>'+t('areaT')+'</h2><div class="area">'+areas.map(function(a){return '<span>'+esc(a)+'</span>';}).join('')+'</div></div>';
+  }
+  if(c.description){
+    html+='<div class="card"><h2>'+t('bioT')+'</h2><div class="bio">'+esc(c.description)+'</div></div>';
+  }
+  html+='<div class="card"><h2>'+t('reviewsT')+(reviews.length?' ('+reviews.length+')':'')+'</h2>'+
+    (reviews.length ? reviews.map(function(r){
+      var who=reviewerById[r.homeowner_id]||t('client');
+      return '<div class="rev"><div class="rev-top"><div class="rev-who">'+esc(who)+'</div><div class="rev-date">'+esc(fmtDate(r.created_at,true))+'</div></div>'+
+        '<div class="rev-stars">'+starStr(r.rating)+'</div>'+(r.comment?'<div class="rev-c">"'+esc(r.comment)+'"</div>':'')+'</div>';
+    }).join('') : '<div class="rev-empty">'+t('revEmpty')+'</div>')+'</div>';
+  el('page').innerHTML=html;
+}
+(function init(){
+  if(!window.CPR){ return; }
+  if(!window._sb && window.supabase){ window._sb=supabase.createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK); }
+  CPR.injectNav('contractor-view', null);
+  (async function(){
+    var id=getParam('id'); if(!id){ el('boot').style.display='none'; el('notfound').style.display='block'; return; }
+    var r=await CPR.db('contractors?id=eq.'+encodeURIComponent(id)+'&select=id,name,company,first_name,last_name,avatar_url,rating,verified,status,trade,trades,licenses,license_number,service_municipios,city,description,years_experience,created_at');
+    c=(Array.isArray(r)&&r[0])?r[0]:null;
+    if(!c){ el('boot').style.display='none'; if(lang==='en'){el('nf-t').textContent='Contractor not found';el('nf-l').textContent='← Back';} el('notfound').style.display='block'; return; }
+    var rv=await CPR.db('reviews?contractor_id=eq.'+encodeURIComponent(id)+'&direction=eq.client_to_contractor&order=created_at.desc&select=rating,comment,created_at,homeowner_id');
+    reviews=Array.isArray(rv)?rv:[];
+    var hoIds=[]; reviews.forEach(function(x){ if(x.homeowner_id && hoIds.indexOf(x.homeowner_id)<0) hoIds.push(x.homeowner_id); });
+    if(hoIds.length){ var hs=await CPR.db('homeowners?id=in.('+hoIds.join(',')+')&select=id,first_name,name'); (Array.isArray(hs)?hs:[]).forEach(function(h){ reviewerById[h.id]=h.first_name||h.name||''; }); }
+    el('boot').style.display='none'; el('page').style.display='block';
+    render();
+  })();
+})();
+</script>
+</body>
+</html>

@@ -22,7 +22,10 @@ a{color:inherit;text-decoration:none}
 .notfound{text-align:center;padding:80px 24px;color:var(--muted)}
 .notfound h2{font-family:'Fraunces',serif;font-size:24px;color:var(--ink);margin-bottom:10px}
 .notfound a{color:var(--blue);font-weight:600}
-.back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:22px}
+.back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:22px;background:none;border:none;cursor:pointer;font-family:inherit}
+.share-btn{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;color:var(--ink-2);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 14px;cursor:pointer;font-family:inherit;transition:.15s}
+.share-btn:hover{border-color:var(--blue);color:var(--blue)}.share-btn svg{width:15px;height:15px}
+.share-btn.copied{background:var(--ok-soft);border-color:#BFE6D4;color:var(--ok)}
 .back-btn:hover{color:var(--blue)}.back-btn svg{width:16px;height:16px}
 .job-head{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);margin-bottom:28px}
 .jh-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}
@@ -36,21 +39,74 @@ a{color:inherit;text-decoration:none}
 .jh-meta .mi{display:flex;align-items:center;gap:6px}.jh-meta svg{width:14px;height:14px}
 .sec-title{font-family:'Fraunces',serif;font-size:20px;font-weight:500;margin-bottom:4px;display:flex;align-items:center;gap:10px}
 .sec-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+.prop-head-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px;flex-wrap:wrap}
+.btn-invite{display:inline-flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--blue);color:var(--blue);font-family:inherit;font-size:13px;font-weight:600;padding:8px 15px;border-radius:10px;cursor:pointer;transition:.15s}
+.btn-invite:hover{background:var(--blue);color:#fff}.btn-invite svg{width:15px;height:15px}
+.inv-overlay{position:fixed;inset:0;background:rgba(11,31,51,.5);z-index:200;display:none;align-items:center;justify-content:center;padding:18px}
+.inv-overlay.show{display:flex}
+.inv-modal{background:#fff;border-radius:18px;width:100%;max-width:520px;max-height:86vh;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 64px rgba(11,31,51,.3)}
+.inv-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:20px 22px 14px;border-bottom:1px solid var(--line-2)}
+.inv-head h3{font-family:'Fraunces',serif;font-size:20px;font-weight:500}.inv-head p{font-size:13px;color:var(--muted);margin-top:3px}
+.inv-x{background:none;border:none;font-size:17px;color:var(--muted);cursor:pointer;line-height:1;padding:4px}
+.inv-tools{display:flex;align-items:center;gap:10px;padding:14px 22px;flex-wrap:wrap}
+.inv-search{flex:1;min-width:150px;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:13.5px;color:var(--ink)}.inv-search:focus{outline:none;border-color:var(--blue)}
+.inv-segs{display:inline-flex;background:var(--canvas);border:1px solid var(--line);border-radius:9px;padding:2px}
+.inv-seg{border:none;background:none;font-family:inherit;font-size:12px;font-weight:700;color:var(--muted);padding:6px 11px;border-radius:7px;cursor:pointer}.inv-seg.on{background:#fff;color:var(--blue);box-shadow:0 1px 3px rgba(11,31,51,.1)}
+.inv-list{overflow-y:auto;padding:4px 14px 8px;flex:1}
+.inv-row{display:flex;align-items:center;gap:12px;padding:11px 8px;border-radius:11px;cursor:pointer}
+.inv-row:hover{background:var(--canvas)}
+.inv-av{width:42px;height:42px;border-radius:50%;background:var(--blue-soft);color:var(--blue);display:grid;place-items:center;font-weight:700;font-size:14px;flex-shrink:0;overflow:hidden}.inv-av img{width:100%;height:100%;object-fit:cover}
+.inv-info{flex:1;min-width:0}.inv-name{font-size:14px;font-weight:600}.inv-sub2{font-size:12px;color:var(--muted);margin-top:2px}
+.inv-star{color:#F5A623;font-weight:600}
+.inv-check{width:22px;height:22px;border:2px solid var(--line);border-radius:7px;flex-shrink:0;display:grid;place-items:center;color:#fff}
+.inv-row.sel .inv-check{background:var(--blue);border-color:var(--blue)}.inv-check svg{width:14px;height:14px;opacity:0}.inv-row.sel .inv-check svg{opacity:1}
+.inv-row.done{opacity:.55;cursor:default}.inv-tag{font-size:11px;font-weight:700;color:var(--ok);background:var(--ok-soft);padding:4px 9px;border-radius:16px}
+.inv-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 22px;border-top:1px solid var(--line-2)}
+.inv-count{font-size:13px;color:var(--muted);font-weight:500}
+.inv-send{background:var(--blue);color:#fff;border:none;padding:11px 22px;border-radius:11px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit}.inv-send:hover{background:var(--blue-deep)}.inv-send:disabled{opacity:.5;cursor:default}
+.inv-empty{text-align:center;padding:40px 20px;color:var(--muted);font-size:14px}
+.inv-ext{padding:13px 22px;border-top:1px solid var(--line-2);background:var(--canvas)}
+.inv-ext-t{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+.inv-ext-row{display:flex;gap:8px}
+.inv-ext-input{flex:1;border:1px solid var(--line);border-radius:9px;padding:9px 12px;font-family:inherit;font-size:13.5px;color:var(--ink)}.inv-ext-input:focus{outline:none;border-color:var(--blue)}
+.inv-ext-btn{background:var(--blue-soft);color:var(--blue);border:none;padding:9px 16px;border-radius:9px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;white-space:nowrap}.inv-ext-btn:hover{background:var(--blue);color:#fff}.inv-ext-btn:disabled{opacity:.6;cursor:default}
+.inv-ext-msg{font-size:12.5px;margin-top:7px;font-weight:500;display:none}.inv-ext-msg.ok{color:var(--ok);display:block}.inv-ext-msg.err{color:var(--rose);display:block}
+.inv-link-btn{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;margin-top:10px;background:var(--card);border:1px solid var(--line);color:var(--ink-2);font-family:inherit;font-size:13px;font-weight:600;padding:9px 14px;border-radius:9px;cursor:pointer;transition:.15s}
+.inv-link-btn:hover{border-color:var(--blue);color:var(--blue)}.inv-link-btn svg{width:15px;height:15px}.inv-link-btn.copied{background:var(--ok-soft);border-color:#BFE6D4;color:var(--ok)}
 .count-badge{background:var(--blue-soft);color:var(--blue);font-size:12px;font-weight:700;padding:2px 9px;border-radius:20px}
 .prop-card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin-bottom:12px;box-shadow:var(--shadow);transition:.16s}
 .prop-card.accepted{border-color:#BFE6D4;background:linear-gradient(180deg,var(--ok-soft),#fff 60%)}
 .pc-top{display:flex;align-items:center;gap:13px;margin-bottom:12px}
 .pc-av{width:44px;height:44px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:600;font-size:16px;flex-shrink:0}
+.pc-who{display:flex;align-items:center;gap:13px;text-decoration:none;color:inherit;border-radius:10px;padding:4px;margin:-4px;transition:.13s}
+.pc-who:hover{background:var(--line-2)}
 .pc-name{font-size:15px;font-weight:700}
 .pc-rating{font-size:12.5px;color:var(--warn);font-weight:600;margin-top:1px}
+.pc-view{font-size:11.5px;color:var(--blue);font-weight:600;margin-top:3px}
+.pc-hint{font-size:12.5px;color:var(--muted);font-weight:500;margin-top:8px}
+.onhold-strip{display:flex;align-items:flex-start;gap:11px;background:var(--blue-soft);border:1px solid #D4E2FB;border-radius:13px;padding:13px 16px;margin-bottom:18px}
+.onhold-strip svg{width:18px;height:18px;color:var(--blue);flex-shrink:0;margin-top:1px}
+.onhold-strip .oh-main{font-size:14px;color:var(--ink)}.onhold-strip .oh-main b{font-family:'Fraunces',serif;font-weight:500}
+.onhold-strip .oh-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.ejf{margin-bottom:14px}.ejf label{display:block;font-size:13px;font-weight:600;margin-bottom:6px}
+.ejf input,.ejf select,.ejf textarea{width:100%;border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-family:inherit;font-size:14px;color:var(--ink);background:var(--card)}
+.ejf textarea{resize:vertical;min-height:90px;line-height:1.5}
+.ejf input:focus,.ejf select:focus,.ejf textarea:focus{outline:none;border-color:var(--blue)}
 .pc-price{margin-left:auto;text-align:right}
 .pc-price .v{font-family:'Fraunces',serif;font-size:22px;font-weight:500;color:var(--blue);line-height:1}
 .pc-price .l{font-size:11px;color:var(--muted);margin-top:2px}
 .pc-msg{font-size:13.5px;color:var(--ink-2);background:var(--canvas);border-radius:10px;padding:12px 14px;margin-bottom:14px}
 .pc-actions{display:flex;gap:10px;align-items:center}
-.btn-accept{background:var(--ok);color:#fff;font-weight:600;font-size:13.5px;padding:10px 18px;border-radius:10px}
+.btn-accept{background:var(--ok);color:#fff;font-weight:600;font-size:13.5px;padding:10px 18px;border-radius:10px;border:none;cursor:pointer;font-family:inherit}
 .btn-accept:hover{filter:brightness(.95)}
 .btn-accept:disabled{opacity:.6;cursor:not-allowed}
+.btn-counter{background:var(--card);color:var(--blue);border:1px solid var(--blue);font-weight:600;font-size:13.5px;padding:10px 16px;border-radius:10px;cursor:pointer;font-family:inherit}
+.btn-counter:hover{background:var(--blue-soft)}
+.btn-reject{background:none;color:var(--muted);border:none;font-weight:600;font-size:13.5px;padding:10px 10px;border-radius:10px;cursor:pointer;font-family:inherit}
+.btn-reject:hover{color:var(--rose)}
+.btn-msg{display:inline-flex;align-items:center;gap:6px;background:var(--card);color:var(--ink-2);border:1px solid var(--line);font-weight:600;font-size:13.5px;padding:10px 15px;border-radius:10px;cursor:pointer;font-family:inherit}
+.btn-msg:hover{border-color:var(--blue);color:var(--blue)}.btn-msg svg{width:15px;height:15px}
+.pc-chat{border-top:1px solid var(--line-2);margin-top:14px;padding-top:6px}
 .btn-ghost{border:1px solid var(--line);background:var(--card);color:var(--ink-2);font-weight:600;font-size:13.5px;padding:10px 16px;border-radius:10px}
 .accepted-tag{display:inline-flex;align-items:center;gap:7px;background:var(--ok-soft);color:var(--ok);font-size:13px;font-weight:700;padding:8px 14px;border-radius:10px}
 .accepted-tag svg{width:15px;height:15px}
@@ -83,6 +139,28 @@ a{color:inherit;text-decoration:none}
   <div id="detail" style="display:none"></div>
 </div>
 <div class="toast" id="toast"></div>
+<div class="inv-overlay" id="inv-overlay" onclick="if(event.target===this)closeInvite()">
+  <div class="inv-modal">
+    <div class="inv-head"><div><h3 id="inv-title">Invitar contratistas</h3><p id="inv-sub"></p></div><button class="inv-x" onclick="closeInvite()">✕</button></div>
+    <div class="inv-tools"><input type="text" id="inv-search" class="inv-search" oninput="renderInvList()"><div class="inv-segs"><button id="inv-seg-match" class="inv-seg on" onclick="setInvScope('match')"></button><button id="inv-seg-all" class="inv-seg" onclick="setInvScope('all')"></button></div></div>
+    <div class="inv-list" id="inv-list"></div>
+    <div class="inv-ext"><div class="inv-ext-t" id="inv-ext-t"></div><div class="inv-ext-row"><input type="email" id="inv-ext-email" class="inv-ext-input"><button class="inv-ext-btn" id="inv-ext-btn" onclick="sendExternalInvite()"></button></div><div class="inv-ext-msg" id="inv-ext-msg"></div>
+      <button class="inv-link-btn" onclick="copyJobLink(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.07 0l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.07 0l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg><span id="inv-link-lbl"></span></button></div>
+    <div class="inv-foot"><span class="inv-count" id="inv-count"></span><button class="inv-send" id="inv-send" onclick="sendInvites()"></button></div>
+  </div>
+</div>
+
+<div class="inv-overlay" id="edit-overlay" onclick="if(event.target===this)closeEdit()">
+  <div class="inv-modal" style="max-width:480px">
+    <div class="inv-head"><div><h3 id="edit-title">Editar trabajo</h3></div><button class="inv-x" onclick="closeEdit()">✕</button></div>
+    <div style="padding:18px 22px">
+      <div class="ejf"><label id="ej-title-l"></label><input type="text" id="ej-title"></div>
+      <div class="ejf"><label id="ej-trade-l"></label><select id="ej-trade"></select></div>
+      <div class="ejf"><label id="ej-desc-l"></label><textarea id="ej-desc" rows="4"></textarea></div>
+      <button class="inv-send" id="ej-save" onclick="saveJobEdit()" style="width:100%"></button>
+    </div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/lang.js"></script>
@@ -93,17 +171,47 @@ var currentUser=null, job=null, prop=null, proposals=[], contractorsById={};
 var T={
   nfTitle:{es:'Trabajo no encontrado',en:'Job not found'},nfSub:{es:'No pudimos encontrar este trabajo.',en:"We couldn't find this job."},nfLink:{es:'← Volver a mis propiedades',en:'← Back to my properties'},
   back:{es:'Volver a la propiedad',en:'Back to property'},
+  share:{es:'Copiar enlace',en:'Copy link'},copied:{es:'¡Enlace copiado!',en:'Link copied!'},
+  viewProfile:{es:'Ver perfil',en:'View profile'},msgBtn:{es:'Mensaje',en:'Message'},chatWith:{es:'Chat con',en:'Chat with'},
   stOpen:{es:'Abierto',en:'Open'},stActive:{es:'En progreso',en:'In progress'},stDone:{es:'Completado',en:'Completed'},
   proposalsTitle:{es:'Propuestas',en:'Proposals'},
   proposalsSub:{es:'Los contratistas que respondieron a este trabajo. Acepta una para empezar.',en:'Contractors who responded to this job. Accept one to begin.'},
+  inviteBtn:{es:'Invitar contratistas',en:'Invite contractors'},
+  inviteTitle:{es:'Invitar contratistas',en:'Invite contractors'},
+  inviteSub:{es:'Invita a contratistas a enviar una propuesta para este trabajo.',en:'Invite contractors to submit a proposal for this job.'},
+  inviteSearch:{es:'Buscar por nombre o empresa…',en:'Search by name or company…'},
+  inviteMatch:{es:'Del oficio del trabajo',en:'Matching the job trade'},inviteAll:{es:'Todos',en:'All'},
+  invited:{es:'Invitado',en:'Invited'},invite:{es:'Invitar',en:'Invite'},
+  inviteSend:{es:'Enviar invitaciones',en:'Send invites'},inviteSending:{es:'Enviando…',en:'Sending…'},
+  inviteNone:{es:'No hay contratistas para mostrar.',en:'No contractors to show.'},
+  inviteSent:{es:'¡Invitaciones enviadas!',en:'Invites sent!'},inviteCancel:{es:'Cerrar',en:'Close'},
+  extT:{es:'¿No está en la lista? Invítalo por correo',en:'Not on the list? Invite by email'},
+  extPh:{es:'correo@contratista.com',en:'email@contractor.com'},extBtn:{es:'Invitar',en:'Invite'},
+  extBad:{es:'Escribe un correo válido.',en:'Enter a valid email.'},extSent:{es:'¡Invitación enviada por correo!',en:'Email invite sent!'},
+  inviteSelected:{es:'{n} seleccionados',en:'{n} selected'},inviteRating:{es:'Sin reseñas',en:'No reviews yet'},
   emptyT:{es:'Aún no hay propuestas',en:'No proposals yet'},emptyP:{es:'Cuando un contratista responda a tu trabajo, su propuesta aparecerá aquí.',en:'When a contractor responds to your job, their proposal appears here.'},
   perJob:{es:'por el trabajo',en:'for the job'},accept:{es:'Aceptar propuesta',en:'Accept proposal'},
   accepted:{es:'Propuesta aceptada',en:'Proposal accepted'},accepting:{es:'Aceptando...',en:'Accepting...'},
   noPrice:{es:'Precio por confirmar',en:'Price to confirm'},
+  inqLbl:{es:'Te escribió',en:'Messaged you'},inqSub:{es:'Tiene preguntas',en:'Has questions'},
+  wantsVisit:{es:'Solicita una visita',en:'Requests a visit'},acceptVisit:{es:'Aceptar visita',en:'Accept visit'},visitAccepted:{es:'¡Visita confirmada!',en:'Visit confirmed!'},
+  visitOk:{es:'Visita confirmada',en:'Visit confirmed'},awaitingQuote:{es:'Inspeccionará y luego cotizará',en:'Will inspect, then quote'},
+  declinedTag:{es:'Denegada',en:'Denied'},
+  onHoldFor:{es:'en garantía para este trabajo',en:'held for this job'},onHoldSub:{es:'Los fondos se liberan al contratista cuando ambos marcan el trabajo como completado.',en:'Funds are released to the contractor once both mark the job completed.'},
+  reviewPrompt:{es:'¡Trabajo completado! Deja tu reseña abajo.',en:'Job completed! Leave your review below.'},
+  counter:{es:'Contraofertar',en:'Counter'},reject:{es:'Rechazar',en:'Reject'},
+  counterPrompt:{es:'Tu contraoferta (precio en $):',en:'Your counter-offer (price in $):'},
+  counteredHint:{es:'Contraofertaste {c} — esperando al contratista.',en:'You countered {c} — awaiting the contractor.'},
+  counterSent:{es:'¡Contraoferta enviada!',en:'Counter-offer sent!'},
+  rejectConfirm:{es:'¿Rechazar esta propuesta?',en:'Reject this proposal?'},rejected:{es:'Propuesta rechazada',en:'Proposal rejected'},
   inProgressT:{es:'Trabajo en progreso',en:'Job in progress'},inProgressS:{es:'Cuando el trabajo esté terminado, márcalo como completado.',en:'When the work is done, mark it as completed.'},
   markComplete:{es:'Marcar como completado',en:'Mark as completed'},completing:{es:'Procesando...',en:'Processing...'},
   doneT:{es:'Trabajo completado',en:'Job completed'},doneS:{es:'Este trabajo está cerrado y forma parte del historial de la propiedad.',en:'This job is closed and part of the property history.'},
-  msgSoon:{es:'El chat con el contratista y las reseñas llegan en el próximo módulo.',en:'Contractor chat and reviews arrive in the next module.'},
+  msgSoon:{es:'El chat con el contratista llega en el próximo módulo.',en:'Contractor chat arrives in the next module.'},
+  reviewTitle:{es:'Reseñas',en:'Reviews'},schedSecT:{es:'Programación',en:'Scheduling'},
+  editJob:{es:'Editar',en:'Edit'},editJobT:{es:'Editar trabajo',en:'Edit job'},ejTitleL:{es:'Título',en:'Title'},ejTradeL:{es:'Tipo de trabajo',en:'Type of work'},ejDescL:{es:'Descripción',en:'Description'},ejSave:{es:'Guardar cambios',en:'Save changes'},ejSaved:{es:'Trabajo actualizado',en:'Job updated'},
+  theirReviewT:{es:'Lo que dijo el contratista sobre ti',en:'What the contractor said about you'},
+  noTheirReview:{es:'El contratista aún no te ha dejado una reseña.',en:'The contractor hasn’t reviewed you yet.'},
   property:{es:'Propiedad',en:'Property'},type:{es:'Tipo',en:'Type'},
   accErr:{es:'No se pudo aceptar. Intenta de nuevo.',en:'Could not accept. Try again.'},compErr:{es:'No se pudo completar. Intenta de nuevo.',en:'Could not complete. Try again.'}
 };
@@ -112,8 +220,15 @@ function el(id){return document.getElementById(id);}
 function getParam(n){return new URLSearchParams(location.search).get(n);}
 function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function money(n){return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function numv(b){ var v=parseFloat(String(b==null?'':b).replace(/[^0-9.]/g,'')); return isNaN(v)?0:v; }
 function statusBucket(s){if(s==='open')return 'open';if(s==='accepted'||s==='in_progress'||s==='active')return 'active';if(s==='completed')return 'done';return 'other';}
 function toast(m){var x=el('toast');x.textContent=m;x.classList.add('show');setTimeout(function(){x.classList.remove('show');},1800);}
+window.copyJobLink=function(btn){
+  var url=location.origin+'/job-view.html?id='+encodeURIComponent(job.id);
+  function done(){ btn.classList.add('copied'); var sp=btn.querySelector('span'); if(sp) sp.textContent=t('copied'); toast(t('copied')); setTimeout(function(){ btn.classList.remove('copied'); if(sp) sp.textContent=t('share'); },1800); }
+  if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(url).then(done,function(){ prompt(lang==='en'?'Copy this link:':'Copia este enlace:',url); }); }
+  else { prompt(lang==='en'?'Copy this link:':'Copia este enlace:',url); }
+};
 function initials(name){if(!name)return '?';var p=name.trim().split(/\s+/);return ((p[0]||'')[0]||'').toUpperCase()+((p[1]||'')[0]||'').toUpperCase();}
 
 async function dbPatch(table,query,obj){
@@ -125,25 +240,43 @@ async function sendEmail(type,data){
   try{ await fetch('/.netlify/functions/send-email',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:type,data:data})}); }catch(e){}
 }
 
+function fmtVisit(p){
+  if(!p||!p.visit_date) return '';
+  try{ var d=new Date(p.visit_date+'T00:00:00'); return d.toLocaleDateString(lang==='en'?'en-US':'es-ES',{weekday:'long',month:'long',day:'numeric'})+(p.visit_time?' · '+p.visit_time:''); }catch(e){ return p.visit_date; }
+}
 function renderProposal(p){
   var c=contractorsById[p.contractor_id]||{};
   var name=c.name||'Contratista';
   var rating=c.rating?('★ '+Number(c.rating).toFixed(1)):'';
-  var price=p.price?money(p.price):t('noPrice');
-  var isAccepted=(p.status==='accepted'||p.status==='completed');
-  var jobOpen=statusBucket(job.status)==='open';
-  var action='';
-  if(isAccepted){
-    action='<span class="accepted-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'+t('accepted')+'</span>';
-  }else if(jobOpen){
-    action='<button class="btn-accept" onclick="acceptProposal(\''+p.id+'\')">'+t('accept')+'</button>';
+  var s=p.status, isAccepted=(s==='accepted'||s==='completed'), jobOpen=statusBucket(job.status)==='open';
+  var vWhen=fmtVisit(p);
+  var mid, action='', hint='';
+  if(s==='inquiry'){
+    mid='<div class="pc-price"><div class="v" style="font-size:14px;color:var(--blue)">'+t('inqLbl')+'</div><div class="l">'+t('inqSub')+'</div></div>';
+  } else if(s==='visit_requested'){
+    mid='<div class="pc-price"><div class="v" style="font-size:14px;color:var(--blue)">'+t('wantsVisit')+'</div><div class="l">'+esc(vWhen)+'</div></div>';
+    if(jobOpen) action='<button class="btn-accept" onclick="acceptVisit(\''+p.id+'\')">'+t('acceptVisit')+'</button>';
+  } else if(s==='visit_accepted'){
+    mid='<div class="pc-price"><div class="v" style="font-size:14px;color:var(--ok)">'+t('visitOk')+'</div><div class="l">'+esc(vWhen)+'</div></div>';
+    hint=t('awaitingQuote');
+  } else {
+    var price=p.price?money(p.price):t('noPrice');
+    mid='<div class="pc-price"><div class="v">'+price+'</div><div class="l">'+t('perJob')+'</div></div>';
+    if(isAccepted){ action='<span class="accepted-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'+t('accepted')+'</span>'; }
+    else if(s==='declined'){ action='<span style="font-size:12px;color:var(--muted);font-weight:600">'+t('declinedTag')+'</span>'; }
+    else if(s==='countered'){ hint=t('counteredHint').replace('{c}', money(numv(p.counter_price))); }
+    else if(jobOpen && (s==='quoted'||s==='pending')){ action='<button class="btn-accept" onclick="acceptProposal(\''+p.id+'\')">'+t('accept')+'</button><button class="btn-counter" onclick="counterQuote(\''+p.id+'\')">'+t('counter')+'</button><button class="btn-reject" onclick="rejectQuote(\''+p.id+'\')">'+t('reject')+'</button>'; }
   }
+  var msgBtn = (s!=='declined') ? '<button class="btn-msg" onclick="toggleChat(\''+p.id+'\')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>'+t('msgBtn')+'</button>' : '';
+  var acts=[action, msgBtn].filter(Boolean).join('');
   return '<div class="prop-card'+(isAccepted?' accepted':'')+'">'+
-    '<div class="pc-top"><div class="pc-av">'+esc(initials(name))+'</div>'+
-      '<div><div class="pc-name">'+esc(name)+'</div>'+(rating?'<div class="pc-rating">'+rating+'</div>':'')+'</div>'+
-      '<div class="pc-price"><div class="v">'+price+'</div><div class="l">'+t('perJob')+'</div></div></div>'+
+    '<div class="pc-top"><a class="pc-who" href="contractor-view.html?id='+encodeURIComponent(p.contractor_id)+'"><div class="pc-av">'+esc(initials(name))+'</div>'+
+      '<div><div class="pc-name">'+esc(name)+CPR.verifiedBadge(c.verified)+'</div>'+(rating?'<div class="pc-rating">'+rating+'</div>':'')+'<div class="pc-view">'+t('viewProfile')+' →</div></div></a>'+
+      mid+'</div>'+
     (p.message?'<div class="pc-msg">'+esc(p.message)+'</div>':'')+
-    (action?'<div class="pc-actions">'+action+'</div>':'')+'</div>';
+    (hint?'<div class="pc-hint">'+esc(hint)+'</div>':'')+
+    (acts?'<div class="pc-actions">'+acts+'</div>':'')+
+    (s!=='declined'?'<div class="pc-chat" id="chat-'+p.id+'" style="display:none"></div>':'')+'</div>';
 }
 
 function render(){
@@ -153,37 +286,230 @@ function render(){
   var pendingOrAll=proposals;
   var propName=prop?(prop.nickname||prop.address||t('property')):'';
   var html=''+
-    '<button class="back-btn" onclick="location.href=\'property.html?id='+(prop?prop.id:'')+'\'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>'+t('back')+'</button>'+
-    '<div class="job-head"><div class="jh-top"><div><div class="jh-trade">'+esc(job.trade_needed||'')+'</div><h1>'+esc(job.title||'')+'</h1></div>'+
+    '<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px"><button class="back-btn" style="margin:0" onclick="location.href=\'property.html?id='+(prop?prop.id:'')+'\'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>'+t('back')+'</button>'+
+    '<div style="display:flex;gap:8px">'+(bucket==='open'?'<button class="share-btn" onclick="openEdit()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 013 3L7 19l-4 1 1-4z"/></svg><span>'+t('editJob')+'</span></button>':'')+
+    '<button class="share-btn" onclick="copyJobLink(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.07 0l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.07 0l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg><span>'+t('share')+'</span></button></div></div>'+
+    '<div class="job-head"><div class="jh-top"><div><div class="jh-trade">'+esc(CPR.tradeLabel(job.trade_needed))+'</div><h1>'+esc(job.title||'')+'</h1></div>'+
       '<span class="jh-status '+stCls+'">'+stTxt+'</span></div>'+
       (job.description?'<div class="jh-desc">'+esc(job.description)+'</div>':'')+
       '<div class="jh-meta">'+
         (prop?'<span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg><a href="property.html?id='+prop.id+'">'+esc(propName)+'</a></span>':'')+
         (job.city?'<span class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>'+esc(job.city)+'</span>':'')+
-      '</div></div>';
+      '</div>'+
+      '<div id="job-files" style="margin-top:18px;border-top:1px solid var(--line-2);padding-top:18px"></div>'+
+      '</div>';
 
+  // on-hold payment strip (active) — agreed price held until completion
   if(bucket==='active'){
-    html+='<div class="complete-bar"><div><div class="ct">'+t('inProgressT')+'</div><div class="cs">'+t('inProgressS')+'</div></div>'+
-      '<button class="btn-complete" id="complete-btn" onclick="markComplete()">'+t('markComplete')+'</button></div>';
-  }else if(bucket==='done'){
+    var accP=proposals.filter(function(p){return p.status==='accepted'||p.status==='completed';})[0];
+    var amtH=accP?numv(accP.price):0;
+    if(amtH){ html+='<div class="onhold-strip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg><div><div class="oh-main"><b>'+money(amtH)+'</b> '+t('onHoldFor')+'</div><div class="oh-sub">'+t('onHoldSub')+'</div></div></div>'; }
+  } else if(bucket==='done'){
     html+='<div class="complete-bar"><div><div class="ct">'+t('doneT')+'</div><div class="cs">'+t('doneS')+'</div></div>'+
       '<span class="accepted-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>'+t('stDone')+'</span></div>';
   }
 
-  html+='<div class="sec-title serif">'+t('proposalsTitle')+' <span class="count-badge">'+proposals.length+'</span></div>'+
+  // 1) PROPOSALS
+  html+='<div class="prop-head-row"><div class="sec-title serif" style="margin:0">'+t('proposalsTitle')+' <span class="count-badge">'+proposals.length+'</span></div>'+
+    (bucket!=='done'?'<button class="btn-invite" onclick="openInvite()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>'+t('inviteBtn')+'</button>':'')+'</div>'+
     '<div class="sec-sub">'+t('proposalsSub')+'</div>';
   if(proposals.length===0){
     html+='<div class="empty"><div class="ei"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div><h3>'+t('emptyT')+'</h3><p>'+t('emptyP')+'</p></div>';
   }else{
-    // accepted first, then pending
     var ordered=proposals.slice().sort(function(a,b){var aa=(a.status==='accepted'||a.status==='completed')?0:1;var bb=(b.status==='accepted'||b.status==='completed')?0:1;return aa-bb;});
     html+=ordered.map(renderProposal).join('');
   }
-  html+='<div class="soon-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>'+t('msgSoon')+'</div>';
+  // 2) SCHEDULING (active)
+  if(bucket==='active'){ html+='<div class="sec-title serif" style="margin-top:28px;font-size:18px">'+t('schedSecT')+'</div><div id="sched" style="margin:12px 0 0"></div>'; }
+  // 3) COMPLETION — always last (active)
+  if(bucket==='active'){ html+='<div id="complete-card" style="margin-top:22px"></div>'; }
+  // reviews (done)
+  if(bucket==='done'){
+    html+='<div class="sec-title serif" style="margin-top:28px">'+t('reviewTitle')+'</div>'+
+      '<div id="myreview" style="margin-bottom:16px"></div>'+
+      '<div class="sec-sub" style="margin-bottom:8px">'+t('theirReviewT')+'</div><div id="theirreview"></div>';
+  }
   el('detail').innerHTML=html;
   el('detail').style.display='block';
+  if(el('job-files')) CPR.jobFiles(el('job-files'), {jobId:job.id, propertyId:job.property_id});
+  if(bucket==='active' && el('sched')){ CPR.scheduleCard(el('sched'), job, 'client'); }
+  if(bucket==='active' && el('complete-card')){ CPR.completeCard(el('complete-card'), job, 'client', {onBothConfirmed: finalizeComplete}); }
+  if(bucket==='done'){ mountReviews(); if(_justCompleted){ _justCompleted=false; toast(t('reviewPrompt')); setTimeout(function(){ var r=el('myreview'); if(r) r.scrollIntoView({behavior:'smooth',block:'center'}); }, 250); } }
+}
+var _justCompleted=false;
+async function finalizeComplete(){
+  try{
+    var accepted=proposals.filter(function(p){return p.status==='accepted';})[0];
+    if(accepted){ await dbPatch('proposals','id=eq.'+encodeURIComponent(accepted.id),{status:'completed'}); }
+    var c=accepted?contractorsById[accepted.contractor_id]:null;
+    sendEmail('job_completed',{ homeowner_email:(currentUser&&currentUser.email)||'', contractor_email:(c&&c.email)||'', job_title:job.title, contractor_name:(c&&c.name)||'', amount:accepted?accepted.price:'' });
+  }catch(e){}
+  _justCompleted=true;
+  await reload();
 }
 
+function mountReviews(){
+  var acc=proposals.filter(function(p){return p.status==='completed'||p.status==='accepted';})[0];
+  var contractor=acc?contractorsById[acc.contractor_id]:null;
+  if(!contractor || !el('myreview')) return;
+  CPR.reviewCard(el('myreview'), { job:job, direction:'client_to_contractor', contractor_id:contractor.id, homeowner_id:job.homeowner_id, subjectName:(contractor.name||''), contractor_email:contractor.email });
+  // show the contractor's review of this client (read-only)
+  CPR.db('reviews?job_id=eq.'+encodeURIComponent(job.id)+'&direction=eq.contractor_to_client&select=*').then(function(r){
+    var rev=(Array.isArray(r)&&r[0])?r[0]:null; var box=el('theirreview'); if(!box) return;
+    if(rev){
+      var stars=''; for(var i=1;i<=5;i++){ stars+='<span style="color:'+(i<=rev.rating?'#F5A623':'#D8DEE6')+';font-size:18px">★</span>'; }
+      box.innerHTML='<div style="background:#fff;border:1px solid #E6E9EF;border-radius:14px;padding:16px 18px"><div style="margin-bottom:6px">'+stars+'</div>'+(rev.comment?'<div style="font-size:14px;color:#3A4A5C;font-style:italic;line-height:1.5">"'+esc(rev.comment)+'"</div>':'')+'</div>';
+    } else {
+      box.innerHTML='<div style="font-size:13.5px;color:#6B7A8D">'+t('noTheirReview')+'</div>';
+    }
+  });
+}
+
+/* ---- Invite contractors ---- */
+var invAll=[], invSelected=new Set(), invInvited=new Set(), invScope='match', invLoaded=false;
+function invTradeKey(v){ if(!v) return 12; for(var i=0;i<CPR.TRADES.length;i++){ if(CPR.TRADES[i][0]===v||CPR.TRADES[i][1]===v) return i; } return 12; }
+function cTradeList(c){ var arr=[]; if(c.trade) arr.push(c.trade); if(Array.isArray(c.trades)) c.trades.forEach(function(x){ arr.push(typeof x==='string'?x:(x&&(x.trade||x.name||x.value))); }); return arr.filter(Boolean); }
+function matchJobTrade(c){ if(!job.trade_needed) return true; var k=invTradeKey(job.trade_needed); return cTradeList(c).some(function(tn){ return invTradeKey(tn)===k; }); }
+function cName(c){ return c.company||c.name||((c.first_name||'')+' '+(c.last_name||'')).trim()||'Contratista'; }
+window.openInvite=function(){
+  el('inv-overlay').classList.add('show');
+  el('inv-title').textContent=t('inviteTitle'); el('inv-sub').textContent=t('inviteSub');
+  el('inv-search').placeholder=t('inviteSearch');
+  el('inv-seg-match').textContent=t('inviteMatch'); el('inv-seg-all').textContent=t('inviteAll');
+  el('inv-ext-t').textContent=t('extT'); el('inv-ext-email').placeholder=t('extPh'); el('inv-ext-btn').textContent=t('extBtn'); el('inv-ext-msg').className='inv-ext-msg';
+  el('inv-link-lbl').textContent=t('share');
+  if(!invLoaded){
+    Promise.all([
+      CPR.db('contractors?status=eq.active&select=id,name,company,first_name,last_name,trade,trades,avatar_url,rating,email,city,verified'),
+      CPR.db('job_invites?job_id=eq.'+encodeURIComponent(job.id)+'&select=contractor_id')
+    ]).then(function(res){
+      invAll=Array.isArray(res[0])?res[0]:[];
+      (Array.isArray(res[1])?res[1]:[]).forEach(function(r){ invInvited.add(r.contractor_id); });
+      invLoaded=true; renderInvList();
+    });
+  } else { renderInvList(); }
+};
+window.closeInvite=function(){ el('inv-overlay').classList.remove('show'); };
+window.setInvScope=function(s){ invScope=s; el('inv-seg-match').classList.toggle('on',s==='match'); el('inv-seg-all').classList.toggle('on',s==='all'); renderInvList(); };
+window.toggleInvSel=function(id){ if(invInvited.has(id)) return; if(invSelected.has(id)) invSelected.delete(id); else invSelected.add(id); renderInvList(); };
+function invFiltered(){
+  var q=(el('inv-search').value||'').trim().toLowerCase();
+  return invAll.filter(function(c){
+    if(invScope==='match' && !matchJobTrade(c)) return false;
+    if(q && cName(c).toLowerCase().indexOf(q)<0 && (c.city||'').toLowerCase().indexOf(q)<0) return false;
+    return true;
+  }).sort(function(a,b){ return (b.rating||0)-(a.rating||0); });
+}
+function renderInvList(){
+  var list=invFiltered(), box=el('inv-list');
+  if(!list.length){ box.innerHTML='<div class="inv-empty">'+t('inviteNone')+'</div>'; }
+  else {
+    box.innerHTML=list.map(function(c){
+      var done=invInvited.has(c.id), sel=invSelected.has(c.id);
+      var av=c.avatar_url?'<img src="'+esc(c.avatar_url)+'" alt="">':esc(initials(cName(c)));
+      var tradeTxt=c.trade?CPR.tradeLabel(c.trade):'';
+      var rate=(c.rating!=null)?'<span class="inv-star">★ '+Number(c.rating).toFixed(1)+'</span>':'<span style="color:var(--muted)">'+t('inviteRating')+'</span>';
+      var sub=[tradeTxt,c.city].filter(Boolean).join(' · ');
+      var right=done?'<span class="inv-tag">'+t('invited')+'</span>':'<span class="inv-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>';
+      return '<div class="inv-row'+(sel?' sel':'')+(done?' done':'')+'" onclick="toggleInvSel(\''+c.id+'\')"><div class="inv-av">'+av+'</div><div class="inv-info"><div class="inv-name">'+esc(cName(c))+CPR.verifiedBadge(c.verified,13)+'</div><div class="inv-sub2">'+rate+(sub?' · '+esc(sub):'')+'</div></div>'+right+'</div>';
+    }).join('');
+  }
+  el('inv-count').textContent=t('inviteSelected').replace('{n}',invSelected.size);
+  var sb=el('inv-send'); sb.textContent=t('inviteSend'); sb.disabled=invSelected.size===0;
+}
+window.sendExternalInvite=async function(){
+  var inp=el('inv-ext-email'), email=(inp.value||'').trim(), msg=el('inv-ext-msg');
+  msg.className='inv-ext-msg';
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ msg.textContent=t('extBad'); msg.className='inv-ext-msg err'; return; }
+  var btn=el('inv-ext-btn'); btn.disabled=true;
+  var clientName=currentUser?(currentUser.first_name||currentUser.name||''):'';
+  try{
+    await CPR.dbInsert('job_invites',{ job_id:job.id, client_id:job.homeowner_id, invite_email:email, status:'sent' });
+    sendEmail('external_invite',{ invite_email:email, job_title:job.title, city:job.city||'', job_id:job.id, client_name:clientName });
+    inp.value=''; msg.textContent=t('extSent'); msg.className='inv-ext-msg ok';
+  }catch(e){ msg.textContent=(lang==='en'?'Could not send. Try again.':'No se pudo enviar. Intenta de nuevo.'); msg.className='inv-ext-msg err'; }
+  btn.disabled=false;
+};
+window.sendInvites=async function(){
+  if(!invSelected.size) return;
+  var sb=el('inv-send'); sb.disabled=true; sb.textContent=t('inviteSending');
+  var ids=Array.from(invSelected);
+  var clientName=currentUser?(currentUser.first_name||currentUser.name||''):'';
+  for(var i=0;i<ids.length;i++){
+    var cid=ids[i], c=invAll.filter(function(x){return x.id===cid;})[0];
+    try{
+      await CPR.dbInsert('job_invites',{ job_id:job.id, contractor_id:cid, client_id:job.homeowner_id, status:'sent' });
+      invInvited.add(cid);
+      if(c&&c.email){ sendEmail('job_invite',{ contractor_email:c.email, job_title:job.title, city:job.city||'', job_id:job.id, client_name:clientName }); }
+    }catch(e){}
+  }
+  invSelected.clear(); renderInvList(); toast(t('inviteSent')); closeInvite();
+};
+
+window.openEdit=function(){
+  el('edit-title').textContent=t('editJobT');
+  el('ej-title-l').textContent=t('ejTitleL'); el('ej-trade-l').textContent=t('ejTradeL'); el('ej-desc-l').textContent=t('ejDescL'); el('ej-save').textContent=t('ejSave');
+  el('ej-title').value=job.title||''; el('ej-desc').value=job.description||'';
+  var sel=el('ej-trade'); sel.innerHTML='';
+  CPR.TRADES.forEach(function(tr){ var o=document.createElement('option'); o.value=tr[0]; o.textContent=(lang==='en'?tr[1]:tr[0]); sel.appendChild(o); });
+  var cur=job.trade_needed||''; sel.value=cur;
+  if(sel.value!==cur){ for(var j=0;j<CPR.TRADES.length;j++){ if(CPR.TRADES[j][1]===cur){ sel.value=CPR.TRADES[j][0]; break; } } }
+  el('edit-overlay').classList.add('show');
+};
+window.closeEdit=function(){ el('edit-overlay').classList.remove('show'); };
+window.saveJobEdit=async function(){
+  var title=(el('ej-title').value||'').trim(), trade=el('ej-trade').value, desc=(el('ej-desc').value||'').trim();
+  if(!title){ return; }
+  var btn=el('ej-save'); btn.disabled=true;
+  try{
+    await dbPatch('jobs','id=eq.'+encodeURIComponent(job.id),{title:title, trade_needed:trade, description:desc});
+    job.title=title; job.trade_needed=trade; job.description=desc;
+    closeEdit(); render(); toast(t('ejSaved'));
+  }catch(e){ btn.disabled=false; }
+  btn.disabled=false;
+};
+window.toggleChat=function(propId){
+  var panel=el('chat-'+propId); if(!panel) return;
+  var isOpen=panel.getAttribute('data-open')==='1';
+  // accordion: close every chat panel first (clear its poll)
+  document.querySelectorAll('.pc-chat').forEach(function(p){ if(p._cpoll){ clearInterval(p._cpoll); p._cpoll=null; } p.style.display='none'; p.innerHTML=''; p.removeAttribute('data-open'); });
+  if(!isOpen){
+    panel.style.display='block'; panel.setAttribute('data-open','1');
+    CPR.chatThread(panel, {proposalId:propId, meType:'homeowner', meId:currentUser.id});
+    setTimeout(function(){ panel.scrollIntoView({behavior:'smooth',block:'nearest'}); }, 80);
+  }
+};
+async function rejectQuote(propId){
+  if(!confirm(t('rejectConfirm'))) return;
+  try{ await dbPatch('proposals','id=eq.'+encodeURIComponent(propId),{status:'declined'}); await reload(); toast(t('rejected')); }
+  catch(e){ toast(t('accErr')); }
+}
+async function counterQuote(propId){
+  var raw=prompt(t('counterPrompt')); if(raw==null) return;
+  var c=parseFloat(String(raw).replace(/[^0-9.]/g,'')); if(!c||c<=0){ toast(t('accErr')); return; }
+  try{
+    await dbPatch('proposals','id=eq.'+encodeURIComponent(propId),{status:'countered',counter_price:c});
+    var p=proposals.filter(function(x){return x.id===propId;})[0];
+    var ct=p?contractorsById[p.contractor_id]:null;
+    if(p&&ct){ sendEmail('quote_countered',{contractor_email:ct.email, job_title:job.title, job_id:job.id, original:p.price, counter:c}); }
+    await reload(); toast(t('counterSent'));
+  }catch(e){ toast(t('accErr')); }
+}
+async function acceptVisit(propId){
+  var btn=event&&event.target?event.target:null;
+  if(btn){ btn.disabled=true; btn.textContent=t('accepting'); }
+  try{
+    await dbPatch('proposals','id=eq.'+encodeURIComponent(propId),{status:'visit_accepted'});
+    var p=proposals.filter(function(x){return x.id===propId;})[0];
+    var c=p?contractorsById[p.contractor_id]:null;
+    if(p&&c){ sendEmail('visit_accepted',{contractor_email:c.email, job_title:job.title, job_id:job.id, visit_when:fmtVisit(p)}); }
+    await reload();
+    toast(t('visitAccepted'));
+  }catch(e){
+    toast(t('accErr'));
+    if(btn){ btn.disabled=false; btn.textContent=t('acceptVisit'); }
+  }
+}
 async function acceptProposal(propId){
   var btn=event&&event.target?event.target:null;
   if(btn){ btn.disabled=true; btn.textContent=t('accepting'); }
@@ -202,20 +528,6 @@ async function acceptProposal(propId){
   }
 }
 
-async function markComplete(){
-  var btn=el('complete-btn'); if(btn){ btn.disabled=true; btn.textContent=t('completing'); }
-  try{
-    await dbPatch('jobs','id=eq.'+encodeURIComponent(job.id),{status:'completed'});
-    var accepted=proposals.filter(function(p){return p.status==='accepted';})[0];
-    if(accepted){ await dbPatch('proposals','id=eq.'+encodeURIComponent(accepted.id),{status:'completed'}); }
-    await reload();
-    toast(t('doneT'));
-  }catch(e){
-    toast(t('compErr'));
-    if(btn){ btn.disabled=false; btn.textContent=t('markComplete'); }
-  }
-}
-
 async function reload(){
   var res=await CPR.db('jobs?id=eq.'+encodeURIComponent(job.id)+'&select=*');
   job=Array.isArray(res)?res[0]:job;
@@ -229,7 +541,7 @@ async function loadProposals(){
   var cids=proposals.map(function(p){return p.contractor_id;}).filter(Boolean);
   contractorsById={};
   if(cids.length){
-    var cs=await CPR.db('contractors?id=in.('+cids.join(',')+')&select=id,name,email,rating');
+    var cs=await CPR.db('contractors?id=in.('+cids.join(',')+')&select=id,name,email,rating,verified');
     (Array.isArray(cs)?cs:[]).forEach(function(c){contractorsById[c.id]=c;});
   }
 }
@@ -261,7 +573,7 @@ function showNotFound(){
   if(!window._sb && window.supabase){ window._sb=supabase.createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK); }
   CPR.injectNav('properties', null);
   CPR.requireAuth(async function(user){
-    if(user.type==='contractor'){ location.replace('dashboard-contractor.html'); return; }
+    if(user.type==='contractor'){ location.replace('contractor-home.html'); return; }
     currentUser=user;
     CPR.injectNav('properties', user);
     await loadData();

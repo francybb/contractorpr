@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ContractingPR · Calendario</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1F33;--ink-2:#3A4A5C;--muted:#6B7A8D;
+  --blue:#1A56DB;--blue-deep:#103FA8;--blue-soft:#EBF1FE;
+  --canvas:#F6F7F9;--card:#FFFFFF;--line:#E6E9EF;--line-2:#EFF1F5;
+  --ok:#0E9F6E;--ok-soft:#E3F5EE;--warn:#E08A00;--warn-soft:#FBF1DF;
+  --radius:16px;--shadow:0 1px 2px rgba(11,31,51,.04),0 8px 24px -12px rgba(11,31,51,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--canvas);color:var(--ink);line-height:1.5}
+.wrap{max-width:880px;margin:0 auto;padding:36px 22px 80px}
+.serif{font-family:'Fraunces',serif}
+.back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:18px;background:none;border:none;cursor:pointer;font-family:inherit}
+.back-btn:hover{color:var(--blue)}.back-btn svg{width:16px;height:16px}
+.loading{display:flex;align-items:center;justify-content:center;gap:12px;padding:90px 0;color:var(--muted)}
+.spinner{width:22px;height:22px;border:3px solid var(--line);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+h1{font-family:'Fraunces',serif;font-size:30px;font-weight:500;letter-spacing:-.02em;margin-bottom:18px}
+.cal{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow);margin-bottom:28px}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.cal-head h2{font-family:'Fraunces',serif;font-size:19px;font-weight:500}
+.cal-legend{display:flex;gap:14px;font-size:11.5px;color:var(--muted);font-weight:600}
+.cal-legend span{display:inline-flex;align-items:center;gap:5px}.cal-legend i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.cal-dow{font-size:11px;font-weight:600;color:var(--muted);text-align:center;text-transform:uppercase;letter-spacing:.05em;padding-bottom:6px}
+.cal-day{aspect-ratio:1;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--ink-2);position:relative;border:1px solid transparent}
+.cal-day.empty{visibility:hidden}.cal-day.has{border-color:var(--line)}
+.cal-day.confirmed{background:var(--ok-soft);border-color:var(--ok-soft);color:var(--ok);font-weight:700}
+.cal-day.pending{background:var(--warn-soft);border-color:var(--warn-soft);color:var(--warn);font-weight:700}
+.cal-day.today{outline:2px solid var(--blue);outline-offset:-2px}
+.sec-title{font-family:'Fraunces',serif;font-size:20px;font-weight:500;margin-bottom:14px}
+.job-block{margin-bottom:16px}
+.job-top{display:flex;align-items:center;gap:13px;background:var(--card);border:1px solid var(--line);border-radius:14px 14px 0 0;border-bottom:none;padding:15px 18px}
+.job-top .jt{flex:1;min-width:0}.job-top .jtt{font-size:15px;font-weight:600}.job-top .jts{font-size:12.5px;color:var(--muted);margin-top:2px}
+.job-top a.view{font-size:12.5px;font-weight:600;color:var(--blue);text-decoration:none;white-space:nowrap}
+.sched-wrap .sch-card{border-radius:0 0 14px 14px;border-top:none}
+.empty{text-align:center;padding:40px;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:14px}
+.empty h3{color:var(--ink);margin-bottom:5px}.empty .btn{display:inline-block;margin-top:12px;background:var(--blue);color:#fff;padding:10px 18px;border-radius:9px;font-weight:600;font-size:13.5px;text-decoration:none}
+</style>
+</head>
+<body>
+<div id="cpr-nav-placeholder"></div>
+<div class="wrap">
+  <div id="boot" class="loading"><div class="spinner"></div><span id="boot-msg">Cargando...</span></div>
+  <script>(function(){try{var l=localStorage.getItem("cpr_lang")||"es";document.getElementById("boot-msg").textContent=(l==="en"?"Loading...":"Cargando...");}catch(e){}})();</script>
+  <div id="page" style="display:none"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
+<script>
+var lang = (window.CPR && CPR.lang) || 'es';
+var me=null, activeJobs=[], clientById={};
+var T={
+  back:{es:'Volver al inicio',en:'Back to home'},title:{es:'Calendario',en:'Calendar'},
+  monthName:{es:['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'],en:['January','February','March','April','May','June','July','August','September','October','November','December']},
+  dow:{es:['D','L','M','M','J','V','S'],en:['S','M','T','W','T','F','S']},
+  confirmed:{es:'Confirmado',en:'Confirmed'},pending:{es:'Por confirmar',en:'To confirm'},
+  activeT:{es:'Trabajos activos',en:'Active jobs'},
+  view:{es:'Ver trabajo →',en:'View job →'},forClient:{es:'Cliente',en:'Client'},
+  emptyT:{es:'No tienes trabajos activos',en:'No active jobs'},emptyP:{es:'Cuando ganes un trabajo, podrás coordinar la fecha aquí.',en:'When you win a job, you can schedule it here.'},browse:{es:'Ver trabajos',en:'Browse jobs'}
+};
+function el(id){return document.getElementById(id);}
+function t(k){var e=T[k];return e?(e[lang]||e.es):k;}
+function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+async function loadData(){
+  var props = await CPR.db('proposals?contractor_id=eq.'+encodeURIComponent(me.id)+'&status=eq.accepted&select=job_id');
+  props = Array.isArray(props)?props:[];
+  var jobIds = props.map(function(p){return p.job_id;}).filter(Boolean);
+  activeJobs=[];
+  if(jobIds.length){
+    var js = await CPR.db('jobs?id=in.('+jobIds.join(',')+')&order=created_at.desc&select=*');
+    activeJobs = (Array.isArray(js)?js:[]).filter(function(j){ return j.status==='accepted'||j.status==='in_progress'; });
+    var hoIds = [...new Set(activeJobs.map(function(j){return j.homeowner_id;}).filter(Boolean))];
+    if(hoIds.length){ var hs = await CPR.db('homeowners?id=in.('+hoIds.join(',')+')&select=id,name,first_name'); (Array.isArray(hs)?hs:[]).forEach(function(h){ clientById[h.id]=h; }); }
+  }
+}
+function jobConfirmed(j){ return j.sched_confirmed_client && j.sched_confirmed_contractor; }
+function renderGrid(){
+  var box=el('cal-grid-wrap'); if(!box) return;
+  var now=new Date(); var y=now.getFullYear(), mo=now.getMonth(), today=now.getDate();
+  var first=new Date(y,mo,1).getDay(); var days=new Date(y,mo+1,0).getDate();
+  var dayStatus={};
+  activeJobs.forEach(function(j){ if(j.scheduled_date){ var d=new Date(j.scheduled_date+'T00:00:00'); if(d.getFullYear()===y&&d.getMonth()===mo){ var dn=d.getDate(); if(jobConfirmed(j)) dayStatus[dn]='confirmed'; else if(!dayStatus[dn]) dayStatus[dn]='pending'; } } });
+  var cells='';
+  t('dow').forEach(function(d){ cells+='<div class="cal-dow">'+d+'</div>'; });
+  for(var i=0;i<first;i++) cells+='<div class="cal-day empty"></div>';
+  for(var dn=1;dn<=days;dn++){ var cls='cal-day has'; if(dayStatus[dn]) cls='cal-day '+dayStatus[dn]; if(dn===today) cls+=' today'; cells+='<div class="'+cls+'">'+dn+'</div>'; }
+  box.innerHTML=cells;
+}
+function clientName(j){ var c=clientById[j.homeowner_id]; return c?(c.first_name||c.name||''):''; }
+function render(){
+  var now=new Date();
+  var agenda = activeJobs.length ? activeJobs.map(function(j,idx){
+    var cn=clientName(j);
+    return '<div class="job-block"><div class="job-top"><div class="jt"><div class="jtt">'+esc(j.title||'')+'</div><div class="jts">'+(j.trade_needed?esc(CPR.tradeLabel(j.trade_needed)):'')+(j.city?' · '+esc(j.city):'')+(cn?' · '+t('forClient')+': '+esc(cn):'')+'</div></div><a class="view" href="contractor-job.html?id='+encodeURIComponent(j.id)+'">'+t('view')+'</a></div><div class="sched-wrap" id="sched-'+idx+'"></div></div>';
+  }).join('') : '<div class="empty"><h3>'+t('emptyT')+'</h3><p>'+t('emptyP')+'</p><a class="btn" href="jobs.html">'+t('browse')+'</a></div>';
+  el('page').innerHTML =
+    '<button class="back-btn" onclick="location.href=\'contractor-home.html\'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>'+t('back')+'</button>'+
+    '<h1>'+t('title')+'</h1>'+
+    '<div class="cal"><div class="cal-head"><h2>'+t('monthName')[now.getMonth()]+' '+now.getFullYear()+'</h2>'+
+      '<div class="cal-legend"><span><i style="background:var(--ok)"></i>'+t('confirmed')+'</span><span><i style="background:var(--warn)"></i>'+t('pending')+'</span></div></div>'+
+      '<div class="cal-grid" id="cal-grid-wrap"></div></div>'+
+    '<div class="sec-title">'+t('activeT')+'</div>'+agenda;
+  renderGrid();
+  activeJobs.forEach(function(j,idx){ var c=el('sched-'+idx); if(c) CPR.scheduleCard(c, j, 'contractor', function(){ renderGrid(); }); });
+}
+(function init(){
+  if(!window.CPR){ return; }
+  if(!window._sb && window.supabase){ window._sb=supabase.createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK); }
+  CPR.injectNav('contractor-calendar', null);
+  CPR.requireAuth(async function(user){
+    if(user.type==='homeowner'){ location.replace('properties.html'); return; }
+    me=user;
+    CPR.injectNav('contractor-calendar', user);
+    await loadData();
+    el('boot').style.display='none';
+    el('page').style.display='block';
+    render();
+  }, (lang==='en'?'Log in to view your calendar':'Inicia sesión para ver tu calendario'), 'contractor');
+})();
+</script>
+</body>
+</html>

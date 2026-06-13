@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ContractingPR · Ganancias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1F33;--ink-2:#3A4A5C;--muted:#6B7A8D;
+  --blue:#1A56DB;--blue-deep:#103FA8;--blue-soft:#EBF1FE;
+  --canvas:#F6F7F9;--card:#FFFFFF;--line:#E6E9EF;--line-2:#EFF1F5;
+  --ok:#0E9F6E;--ok-soft:#E3F5EE;--warn:#E08A00;--warn-soft:#FBF1DF;
+  --radius:16px;--shadow:0 1px 2px rgba(11,31,51,.04),0 8px 24px -12px rgba(11,31,51,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--canvas);color:var(--ink);line-height:1.5}
+.wrap{max-width:920px;margin:0 auto;padding:36px 22px 80px}
+.serif{font-family:'Fraunces',serif}
+.back-btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:18px;background:none;border:none;cursor:pointer;font-family:inherit}
+.back-btn:hover{color:var(--blue)}.back-btn svg{width:16px;height:16px}
+.loading{display:flex;align-items:center;justify-content:center;gap:12px;padding:90px 0;color:var(--muted)}
+.spinner{width:22px;height:22px;border:3px solid var(--line);border-top-color:var(--blue);border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+h1{font-family:'Fraunces',serif;font-size:30px;font-weight:500;letter-spacing:-.02em;margin-bottom:18px}
+.filters{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-bottom:22px}
+.seg{display:inline-flex;background:var(--line-2);border-radius:11px;padding:4px;gap:3px}
+.seg button{padding:8px 15px;border-radius:8px;border:none;background:transparent;color:var(--muted);font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;transition:.15s}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(11,31,51,.1)}
+.tsel{border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-family:inherit;font-size:13.5px;color:var(--ink);background:var(--card);cursor:pointer}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:26px}
+@media(max-width:680px){.tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 20px;box-shadow:var(--shadow)}
+.tile .v{font-family:'Fraunces',serif;font-size:25px;font-weight:500}.tile .v.money{color:var(--blue)}.tile .v.escrow{color:var(--warn)}
+.tile .k{font-size:12px;color:var(--muted);margin-top:3px;font-weight:500}
+.chart-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow);margin-bottom:26px}
+.chart-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+.chart-head h2{font-family:'Fraunces',serif;font-size:18px;font-weight:500}
+.chart-head .tot{font-size:13px;color:var(--muted);font-weight:500}
+.bars{display:flex;align-items:flex-end;gap:8px;height:180px;overflow-x:auto;padding-bottom:2px}
+.bar-col{flex:1;min-width:26px;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:7px}
+.bar-val{font-size:10.5px;font-weight:600;color:var(--ink-2);white-space:nowrap}
+.bar{width:100%;max-width:38px;background:var(--blue-soft);border-radius:5px 5px 3px 3px;position:relative;min-height:3px;transition:.2s}
+.bar i{position:absolute;left:0;right:0;bottom:0;background:var(--blue);border-radius:5px 5px 3px 3px}
+.bar-col:hover .bar i{background:var(--blue-deep)}
+.bar-lbl{font-size:10px;color:var(--muted);font-weight:600;white-space:nowrap}
+.recent h2{font-family:'Fraunces',serif;font-size:18px;font-weight:500;margin-bottom:14px}
+.rrow{display:flex;align-items:center;gap:14px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:13px 16px;margin-bottom:9px}
+.rmain{flex:1;min-width:0}.rt{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rs{font-size:12px;color:var(--muted);margin-top:2px}
+.ramt{text-align:right;flex-shrink:0}.ramt .p{font-family:'Fraunces',serif;font-weight:500}.ramt .pay{font-size:11.5px;color:var(--ok);font-weight:600}
+.empty{text-align:center;padding:36px;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:14px}
+</style>
+</head>
+<body>
+<div id="cpr-nav-placeholder"></div>
+<div class="wrap">
+  <div id="boot" class="loading"><div class="spinner"></div><span id="boot-msg">Cargando...</span></div>
+  <script>(function(){try{var l=localStorage.getItem("cpr_lang")||"es";document.getElementById("boot-msg").textContent=(l==="en"?"Loading...":"Cargando...");}catch(e){}})();</script>
+  <div id="page" style="display:none"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/lang.js"></script>
+<script>
+var lang = (window.CPR && CPR.lang) || 'es';
+var me=null, completed=[], escrowTotal=0, tradesAvail=[], period='12m', tradeFilter='all';
+var T={
+  back:{es:'Volver al inicio',en:'Back to home'},title:{es:'Ganancias',en:'Earnings'},
+  pYear:{es:'Este año',en:'This year'},p12:{es:'Últimos 12 meses',en:'Last 12 months'},pAll:{es:'Todo',en:'All time'},
+  allTrades:{es:'Todas las especialidades',en:'All trades'},
+  total:{es:'Total ganado',en:'Total earned'},jobs:{es:'Trabajos completados',en:'Jobs completed'},avg:{es:'Promedio / trabajo',en:'Avg / job'},escrow:{es:'Retenido',en:'On hold'},
+  chartT:{es:'Ganancias por mes',en:'Earnings by month'},recentT:{es:'Trabajos recientes',en:'Recent jobs'},
+  emptyT:{es:'Aún no hay ganancias',en:'No earnings yet'},emptyP:{es:'Tus pagos aparecerán aquí cuando completes trabajos.',en:'Your payouts will show here once you complete jobs.'},
+  feeNote:{es:'recibes 90% (10% comisión de plataforma)',en:'you get 90% (10% platform fee)'},mon:{es:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],en:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']}
+};
+function el(id){return document.getElementById(id);}
+function t(k){var e=T[k];return e?(e[lang]||e.es):k;}
+function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function money(n){return '$'+Math.round(n).toLocaleString('en-US');}
+function numv(b){ var v=parseFloat(String(b||'').replace(/[^0-9.]/g,'')); return isNaN(v)?0:v; }
+
+async function loadData(){
+  var props = await CPR.db('proposals?contractor_id=eq.'+encodeURIComponent(me.id)+'&order=created_at.desc&select=*');
+  props = Array.isArray(props)?props:[];
+  var jobIds = props.map(function(p){return p.job_id;}).filter(Boolean);
+  var jobsById = {};
+  if(jobIds.length){ var js = await CPR.db('jobs?id=in.('+jobIds.join(',')+')&select=id,title,trade_needed'); (Array.isArray(js)?js:[]).forEach(function(j){ jobsById[j.id]=j; }); }
+  completed=[]; escrowTotal=0; var tset={};
+  props.forEach(function(p){
+    var j=jobsById[p.job_id]||{}; var pay=numv(p.price)*0.90;
+    if(p.status==='completed'){ completed.push({ date:new Date(p.created_at), amount:pay, gross:numv(p.price), title:j.title||'', trade:j.trade_needed||'' }); if(j.trade_needed) tset[j.trade_needed]=true; }
+    else if(p.status==='accepted'){ escrowTotal += pay; }
+  });
+  tradesAvail = Object.keys(tset);
+}
+function inFilter(c){ return tradeFilter==='all' || c.trade===tradeFilter; }
+function buckets(){
+  var now=new Date(); var out=[];
+  if(period==='year'){ var y=now.getFullYear(); for(var m=0;m<12;m++) out.push({y:y,m:m}); }
+  else if(period==='12m'){ for(var i=11;i>=0;i--){ var d=new Date(now.getFullYear(),now.getMonth()-i,1); out.push({y:d.getFullYear(),m:d.getMonth()}); } }
+  else { var earliest=now; completed.forEach(function(c){ if(c.date<earliest) earliest=c.date; }); var d2=new Date(earliest.getFullYear(),earliest.getMonth(),1); while(d2<=now){ out.push({y:d2.getFullYear(),m:d2.getMonth()}); d2.setMonth(d2.getMonth()+1); } if(!out.length) out.push({y:now.getFullYear(),m:now.getMonth()}); }
+  return out;
+}
+function inScope(c){ var bs=buckets(); for(var i=0;i<bs.length;i++){ if(c.date.getFullYear()===bs[i].y && c.date.getMonth()===bs[i].m) return true; } return false; }
+function render(){
+  var scoped = completed.filter(function(c){ return inFilter(c) && inScope(c); });
+  var total = scoped.reduce(function(a,c){return a+c.amount;},0);
+  var avg = scoped.length ? total/scoped.length : 0;
+  var bs = buckets();
+  var byKey={}; scoped.forEach(function(c){ var k=c.date.getFullYear()+'-'+c.date.getMonth(); byKey[k]=(byKey[k]||0)+c.amount; });
+  var max=1; bs.forEach(function(b){ var v=byKey[b.y+'-'+b.m]||0; if(v>max)max=v; });
+  var barsHtml = bs.map(function(b){ var v=byKey[b.y+'-'+b.m]||0; var h=Math.max(2,Math.round(v/max*100)); return '<div class="bar-col" title="'+t('mon')[b.m]+' '+b.y+': '+money(v)+'">'+(v>0?'<div class="bar-val">'+money(v)+'</div>':'<div class="bar-val">&nbsp;</div>')+'<div class="bar" style="height:'+h+'%"><i style="height:100%"></i></div><div class="bar-lbl">'+t('mon')[b.m]+(period==='all'?(" '"+String(b.y).slice(2)):'')+'</div></div>'; }).join('');
+  var tradeOpts = '<option value="all">'+t('allTrades')+'</option>'+tradesAvail.map(function(tr){ return '<option value="'+esc(tr)+'"'+(tr===tradeFilter?' selected':'')+'>'+esc(tr)+'</option>'; }).join('');
+  var recent = scoped.slice().sort(function(a,b){return b.date-a.date;}).slice(0,8);
+  var recentHtml = recent.length ? recent.map(function(c){ return '<div class="rrow"><div class="rmain"><div class="rt">'+esc(c.title||(lang==='en'?'Job':'Trabajo'))+'</div><div class="rs">'+(c.trade?esc(c.trade)+' · ':'')+c.date.toLocaleDateString(lang==='en'?'en-US':'es-ES',{month:'short',day:'numeric',year:'numeric'})+'</div></div><div class="ramt"><div class="p">'+money(c.amount)+'</div><div class="pay">'+money(c.gross)+' '+(lang==='en'?'gross':'bruto')+'</div></div></div>'; }).join('') : '';
+  el('page').innerHTML =
+    '<button class="back-btn" onclick="location.href=\'contractor-home.html\'"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><polyline points="15 18 9 12 15 6"/></svg>'+t('back')+'</button>'+
+    '<h1>'+t('title')+'</h1>'+
+    '<div class="filters"><div class="seg">'+
+      '<button class="'+(period==='year'?'on':'')+'" onclick="setPeriod(\'year\')">'+t('pYear')+'</button>'+
+      '<button class="'+(period==='12m'?'on':'')+'" onclick="setPeriod(\'12m\')">'+t('p12')+'</button>'+
+      '<button class="'+(period==='all'?'on':'')+'" onclick="setPeriod(\'all\')">'+t('pAll')+'</button></div>'+
+      '<select class="tsel" onchange="setTrade(this.value)">'+tradeOpts+'</select></div>'+
+    '<div class="tiles">'+
+      '<div class="tile"><div class="v money">'+money(total)+'</div><div class="k">'+t('total')+'</div></div>'+
+      '<div class="tile"><div class="v">'+scoped.length+'</div><div class="k">'+t('jobs')+'</div></div>'+
+      '<div class="tile"><div class="v">'+money(avg)+'</div><div class="k">'+t('avg')+'</div></div>'+
+      '<div class="tile"><div class="v escrow">'+money(escrowTotal)+'</div><div class="k">'+t('escrow')+'</div></div></div>'+
+    (completed.length ?
+      '<div class="chart-card"><div class="chart-head"><h2>'+t('chartT')+'</h2><span class="tot">'+t('feeNote')+'</span></div><div class="bars">'+barsHtml+'</div></div>'+
+      (recentHtml?'<div class="recent"><h2>'+t('recentT')+'</h2>'+recentHtml+'</div>':'')
+      : '<div class="empty"><h3 style="color:var(--ink);margin-bottom:5px">'+t('emptyT')+'</h3><p>'+t('emptyP')+'</p></div>');
+}
+function setPeriod(p){ period=p; render(); }
+function setTrade(v){ tradeFilter=v; render(); }
+(function init(){
+  if(!window.CPR){ return; }
+  if(!window._sb && window.supabase){ window._sb=supabase.createClient(CPR.SUPABASE_URL, CPR.SUPABASE_PK); }
+  CPR.injectNav('contractor-earnings', null);
+  CPR.requireAuth(async function(user){
+    if(user.type==='homeowner'){ location.replace('properties.html'); return; }
+    me=user;
+    CPR.injectNav('contractor-earnings', user);
+    await loadData();
+    el('boot').style.display='none';
+    el('page').style.display='block';
+    render();
+  }, (lang==='en'?'Log in to view your earnings':'Inicia sesión para ver tus ganancias'), 'contractor');
+})();
+</script>
+</body>
+</html>
